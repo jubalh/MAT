@@ -1,0 +1,3 @@
+strippers = {
+    JpegFile: JpegStripper,
+}
