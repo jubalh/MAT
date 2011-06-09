@@ -1,45 +1,29 @@
-import mat
+import cli
 import unittest
-import shutil
-import glob
-import tempfile
+import test
 
-FILE_LIST = zip(glob.glob('clean*'), glob.glob('dirty*'))
+import shlex
+import subprocess
 
-class MATTest(unittest.TestCase):
-    def setUp(self):
-	'''create working copy of the clean and the dirty file in the TMP dir'''
-	self.file_list = []
-	self.tmpdir = tempfile.mkdtemp()
-
-	for clean, dirty in FILE_LIST:
-	    shutil.copy2(clean, self.tmpdir + clean)
-	    shutil.copy2(dirty, self.tmpdir + dirty)
-	    self.file_list.append((self.tmpdir + clean, self.tmpdir + dirty))
-
-    def tearDown(self):
-	'''Remove the tmp folder'''
-	shutil.rmtree(self.tmpdir)
-
-class Test_Remove(MATTest):
+class Test_Remove_cli(test.MATTest):
     def test_remove(self):
-        '''make sure that the lib remove all compromizing meta'''
+        '''make sure that the cli remove all compromizing meta'''
         for clean, dirty in self.file_list:
-            mat.file(dirty).remove_all()
+            subprocess.call("cli.py %s" dirty)
             self.assertTrue(mat.file(dirty).is_clean())
 
     def test_remove_empty(self):
         '''Test removal with clean files'''
         for clean, dirty in self.file_list:
-            mat.file(clean).remove_all()
-            self.assertTrue(mat.file(clean).is_clean())
+            subprocess.call("cli.py %s" clean)
+            self.assertTrue(mat.file(dirty).is_clean())
 
 
-class Test_List(MATTest):
+class Test_List_cli(test.MATTest):
     def test_list(self):
         '''check if get_meta returns all the expected meta'''
         for clean, dirty in self.file_list:
-            meta_list = dict() #FIXME
+            meta_list = dict("fixme":"please",) #FIXME
             self.assertDictEqual(mat.file(dirty).get_meta(), meta_list)
 
     def testlist_list_empty(self):
@@ -48,7 +32,7 @@ class Test_List(MATTest):
             self.assertEqual(mat.file(clean).get_meta(), None)
 
 
-class Test_isClean(MATTest):
+class Test_isClean_cli(test.MATTest):
     def test_clean(self):
         '''test is_clean on clean files'''
         for clean, dirty in self.file_list:
