@@ -98,10 +98,17 @@ class file():
 
 class JpegStripper(file):
     def _should_remove(self, key):
-        return False
+        if key in ('comment', 'author'):
+            return True
+        else:
+            return False
 
 class PngStripper(file):
     def _should_remove(self, key):
+        if key in ('comment', 'author'):
+            return True
+        else:
+            return False
         return False
 
 strippers = {
