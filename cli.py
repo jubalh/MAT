@@ -1,6 +1,6 @@
 #!/usr/bin/python
 '''
-    Metadata anonymisation toolkit
+    Metadata anonymisation toolkit - CLI edition
 '''
 
 import sys
@@ -62,7 +62,6 @@ def clean_meta(class_file, filename):
 
 def main():
     args, filenames = parse()
-    #args = parsing()
 
     #func receive the function correponding to the options given as parameters
     if args.display is True: #only print metadatas
