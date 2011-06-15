@@ -1,3 +1,9 @@
+#!/usr/bin/python
+
+'''
+    Metadata anonymisation toolkit library
+'''
+
 import hachoir_core.error
 import hachoir_core.cmd_line
 import hachoir_parser
@@ -55,10 +61,10 @@ class file():
         for key, field in self.meta.iteritems():
             if self._should_remove(key):
                 print "BLEH" #DEBUG
-                #__remove(self, key)
+                #_remove(self, key)
         #self.clean = True
 
-    def __remove(self, field):
+    def _remove(self, field):
         '''
             Remove the given file
         '''
@@ -71,7 +77,19 @@ class file():
         '''
         return self.meta
 
-    def _should_remove(self, field):
+    def get_harmful(self):
+        '''
+            return a dict with all the harmfull meta of the file
+        '''
+        harmful = {}
+        for key, value in self.meta.iteritems():
+            if self._should_remove(key):
+                harmful[key] = value
+        return harmful
+
+
+
+    def _should_remove(self, key):
         '''
             return True if the field is compromizing
             abstract method
@@ -79,11 +97,16 @@ class file():
         raise NotImplementedError()
 
 class JpegStripper(file):
-    def _should_remove(self, field):
+    def _should_remove(self, key):
+        return False
+
+class PngStripper(file):
+    def _should_remove(self, key):
         return False
 
 strippers = {
     hachoir_parser.image.JpegFile: JpegStripper,
+    hachoir_parser.image.PngFile: PngStripper,
 }
 
 def create_class_file(name):
@@ -112,6 +135,7 @@ def create_class_file(name):
         '''
         stripper_class = strippers[editor.input.__class__]
     except KeyError:
+        #Place for another lib than hachoir
         print("Don't have stripper for file type: %s" % editor.description)
         sys.exit(1)
     return stripper_class(realname, filename, parser, editor)
