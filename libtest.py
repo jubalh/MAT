@@ -1,3 +1,9 @@
+#!/usr/bin/python
+
+'''
+    Unit test for the library
+'''
+
 import mat
 import unittest
 import test
@@ -34,7 +40,7 @@ class Test_List_lib(test.MATTest):
 
 
 class Test_isClean_lib(test.MATTest):
-    def test_clean(self):
+    def test_dirty(self):
         '''test is_clean on clean files'''
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(dirty)
