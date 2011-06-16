@@ -5,6 +5,7 @@
 '''
 
 import hachoir_core.error
+import hachoir_core.field
 import hachoir_core.cmd_line
 import hachoir_parser
 import hachoir_metadata
@@ -21,7 +22,6 @@ __author__ = "jvoisin"
 class file():
     def __init__(self, realname, filename, parser, editor):
         self.meta = {}
-        self.clean = False
         self.filename = filename
         self.realname = realname
         self.parser = parser
@@ -50,9 +50,12 @@ class file():
 
     def is_clean(self):
         '''
-            Return true if the file is clean from any compromizing meta
+            Check if the file is clean from harmful metadatas
         '''
-        return self.clean
+        for key, field in self.meta.iteritems():
+            if self._should_remove(key):
+                return False
+        return True
 
     def remove_all(self):
         '''
@@ -60,15 +63,15 @@ class file():
         '''
         for key, field in self.meta.iteritems():
             if self._should_remove(key):
-                print "BLEH" #DEBUG
-                #_remove(self, key)
-        #self.clean = True
+                self._remove(key)
+        hachoir_core.field.writeIntoFile(self.editor, self.filename + "cleaned")
 
-    def _remove(self, field):
+
+    def _remove(self, key):
         '''
-            Remove the given file
+            Remove the given field
         '''
-        del self.editor[field]
+        del self.editor[key]
 
 
     def get_meta(self):
@@ -79,7 +82,7 @@ class file():
 
     def get_harmful(self):
         '''
-            return a dict with all the harmfull meta of the file
+            return a dict with all the harmful meta of the file
         '''
         harmful = {}
         for key, value in self.meta.iteritems():
