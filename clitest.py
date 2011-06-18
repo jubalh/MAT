@@ -30,6 +30,7 @@ class Test_List_cli(test.MATTest):
     def test_list_clean(self):
         '''check if get_meta returns meta'''
         for clean, dirty in self.file_list:
+            #fixme : a (clean|dirty).(jpg|pdf|...).out ?
             proc = subprocess.Popen(['./cli.py', '-d', clean],
                 stdout=subprocess.PIPE)
             stdout, stderr = proc.communicate()
@@ -42,24 +43,6 @@ class Test_List_cli(test.MATTest):
                 stdout=subprocess.PIPE)
             stdout, stderr = proc.communicate()
             self.assertNotEqual(stdout, "[+] File %s" % dirty)
-
-class Test_List_Harmful_cli(test.MATTest):
-    def test_list_clean(self):
-        '''check if get_meta returns no meta at all'''
-        for clean, dirty in self.file_list:
-            proc = subprocess.Popen(['./cli.py', '--harmful', clean],
-                stdout=subprocess.PIPE)
-            stdout, stderr = proc.communicate()
-            self.assertNotEqual(stdout.strip('\n'), '[+] File %s :' % clean)
-
-    def test_list_dirty(self):
-        '''check if get_meta returns harmful meta'''
-        for clean, dirty in self.file_list:
-            proc = subprocess.Popen(['./cli.py', '--harmful', dirty],
-                stdout=subprocess.PIPE)
-            stdout, stderr = proc.communicate()
-            self.assertNotEqual(stdout.strip('\n'), '[+] File %s :' % dirty)
-
 
 
 class Test_isClean_cli(test.MATTest):
@@ -86,5 +69,4 @@ if __name__ == '__main__':
     suite.addTest(unittest.makeSuite(Test_Remove_cli))
     suite.addTest(unittest.makeSuite(Test_List_cli))
     suite.addTest(unittest.makeSuite(Test_isClean_cli))
-    suite.addTest(unittest.makeSuite(Test_List_Harmful_cli))
     unittest.TextTestRunner(verbosity=2).run(suite)

@@ -30,7 +30,7 @@ class Test_List_lib(test.MATTest):
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(dirty)
             meta_list = dict({"fixme":"please"},)
-            self.assertDictEqual(current_file.get_meta(), meta_list)
+            self.assertEqual(current_file.get_meta(), meta_list)
 
     def testlist_list_empty(self):
         '''check that a listing of a clean file return an empty dict'''
