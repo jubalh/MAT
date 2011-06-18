@@ -7,9 +7,11 @@
 
 import shutil
 import glob
+import sys
 import tempfile
 import unittest
-import mat
+sys.path.append('..')
+from lib import mat
 
 FILE_LIST = zip(glob.glob('clean*'), glob.glob('dirty*'))
 

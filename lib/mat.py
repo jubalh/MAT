@@ -3,17 +3,18 @@
 '''
     Metadata anonymisation toolkit library
 '''
+import sys
+import os
 
 import hachoir_core.error
 import hachoir_core.field
 import hachoir_core.cmd_line
 import hachoir_parser
 import hachoir_metadata
-import hachoir_editor
-
-import sys
-import os
 import hachoir_parser.image
+
+sys.path.append('..')
+import hachoir_editor
 
 __version__ = "0.1"
 __author__ = "jvoisin"

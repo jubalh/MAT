@@ -4,9 +4,11 @@
     Unit test for the library
 '''
 
-import mat
 import unittest
 import test
+import sys
+sys.path.append('..')
+from lib import mat
 
 class Test_Remove_lib(test.MATTest):
     def test_remove(self):

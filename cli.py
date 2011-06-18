@@ -4,7 +4,7 @@
 '''
 
 import sys
-import mat
+import lib.mat
 import optparse
 
 __version__ = '0.1'
