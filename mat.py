@@ -18,6 +18,7 @@ import hachoir_parser.image
 __version__ = "0.1"
 __author__ = "jvoisin"
 
+POSTFIX = ".cleaned"
 
 class file():
     def __init__(self, realname, filename, parser, editor):
@@ -52,8 +53,8 @@ class file():
         '''
             Check if the file is clean from harmful metadatas
         '''
-        for key, field in self.meta.iteritems():
-            if self._should_remove(key):
+        for field in self.editor:
+            if self._should_remove(field):
                 return False
         return True
 
@@ -61,36 +62,24 @@ class file():
         '''
             Remove all the files that are compromizing
         '''
-        for key, field in self.meta.iteritems():
-            if self._should_remove(key):
-                self._remove(key)
-        hachoir_core.field.writeIntoFile(self.editor, self.filename + "cleaned")
+        for field in self.editor:
+            if self._should_remove(field):
+                self._remove(field)
+        hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
 
-
-    def _remove(self, key):
+    def _remove(self, field):
         '''
             Remove the given field
         '''
-        del self.editor[key]
+        del self.editor[field.name]
 
 
     def get_meta(self):
         '''
             return a dict with all the meta of the file
         '''
+        #am I useless ?
         return self.meta
-
-    def get_harmful(self):
-        '''
-            return a dict with all the harmful meta of the file
-        '''
-        harmful = {}
-        for key, value in self.meta.iteritems():
-            if self._should_remove(key):
-                harmful[key] = value
-        return harmful
-
-
 
     def _should_remove(self, key):
         '''
@@ -100,19 +89,20 @@ class file():
         raise NotImplementedError()
 
 class JpegStripper(file):
-    def _should_remove(self, key):
-        if key in ('comment', 'author'):
+    def _should_remove(self, field):
+        if field.name.startswith('comment'):
+            return True
+        elif field.name in ("photoshop", "exif", "adobe"):
             return True
         else:
             return False
 
 class PngStripper(file):
-    def _should_remove(self, key):
-        if key in ('comment', 'author'):
+    def _should_remove(self, field):
+        if field.name in ('comment'):
             return True
         else:
             return False
-        return False
 
 strippers = {
     hachoir_parser.image.JpegFile: JpegStripper,
@@ -131,7 +121,7 @@ def create_class_file(name):
     filename = ""
     realname = name
     filename = hachoir_core.cmd_line.unicodeFilename(name)
-    parser = hachoir_parser.createParser(filename, realname)
+    parser = hachoir_parser.createParser(filename)
     if not parser:
         print("Unable to parse the file %s : sorry" % filename)
         sys.exit(1)

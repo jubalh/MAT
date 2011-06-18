@@ -16,8 +16,6 @@ def parse():
         help='List all the meta of a file without removing them')
     common.add_option('--check', '-c',  action='store_true', default=False,
         help='Check if a file is free of harmfull metadatas')
-    common.add_option('--harmful',  action='store_true', default=False,
-        help='List all the harmful meta of a file without removing them')
     common.add_option('--version', action='callback', callback=displayVersion,
         help='Display version and exit')
 
@@ -40,14 +38,6 @@ def list_meta(class_file, filename):
     '''
     print('[+] File %s :' % filename)
     for key, item in class_file.get_meta().iteritems():
-        print('\t%s : %s' % (key, item) )
-
-def list_harmful_meta(class_file, filename):
-    '''
-	Print all the harmful meta of 'filename' on stdout
-    '''
-    print('[+] File %s :' % filename)
-    for key, item in class_file.get_harmful().iteritems():
         print('\t%s : %s' % (key, item) )
 
 def is_clean(class_file, filename):
@@ -78,8 +68,6 @@ def main():
         func = list_meta
     elif args.check is True: #only check if the file is clean
         func = is_clean
-    elif args.harmful is True: #only print harmful metadatas
-        func = list_harmful_meta
     else: #clean the file
         func = clean_meta
 
