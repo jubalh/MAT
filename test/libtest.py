@@ -31,14 +31,14 @@ class Test_List_lib(test.MATTest):
         '''check if get_meta returns all the expected meta'''
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(dirty)
-            meta_list = dict({"fixme":"please"},)
+            meta_list = ('exif', 'photoshop', 'adobe')
             self.assertEqual(current_file.get_meta(), meta_list)
 
     def testlist_list_empty(self):
         '''check that a listing of a clean file return an empty dict'''
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(clean)
-            self.assertEqual(current_file.get_meta(), dict()) #dirty, isn't it ?
+            self.assertEqual(current_file.get_meta(), list())
 
 
 class Test_isClean_lib(test.MATTest):
@@ -46,13 +46,13 @@ class Test_isClean_lib(test.MATTest):
         '''test is_clean on clean files'''
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(dirty)
-            self.assertTrue(current_file.is_clean())
+            self.assertFalse(current_file.is_clean())
 
     def test_clean(self):
         '''test is_clean on dirty files'''
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(clean)
-            self.assertFalse(current_file.is_clean())
+            self.assertTrue(current_file.is_clean())
 
 
 if __name__ == '__main__':
