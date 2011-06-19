@@ -68,8 +68,11 @@ class Generic_parser():
         '''
             return a dict with all the meta of the file
         '''
-        #am I useless ?
-        return self.meta
+        metadata = []
+        for field in self.editor:
+            if self._should_remove(field):
+                metadata.append(field.name)
+        return metadata
 
     def _should_remove(self, key):
         '''

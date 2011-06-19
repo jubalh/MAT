@@ -4,7 +4,7 @@
 '''
 
 import sys
-import lib.mat
+from lib import mat
 import optparse
 
 __version__ = '0.1'
@@ -37,8 +37,7 @@ def list_meta(class_file, filename):
 	Print all the meta of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
-    for key, item in class_file.get_meta().iteritems():
-        print('\t%s : %s' % (key, item) )
+    print "\n".join([field for field in class_file.get_meta()])
 
 def is_clean(class_file, filename):
     '''
