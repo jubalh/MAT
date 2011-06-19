@@ -3,111 +3,22 @@
 '''
     Metadata anonymisation toolkit library
 '''
+
 import sys
 import os
 
-import hachoir_core.error
-import hachoir_core.field
 import hachoir_core.cmd_line
 import hachoir_parser
-import hachoir_metadata
-import hachoir_parser.image
-
-sys.path.append('..')
 import hachoir_editor
+
+import images
 
 __version__ = "0.1"
 __author__ = "jvoisin"
 
-POSTFIX = ".cleaned"
-
-class file():
-    def __init__(self, realname, filename, parser, editor):
-        self.meta = {}
-        self.filename = filename
-        self.realname = realname
-        self.parser = parser
-        self.editor = editor
-        self.meta = self.__fill_meta()
-
-    def __fill_meta(self):
-        metadata = {}
-        try:
-            meta = hachoir_metadata.extractMetadata(self.parser)
-        except hachoir_core.error.HachoirError, err:
-            print("Metadata extraction error: %s" % err)
-
-        if not meta:
-            print("Unable to extract metadata from the file %s" % self.filename)
-            sys.exit(1)
-
-        for title in meta:
-            #fixme i'm so dirty
-            if title.values != []: #if the field is not empty
-                value = ""
-                for item in title.values:
-                    value = item.text
-                metadata[title.key] = value
-        return metadata
-
-    def is_clean(self):
-        '''
-            Check if the file is clean from harmful metadatas
-        '''
-        for field in self.editor:
-            if self._should_remove(field):
-                return False
-        return True
-
-    def remove_all(self):
-        '''
-            Remove all the files that are compromizing
-        '''
-        for field in self.editor:
-            if self._should_remove(field):
-                self._remove(field)
-        hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
-
-    def _remove(self, field):
-        '''
-            Remove the given field
-        '''
-        del self.editor[field.name]
-
-
-    def get_meta(self):
-        '''
-            return a dict with all the meta of the file
-        '''
-        #am I useless ?
-        return self.meta
-
-    def _should_remove(self, key):
-        '''
-            return True if the field is compromizing
-            abstract method
-        '''
-        raise NotImplementedError()
-
-class JpegStripper(file):
-    def _should_remove(self, field):
-        if field.name.startswith('comment'):
-            return True
-        elif field.name in ("photoshop", "exif", "adobe"):
-            return True
-        else:
-            return False
-
-class PngStripper(file):
-    def _should_remove(self, field):
-        if field.name in ('comment'):
-            return True
-        else:
-            return False
-
 strippers = {
-    hachoir_parser.image.JpegFile: JpegStripper,
-    hachoir_parser.image.PngFile: PngStripper,
+    hachoir_parser.image.JpegFile: images.JpegStripper,
+    hachoir_parser.image.PngFile: images.PngStripper,
 }
 
 def create_class_file(name):
