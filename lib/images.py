@@ -11,7 +11,9 @@ class JpegStripper(parser.Generic_parser):
 
 class PngStripper(parser.Generic_parser):
     def _should_remove(self, field):
-        if field.name in ('comment'):
+        if field.name.startswith("text["):
+            return True
+        elif field.name is "time":
             return True
         else:
             return False

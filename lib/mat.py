@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 '''
     Metadata anonymisation toolkit library
@@ -12,6 +12,8 @@ import hachoir_parser
 import hachoir_editor
 
 import images
+import audio
+import misc
 
 __version__ = "0.1"
 __author__ = "jvoisin"
@@ -19,6 +21,8 @@ __author__ = "jvoisin"
 strippers = {
     hachoir_parser.image.JpegFile: images.JpegStripper,
     hachoir_parser.image.PngFile: images.PngStripper,
+    hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
+    hachoir_parser.misc.PDFDocument: misc.PdfStripper,
 }
 
 def create_class_file(name):
@@ -50,4 +54,6 @@ def create_class_file(name):
         #Place for another lib than hachoir
         print("Don't have stripper for file type: %s" % editor.description)
         sys.exit(1)
+    if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
+        return stripper_class(filename)
     return stripper_class(realname, filename, parser, editor)

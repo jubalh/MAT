@@ -4,7 +4,6 @@
 
 import hachoir_core.error
 import hachoir_parser
-import hachoir_metadata
 import hachoir_editor
 import sys
 
@@ -12,32 +11,10 @@ POSTFIX = ".cleaned"
 
 class Generic_parser():
     def __init__(self, realname, filename, parser, editor):
-        self.meta = {}
         self.filename = filename
         self.realname = realname
         self.parser = parser
         self.editor = editor
-        #self.meta = self.__fill_meta()
-
-    def __fill_meta(self):
-        metadata = {}
-        try:
-            meta = hachoir_metadata.extractMetadata(self.parser)
-        except hachoir_core.error.HachoirError, err:
-            print("Metadata extraction error: %s" % err)
-
-        if not meta:
-            print("Unable to extract metadata from the file %s" % self.filename)
-            #sys.exit(1)
-
-        for title in meta:
-            #fixme i'm so dirty
-            if title.values != []: #if the field is not empty
-                value = ""
-                for item in title.values:
-                    value = item.text
-                metadata[title.key] = value
-        return metadata
 
     def is_clean(self):
         '''
@@ -84,10 +61,13 @@ class Generic_parser():
         '''
             return a dict with all the meta of the file
         '''
-        metadata = []
+        metadata = {}
         for field in self.editor:
             if self._should_remove(field):
-                metadata.append(field.name)
+                try:
+                    metadata[field.name] = field.value
+                except:
+                    metadata[field.name] = "harmful content"
         return metadata
 
     def _should_remove(self, key):
