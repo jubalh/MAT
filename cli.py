@@ -37,7 +37,8 @@ def list_meta(class_file, filename):
 	Print all the meta of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
-    print "\n".join([field for field in class_file.get_meta()])
+    for key, value in class_file.get_meta().iteritems():
+        print key + ' : ' + value
 
 def is_clean(class_file, filename):
     '''
