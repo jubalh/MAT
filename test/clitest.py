@@ -6,6 +6,7 @@
 import unittest
 import subprocess
 import sys
+
 sys.path.append('..')
 import cli
 from lib import mat
@@ -17,7 +18,7 @@ class Test_Remove_cli(test.MATTest):
         for clean, dirty in self.file_list:
             subprocess.call(['../cli.py', dirty])
             current_file = mat.create_class_file(dirty)
-            self.assertTrue(current_file.is_clean())
+            self.assertFalse(current_file.is_clean())
 
     def test_remove_empty(self):
         '''Test removal with clean files'''
@@ -31,11 +32,10 @@ class Test_List_cli(test.MATTest):
     def test_list_clean(self):
         '''check if get_meta returns meta'''
         for clean, dirty in self.file_list:
-            #fixme : a (clean|dirty).(jpg|pdf|...).out ?
             proc = subprocess.Popen(['../cli.py', '-d', clean],
                 stdout=subprocess.PIPE)
             stdout, stderr = proc.communicate()
-            self.assertEqual(stdout, "[+] File %s" % clean)
+            self.assertEqual(stdout.strip('\n'), "[+] File %s :" % clean)
 
     def test_list_dirty(self):
         '''check if get_meta returns all the expected meta'''

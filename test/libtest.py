@@ -31,14 +31,14 @@ class Test_List_lib(test.MATTest):
         '''check if get_meta returns all the expected meta'''
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(dirty)
-            meta_list = ('exif', 'photoshop', 'adobe')
-            self.assertEqual(current_file.get_meta(), meta_list)
+            #FIXME assertisNotNone() : python 2.7
+            self.assertTrue(current_file.get_meta())
 
     def testlist_list_empty(self):
         '''check that a listing of a clean file return an empty dict'''
         for clean, dirty in self.file_list:
             current_file = mat.create_class_file(clean)
-            self.assertEqual(current_file.get_meta(), list())
+            self.assertEqual(current_file.get_meta(), dict())
 
 
 class Test_isClean_lib(test.MATTest):
