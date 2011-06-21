@@ -17,7 +17,7 @@ class Generic_parser():
         self.realname = realname
         self.parser = parser
         self.editor = editor
-        self.meta = self.__fill_meta()
+        #self.meta = self.__fill_meta()
 
     def __fill_meta(self):
         metadata = {}
@@ -28,7 +28,7 @@ class Generic_parser():
 
         if not meta:
             print("Unable to extract metadata from the file %s" % self.filename)
-            sys.exit(1)
+            #sys.exit(1)
 
         for title in meta:
             #fixme i'm so dirty
@@ -62,6 +62,22 @@ class Generic_parser():
             Remove the given field
         '''
         del self.editor[field.name]
+
+    def search(self, value):
+        return self.__search(value, self.editor)
+
+    def __search(self, value, graph):
+        '''
+            Search a given file
+        '''
+        for node in graph:
+            try:
+                iter(node)
+                return node.value + self.__search(value, node)
+            except:
+                if node.name == value:
+                    return value
+        return False
 
 
     def get_meta(self):
