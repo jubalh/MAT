@@ -14,7 +14,7 @@ import hachoir_editor
 import images
 import audio
 import misc
-import archive
+#import archive
 
 __version__ = "0.1"
 __author__ = "jvoisin"
@@ -24,10 +24,10 @@ strippers = {
     hachoir_parser.image.PngFile: images.PngStripper,
     hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
     hachoir_parser.misc.PDFDocument: misc.PdfStripper,
-    hachoir_parser.archive.TarFile: archive.TarStripper,
+    #hachoir_parser.archive.TarFile: archive.TarStripper,
 }
 
-def create_class_file(name):
+def create_class_file(name, backup):
     '''
         return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
@@ -57,5 +57,5 @@ def create_class_file(name):
         print("Don't have stripper for file type: %s" % editor.description)
         sys.exit(1)
     if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
-        return stripper_class(filename)
-    return stripper_class(realname, filename, parser, editor)
+        return stripper_class(filename, backup)
+    return stripper_class(realname, filename, parser, editor, backup)

@@ -6,15 +6,27 @@ import hachoir_core.error
 import hachoir_parser
 import hachoir_editor
 import sys
+import shutil
 
 POSTFIX = ".cleaned"
 
 class Generic_parser():
-    def __init__(self, realname, filename, parser, editor):
+    def __init__(self, realname, filename, parser, editor, backup):
         self.filename = filename
         self.realname = realname
         self.parser = parser
         self.editor = editor
+        self.backup = backup
+
+    def secure_remove(self):
+        '''
+            securely remove the file
+        '''
+        #FIXME : not secure at all !
+        try:
+            shutil.rmtree(self.filename)
+        except:
+            print('Unable to remove %s' % self.filename)
 
     def is_clean(self):
         '''
@@ -33,6 +45,20 @@ class Generic_parser():
             if self._should_remove(field):
                 self._remove(field)
         hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
+        if self.backup is False:
+            self.secure_remove() #remove the old file
+            shutil.rename(self.filename+ POSTFIX, self.filename)#rename the new
+
+    def remove_all_ugly(self):
+        '''
+            If the remove_all() is not efficient enough,
+            this method is implemented :
+            It is efficient, but destructive.
+            In a perfect world, with nice fileformat,
+            this method does not exist.
+        '''
+        raise NotImplementedError()
+
 
     def _remove(self, field):
         '''

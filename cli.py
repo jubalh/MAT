@@ -18,7 +18,10 @@ def parse():
         help='Check if a file is free of harmfull metadatas')
     common.add_option('--version', action='callback', callback=displayVersion,
         help='Display version and exit')
-
+    common.add_option('--backup', '-b', action='store_true', default=False,
+        help='Keep a backup copy')
+    common.add_option('--ugly', '-u', action='store_true', default=False,
+        help='Remove harmful meta, but with loss')
     parser.add_option_group(common)
 
     values, arguments = parser.parse_args()
@@ -60,6 +63,18 @@ def clean_meta(class_file, filename):
         class_file.remove_all()
         print('%s cleaned !' % filename)
 
+def clean_meta_ugly(class_file, filename):
+    '''
+	Clean the file 'filename', ugly way
+    '''
+    print('[+] Cleaning %s' % filename)
+    if class_file.is_clean():
+        print('%s is already clean' % filename)
+    else:
+        class_file.remove_all_ugly()
+        print('%s cleaned !' % filename)
+
+
 def main():
     args, filenames = parse()
 
@@ -68,11 +83,13 @@ def main():
         func = list_meta
     elif args.check is True: #only check if the file is clean
         func = is_clean
+    elif args.ugly is True:
+        func = clean_meta_ugly
     else: #clean the file
         func = clean_meta
 
     for filename in filenames:
-        class_file = mat.create_class_file(filename)
+        class_file = mat.create_class_file(filename, args.backup)
         func(class_file, filename)
         print('\n')
 

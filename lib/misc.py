@@ -1,5 +1,6 @@
 import parser
 import pdfrw
+import shutil
 
 class PdfStripper(parser.Generic_parser):
     '''
@@ -23,6 +24,10 @@ class PdfStripper(parser.Generic_parser):
 
         self.writer.trailer = self.trailer
         self.writer.write(self.filename + parser.POSTFIX)
+        if self.backup is False:
+            self.secure_remove() #remove the old file
+            shutil.rename(self.filename+ POSTFIX, self.filename)#rename the new
+
 
     def is_clean(self):
         '''
