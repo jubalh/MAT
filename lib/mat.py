@@ -14,7 +14,7 @@ import hachoir_editor
 import images
 import audio
 import misc
-#import archive
+import archive
 
 __version__ = "0.1"
 __author__ = "jvoisin"
@@ -24,24 +24,34 @@ strippers = {
     hachoir_parser.image.PngFile: images.PngStripper,
     hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
     hachoir_parser.misc.PDFDocument: misc.PdfStripper,
-    #hachoir_parser.archive.TarFile: archive.TarStripper,
+    hachoir_parser.archive.TarFile: archive.TarStripper,
 }
+
+def is_secure(filename):
+    '''
+        Prevent shell injection
+    '''
+    if not(os.path.isfile(name)): #check if the file exist
+        print("Error: %s is not a valid file" % name)
+        sys.exit(1)
+    filename.strip('\s') #separations
+    filename.strip('`') #injection `rm / -Rf`
+    filename.strip('\$(.*)')#injection $(rm / -Rf)
+    filename.strip(';')#injection $filename;rm / -Rf
 
 def create_class_file(name, backup):
     '''
         return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
     '''
-    if not(os.path.isfile(name)): #check if the file exist
-        print("Error: %s is not a valid file" % name)
-        sys.exit(1)
+    #is_secure(name)
 
     filename = ""
     realname = name
     filename = hachoir_core.cmd_line.unicodeFilename(name)
     parser = hachoir_parser.createParser(filename)
     if not parser:
-        print("Unable to parse the file %s : sorry" % filename)
+        print("Unable to parse the file %s with hachoir-parser." % filename)
         sys.exit(1)
 
     editor = hachoir_editor.createEditor(parser)

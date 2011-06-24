@@ -6,6 +6,7 @@ import hachoir_core.error
 import hachoir_parser
 import hachoir_editor
 import sys
+import os
 import shutil
 
 POSTFIX = ".cleaned"
@@ -25,6 +26,7 @@ class Generic_parser():
         #FIXME : not secure at all !
         try:
             shutil.rmtree(self.filename)
+            #shutil.subprocess('shutil' , '--remove', 'self.filename')
         except:
             print('Unable to remove %s' % self.filename)
 
@@ -47,7 +49,7 @@ class Generic_parser():
         hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
         if self.backup is False:
             self.secure_remove() #remove the old file
-            shutil.rename(self.filename+ POSTFIX, self.filename)#rename the new
+            os.rename(self.filename+ POSTFIX, self.filename)#rename the new
 
     def remove_all_ugly(self):
         '''
@@ -57,7 +59,7 @@ class Generic_parser():
             In a perfect world, with nice fileformat,
             this method does not exist.
         '''
-        raise NotImplementedError()
+        self.remove_all()
 
 
     def _remove(self, field):
