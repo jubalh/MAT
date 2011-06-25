@@ -31,20 +31,17 @@ def is_secure(filename):
     '''
         Prevent shell injection
     '''
-    if not(os.path.isfile(name)): #check if the file exist
+
+    if not(os.path.isfile(filename)): #check if the file exist
         print("Error: %s is not a valid file" % name)
         sys.exit(1)
-    filename.strip('\s') #separations
-    filename.strip('`') #injection `rm / -Rf`
-    filename.strip('\$(.*)')#injection $(rm / -Rf)
-    filename.strip(';')#injection $filename;rm / -Rf
 
 def create_class_file(name, backup):
     '''
         return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
     '''
-    #is_secure(name)
+    is_secure(name)
 
     filename = ""
     realname = name

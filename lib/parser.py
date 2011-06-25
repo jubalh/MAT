@@ -7,7 +7,7 @@ import hachoir_parser
 import hachoir_editor
 import sys
 import os
-import shutil
+import subprocess
 
 POSTFIX = ".cleaned"
 
@@ -23,10 +23,9 @@ class Generic_parser():
         '''
             securely remove the file
         '''
-        #FIXME : not secure at all !
+        #FIXME : Vulnerable to shell injection ?
         try:
-            shutil.rmtree(self.filename)
-            #shutil.subprocess('shutil' , '--remove', 'self.filename')
+            subprocess.call('shred --remove %s' % self.filename, shell=True)
         except:
             print('Unable to remove %s' % self.filename)
 
