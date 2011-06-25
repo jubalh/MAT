@@ -2,6 +2,7 @@ import tarfile
 import sys
 import parser
 import mat
+import shutil
 
 class TarStripper(parser.Generic_parser):
     def remove_all(self):
@@ -11,6 +12,7 @@ class TarStripper(parser.Generic_parser):
 
         tarin = tarfile.open(self.filename, 'r')
         tarout = tarfile.open(self.filename + parser.POSTFIX, 'w')
+        folder_list = []
 
         for current_file in tarin.getmembers():
             tarin.extract(current_file)
@@ -19,6 +21,12 @@ class TarStripper(parser.Generic_parser):
                 class_file = mat.create_class_file(current_file.name, False)
                 class_file.remove_all()
                 tarout.add(current_file.name)
+                class_file.secure_remove()
+            else:
+                folder_list.insert(0, current_file.name)
+
+        for folder in folder_list: #delete remainings folders
+            shutil.rmtree(folder)
 
         #meta from the tar itself
         tarout.mtime = None
@@ -28,6 +36,3 @@ class TarStripper(parser.Generic_parser):
 
     def is_clean(self):
         return False
-
-
-
