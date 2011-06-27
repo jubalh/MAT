@@ -25,6 +25,8 @@ strippers = {
     hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
     hachoir_parser.misc.PDFDocument: misc.PdfStripper,
     hachoir_parser.archive.TarFile: archive.TarStripper,
+    hachoir_parser.archive.gzip_parser.GzipParser: archive.GzipStripper,
+    hachoir_parser.archive.bzip2_parser.Bzip2Parser: archive.Bzip2Stripper,
 }
 
 def is_secure(filename):
@@ -33,7 +35,7 @@ def is_secure(filename):
     '''
 
     if not(os.path.isfile(filename)): #check if the file exist
-        print("Error: %s is not a valid file" % name)
+        print("Error: %s is not a valid file" % filename)
         sys.exit(1)
 
 def create_class_file(name, backup):

@@ -5,13 +5,18 @@ import mat
 import shutil
 
 class TarStripper(parser.Generic_parser):
+    def compression_type(self):
+        self.compression = ''
+
     def remove_all(self):
+        self.compression_type()
         if not tarfile.is_tarfile(self.filename):
             print('%s is not a valid tar file' % self.filename)
             sys.exit(1)
 
-        tarin = tarfile.open(self.filename, 'r')
-        tarout = tarfile.open(self.filename + parser.POSTFIX, 'w')
+        tarin = tarfile.open(self.filename, 'r' + self.compression)
+        tarout = tarfile.open(self.filename + parser.POSTFIX,
+            'w' + self.compression)
         folder_list = []
 
         for current_file in tarin.getmembers():
@@ -36,3 +41,11 @@ class TarStripper(parser.Generic_parser):
 
     def is_clean(self):
         return False
+
+class GzipStripper(TarStripper):
+    def compression_type(self):
+        self.compression = ':gz'
+
+class Bzip2Stripper(TarStripper):
+    def compression_type(self):
+        self.compression = ':bz2'
