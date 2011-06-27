@@ -8,26 +8,17 @@ import hachoir_editor
 import sys
 import os
 import subprocess
+import mat
 
 POSTFIX = ".cleaned"
 
-class Generic_parser():
+class Generic_parser(object):
     def __init__(self, realname, filename, parser, editor, backup):
         self.filename = filename
         self.realname = realname
         self.parser = parser
         self.editor = editor
         self.backup = backup
-
-    def secure_remove(self):
-        '''
-            securely remove the file
-        '''
-        #FIXME : Vulnerable to shell injection ?
-        try:
-            subprocess.call('shred --remove %s' % self.filename, shell=True)
-        except:
-            print('Unable to remove %s' % self.filename)
 
     def is_clean(self):
         '''
@@ -47,7 +38,7 @@ class Generic_parser():
                 self._remove(field)
         hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
         if self.backup is False:
-            self.secure_remove() #remove the old file
+            mat.secure_remove(self.filename) #remove the old file
             os.rename(self.filename+ POSTFIX, self.filename)#rename the new
 
     def remove_all_ugly(self):

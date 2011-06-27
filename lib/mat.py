@@ -6,6 +6,7 @@
 
 import sys
 import os
+import subprocess
 
 import hachoir_core.cmd_line
 import hachoir_parser
@@ -28,6 +29,17 @@ strippers = {
     hachoir_parser.archive.gzip_parser.GzipParser: archive.GzipStripper,
     hachoir_parser.archive.bzip2_parser.Bzip2Parser: archive.Bzip2Stripper,
 }
+
+def secure_remove(filename):
+    '''
+        securely remove the file
+    '''
+    #FIXME : Vulnerable to shell injection ?
+    try:
+        subprocess.call('shred --remove %s' % filename, shell=True)
+    except:
+        print('Unable to remove %s' % filename)
+
 
 def is_secure(filename):
     '''
