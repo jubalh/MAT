@@ -2,6 +2,7 @@ import tarfile
 import sys
 import parser
 import mat
+import shutil
 import os
 
 class TarStripper(parser.Generic_parser):
@@ -26,15 +27,19 @@ class TarStripper(parser.Generic_parser):
                 mat.secure_remove(current_file.name)
             else:
                 self.folder_list.insert(0, current_file.name)
+        self.tarin.close()
 
         for folder in self.folder_list: #delete remainings folders
             shutil.rmtree(folder)
 
         #meta from the tar itself
-        self.tarout.mtime = None
-
+        for current_file in self.tarout.getmembers():
+            current_file.mtime = None
+            current_file.uid = 0
+            current_file.gid = 0
+            current_file.uname = ''
+            current_file.gname = ''
         self.tarout.close()
-        self.tarin.close()
 
         if self.backup is False:
             mat.secure_remove(self.filename)
@@ -59,6 +64,11 @@ class TarStripper(parser.Generic_parser):
             shutil.rmtree(folder)
         self.folder_list = []
         return False
+
+    def get_meta(self):
+        self.tarin = tarfile.open(self.filename, 'r' + self.compression)
+        metadata = {}
+        return metadata
 
 class GzipStripper(TarStripper):
     def __init__(self, realname, filename, parser, editor, backup):
