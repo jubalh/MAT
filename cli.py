@@ -41,7 +41,7 @@ def list_meta(class_file, filename):
     '''
     print('[+] File %s :' % filename)
     for key, value in class_file.get_meta().iteritems():
-        print(key + ' : ' + value)
+        print(key + ' : ' + str(value))
 
 def is_clean(class_file, filename):
     '''
