@@ -2,7 +2,7 @@ import tarfile
 import sys
 import parser
 import mat
-import shutil
+import os
 
 class TarStripper(parser.Generic_parser):
     def __init__(self, realname, filename, parser, editor, backup):
@@ -13,6 +13,7 @@ class TarStripper(parser.Generic_parser):
         self.folder_list = []
 
     def remove_all(self):
+        self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         self.tarout = tarfile.open(self.filename + parser.POSTFIX,
             'w' + self.compression)
         for current_file in self.tarin.getmembers():
@@ -35,7 +36,12 @@ class TarStripper(parser.Generic_parser):
         self.tarout.close()
         self.tarin.close()
 
+        if self.backup is False:
+            mat.secure_remove(self.filename)
+            os.rename(self.filename + parser.POSTFIX, self.filename)
+
     def is_clean(self):
+        self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         for current_file in self.tarin.getmembers():
             self.tarin.extract(current_file)
             if current_file.type is '0': #is current_file a regular file ?
