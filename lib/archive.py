@@ -39,6 +39,7 @@ class TarStripper(parser.Generic_parser):
             current_file.gid = 0
             current_file.uname = ''
             current_file.gname = ''
+            print current_file.gname
         self.tarout.close()
 
         if self.backup is False:
@@ -68,6 +69,15 @@ class TarStripper(parser.Generic_parser):
     def get_meta(self):
         self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         metadata = {}
+        for current_file in self.tarin.getmembers():
+            if current_file.type is '0':
+                current_meta = {}
+                current_meta['mtime'] = current_file.mtime
+                current_meta['uid'] = current_file.uid
+                current_meta['gid'] = current_file.gid
+                current_meta['uname'] = current_file.uname
+                current_meta['gname'] = current_file.gname
+                metadata[current_file.name] = current_meta
         return metadata
 
 class GzipStripper(TarStripper):
