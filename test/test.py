@@ -20,7 +20,7 @@ class MATTest(unittest.TestCase):
     def setUp(self):
 	'''create working copy of the clean and the dirty file in the TMP dir'''
         self.file_list = []
-        self.tmpdir = tempfile.mkdtemp()
+        _, self.tmpdir = tempfile.mkstemp()
 
         for clean, dirty in FILE_LIST:
             shutil.copy2(clean, self.tmpdir + clean)
