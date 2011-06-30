@@ -48,6 +48,23 @@ class TarStripper(parser.Generic_parser):
             mat.secure_remove(self.filename)
             os.rename(self.filename + parser.POSTFIX, self.filename)
 
+    def is_file_clean(self, current_file):
+        '''
+            Check metadatas added by tar
+        '''
+        if current_file.mtime is not 0:
+            return False
+        elif current_file.uid is not 0:
+            return False
+        elif current_file.gid is not 0:
+            return False
+        elif current_file.uname is not '':
+            return False
+        elif current_file.gname is not '':
+            return False
+        else:
+            return True
+
     def is_clean(self):
         self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         for current_file in self.tarin.getmembers():
@@ -58,15 +75,7 @@ class TarStripper(parser.Generic_parser):
                 if not class_file.is_clean():
                     self.folder_list = []
                     return False
-                if current_file.mtime is not 0:
-                    return False
-                if current_file.uid is not 0:
-                    return False
-                if current_file.gid is not 0:
-                    return False
-                if current_file.uname is not '':
-                    return False
-                if current_file.gname is not '':
+                if not self.is_file_clean(current_file):
                     return False
                 mat.secure_remove(current_file.name)
             else:
@@ -83,13 +92,14 @@ class TarStripper(parser.Generic_parser):
         metadata = {}
         for current_file in self.tarin.getmembers():
             if current_file.type is '0':
-                current_meta = {}
-                current_meta['mtime'] = current_file.mtime
-                current_meta['uid'] = current_file.uid
-                current_meta['gid'] = current_file.gid
-                current_meta['uname'] = current_file.uname
-                current_meta['gname'] = current_file.gname
-                metadata[current_file.name] = current_meta
+                if not self.is_file_clean(current_file):#if there is meta
+                    current_meta = {}
+                    current_meta['mtime'] = current_file.mtime
+                    current_meta['uid'] = current_file.uid
+                    current_meta['gid'] = current_file.gid
+                    current_meta['uname'] = current_file.uname
+                    current_meta['gname'] = current_file.gname
+                    metadata[current_file.name] = current_meta
         return metadata
 
 class GzipStripper(TarStripper):
