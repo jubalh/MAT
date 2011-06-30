@@ -58,6 +58,16 @@ class TarStripper(parser.Generic_parser):
                 if not class_file.is_clean():
                     self.folder_list = []
                     return False
+                if current_file.mtime is not 0:
+                    return False
+                if current_file.uid is not 0:
+                    return False
+                if current_file.gid is not 0:
+                    return False
+                if current_file.uname is not '':
+                    return False
+                if current_file.gname is not '':
+                    return False
                 mat.secure_remove(current_file.name)
             else:
                 self.folder_list.insert(0, current_file.name)
@@ -66,7 +76,7 @@ class TarStripper(parser.Generic_parser):
         for folder in self.folder_list: #delete remainings folders
             shutil.rmtree(folder)
         self.folder_list = []
-        return False
+        return True
 
     def get_meta(self):
         self.tarin = tarfile.open(self.filename, 'r' + self.compression)
