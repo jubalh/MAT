@@ -13,6 +13,17 @@ class TarStripper(parser.Generic_parser):
         self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         self.folder_list = []
 
+    def _remove(self, current_file):
+        '''
+            remove the meta added by tar itself to the file
+        '''
+        current_file.mtime = 0
+        current_file.uid = 0
+        current_file.gid = 0
+        current_file.uname = ''
+        current_file.gname = ''
+        return current_file
+
     def remove_all(self):
         self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         self.tarout = tarfile.open(self.filename + parser.POSTFIX,
@@ -23,24 +34,15 @@ class TarStripper(parser.Generic_parser):
                 #no backup file
                 class_file = mat.create_class_file(current_file.name, False)
                 class_file.remove_all()
-                self.tarout.add(current_file.name)
+                self.tarout.add(current_file.name, filter=self._remove)
                 mat.secure_remove(current_file.name)
             else:
                 self.folder_list.insert(0, current_file.name)
         self.tarin.close()
+        self.tarout.close()
 
         for folder in self.folder_list: #delete remainings folders
             shutil.rmtree(folder)
-
-        #meta from the tar itself
-        for current_file in self.tarout.getmembers():
-            current_file.mtime = None
-            current_file.uid = 0
-            current_file.gid = 0
-            current_file.uname = ''
-            current_file.gname = ''
-            print current_file.gname
-        self.tarout.close()
 
         if self.backup is False:
             mat.secure_remove(self.filename)
