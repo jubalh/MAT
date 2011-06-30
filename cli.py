@@ -40,8 +40,11 @@ def list_meta(class_file, filename):
 	Print all the meta of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
-    for key, value in class_file.get_meta().iteritems():
-        print(key + ' : ' + str(value))
+    if class_file.is_clean():
+        print('No harmful meta found')
+    else:
+        for key, value in class_file.get_meta().iteritems():
+            print(key + ' : ' + str(value))
 
 def is_clean(class_file, filename):
     '''
@@ -90,7 +93,6 @@ def main():
     for filename in filenames:
         class_file = mat.create_class_file(filename, args.backup)
         func(class_file, filename)
-        print('\n')
 
 if __name__ == '__main__':
     main()
