@@ -34,7 +34,6 @@ def secure_remove(filename):
     '''
         securely remove the file
     '''
-    #FIXME : Vulnerable to shell injection ?
     try:
         subprocess.call('shred --remove %s' % filename, shell=True)
     except:
@@ -78,5 +77,5 @@ def create_class_file(name, backup):
         print("Don't have stripper for file type: %s" % editor.description)
         sys.exit(1)
     if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
-        return stripper_class(filename, backup)
+        return stripper_class(filename, realname, backup)
     return stripper_class(realname, filename, parser, editor, backup)
