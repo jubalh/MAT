@@ -92,7 +92,8 @@ def main():
 
     for filename in filenames:
         class_file = mat.create_class_file(filename, args.backup)
-        func(class_file, filename)
+        if class_file is not None:
+            func(class_file, filename)
 
 if __name__ == '__main__':
     main()

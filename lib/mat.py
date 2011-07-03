@@ -61,8 +61,8 @@ def create_class_file(name, backup):
     filename = hachoir_core.cmd_line.unicodeFilename(name)
     parser = hachoir_parser.createParser(filename)
     if not parser:
-        print("Unable to parse the file %s with hachoir-parser." % filename)
-        sys.exit(1)
+        print("[+] Unable to parse %s" % filename)
+        return
 
     editor = hachoir_editor.createEditor(parser)
     try:
@@ -74,7 +74,7 @@ def create_class_file(name, backup):
         stripper_class = strippers[editor.input.__class__]
     except KeyError:
         #Place for another lib than hachoir
-        print("Don't have stripper for file type: %s" % editor.description)
+        print("[+] Don't have stripper for file type %s" % editor.description)
         sys.exit(1)
     if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
         return stripper_class(filename, realname, backup)
