@@ -35,7 +35,7 @@ class Test_List_cli(test.MATTest):
             proc = subprocess.Popen(['../cli.py', '-d', clean],
                 stdout=subprocess.PIPE)
             stdout, stderr = proc.communicate()
-            self.assertEqual(stdout.strip('\n'), "[+] File %s :" % clean)
+            self.assertEqual(stdout.strip('\n'), "[+] File %s :\nNo harmful meta found" % clean)
 
     def test_list_dirty(self):
         '''check if get_meta returns all the expected meta'''
