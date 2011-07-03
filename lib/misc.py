@@ -16,6 +16,7 @@ class PdfStripper(parser.Generic_parser):
         self.realname = realname
         self.trailer = pdfrw.PdfReader(self.filename)
         self.writer = pdfrw.PdfWriter()
+        self.convert = 'gm convert -antialias -enhance %s %s'
 
     def remove_all(self):
         '''
@@ -41,7 +42,7 @@ class PdfStripper(parser.Generic_parser):
         '''
         output_file = self.realname + parser.POSTFIX + '.pdf'
         _, self.tmpdir = tempfile.mkstemp()
-        subprocess.call('gm convert %s %s' % (self.filename, self.tmpdir +
+        subprocess.call(self.convert % (self.filename, self.tmpdir +
             'temp.jpg'), shell=True)#Convert pages to jpg
 
         for current_file in glob.glob(self.tmpdir + 'temp*'):
@@ -49,7 +50,7 @@ class PdfStripper(parser.Generic_parser):
             class_file = mat.create_class_file(current_file, False)
             class_file.remove_all()
 
-        subprocess.call('gm convert %s %s' % (self.tmpdir +
+        subprocess.call(self.convert % (self.tmpdir +
             'temp.jpg*', output_file), shell=True)#Assemble jpg into pdf
 
         for current_file in glob.glob(self.tmpdir + 'temp*'):
