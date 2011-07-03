@@ -4,7 +4,6 @@
     Metadata anonymisation toolkit library
 '''
 
-import sys
 import os
 import subprocess
 
@@ -47,7 +46,7 @@ def is_secure(filename):
 
     if not(os.path.isfile(filename)): #check if the file exist
         print("Error: %s is not a valid file" % filename)
-        sys.exit(1)
+        return
 
 def create_class_file(name, backup):
     '''
@@ -75,7 +74,7 @@ def create_class_file(name, backup):
     except KeyError:
         #Place for another lib than hachoir
         print("[+] Don't have stripper for file type %s" % editor.description)
-        sys.exit(1)
+        return
     if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
         return stripper_class(filename, realname, backup)
     return stripper_class(realname, filename, parser, editor, backup)
