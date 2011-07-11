@@ -1,0 +1,7 @@
+Dependencies:
+    graphicsmagick : for full pdf support
+    python2.7 :
+
+Usage:
+    cli.py --help
+
