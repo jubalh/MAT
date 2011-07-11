@@ -41,31 +41,48 @@ class ListStoreApp:
         self.window.add(vbox)
 
         sw = Gtk.ScrolledWindow()
-        sw.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
-        sw.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         vbox.pack_start(sw, True, True, 0)
 
         self.create_model()
+
         treeview = Gtk.TreeView(model=self.model)
         treeview.set_rules_hint(True)
         sw.add(treeview)
-
         self.add_columns(treeview)
+
+        self.statusbar = Gtk.Statusbar()
+        self.statusbar.push(1, 'Ready')
+        vbox.pack_start(self.statusbar, False, False, 0)
+
         self.window.show_all()
 
     def create_toolbar(self):
+        '''
+            Returns a bbox object, which contains a toolbar with buttons
+        '''
         toolbar = Gtk.Toolbar()
+
+        toolbutton = Gtk.ToolButton(label = 'Add', stock_id=Gtk.STOCK_ADD)
+        toolbar.add(toolbutton)
+
         toolbutton = Gtk.ToolButton(label = 'Clean', stock_id=Gtk.STOCK_CLEAR)
         toolbar.add(toolbutton)
+
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
         toolbar.add(toolbutton)
+
         toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
+        toolbutton.connect('clicked', Gtk.main_quit)
         toolbar.add(toolbutton)
-        vbox = Gtk.VBox()
+
+        vbox = Gtk.VBox(spacing=3)
         vbox.pack_start(toolbar, False, False, 0)
         return vbox
 
     def create_model(self):
+        '''
+            Populate the sheet
+        '''
         self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
         for item in DATA:
             if item.cleaned is 0:
@@ -77,6 +94,9 @@ class ListStoreApp:
             self.model.append( [item.name, item.fileformat, state] )
 
     def add_columns(self, treeview):
+        '''
+            Crete the columns
+        '''
         model = treeview.get_model()
         renderer = Gtk.CellRendererText()
 
@@ -98,7 +118,7 @@ class ListStoreApp:
         column.set_sort_column_id(self.COLUMN_CLEANED)
         treeview.append_column(column)
 
-def main(demoapp=None):
+def main():
     app = ListStoreApp()
     Gtk.main()
 
