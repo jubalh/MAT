@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 
 from gi.repository import Gtk, GObject
-#import cli
+import cli
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
@@ -16,10 +16,11 @@ class File:
         self.cleaned = cleaned
 
 # initial data we use to fill in the store
-data = [File('test.txt', 'PLAIN TEXT', 0),
+DATA = [
+        File('test.txt', 'PLAIN TEXT', 0),
         File('ugly.pdf', 'UGLY_PDF', 2),
         File('ugly.doc', 'UGLY_OL2', 1),
-]
+    ]
 
 class ListStoreApp:
     '''
@@ -34,24 +35,14 @@ class ListStoreApp:
         self.window = Gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' % __version__)
         self.window.connect('destroy', Gtk.main_quit)
+        self.window.set_default_size(800, 600)
 
-        vbox = Gtk.VBox()
+        vbox = self.create_toolbar()
         self.window.add(vbox)
-        self.window.connect('destroy', Gtk.main_quit)
-
-        toolbar = Gtk.Toolbar()
-        toolbutton = Gtk.ToolButton(label = 'Clean', stock_id=Gtk.STOCK_CLEAR)
-        toolbar.add(toolbutton)
-        toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_APPLY)
-        toolbar.add(toolbutton)
-        toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
-        toolbar.add(toolbutton)
-        vbox.pack_start(toolbar, False, False, 0)
 
         sw = Gtk.ScrolledWindow()
         sw.set_shadow_type(Gtk.ShadowType.ETCHED_IN)
-        sw.set_policy(Gtk.PolicyType.NEVER,
-                      Gtk.PolicyType.AUTOMATIC)
+        sw.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
         vbox.pack_start(sw, True, True, 0)
 
         self.create_model()
@@ -60,44 +51,48 @@ class ListStoreApp:
         sw.add(treeview)
 
         self.add_columns(treeview)
-
-        self.window.set_default_size(800, 600)
         self.window.show_all()
 
+    def create_toolbar(self):
+        toolbar = Gtk.Toolbar()
+        toolbutton = Gtk.ToolButton(label = 'Clean', stock_id=Gtk.STOCK_CLEAR)
+        toolbar.add(toolbutton)
+        toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
+        toolbar.add(toolbutton)
+        toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
+        toolbar.add(toolbutton)
+        vbox = Gtk.VBox()
+        vbox.pack_start(toolbar, False, False, 0)
+        return vbox
 
     def create_model(self):
-        self.model = Gtk.ListStore(str, str, str,) #name - type - cleaned
-        for item in data:
+        self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
+        for item in DATA:
             if item.cleaned is 0:
-                s = 'clean'
+                state = 'clean'
             elif item.cleaned is 1:
-                s = 'dirty'
+                state = 'dirty'
             else:
-                s = 'unknow'
-            self.model.append([item.name,
-                                item.fileformat,
-                                s
-                            ])
+                state = 'unknow'
+            self.model.append( [item.name, item.fileformat, state] )
 
     def add_columns(self, treeview):
         model = treeview.get_model()
+        renderer = Gtk.CellRendererText()
 
         # column for filename
-        renderer = Gtk.CellRendererText()
         column = Gtk.TreeViewColumn("Filename", renderer,
                                     text=self.COLUMN_NAME)
         column.set_sort_column_id(self.COLUMN_NAME)
         treeview.append_column(column)
 
         # column for fileformat
-        renderer = Gtk.CellRendererText()
         column = Gtk.TreeViewColumn("Fileformat", renderer,
                                     text=self.COLUMN_FILEFORMAT)
         column.set_sort_column_id(self.COLUMN_FILEFORMAT)
         treeview.append_column(column)
 
         # column for cleaned
-        renderer = Gtk.CellRendererText()
         column = Gtk.TreeViewColumn("Cleaned", renderer,
                                     text=self.COLUMN_CLEANED)
         column.set_sort_column_id(self.COLUMN_CLEANED)
@@ -109,4 +104,3 @@ def main(demoapp=None):
 
 if __name__ == '__main__':
     main()
-
