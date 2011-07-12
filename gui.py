@@ -32,6 +32,8 @@ class ListStoreApp:
      NUM_COLUMNS) = range(4)
 
     def __init__(self):
+        self.filenames = []
+
         self.window = Gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' % __version__)
         self.window.connect('destroy', Gtk.main_quit)
@@ -63,9 +65,14 @@ class ListStoreApp:
         toolbar = Gtk.Toolbar()
 
         toolbutton = Gtk.ToolButton(label = 'Add', stock_id=Gtk.STOCK_ADD)
+        toolbutton.connect('clicked', self.add_file)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label = 'Clean', stock_id=Gtk.STOCK_CLEAR)
+        toolbar.add(toolbutton)
+
+        toolbutton = Gtk.ToolButton(label='Brute Clean',
+            stock_id=Gtk.STOCK_CLEAR)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
@@ -117,6 +124,27 @@ class ListStoreApp:
                                     text=self.COLUMN_CLEANED)
         column.set_sort_column_id(self.COLUMN_CLEANED)
         treeview.append_column(column)
+
+    def add_file(self, button):
+        chooser = Gtk.FileChooserDialog(
+            title='Choose files',
+            parent=None,
+            action=Gtk.FileChooserAction.OPEN,
+            buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1)
+            )
+        chooser.set_select_multiple(True)
+        response = chooser.run()
+
+        if response is 0:
+            self.filenames = chooser.get_filenames()
+            self.populate()
+        elif response is 1:
+            pass
+        chooser.destroy()
+
+    def populate(self):
+        for item in self.filenames:
+            self.model.append([item, 'pouet', 'dirty'])
 
 def main():
     app = ListStoreApp()
