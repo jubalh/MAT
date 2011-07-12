@@ -1,26 +1,17 @@
 #!/usr/bin/python2.7
 
 from gi.repository import Gtk, GObject
+import os
 import cli
+import mimetypes
+from lib import mat
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
 
-class File:
-    '''
-        Represent a File
-    '''
-    def __init__(self, name, fileformat, cleaned):
-        self.name = name
-        self.fileformat = fileformat
-        self.cleaned = cleaned
-
-# initial data we use to fill in the store
-DATA = [
-        File('test.txt', 'PLAIN TEXT', 0),
-        File('ugly.pdf', 'UGLY_PDF', 2),
-        File('ugly.doc', 'UGLY_OL2', 1),
-    ]
+SUPPORTED = (('image/png', 'image/jpeg', 'image/gif'),
+            ('*.jpg', '*.jpeg', '*.png', '*.tiff', '*.pdf',
+            '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3'))
 
 class ListStoreApp:
     '''
@@ -32,7 +23,8 @@ class ListStoreApp:
      NUM_COLUMNS) = range(4)
 
     def __init__(self):
-        self.filenames = []
+        self.files = []
+        self.backup = True
 
         self.window = Gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' % __version__)
@@ -45,7 +37,7 @@ class ListStoreApp:
         sw = Gtk.ScrolledWindow()
         vbox.pack_start(sw, True, True, 0)
 
-        self.create_model()
+        self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
 
         treeview = Gtk.TreeView(model=self.model)
         treeview.set_rules_hint(True)
@@ -65,7 +57,7 @@ class ListStoreApp:
         toolbar = Gtk.Toolbar()
 
         toolbutton = Gtk.ToolButton(label = 'Add', stock_id=Gtk.STOCK_ADD)
-        toolbutton.connect('clicked', self.add_file)
+        toolbutton.connect('clicked', self.add_files)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label = 'Clean', stock_id=Gtk.STOCK_CLEAR)
@@ -85,20 +77,6 @@ class ListStoreApp:
         vbox = Gtk.VBox(spacing=3)
         vbox.pack_start(toolbar, False, False, 0)
         return vbox
-
-    def create_model(self):
-        '''
-            Populate the sheet
-        '''
-        self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
-        for item in DATA:
-            if item.cleaned is 0:
-                state = 'clean'
-            elif item.cleaned is 1:
-                state = 'dirty'
-            else:
-                state = 'unknow'
-            self.model.append( [item.name, item.fileformat, state] )
 
     def add_columns(self, treeview):
         '''
@@ -125,26 +103,55 @@ class ListStoreApp:
         column.set_sort_column_id(self.COLUMN_CLEANED)
         treeview.append_column(column)
 
-    def add_file(self, button):
+    def create_filter(self):
+        '''
+            Return a filter for
+            supported content
+        '''
+        filter = Gtk.FileFilter()
+        filter.set_name('Supported files')
+        for item in SUPPORTED[0]: #add by mime
+            filter.add_mime_type(item)
+        for item in SUPPORTED[1]: #add by extension
+            filter.add_pattern(item)
+        return filter
+
+    def add_files(self, button):
         chooser = Gtk.FileChooserDialog(
             title='Choose files',
             parent=None,
             action=Gtk.FileChooserAction.OPEN,
             buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1)
             )
+        chooser.set_default_response(0)
         chooser.set_select_multiple(True)
+
+        filter = Gtk.FileFilter()
+        filter.set_name('All files')
+        filter.add_pattern('*')
+        chooser.add_filter(filter)
+
+        chooser.add_filter(self.create_filter())
+
         response = chooser.run()
 
         if response is 0:
-            self.filenames = chooser.get_filenames()
-            self.populate()
-        elif response is 1:
-            pass
+            filenames = chooser.get_filenames()
+            self.populate(filenames)
         chooser.destroy()
 
-    def populate(self):
-        for item in self.filenames:
-            self.model.append([item, 'pouet', 'dirty'])
+    def populate(self, filenames):
+        for item in filenames:
+            name = os.path.basename(item)
+            fileformat = mimetypes.guess_type(item)[0]
+            try:
+                class_file = mat.create_class_file(item, self.backup)
+            except:
+                class_file = None
+
+            if class_file is not None:
+                self.files.append(class_file)
+                self.model.append([name, fileformat, 'dirty'])
 
 def main():
     app = ListStoreApp()
