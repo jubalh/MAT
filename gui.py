@@ -3,14 +3,14 @@
 from gi.repository import Gtk, GObject
 import os
 import cli
-import mimetypes
 from lib import mat
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
 
-SUPPORTED = (('image/png', 'image/jpeg', 'image/gif'),
-            ('*.jpg', '*.jpeg', '*.png', '*.tiff', '*.pdf',
+SUPPORTED = (('image/png', 'image/jpeg', 'image/gif',
+            'misc/pdf'),
+            ('*.jpg', '*.jpeg', '*.png', '*.bmp', '*.pdf',
             '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3'))
 
 class ListStoreApp:
@@ -68,6 +68,7 @@ class ListStoreApp:
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
+        toolbutton.connect('clicked', self.clean)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
@@ -135,23 +136,30 @@ class ListStoreApp:
 
         response = chooser.run()
 
-        if response is 0:
+        if response is 0: #Gtk.STOCK_OK
             filenames = chooser.get_filenames()
             self.populate(filenames)
         chooser.destroy()
 
     def populate(self, filenames):
         for item in filenames:
-            name = os.path.basename(item)
-            fileformat = mimetypes.guess_type(item)[0]
             try:
-                class_file = mat.create_class_file(item, self.backup)
+                cfile = mat.create_class_file(item, self.backup)
             except:
-                class_file = None
+                cfile = None
 
-            if class_file is not None:
-                self.files.append(class_file)
-                self.model.append([name, fileformat, 'dirty'])
+            if cfile is not None:
+                self.files.append(cfile)
+                self.model.append([cfile.shortname, cfile.mime, 'unknow'])
+
+    def clean(self, button):
+        self.model.clear()
+        for item in self.files:
+            if item.is_clean():
+                string = 'clean'
+            else:
+                string = 'dirty'
+            self.model.append([item.shortname, item.mime, string])
 
 def main():
     app = ListStoreApp()
