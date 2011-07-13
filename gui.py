@@ -3,6 +3,7 @@
 from gi.repository import Gtk, GObject
 import os
 import cli
+import glob
 from lib import mat
 
 __version__ = '0.1'
@@ -39,10 +40,10 @@ class ListStoreApp:
 
         self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
 
-        treeview = Gtk.TreeView(model=self.model)
-        treeview.set_rules_hint(True)
-        sw.add(treeview)
-        self.add_columns(treeview)
+        self.treeview = Gtk.TreeView(model=self.model)
+        self.treeview.set_rules_hint(True)
+        sw.add(self.treeview)
+        self.add_columns(self.treeview)
 
         self.statusbar = Gtk.Statusbar()
         self.statusbar.push(1, 'Ready')
@@ -68,7 +69,7 @@ class ListStoreApp:
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
-        toolbutton.connect('clicked', self.clean)
+        toolbutton.connect('clicked', self.mat_clean)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
@@ -138,7 +139,14 @@ class ListStoreApp:
 
         if response is 0: #Gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            self.populate(filenames)
+            lst = []
+            for item in filenames:
+                #FIXME : not optimal at all
+                if os.path.isdir(item):
+                    lst.extend(glob.glob(item + '/*'))
+                else:
+                    lst.append(item)
+            self.populate(lst)
         chooser.destroy()
 
     def populate(self, filenames):
@@ -150,9 +158,9 @@ class ListStoreApp:
 
             if cfile is not None:
                 self.files.append(cfile)
-                self.model.append([cfile.shortname, cfile.mime, 'unknow'])
+                self.model.append([cfile.filename, cfile.mime, 'unknow'])
 
-    def clean(self, button):
+    def mat_clean(self, button):#OMFG, I'm so ugly !
         self.model.clear()
         for item in self.files:
             if item.is_clean():
@@ -160,6 +168,7 @@ class ListStoreApp:
             else:
                 string = 'dirty'
             self.model.append([item.shortname, item.mime, string])
+
 
 def main():
     app = ListStoreApp()
