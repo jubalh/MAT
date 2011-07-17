@@ -40,11 +40,14 @@ class ListStoreApp:
 
         self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
 
-        self.treeview = Gtk.TreeView(model=self.model)
-        self.treeview.set_rules_hint(True)
-        #self.treeview.set_mode(True)
-        sw.add(self.treeview)
-        self.add_columns(self.treeview)
+        treeview = Gtk.TreeView(model=self.model)
+        treeview.set_rules_hint(True)
+
+        self.selection = treeview.get_selection()
+        self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
+
+        sw.add(treeview)
+        self.add_columns(treeview)
 
         self.statusbar = Gtk.Statusbar()
         self.statusbar.push(1, 'Ready')
