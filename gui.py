@@ -42,6 +42,7 @@ class ListStoreApp:
 
         self.treeview = Gtk.TreeView(model=self.model)
         self.treeview.set_rules_hint(True)
+        #self.treeview.set_mode(True)
         sw.add(self.treeview)
         self.add_columns(self.treeview)
 
@@ -53,7 +54,7 @@ class ListStoreApp:
 
     def create_toolbar(self):
         '''
-            Returns a bbox object, which contains a toolbar with buttons
+            Returns a vbox object, which contains a toolbar with buttons
         '''
         toolbar = Gtk.Toolbar()
 
@@ -62,6 +63,7 @@ class ListStoreApp:
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label = 'Clean', stock_id=Gtk.STOCK_CLEAR)
+        toolbutton.connect('clicked', self.mat_clean)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Brute Clean',
@@ -69,7 +71,7 @@ class ListStoreApp:
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
-        toolbutton.connect('clicked', self.mat_clean)
+        toolbutton.connect('clicked', self.mat_check)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
@@ -85,22 +87,24 @@ class ListStoreApp:
             Crete the columns
         '''
         model = treeview.get_model()
-        renderer = Gtk.CellRendererText()
 
         # column for filename
-        column = Gtk.TreeViewColumn("Filename", renderer,
+        filenameColumn = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn("Filename", filenameColumn,
                                     text=self.COLUMN_NAME)
         column.set_sort_column_id(self.COLUMN_NAME)
         treeview.append_column(column)
 
         # column for fileformat
-        column = Gtk.TreeViewColumn("Fileformat", renderer,
+        fileformatColumn = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn("Fileformat", fileformatColumn,
                                     text=self.COLUMN_FILEFORMAT)
         column.set_sort_column_id(self.COLUMN_FILEFORMAT)
         treeview.append_column(column)
 
         # column for cleaned
-        column = Gtk.TreeViewColumn("Cleaned", renderer,
+        cleanedColumn = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn("Cleaned", cleanedColumn,
                                     text=self.COLUMN_CLEANED)
         column.set_sort_column_id(self.COLUMN_CLEANED)
         treeview.append_column(column)
@@ -119,6 +123,9 @@ class ListStoreApp:
         return filter
 
     def add_files(self, button):
+        '''
+            Add the files chosed by the filechoser ("Add" button)
+        '''
         chooser = Gtk.FileChooserDialog(
             title='Choose files',
             parent=None,
@@ -139,28 +146,26 @@ class ListStoreApp:
 
         if response is 0: #Gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            lst = []
-            for item in filenames:
-                #FIXME : not optimal at all
+            chooser.destroy()
+            for item in filenames: #directory
                 if os.path.isdir(item):
-                    lst.extend(glob.glob(item + '/*'))
-                else:
-                    lst.append(item)
-            self.populate(lst)
-        chooser.destroy()
+                    for root, dirs, files in os.walk(item):
+                        for name in files:
+                            self.populate(os.path.join(root, name))
+                else: #regular file
+                    self.populate(item)
 
-    def populate(self, filenames):
-        for item in filenames:
-            try:
-                cfile = mat.create_class_file(item, self.backup)
-            except:
-                cfile = None
+    def populate(self, item):
+        try:
+            cfile = mat.create_class_file(item, self.backup)
+        except:
+            cfile = None
 
-            if cfile is not None:
-                self.files.append(cfile)
-                self.model.append([cfile.filename, cfile.mime, 'unknow'])
+        if cfile is not None:
+            self.files.append(cfile)
+            self.model.append([cfile.filename, cfile.mime, 'unknow'])
 
-    def mat_clean(self, button):#OMFG, I'm so ugly !
+    def mat_check(self, button):#OMFG, I'm so ugly !
         self.model.clear()
         for item in self.files:
             if item.is_clean():
@@ -169,6 +174,11 @@ class ListStoreApp:
                 string = 'dirty'
             self.model.append([item.shortname, item.mime, string])
 
+    def mat_clean(self, button):#I am dirty too
+        self.model.clear()
+        for item in self.files:
+            item.remove_all()
+            self.model.append([item.shortname, item.mime, 'clean'])
 
 def main():
     app = ListStoreApp()
