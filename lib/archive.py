@@ -4,12 +4,15 @@ import parser
 import mat
 import shutil
 import os
+import mimetypes
 
 class TarStripper(parser.Generic_parser):
     def __init__(self, realname, filename, parser, editor, backup):
         super(TarStripper, self).__init__(realname,
             filename, parser, editor, backup)
         self.compression = ''
+        self.shortname = os.path.basename(filename)
+        self.mime = mimetypes.guess_type(filename)[0]
         self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         self.folder_list = []
 
@@ -40,9 +43,9 @@ class TarStripper(parser.Generic_parser):
                 self.folder_list.insert(0, current_file.name)
         self.tarin.close()
         self.tarout.close()
+        print self.folder_list
 
-        for folder in self.folder_list: #delete remainings folders
-            shutil.rmtree(folder)
+        self.remove_folder()
 
         if self.backup is False:
             mat.secure_remove(self.filename)
@@ -73,7 +76,8 @@ class TarStripper(parser.Generic_parser):
                 #no backup file
                 class_file = mat.create_class_file(current_file.name, False)
                 if not class_file.is_clean():
-                    self.folder_list = []
+                    mat.secure_remove(current_file.name)
+                    self.remove_folder()
                     return False
                 if not self.is_file_clean(current_file):
                     return False
@@ -81,10 +85,7 @@ class TarStripper(parser.Generic_parser):
             else:
                 self.folder_list.insert(0, current_file.name)
         self.tarin.close()
-
-        for folder in self.folder_list: #delete remainings folders
-            shutil.rmtree(folder)
-        self.folder_list = []
+        self.remove_folder()
         return True
 
     def get_meta(self):
@@ -101,6 +102,11 @@ class TarStripper(parser.Generic_parser):
                     current_meta['gname'] = current_file.gname
                     metadata[current_file.name] = current_meta
         return metadata
+
+    def remove_folder(self):
+        for folder in self.folder_list: #delete remainings folders
+            shutil.rmtree(folder)
+        self.folder_list = []
 
 class GzipStripper(TarStripper):
     def __init__(self, realname, filename, parser, editor, backup):
