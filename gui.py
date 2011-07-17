@@ -65,12 +65,13 @@ class ListStoreApp:
         toolbutton.connect('clicked', self.add_files)
         toolbar.add(toolbutton)
 
-        toolbutton = Gtk.ToolButton(label = 'Clean', stock_id=Gtk.STOCK_CLEAR)
+        toolbutton = Gtk.ToolButton(label = 'Clean',
+            stock_id=Gtk.STOCK_PRINT_REPORT)
         toolbutton.connect('clicked', self.mat_clean)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Brute Clean',
-            stock_id=Gtk.STOCK_CLEAR)
+            stock_id=Gtk.STOCK_PRINT_WARNING)
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
@@ -175,7 +176,7 @@ class ListStoreApp:
                 string = 'clean'
             else:
                 string = 'dirty'
-            self.model.append([item.shortname, item.mime, string])
+            self.model.append([item.filename, item.mime, string])
 
     def mat_clean(self, button):#I am dirty too
         self.model.clear()
