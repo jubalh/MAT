@@ -116,25 +116,36 @@ class ListStoreApp:
         column.set_sort_column_id(self.COLUMN_CLEANED)
         treeview.append_column(column)
 
+    def create_menu_item(self, name, func, menu):
+        item = Gtk.MenuItem()
+        item.set_label(name)
+        item.connect('activate', func)
+        menu.append(item)
+
+    def create_sub_menu(self, name, menubar):
+        menu = Gtk.Menu()
+        menum = Gtk.MenuItem()
+        menum.set_submenu(menu)
+        menum.set_label(name)
+        menubar.append(menum)
+        return menu
+
     def create_menu(self):
         menubar = Gtk.MenuBar()
 
-        file_menu = Gtk.Menu()
+        file_menu = self.create_sub_menu('Files', menubar)
+        self.create_menu_item('Add files', self.add_files, file_menu)
+        self.create_menu_item('Quit', Gtk.main_quit, file_menu)
 
-        filem = Gtk.MenuItem()
-        filem.set_submenu(file_menu)
-        filem.set_label('Files')
+        edit_menu = self.create_sub_menu('Edit', menubar)
+        self.create_menu_item('Clear the filelist', self.clear_model, edit_menu)
+        self.create_menu_item('Preferences', self.preferences, edit_menu)
 
-        add_ = Gtk.MenuItem()
-        add_.set_label('Add files')
-        add_.connect('activate', self.add_files)
-        file_menu.append(add_)
-
-        quit_ = Gtk.MenuItem()
-        quit_.set_label('Quit')
-        quit_.connect('activate', Gtk.main_quit)
-        file_menu.append(quit_)
-        menubar.append(filem)
+        clean_menu = self.create_sub_menu('Clean', menubar)
+        self.create_menu_item('Clean', self.mat_clean, clean_menu)
+        self.create_menu_item('Clean (lossy way)', self.mat_clean_dirty,
+            clean_menu)
+        self.create_menu_item('Check', self.mat_check, clean_menu)
 
         return menubar
 
@@ -194,8 +205,14 @@ class ListStoreApp:
             self.files.append(cfile)
             self.model.append([cfile.filename, cfile.mime, 'unknow'])
 
-    def mat_check(self, button):#OMFG, I'm so ugly !
+    def preferences(self):
+        pass
+
+    def clear_model(self, button=None):
         self.model.clear()
+
+    def mat_check(self, button=None):#OMFG, I'm so ugly !
+        self.clear_model()
         for item in self.files:
             if item.is_clean():
                 string = 'clean'
@@ -203,10 +220,16 @@ class ListStoreApp:
                 string = 'dirty'
             self.model.append([item.filename, item.mime, string])
 
-    def mat_clean(self, button):#I am dirty too
-        self.model.clear()
+    def mat_clean(self, button=None):#I am dirty too
+        self.clear_model
         for item in self.files:
             item.remove_all()
+            self.model.append([item.shortname, item.mime, 'clean'])
+
+    def mat_clean_dirty(self, button=None):#And me too !
+        self.clear_model()
+        for item in self.files:
+            item.remove_all_ugly()
             self.model.append([item.shortname, item.mime, 'clean'])
 
 def main():
