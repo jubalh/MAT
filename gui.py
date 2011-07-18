@@ -91,7 +91,7 @@ class ListStoreApp:
 
     def add_columns(self, treeview):
         '''
-            Crete the columns
+            Create the columns
         '''
         model = treeview.get_model()
 
@@ -116,13 +116,21 @@ class ListStoreApp:
         column.set_sort_column_id(self.COLUMN_CLEANED)
         treeview.append_column(column)
 
-    def create_menu_item(self, name, func, menu):
-        item = Gtk.MenuItem()
+    def create_menu_item(self, name, func, menu, pix):
+        '''
+            Create a MenuItem() like Preferences, Quit, Add, Clean, ...
+        '''
+        item = Gtk.ImageMenuItem()
+        picture = Gtk.Image.new_from_stock(pix, Gtk.IconSize.MENU)
+        item.set_image(picture)
         item.set_label(name)
         item.connect('activate', func)
         menu.append(item)
 
     def create_sub_menu(self, name, menubar):
+        '''
+            Create a submenu like File, Edit, Clean, ...
+        '''
         menu = Gtk.Menu()
         menum = Gtk.MenuItem()
         menum.set_submenu(menu)
@@ -131,21 +139,33 @@ class ListStoreApp:
         return menu
 
     def create_menu(self):
+        '''
+            Return a MenuBar
+        '''
         menubar = Gtk.MenuBar()
 
         file_menu = self.create_sub_menu('Files', menubar)
-        self.create_menu_item('Add files', self.add_files, file_menu)
-        self.create_menu_item('Quit', Gtk.main_quit, file_menu)
+        self.create_menu_item('Add files', self.add_files, file_menu,
+            Gtk.STOCK_ADD)
+        self.create_menu_item('Quit', Gtk.main_quit, file_menu,
+            Gtk.STOCK_QUIT)
 
         edit_menu = self.create_sub_menu('Edit', menubar)
-        self.create_menu_item('Clear the filelist', self.clear_model, edit_menu)
-        self.create_menu_item('Preferences', self.preferences, edit_menu)
+        self.create_menu_item('Clear the filelist', self.clear_model, edit_menu,
+            Gtk.STOCK_REMOVE)
+        self.create_menu_item('Preferences', self.preferences, edit_menu,
+            Gtk.STOCK_PREFERENCES)
 
         clean_menu = self.create_sub_menu('Clean', menubar)
-        self.create_menu_item('Clean', self.mat_clean, clean_menu)
+        self.create_menu_item('Clean', self.mat_clean, clean_menu,
+            Gtk.STOCK_PRINT_REPORT)
         self.create_menu_item('Clean (lossy way)', self.mat_clean_dirty,
-            clean_menu)
-        self.create_menu_item('Check', self.mat_check, clean_menu)
+            clean_menu, Gtk.STOCK_PRINT_WARNING)
+        self.create_menu_item('Check', self.mat_check, clean_menu,
+            Gtk.STOCK_FIND)
+
+        help_menu = self.create_sub_menu('Help', menubar)
+        self.create_menu_item('About', self.about, help_menu, Gtk.STOCK_ABOUT)
 
         return menubar
 
@@ -205,7 +225,20 @@ class ListStoreApp:
             self.files.append(cfile)
             self.model.append([cfile.filename, cfile.mime, 'unknow'])
 
-    def preferences(self):
+    def about(self, button=None):
+        w = Gtk.AboutDialog()
+        w.set_version(__version__)
+        w.set_copyright('GNU GPLv2')
+        w.set_comments('This software was coded during the GSoC 2011')
+        w.set_website('https://gitweb.torproject.org/user/jvoisin/mat.git')
+        w.set_website_label('Website')
+        w.set_authors(['Julien (jvoisin) Voisin',])
+        w.set_program_name('Metadata Anonymistion Toolkit')
+        click = w.run()
+        if click:
+            w.destroy()
+
+    def preferences(self, button=None):
         pass
 
     def clear_model(self, button=None):
