@@ -26,6 +26,8 @@ class ListStoreApp:
     def __init__(self):
         self.files = []
         self.backup = True
+        self.force = False
+        self.ugly = False
 
         self.window = Gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' % __version__)
@@ -228,7 +230,7 @@ class ListStoreApp:
     def about(self, button=None):
         w = Gtk.AboutDialog()
         w.set_version(__version__)
-        w.set_copyright('GNU GPLv2')
+        w.set_copyright('GNU Public License v2')
         w.set_comments('This software was coded during the GSoC 2011')
         w.set_website('https://gitweb.torproject.org/user/jvoisin/mat.git')
         w.set_website_label('Website')
@@ -239,7 +241,40 @@ class ListStoreApp:
             w.destroy()
 
     def preferences(self, button=None):
-        pass
+        window = Gtk.Window()
+        vbox = Gtk.VBox()
+        buttonbox = Gtk.VButtonBox()
+        buttonbox.set_layout(Gtk.ButtonBoxStyle.EDGE)#useless ?
+        force = Gtk.CheckButton('Force Clean', False)
+        force.connect('toggled', self.invert, 'force')
+        force.set_active(self.force)
+        buttonbox.add(force)
+
+        ugly = Gtk.CheckButton('Always use lossy clean', False)
+        ugly.connect('toggled', self.invert, 'ugly')
+        ugly.set_active(self.ugly)
+        buttonbox.add(ugly)
+
+        backup = Gtk.CheckButton('Alway keep a backup', False)
+        backup.set_active(self.backup)
+        backup.connect('toggled', self.invert, 'backup')
+        buttonbox.add(backup)
+
+        ok = Gtk.Button('Ok')
+        ok.connect('clicked', lambda q:window.destroy())
+
+        vbox.pack_start(buttonbox, True, True, 0)
+        vbox.pack_end(ok, False, False, 5)
+        window.add(vbox)
+        window.show_all()
+
+    def invert(self, button, name): #I think I can do better than that !(but not tonight)
+        if name is 'force':
+            self.force = not self.force
+        elif name is 'ugly':
+            self.ugly = not self.ugly
+        elif name is 'backup':
+            self.backup = not self.backup
 
     def clear_model(self, button=None):
         self.model.clear()
