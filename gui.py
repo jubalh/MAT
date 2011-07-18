@@ -32,21 +32,24 @@ class ListStoreApp:
         self.window.connect('destroy', Gtk.main_quit)
         self.window.set_default_size(800, 600)
 
-        vbox = self.create_toolbar()
+        vbox = Gtk.VBox()
         self.window.add(vbox)
 
-        sw = Gtk.ScrolledWindow()
-        vbox.pack_start(sw, True, True, 0)
+        menubar = self.create_menu()
+        toolbar = self.create_toolbar()
+        content = Gtk.ScrolledWindow()
+        vbox.pack_start(menubar, False, True, 0)
+        vbox.pack_start(toolbar, False, True, 0)
+        vbox.pack_start(content, True, True, 0)
 
         self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
 
         treeview = Gtk.TreeView(model=self.model)
         treeview.set_rules_hint(True)
-
         self.selection = treeview.get_selection()
         self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
 
-        sw.add(treeview)
+        content.add(treeview)
         self.add_columns(treeview)
 
         self.statusbar = Gtk.Statusbar()
@@ -113,6 +116,28 @@ class ListStoreApp:
         column.set_sort_column_id(self.COLUMN_CLEANED)
         treeview.append_column(column)
 
+    def create_menu(self):
+        menubar = Gtk.MenuBar()
+
+        file_menu = Gtk.Menu()
+
+        filem = Gtk.MenuItem()
+        filem.set_submenu(file_menu)
+        filem.set_label('Files')
+
+        add_ = Gtk.MenuItem()
+        add_.set_label('Add files')
+        add_.connect('activate', self.add_files)
+        file_menu.append(add_)
+
+        quit_ = Gtk.MenuItem()
+        quit_.set_label('Quit')
+        quit_.connect('activate', Gtk.main_quit)
+        file_menu.append(quit_)
+        menubar.append(filem)
+
+        return menubar
+
     def create_filter(self):
         '''
             Return a filter for
@@ -150,7 +175,6 @@ class ListStoreApp:
 
         if response is 0: #Gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            chooser.destroy()
             for item in filenames: #directory
                 if os.path.isdir(item):
                     for root, dirs, files in os.walk(item):
@@ -158,6 +182,7 @@ class ListStoreApp:
                             self.populate(os.path.join(root, name))
                 else: #regular file
                     self.populate(item)
+        chooser.destroy()
 
     def populate(self, item):
         try:
