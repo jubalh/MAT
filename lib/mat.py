@@ -6,6 +6,7 @@
 
 import os
 import subprocess
+import logging
 
 import hachoir_core.cmd_line
 import hachoir_parser
@@ -18,6 +19,8 @@ import archive
 
 __version__ = "0.1"
 __author__ = "jvoisin"
+
+logging.basicConfig(level = logging.DEBUG)
 
 strippers = {
     hachoir_parser.image.JpegFile: images.JpegStripper,
@@ -36,7 +39,7 @@ def secure_remove(filename):
     try:
         subprocess.call('shred --remove %s' % filename, shell=True)
     except:
-        print('Unable to remove %s' % filename)
+        logging.error('Unable to remove %s' % filename)
 
 
 def is_secure(filename):
@@ -45,7 +48,7 @@ def is_secure(filename):
     '''
 
     if not(os.path.isfile(filename)): #check if the file exist
-        print("Error: %s is not a valid file" % filename)
+        logging.error("Error: %s is not a valid file" % filename)
         return
 
 def create_class_file(name, backup):
@@ -60,7 +63,7 @@ def create_class_file(name, backup):
     filename = hachoir_core.cmd_line.unicodeFilename(name)
     parser = hachoir_parser.createParser(filename)
     if not parser:
-        print("[+] Unable to parse %s" % filename)
+        logging.error("Unable to parse %s" % filename)
         return
 
     editor = hachoir_editor.createEditor(parser)
@@ -73,7 +76,7 @@ def create_class_file(name, backup):
         stripper_class = strippers[editor.input.__class__]
     except KeyError:
         #Place for another lib than hachoir
-        print("[+] Don't have stripper for file type %s" % editor.description)
+        logging.error("Don't have stripper for file type %s" % editor.description)
         return
     if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
         return stripper_class(filename, realname, backup)
