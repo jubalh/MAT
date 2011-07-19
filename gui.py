@@ -4,10 +4,13 @@ from gi.repository import Gtk, GObject
 import os
 import cli
 import glob
+import logging
 from lib import mat
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
+
+logging.basicConfig(level = mat.LOGGING_LEVEL)
 
 SUPPORTED = (('image/png', 'image/jpeg', 'image/gif',
             'misc/pdf'),
@@ -58,6 +61,7 @@ class ListStoreApp:
         self.add_columns(treeview)
         treeview.set_search_column(1)
         treeview.set_rules_hint(True)
+        treeview.set_rubber_banding(True)
         self.selection = treeview.get_selection()
         self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
 
@@ -202,6 +206,7 @@ class ListStoreApp:
 
         if response is 0: #Gtk.STOCK_OK
             filenames = chooser.get_filenames()
+            chooser.destroy()
             for item in filenames: #directory
                 if os.path.isdir(item):
                     for root, dirs, files in os.walk(item):
@@ -284,17 +289,20 @@ class ListStoreApp:
                 string = 'clean'
             else:
                 string = 'dirty'
+            logging.info('%s is %s' % (self.model[i][1], string))
             self.model[i][3] = string
 
     def mat_clean(self, button=None):#I am dirty too
         _, iter = self.selection.get_selected_rows()
         for i in iter:
+            logging.info('Cleaning %s' % self.model[i][1])
             self.model[i][0].file.remove_all()
             self.model[i][3] = 'clean'
 
     def mat_clean_dirty(self, button=None):#And me too !
         _, iter = self.selection.get_selected_rows()
         for i in iter:
+            logging.info('Cleaning (lossy way) %s' % self.model[i][1])
             self.model[i][0].file.remove_all_ugly()
             self.model[i][3] = 'clean'
 
