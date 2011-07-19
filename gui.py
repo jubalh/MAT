@@ -56,6 +56,7 @@ class ListStoreApp:
 
         treeview = Gtk.TreeView(model=self.model)
         self.add_columns(treeview)
+        treeview.set_search_column(1)
         treeview.set_rules_hint(True)
         self.selection = treeview.get_selection()
         self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
@@ -103,7 +104,7 @@ class ListStoreApp:
         '''
             Create the columns
         '''
-        colname = ['Filename', 'Mimetype', 'cleaned']
+        colname = ['Filename', 'Mimetype', 'Cleaned']
 
         for i, j in enumerate(colname):
             filenameColumn = Gtk.CellRendererText()
@@ -250,12 +251,12 @@ class ListStoreApp:
         force.connect('toggled', self.invert, 'force')
         force.set_active(self.force)
 
-        ugly = Gtk.CheckButton('Ugly', False)
+        ugly = Gtk.CheckButton('Brute Clean', False)
         table.attach_defaults(ugly, 0, 1, 1, 2)
         ugly.connect('toggled', self.invert, 'ugly')
         ugly.set_active(self.ugly)
 
-        backup = Gtk.CheckButton('backup', False)
+        backup = Gtk.CheckButton('Backup', False)
         table.attach_defaults(backup, 0, 1, 2, 3)
         backup.connect('toggled', self.invert, 'backup')
         backup.set_active(self.backup)
@@ -277,28 +278,25 @@ class ListStoreApp:
         self.model.clear()
 
     def mat_check(self, button=None):#OMFG, I'm so ugly !
-        self.clear_model()
-        for item in self.files:
-            if item.file.is_clean():
+        _, iter = self.selection.get_selected_rows()
+        for i in iter:
+            if self.model[i][0].file.is_clean():
                 string = 'clean'
             else:
                 string = 'dirty'
-            self.model.append([item, item.file.filename, item.file.mime,
-                string])
+            self.model[i][3] = string
 
     def mat_clean(self, button=None):#I am dirty too
-        self.clear_model()
-        for item in self.files:
-            item.file.remove_all()
-            self.model.append([item, item.file.filename, item.file.mime,
-                'clean'])
+        _, iter = self.selection.get_selected_rows()
+        for i in iter:
+            self.model[i][0].file.remove_all()
+            self.model[i][3] = 'clean'
 
     def mat_clean_dirty(self, button=None):#And me too !
-        self.clear_model()
-        for item in self.files:
-            item.file.remove_all_ugly()
-            self.model.append([item, item.file.shortname, item.file.mime,
-                'clean'])
+        _, iter = self.selection.get_selected_rows()
+        for i in iter:
+            self.model[i][0].file.remove_all_ugly()
+            self.model[i][3] = 'clean'
 
 def main():
     app = ListStoreApp()
