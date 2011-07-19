@@ -14,6 +14,19 @@ SUPPORTED = (('image/png', 'image/jpeg', 'image/gif',
             ('*.jpg', '*.jpeg', '*.png', '*.bmp', '*.pdf',
             '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3'))
 
+class cfile(GObject.GObject):
+    '''
+        Contain the class-file of the file "path"
+        This class exist just to be "around" my parser.Generic_parser class,
+        since Gtk.ListStore does not accept it.
+    '''
+    def __init__(self, path, backup):
+        GObject.GObject.__init__(self)
+        try:
+            self.file = mat.create_class_file(path, backup)
+        except:
+            self.file = None
+
 class ListStoreApp:
     '''
         Main GUI class
@@ -21,7 +34,7 @@ class ListStoreApp:
     (COLUMN_NAME,
      COLUMN_FILEFORMAT,
      COLUMN_CLEANED,
-     NUM_COLUMNS) = range(4)
+     NUM_COLUMNS) = xrange(1,5)
 
     def __init__(self):
         self.files = []
@@ -44,15 +57,15 @@ class ListStoreApp:
         vbox.pack_start(toolbar, False, True, 0)
         vbox.pack_start(content, True, True, 0)
 
-        self.model = Gtk.ListStore(str, str, str) #name - type - cleaned
+        self.model = Gtk.ListStore(cfile ,str, str, str) #name - type - cleaned
 
         treeview = Gtk.TreeView(model=self.model)
+        self.add_columns(treeview)
         treeview.set_rules_hint(True)
         self.selection = treeview.get_selection()
         self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
 
         content.add(treeview)
-        self.add_columns(treeview)
 
         self.statusbar = Gtk.Statusbar()
         self.statusbar.push(1, 'Ready')
@@ -100,14 +113,14 @@ class ListStoreApp:
         # column for filename
         filenameColumn = Gtk.CellRendererText()
         column = Gtk.TreeViewColumn("Filename", filenameColumn,
-                                    text=self.COLUMN_NAME)
+            text=self.COLUMN_NAME)
         column.set_sort_column_id(self.COLUMN_NAME)
         treeview.append_column(column)
 
         # column for fileformat
         fileformatColumn = Gtk.CellRendererText()
         column = Gtk.TreeViewColumn("Fileformat", fileformatColumn,
-                                    text=self.COLUMN_FILEFORMAT)
+            text=self.COLUMN_FILEFORMAT)
         column.set_sort_column_id(self.COLUMN_FILEFORMAT)
         treeview.append_column(column)
 
@@ -218,14 +231,11 @@ class ListStoreApp:
         chooser.destroy()
 
     def populate(self, item):
-        try:
-            cfile = mat.create_class_file(item, self.backup)
-        except:
-            cfile = None
+        cf = cfile(item, self.backup)
 
-        if cfile is not None:
-            self.files.append(cfile)
-            self.model.append([cfile.filename, cfile.mime, 'unknow'])
+        if cf.file is not None:
+            self.files.append(cf)
+            self.model.append([cf, cf.file.filename, cf.file.mime, 'unknow'])
 
     def about(self, button=None):
         w = Gtk.AboutDialog()
@@ -282,23 +292,26 @@ class ListStoreApp:
     def mat_check(self, button=None):#OMFG, I'm so ugly !
         self.clear_model()
         for item in self.files:
-            if item.is_clean():
+            if item.file.is_clean():
                 string = 'clean'
             else:
                 string = 'dirty'
-            self.model.append([item.filename, item.mime, string])
+            self.model.append([item, item.file.filename, item.file.mime,
+                string])
 
     def mat_clean(self, button=None):#I am dirty too
-        self.clear_model
+        self.clear_model()
         for item in self.files:
-            item.remove_all()
-            self.model.append([item.shortname, item.mime, 'clean'])
+            item.file.remove_all()
+            self.model.append([item, item.file.filename, item.file.mime,
+                'clean'])
 
     def mat_clean_dirty(self, button=None):#And me too !
         self.clear_model()
         for item in self.files:
-            item.remove_all_ugly()
-            self.model.append([item.shortname, item.mime, 'clean'])
+            item.file.remove_all_ugly()
+            self.model.append([item, item.file.shortname, item.file.mime,
+                'clean'])
 
 def main():
     app = ListStoreApp()
