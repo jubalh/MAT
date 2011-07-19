@@ -31,11 +31,6 @@ class ListStoreApp:
     '''
         Main GUI class
     '''
-    (COLUMN_NAME,
-     COLUMN_FILEFORMAT,
-     COLUMN_CLEANED,
-     NUM_COLUMNS) = xrange(1,5)
-
     def __init__(self):
         self.files = []
         self.backup = True
@@ -131,12 +126,12 @@ class ListStoreApp:
         '''
             Create a submenu like File, Edit, Clean, ...
         '''
-        menu = Gtk.Menu()
-        menum = Gtk.MenuItem()
-        menum.set_submenu(menu)
-        menum.set_label(name)
-        menubar.append(menum)
-        return menu
+        submenu = Gtk.Menu()
+        menuitem = Gtk.MenuItem()
+        menuitem.set_submenu(submenu)
+        menuitem.set_label(name)
+        menubar.append(menuitem)
+        return submenu
 
     def create_menu(self):
         '''
@@ -236,32 +231,39 @@ class ListStoreApp:
             w.destroy()
 
     def preferences(self, button=None):
-        window = Gtk.Window()
-        vbox = Gtk.VBox()
-        buttonbox = Gtk.VButtonBox()
-        buttonbox.set_layout(Gtk.ButtonBoxStyle.EDGE)#useless ?
+        dialog = Gtk.Dialog('Preferences', self.window, 0, (Gtk.STOCK_OK, 0))
+        content_area = dialog.get_content_area()
+        hbox = Gtk.HBox()
+        content_area.pack_start(hbox, False, False, 0)
+        stock = Gtk.Image(stock=Gtk.STOCK_PREFERENCES,
+            icon_size=Gtk.IconSize.DIALOG)
+
+        hbox.pack_start(stock, False, False, 0)
+
+        table = Gtk.Table(3, 2, False)
+        table.set_row_spacings(4)
+        table.set_col_spacings(4)
+        hbox.pack_start(table, True, True, 0)
+
         force = Gtk.CheckButton('Force Clean', False)
+        table.attach_defaults(force, 0, 1, 0, 1)
         force.connect('toggled', self.invert, 'force')
         force.set_active(self.force)
-        buttonbox.add(force)
 
-        ugly = Gtk.CheckButton('Always use lossy clean', False)
+        ugly = Gtk.CheckButton('Ugly', False)
+        table.attach_defaults(ugly, 0, 1, 1, 2)
         ugly.connect('toggled', self.invert, 'ugly')
         ugly.set_active(self.ugly)
-        buttonbox.add(ugly)
 
-        backup = Gtk.CheckButton('Alway keep a backup', False)
-        backup.set_active(self.backup)
+        backup = Gtk.CheckButton('backup', False)
+        table.attach_defaults(backup, 0, 1, 2, 3)
         backup.connect('toggled', self.invert, 'backup')
-        buttonbox.add(backup)
+        backup.set_active(self.backup)
 
-        ok = Gtk.Button('Ok')
-        ok.connect('clicked', lambda q:window.destroy())
-
-        vbox.pack_start(buttonbox, True, True, 0)
-        vbox.pack_end(ok, False, False, 5)
-        window.add(vbox)
-        window.show_all()
+        hbox.show_all()
+        response = dialog.run()
+        if response is 0:
+            dialog.destroy()
 
     def invert(self, button, name): #I think I can do better than that !(but not tonight)
         if name is 'force':
