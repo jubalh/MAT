@@ -108,28 +108,13 @@ class ListStoreApp:
         '''
             Create the columns
         '''
-        model = treeview.get_model()
+        colname = ['Filename', 'Mimetype', 'cleaned']
 
-        # column for filename
-        filenameColumn = Gtk.CellRendererText()
-        column = Gtk.TreeViewColumn("Filename", filenameColumn,
-            text=self.COLUMN_NAME)
-        column.set_sort_column_id(self.COLUMN_NAME)
-        treeview.append_column(column)
-
-        # column for fileformat
-        fileformatColumn = Gtk.CellRendererText()
-        column = Gtk.TreeViewColumn("Fileformat", fileformatColumn,
-            text=self.COLUMN_FILEFORMAT)
-        column.set_sort_column_id(self.COLUMN_FILEFORMAT)
-        treeview.append_column(column)
-
-        # column for cleaned
-        cleanedColumn = Gtk.CellRendererText()
-        column = Gtk.TreeViewColumn("Cleaned", cleanedColumn,
-                                    text=self.COLUMN_CLEANED)
-        column.set_sort_column_id(self.COLUMN_CLEANED)
-        treeview.append_column(column)
+        for i, j in enumerate(colname):
+            filenameColumn = Gtk.CellRendererText()
+            column = Gtk.TreeViewColumn(j, filenameColumn, text=i+1)
+            column.set_sort_column_id(i+1)
+            treeview.append_column(column)
 
     def create_menu_item(self, name, func, menu, pix):
         '''
