@@ -5,31 +5,35 @@
 
 import sys
 from lib import mat
-import argparse
+import optparse
 import hachoir_core
 
 __version__ = '0.1'
 
 def parse():
-    parser = argparse.ArgumentParser(version=__version__,
-        description="Metadata Anonymisation Toolkit - CLI %s" % __version__)
+    parser = optparse.OptionParser(usage='%prog [options] filename')
+    parser.add_option('--backup', '-b', action='store_true', default=False,
+        help='Keep a backup copy')
+    parser.add_option('--check', '-c',  action='store_true', default=False,
+        help='Check if a file is free of harmfull metadatas')
+    parser.add_option('--display', '-d', action='store_true', default=False,
+        help='List all the meta of a file without removing them')
+    parser.add_option('--ugly', '-u', action='store_true', default=False,
+        help='Remove harmful meta, but loss can occure')
+    parser.add_option('--version', '-v', action='callback',
+        callback=display_version, help='Display version and exit')
 
-    #list and check clean are mutually exclusives
-    group = parser.add_mutually_exclusive_group()
+    values, arguments = parser.parse_args()
+    if not arguments:
+        parser.print_help()
+        sys.exit(0)
+    return values, arguments
 
-    group.add_argument('--display', '-d', action='store_true', default=False,
-        dest='display', help='List all the meta of a file')
-    group.add_argument('--check', '-c',  action='store_true', default=False,
-        dest='check', help='Check if a file is free of harmfull metadatas')
-
-    parser.add_argument('--backup', '-b', action='store_true', default=False,
-        dest='backup', help='Keep a backup copy')
-    parser.add_argument('--ugly', '-u', action='store_true', default=False,
-        dest='ugly', help='Remove harmful meta but information loss may occure')
-    parser.add_argument('filelist', action='store', type=str, nargs='+',
-        metavar='files', help='File(s) to process')
-
-    return parser.parse_args()
+def display_version(*args):
+    print('Metadata Anonymisation Toolkit version %s') % mat.__version__
+    print('CLI version %s') % __version__
+    print('Hachoir version %s') % hachoir_core.__version__
+    sys.exit(0)
 
 def list_meta(class_file, filename):
     '''
@@ -74,7 +78,7 @@ def clean_meta_ugly(class_file, filename):
         print('%s cleaned' % filename)
 
 def main():
-    args = parse()
+    args, filenames = parse()
 
     #func receive the function correponding to the options given as parameters
     if args.display is True: #only print metadatas
@@ -86,7 +90,7 @@ def main():
     else: #clean the file
         func = clean_meta
 
-    for filename in args.filelist:
+    for filename in filenames:
         class_file = mat.create_class_file(filename, args.backup)
         if class_file is not None:
             func(class_file, filename)
