@@ -20,7 +20,9 @@ import archive
 __version__ = "0.1"
 __author__ = "jvoisin"
 
-logging.basicConfig(level = logging.DEBUG)
+LOGGING_LEVEL = logging.DEBUG
+
+logging.basicConfig(level = LOGGING_LEVEL)
 
 strippers = {
     hachoir_parser.image.JpegFile: images.JpegStripper,

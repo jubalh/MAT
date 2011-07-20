@@ -1,6 +1,7 @@
 import parser
 import pdfrw
 import os
+import mimetypes
 import mat
 import subprocess
 import tempfile
@@ -14,6 +15,8 @@ class PdfStripper(parser.Generic_parser):
         self.filename = filename
         self.backup = backup
         self.realname = realname
+        self.shortname = os.path.basename(filename)
+        self.mime = mimetypes.guess_type(filename)[0]
         self.trailer = pdfrw.PdfReader(self.filename)
         self.writer = pdfrw.PdfWriter()
         self.convert = 'gm convert -antialias -enhance %s %s'

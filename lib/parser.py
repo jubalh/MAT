@@ -8,6 +8,7 @@ import hachoir_editor
 import sys
 import os
 import subprocess
+import mimetypes
 import mat
 
 POSTFIX = ".cleaned"
@@ -16,6 +17,8 @@ class Generic_parser(object):
     def __init__(self, realname, filename, parser, editor, backup):
         self.filename = filename
         self.realname = realname
+        self.shortname = os.path.basename(filename)
+        self.mime = mimetypes.guess_type(filename)[0]
         self.parser = parser
         self.editor = editor
         self.backup = backup
