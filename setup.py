@@ -5,6 +5,7 @@ setup(name='MAT',
       description='Metadata Anonymisation Toolkit',
       author='Julien (jvoisin) Voisin',
       author_email='julien.voisin@dustri.org',
+      license='GPLv2',
       url='https://gitweb.torproject.org/user/jvoisin/mat.git',
       packages=['mat'],
      )

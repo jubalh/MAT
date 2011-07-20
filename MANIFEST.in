@@ -1,0 +1,3 @@
+include README cli.py gui.py
+graft lib
+recursive-include test *
