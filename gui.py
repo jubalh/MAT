@@ -1,8 +1,7 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python
 
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk, GObject, Gdk
 import os
-import cli
 import glob
 import logging
 from lib import mat
@@ -35,7 +34,7 @@ class ListStoreApp:
         Main GUI class
     '''
     def __init__(self):
-        self.files = []
+        #preferences
         self.backup = True
         self.force = False
         self.ugly = False
@@ -55,13 +54,15 @@ class ListStoreApp:
         vbox.pack_start(toolbar, False, True, 0)
         vbox.pack_start(content, True, True, 0)
 
-        self.model = Gtk.ListStore(cfile ,str, str, str) #name - type - cleaned
+        #parser.class - name - type - cleaned
+        self.liststore= Gtk.ListStore(cfile ,str, str, str)
 
-        treeview = Gtk.TreeView(model=self.model)
+        treeview = Gtk.TreeView(model=self.liststore)
+        treeview.set_search_column(1) #name column is searchable
+        treeview.set_rules_hint(True) #alternate colors for rows
+        treeview.set_rubber_banding(True) #mouse selection
+        treeview.drag_dest_set(Gtk.DestDefaults.ALL, None, Gdk.DragAction.COPY)
         self.add_columns(treeview)
-        treeview.set_search_column(1)
-        treeview.set_rules_hint(True)
-        treeview.set_rubber_banding(True)
         self.selection = treeview.get_selection()
         self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
 
@@ -199,7 +200,6 @@ class ListStoreApp:
         filter.set_name('All files')
         filter.add_pattern('*')
         chooser.add_filter(filter)
-
         chooser.add_filter(self.create_filter())
 
         response = chooser.run()
@@ -207,8 +207,8 @@ class ListStoreApp:
         if response is 0: #Gtk.STOCK_OK
             filenames = chooser.get_filenames()
             chooser.destroy()
-            for item in filenames: #directory
-                if os.path.isdir(item):
+            for item in filenames:
+                if os.path.isdir(item): #directory
                     for root, dirs, files in os.walk(item):
                         for name in files:
                             self.populate(os.path.join(root, name))
@@ -217,11 +217,12 @@ class ListStoreApp:
         chooser.destroy()
 
     def populate(self, item):
+        '''
+            Append selected files by add_file to the self.liststore
+        '''
         cf = cfile(item, self.backup)
-
         if cf.file is not None:
-            self.files.append(cf)
-            self.model.append([cf, cf.file.filename, cf.file.mime, 'unknow'])
+            self.liststore.append([cf, cf.file.filename, cf.file.mime,'unknow'])
 
     def about(self, button=None):
         w = Gtk.AboutDialog()
@@ -237,14 +238,17 @@ class ListStoreApp:
             w.destroy()
 
     def preferences(self, button=None):
+        '''
+            Preferences popup
+        '''
         dialog = Gtk.Dialog('Preferences', self.window, 0, (Gtk.STOCK_OK, 0))
         content_area = dialog.get_content_area()
         hbox = Gtk.HBox()
         content_area.pack_start(hbox, False, False, 0)
-        stock = Gtk.Image(stock=Gtk.STOCK_PREFERENCES,
-            icon_size=Gtk.IconSize.DIALOG)
+        icon = Gtk.Image(stock=Gtk.STOCK_PREFERENCES,
+            icon_size=Gtk.IconSize.DIALOG)#the little picture on the left
 
-        hbox.pack_start(stock, False, False, 0)
+        hbox.pack_start(icon, False, False, 0)
 
         table = Gtk.Table(3, 2, False)
         table.set_row_spacings(4)
@@ -252,26 +256,27 @@ class ListStoreApp:
         hbox.pack_start(table, True, True, 0)
 
         force = Gtk.CheckButton('Force Clean', False)
-        table.attach_defaults(force, 0, 1, 0, 1)
         force.connect('toggled', self.invert, 'force')
         force.set_active(self.force)
 
         ugly = Gtk.CheckButton('Brute Clean', False)
-        table.attach_defaults(ugly, 0, 1, 1, 2)
         ugly.connect('toggled', self.invert, 'ugly')
         ugly.set_active(self.ugly)
 
         backup = Gtk.CheckButton('Backup', False)
-        table.attach_defaults(backup, 0, 1, 2, 3)
         backup.connect('toggled', self.invert, 'backup')
         backup.set_active(self.backup)
 
+        table.attach_defaults(force, 0, 1, 0, 1)
+        table.attach_defaults(ugly, 0, 1, 1, 2)
+        table.attach_defaults(backup, 0, 1, 2, 3)
+
         hbox.show_all()
         response = dialog.run()
-        if response is 0:
+        if response is 0:#Gtk.STOCK_OK
             dialog.destroy()
 
-    def invert(self, button, name): #I think I can do better than that !(but not tonight)
+    def invert(self, button, name): #Still not better :/
         if name is 'force':
             self.force = not self.force
         elif name is 'ugly':
@@ -280,31 +285,31 @@ class ListStoreApp:
             self.backup = not self.backup
 
     def clear_model(self, button=None):
-        self.model.clear()
+        self.liststore.clear()
 
-    def mat_check(self, button=None):#OMFG, I'm so ugly !
+    def mat_check(self, button=None):
         _, iter = self.selection.get_selected_rows()
         for i in iter:
-            if self.model[i][0].file.is_clean():
+            if self.liststore[i][0].file.is_clean():
                 string = 'clean'
             else:
                 string = 'dirty'
-            logging.info('%s is %s' % (self.model[i][1], string))
-            self.model[i][3] = string
+            logging.info('%s is %s' % (self.liststore[i][1], string))
+            self.liststore[i][3] = string
 
-    def mat_clean(self, button=None):#I am dirty too
+    def mat_clean(self, button=None):
         _, iter = self.selection.get_selected_rows()
         for i in iter:
-            logging.info('Cleaning %s' % self.model[i][1])
-            self.model[i][0].file.remove_all()
-            self.model[i][3] = 'clean'
+            logging.info('Cleaning %s' % self.liststore[i][1])
+            self.liststore[i][0].file.remove_all()
+            self.liststore[i][3] = 'clean'
 
-    def mat_clean_dirty(self, button=None):#And me too !
+    def mat_clean_dirty(self, button=None):
         _, iter = self.selection.get_selected_rows()
         for i in iter:
-            logging.info('Cleaning (lossy way) %s' % self.model[i][1])
-            self.model[i][0].file.remove_all_ugly()
-            self.model[i][3] = 'clean'
+            logging.info('Cleaning (lossy way) %s' % self.liststore[i][1])
+            self.liststore[i][0].file.remove_all_ugly()
+            self.liststore[i][3] = 'clean'
 
 def main():
     app = ListStoreApp()
