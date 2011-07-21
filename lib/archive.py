@@ -1,37 +1,47 @@
 import tarfile
 import zipfile
+
 import sys
 import shutil
 import os
+import logging
 
 import parser
 import mat
 
-class ZipStripper(parser.Generic_parser):
-    def is_clean(self):
-        return False
-
-    def get_meta(self):
-        self.zipin = zipfile.ZipFile(self.filename, 'r')
-        metadata = {}
-        for field in self.zipin.infolist():
-            zipmeta = {}
-            zipmeta['comment'] = field.comment
-            zipmeta['modified'] = str(field.date_time)
-            zipmeta['system'] = field.create_system
-            zipmeta['zip_version'] = field.create_version
-            metadata[field.filename] = zipmeta
-        self.zipin.close()
-        return metadata
-
-
-class TarStripper(parser.Generic_parser):
+class GenericArchiveStripper(parser.Generic_parser):
+    '''
+        Represent a generic archive
+    '''
     def __init__(self, realname, filename, parser, editor, backup):
-        super(TarStripper, self).__init__(realname,
+        super(GenericArchiveStripper, self).__init__(realname,
             filename, parser, editor, backup)
         self.compression = ''
         self.folder_list = []
 
+    def remove_folder(self):
+        [shutil.rmtree(folder) for folder in self.folder_list]
+        self.folder_list = []
+
+class ZipStripper(GenericArchiveStripper):
+    def is_clean(self):
+        return False
+
+    def get_meta(self):
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        metadata = {}
+        for field in zipin.infolist():
+            zipmeta = {}
+            zipmeta['comment'] = field.comment
+            zipmeta['modified'] = field.date_time
+            zipmeta['system'] = field.create_system
+            zipmeta['zip_version'] = field.create_version
+            metadata[field.filename] = zipmeta
+        zipin.close()
+        return metadata
+
+
+class TarStripper(GenericArchiveStripper):
     def _remove(self, current_file):
         '''
             remove the meta added by tar itself to the file
@@ -51,16 +61,17 @@ class TarStripper(parser.Generic_parser):
             tarin.extract(current_file)
             if current_file.type is '0': #is current_file a regular file ?
                 #no backup file
-                class_file = mat.create_class_file(current_file.name, False)
-                class_file.remove_all()
+                try:
+                    cfile = mat.create_class_file(current_file.name, False)
+                    cfile.remove_all()
+                except:
+                    print('%s\' format is not supported'%current_file.name)
                 tarout.add(current_file.name, filter=self._remove)
                 mat.secure_remove(current_file.name)
             else:
                 self.folder_list.insert(0, current_file.name)
         tarin.close()
         tarout.close()
-        print self.folder_list
-
         self.remove_folder()
 
         if self.backup is False:
@@ -120,15 +131,13 @@ class TarStripper(parser.Generic_parser):
         tarin.close()
         return metadata
 
-    def remove_folder(self):
-        [shutil.rmtree(folder) for folder in self.folder_list]
-        self.folder_list = []
 
 class GzipStripper(TarStripper):
     def __init__(self, realname, filename, parser, editor, backup):
         super(GzipStripper, self).__init__(realname,
             filename, parser, editor, backup)
         self.compression = ':gz'
+
 
 class Bzip2Stripper(TarStripper):
     def __init__(self, realname, filename, parser, editor, backup):
