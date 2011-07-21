@@ -37,7 +37,6 @@ class ListStoreApp:
         #preferences
         self.backup = True
         self.force = False
-        self.ugly = False
 
         self.window = Gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' % __version__)
@@ -250,7 +249,7 @@ class ListStoreApp:
 
         hbox.pack_start(icon, False, False, 0)
 
-        table = Gtk.Table(3, 2, False)
+        table = Gtk.Table(2, 2, False)#nb rows, nb lines
         table.set_row_spacings(4)
         table.set_col_spacings(4)
         hbox.pack_start(table, True, True, 0)
@@ -259,17 +258,12 @@ class ListStoreApp:
         force.connect('toggled', self.invert, 'force')
         force.set_active(self.force)
 
-        ugly = Gtk.CheckButton('Brute Clean', False)
-        ugly.connect('toggled', self.invert, 'ugly')
-        ugly.set_active(self.ugly)
-
         backup = Gtk.CheckButton('Backup', False)
         backup.connect('toggled', self.invert, 'backup')
         backup.set_active(self.backup)
 
         table.attach_defaults(force, 0, 1, 0, 1)
-        table.attach_defaults(ugly, 0, 1, 1, 2)
-        table.attach_defaults(backup, 0, 1, 2, 3)
+        table.attach_defaults(backup, 0, 1, 1, 2)
 
         hbox.show_all()
         response = dialog.run()
@@ -309,7 +303,12 @@ class ListStoreApp:
         iter = self.all_if_empy(iter)
         for i in iter:
             logging.info('Cleaning %s' % self.liststore[i][1])
-            self.liststore[i][0].file.remove_all()
+            if self.liststore[i][3] is not 'clean':
+                if self.force:
+                    self.liststore[i][0].file.remove_all()
+                else:
+                    if not self.liststore[i][0].is_clean():
+                        self.liststore[i][0].file.remove_all()
             self.liststore[i][3] = 'clean'
 
     def mat_clean_dirty(self, button=None):
@@ -317,7 +316,12 @@ class ListStoreApp:
         iter = self.all_if_empy(iter)
         for i in iter:
             logging.info('Cleaning (lossy way) %s' % self.liststore[i][1])
-            self.liststore[i][0].file.remove_all_ugly()
+            if self.liststore[i][3] is not 'clean':
+                if self.force:
+                    self.liststore[i][0].file.remove_all_ugly()
+                else:
+                    if not self.liststore[i][0].is_clean():
+                        self.liststore[i][0].file.remove_all_ugly()
             self.liststore[i][3] = 'clean'
 
 def main():
