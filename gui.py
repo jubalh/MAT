@@ -81,19 +81,23 @@ class ListStoreApp:
 
         toolbutton = Gtk.ToolButton(label = 'Add', stock_id=Gtk.STOCK_ADD)
         toolbutton.connect('clicked', self.add_files)
+        toolbutton.set_tooltip_text('Add files')
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label = 'Clean',
             stock_id=Gtk.STOCK_PRINT_REPORT)
         toolbutton.connect('clicked', self.mat_clean)
+        toolbutton.set_tooltip_text('Clean selected files without data loss')
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Brute Clean',
             stock_id=Gtk.STOCK_PRINT_WARNING)
+        toolbutton.set_tooltip_text('Clean selected files with possible data loss')
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
         toolbutton.connect('clicked', self.mat_check)
+        toolbutton.set_tooltip_text('Check selected files for harmful meta')
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
@@ -256,10 +260,12 @@ class ListStoreApp:
 
         force = Gtk.CheckButton('Force Clean', False)
         force.connect('toggled', self.invert, 'force')
+        force.set_tooltip_text('Do not check if already clean before cleaning.')
         force.set_active(self.force)
 
         backup = Gtk.CheckButton('Backup', False)
         backup.connect('toggled', self.invert, 'backup')
+        backup.set_tooltip_text('Keep a backup copy.')
         backup.set_active(self.backup)
 
         table.attach_defaults(force, 0, 1, 0, 1)
