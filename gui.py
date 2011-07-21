@@ -287,8 +287,15 @@ class ListStoreApp:
     def clear_model(self, button=None):
         self.liststore.clear()
 
+    def all_if_empy(self, iter):
+        if not iter:
+            return xrange(len(self.liststore))
+        else:
+            return iter
+
     def mat_check(self, button=None):
         _, iter = self.selection.get_selected_rows()
+        iter = self.all_if_empy(iter)
         for i in iter:
             if self.liststore[i][0].file.is_clean():
                 string = 'clean'
@@ -299,6 +306,7 @@ class ListStoreApp:
 
     def mat_clean(self, button=None):
         _, iter = self.selection.get_selected_rows()
+        iter = self.all_if_empy(iter)
         for i in iter:
             logging.info('Cleaning %s' % self.liststore[i][1])
             self.liststore[i][0].file.remove_all()
@@ -306,6 +314,7 @@ class ListStoreApp:
 
     def mat_clean_dirty(self, button=None):
         _, iter = self.selection.get_selected_rows()
+        iter = self.all_if_empy(iter)
         for i in iter:
             logging.info('Cleaning (lossy way) %s' % self.liststore[i][1])
             self.liststore[i][0].file.remove_all_ugly()
