@@ -27,6 +27,7 @@ logging.basicConfig(level = LOGGING_LEVEL)
 strippers = {
     hachoir_parser.image.JpegFile: images.JpegStripper,
     hachoir_parser.image.PngFile: images.PngStripper,
+    hachoir_parser.image.bmp.BmpFile: images.BmpStripper,
     hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
     hachoir_parser.misc.PDFDocument: misc.PdfStripper,
     hachoir_parser.archive.TarFile: archive.TarStripper,
