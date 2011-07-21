@@ -24,8 +24,39 @@ class GenericArchiveStripper(parser.Generic_parser):
         [shutil.rmtree(folder) for folder in self.folder_list]
         self.folder_list = []
 
+
 class ZipStripper(GenericArchiveStripper):
+    def is_file_clean(self, file):
+        if file.comment is not '':
+            return False
+        elif file.date_time is not 0:
+            return False
+        elif file.create_system is not 0:
+            return False
+        elif file.create_version is not 0:
+            return False
+        else:
+            return True
+
     def is_clean(self):
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        for item in zipin.infolist():
+            if not self.is_file_clean(item):
+                return False
+            zipin.extract(item)
+            if os.path.isfile(item.filename):
+                try:
+                    cfile = mat.create_class_file(item.filename, False,
+                        self.add2archive)
+                except:
+                    logging.error('%s is not supported' % item.filename)
+                    #Returning false is the best solution imho
+                    return False
+                mat.secure_remove(item.filename)
+            else:
+                self.folder_list.insert(0, item.filename)
+        zipin.close()
+        self.remove_folder()
         return False
 
     def get_meta(self):
@@ -42,7 +73,6 @@ class ZipStripper(GenericArchiveStripper):
         return metadata
 
     def remove_all(self):
-        folder_list = []
         zipin = zipfile.ZipFile(self.filename, 'r')
         zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
             allowZip64=True)
@@ -68,6 +98,7 @@ class ZipStripper(GenericArchiveStripper):
         self.remove_folder()
         zipin.close()
         zipout.close()
+
 
 class TarStripper(GenericArchiveStripper):
     def _remove(self, current_file):
@@ -130,6 +161,8 @@ class TarStripper(GenericArchiveStripper):
     def is_clean(self):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for current_file in tarin.getmembers():
+            if not self.is_file_clean(current_file):
+                return False
             tarin.extract(current_file)
             if current_file.type is '0': #is current_file a regular file ?
                 #no backup file
@@ -138,8 +171,6 @@ class TarStripper(GenericArchiveStripper):
                 if not class_file.is_clean():#if the extracted file is not clean
                     mat.secure_remove(current_file.name) #remove it
                     self.remove_folder() #remove all the remaining folders
-                    return False
-                if not self.is_file_clean(current_file):
                     return False
                 mat.secure_remove(current_file.name)
             else:
@@ -166,14 +197,14 @@ class TarStripper(GenericArchiveStripper):
 
 
 class GzipStripper(TarStripper):
-    def __init__(self, realname, filename, parser, editor, backup):
+    def __init__(self, realname, filename, parser, editor, backup, add2archive):
         super(GzipStripper, self).__init__(realname,
-            filename, parser, editor, backup)
+            filename, parser, editor, backup, add2archive)
         self.compression = ':gz'
 
 
 class Bzip2Stripper(TarStripper):
-    def __init__(self, realname, filename, parser, editor, backup):
+    def __init__(self, realname, filename, parser, editor, backup, add2archive):
         super(Bzip2Stripper, self).__init__(realname,
-            filename, parser, editor, backup)
+            filename, parser, editor, backup, add2archive)
         self.compression = ':bz2'
