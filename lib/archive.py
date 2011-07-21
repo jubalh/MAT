@@ -40,6 +40,28 @@ class ZipStripper(GenericArchiveStripper):
         zipin.close()
         return metadata
 
+    def remove_all(self):
+        folder_list = []
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
+            allowZip64=True)
+        for item in zipin.infolist():
+            zipin.extract(item)
+            if os.path.isfile(item.filename):
+                try:
+                    cfile = mat.create_class_file(item.filename, False)
+                    cfile.remove_all()
+                    logging.debug('Processing %s from %s' % (item.filename,
+                        self.filename))
+                except:
+                    print('%s\' filefomart is not supported'%item.filename)
+                zipout.write(item.filename)
+            else:
+                self.folder_list.insert(0, item.filename)
+        logging.info('%s treated' % self.filename)
+        self.remove_folder()
+        zipin.close()
+        zipout.close()
 
 class TarStripper(GenericArchiveStripper):
     def _remove(self, current_file):
