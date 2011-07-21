@@ -22,10 +22,10 @@ class cfile(GObject.GObject):
         This class exist just to be "around" my parser.Generic_parser class,
         since Gtk.ListStore does not accept it.
     '''
-    def __init__(self, path, backup):
+    def __init__(self, path, backup, add2archive):
         GObject.GObject.__init__(self)
         try:
-            self.file = mat.create_class_file(path, backup)
+            self.file = mat.create_class_file(path, backup, add2archive)
         except:
             self.file = None
 
@@ -37,6 +37,7 @@ class ListStoreApp:
         #preferences
         self.backup = True
         self.force = False
+        self.add2archive = True
 
         self.window = Gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' % __version__)
@@ -223,7 +224,7 @@ class ListStoreApp:
         '''
             Append selected files by add_file to the self.liststore
         '''
-        cf = cfile(item, self.backup)
+        cf = cfile(item, self.backup, self.add2archive)
         if cf.file is not None:
             self.liststore.append([cf, cf.file.filename, cf.file.mime,'unknow'])
 
@@ -253,7 +254,7 @@ class ListStoreApp:
 
         hbox.pack_start(icon, False, False, 0)
 
-        table = Gtk.Table(2, 2, False)#nb rows, nb lines
+        table = Gtk.Table(3, 2, False)#nb rows, nb lines
         table.set_row_spacings(4)
         table.set_col_spacings(4)
         hbox.pack_start(table, True, True, 0)
@@ -268,8 +269,15 @@ class ListStoreApp:
         backup.set_tooltip_text('Keep a backup copy.')
         backup.set_active(self.backup)
 
+        add2archive = Gtk.CheckButton('Add unsupported file to archives', False)
+        add2archive.connect('toggled', self.invert, 'add2archive')
+        add2archive.set_tooltip_text('Add non-supported (and so non-anonymised)\
+ file to outputed archive.')
+        add2archive.set_active(self.add2archive)
+
         table.attach_defaults(force, 0, 1, 0, 1)
         table.attach_defaults(backup, 0, 1, 1, 2)
+        table.attach_defaults(add2archive, 0, 1, 2, 3)
 
         hbox.show_all()
         response = dialog.run()
@@ -313,7 +321,7 @@ class ListStoreApp:
                 if self.force:
                     self.liststore[i][0].file.remove_all()
                 else:
-                    if not self.liststore[i][0].is_clean():
+                    if not self.liststore[i][0].file.is_clean():
                         self.liststore[i][0].file.remove_all()
             self.liststore[i][3] = 'clean'
 
@@ -326,7 +334,7 @@ class ListStoreApp:
                 if self.force:
                     self.liststore[i][0].file.remove_all_ugly()
                 else:
-                    if not self.liststore[i][0].is_clean():
+                    if not self.liststore[i][0].file.is_clean():
                         self.liststore[i][0].file.remove_all_ugly()
             self.liststore[i][3] = 'clean'
 

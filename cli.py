@@ -12,6 +12,8 @@ __version__ = '0.1'
 
 def parse():
     parser = optparse.OptionParser(usage='%prog [options] filename')
+    parser.add_option('--add2archive', '-a', action='store_true', default=False,
+        help='Add to outputed archive non-supported filetypes')
     parser.add_option('--backup', '-b', action='store_true', default=False,
         help='Keep a backup copy')
     parser.add_option('--check', '-c',  action='store_true', default=False,
@@ -91,7 +93,8 @@ def main():
         func = clean_meta
 
     for filename in filenames:
-        class_file = mat.create_class_file(filename, args.backup)
+        class_file = mat.create_class_file(filename, args.backup,
+            args.add2archive)
         if class_file is not None:
             func(class_file, filename)
 

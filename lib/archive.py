@@ -13,11 +13,12 @@ class GenericArchiveStripper(parser.Generic_parser):
     '''
         Represent a generic archive
     '''
-    def __init__(self, realname, filename, parser, editor, backup):
+    def __init__(self, realname, filename, parser, editor, backup, add2archive):
         super(GenericArchiveStripper, self).__init__(realname,
-            filename, parser, editor, backup)
+            filename, parser, editor, backup, add2archive)
         self.compression = ''
         self.folder_list = []
+        self.add2archive = add2archive
 
     def remove_folder(self):
         [shutil.rmtree(folder) for folder in self.folder_list]
@@ -49,13 +50,18 @@ class ZipStripper(GenericArchiveStripper):
             zipin.extract(item)
             if os.path.isfile(item.filename):
                 try:
-                    cfile = mat.create_class_file(item.filename, False)
+                    cfile = mat.create_class_file(item.filename, False,
+                        self.add2archive)
                     cfile.remove_all()
                     logging.debug('Processing %s from %s' % (item.filename,
                         self.filename))
+                    zipout.write(item.filename)
                 except:
-                    print('%s\' filefomart is not supported'%item.filename)
-                zipout.write(item.filename)
+                    logging.info('%s\' filefomart is not supported' %
+                        item.filename)
+                    if self.add2archive:
+                        zipout.write(item.filename)
+                mat.secure_remove(item.filename)
             else:
                 self.folder_list.insert(0, item.filename)
         logging.info('%s treated' % self.filename)
@@ -84,11 +90,15 @@ class TarStripper(GenericArchiveStripper):
             if current_file.type is '0': #is current_file a regular file ?
                 #no backup file
                 try:
-                    cfile = mat.create_class_file(current_file.name, False)
+                    cfile = mat.create_class_file(current_file.name, False,
+                    self.add2archive)
                     cfile.remove_all()
+                    tarout.add(current_file.name, filter=self._remove)
                 except:
-                    print('%s\' format is not supported'%current_file.name)
-                tarout.add(current_file.name, filter=self._remove)
+                    logging.info('%s\' format is not supported' %
+                        current_file.name)
+                    if self.add2archive:
+                        tarout.add(current_file.name, filter=self._remove)
                 mat.secure_remove(current_file.name)
             else:
                 self.folder_list.insert(0, current_file.name)
@@ -123,7 +133,8 @@ class TarStripper(GenericArchiveStripper):
             tarin.extract(current_file)
             if current_file.type is '0': #is current_file a regular file ?
                 #no backup file
-                class_file = mat.create_class_file(current_file.name, False)
+                class_file = mat.create_class_file(current_file.name, False,
+                    self.add2archive)
                 if not class_file.is_clean():#if the extracted file is not clean
                     mat.secure_remove(current_file.name) #remove it
                     self.remove_folder() #remove all the remaining folders

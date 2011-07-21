@@ -5,16 +5,18 @@
 import hachoir_core.error
 import hachoir_parser
 import hachoir_editor
+
 import sys
 import os
 import subprocess
 import mimetypes
+
 import mat
 
 POSTFIX = ".cleaned"
 
 class Generic_parser(object):
-    def __init__(self, realname, filename, parser, editor, backup):
+    def __init__(self, realname, filename, parser, editor, backup, add2archive):
         self.filename = filename
         self.realname = realname
         self.shortname = os.path.basename(filename)

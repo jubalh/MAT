@@ -52,14 +52,16 @@ def is_secure(filename):
 
     if not(os.path.isfile(filename)): #check if the file exist
         logging.error("Error: %s is not a valid file" % filename)
-        return
+        return False
 
-def create_class_file(name, backup):
+def create_class_file(name, backup, add2archive):
     '''
         return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
     '''
-    is_secure(name)
+    if is_secure(name):
+        print 'a'
+        return
 
     filename = ""
     realname = name
@@ -83,4 +85,5 @@ def create_class_file(name, backup):
         return
     if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
         return stripper_class(filename, realname, backup)
-    return stripper_class(realname, filename, parser, editor, backup)
+    return stripper_class(realname, filename, parser, editor, backup,
+        add2archive)
