@@ -32,6 +32,7 @@ strippers = {
     hachoir_parser.archive.TarFile: archive.TarStripper,
     hachoir_parser.archive.gzip_parser.GzipParser: archive.GzipStripper,
     hachoir_parser.archive.bzip2_parser.Bzip2Parser: archive.Bzip2Stripper,
+    hachoir_parser.archive.zip.ZipFile: archive.ZipStripper,
 }
 
 def secure_remove(filename):

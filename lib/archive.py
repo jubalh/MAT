@@ -1,18 +1,34 @@
 import tarfile
+import zipfile
 import sys
-import parser
-import mat
 import shutil
 import os
-import mimetypes
+
+import parser
+import mat
+
+class ZipStripper(parser.Generic_parser):
+    def is_clean(self):
+        return False
+
+    def get_meta(self):
+        self.zipin = zipfile.ZipFile(self.filename, 'r')
+        metadata = {}
+        for field in self.zipin.infolist():
+            zipmeta = {}
+            zipmeta['comment'] = field.comment
+            zipmeta['modified'] = str(field.date_time)
+            zipmeta['system'] = field.create_system
+            zipmeta['zip_version'] = field.create_version
+            metadata[field.filename] = zipmeta
+        self.zipin.close()
+        return metadata
 
 class TarStripper(parser.Generic_parser):
     def __init__(self, realname, filename, parser, editor, backup):
         super(TarStripper, self).__init__(realname,
             filename, parser, editor, backup)
         self.compression = ''
-        self.shortname = os.path.basename(filename)
-        self.mime = mimetypes.guess_type(filename)[0]
         self.tarin = tarfile.open(self.filename, 'r' + self.compression)
         self.folder_list = []
 
@@ -75,9 +91,9 @@ class TarStripper(parser.Generic_parser):
             if current_file.type is '0': #is current_file a regular file ?
                 #no backup file
                 class_file = mat.create_class_file(current_file.name, False)
-                if not class_file.is_clean():
-                    mat.secure_remove(current_file.name)
-                    self.remove_folder()
+                if not class_file.is_clean():#if the extracted file is not clean
+                    mat.secure_remove(current_file.name) #remove it
+                    self.remove_folder() #remove all the remaining folders
                     return False
                 if not self.is_file_clean(current_file):
                     return False
