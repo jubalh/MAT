@@ -1,11 +1,62 @@
-import parser
-import pdfrw
 import os
 import mimetypes
-import mat
 import subprocess
 import tempfile
 import glob
+
+import hachoir_core
+
+import pdfrw
+import mat
+import parser
+
+class TorrentStripper(parser.Generic_parser):
+    '''
+        A torrent file looks like:
+        -root
+            -start
+            -announce
+            -announce-list
+            -comment
+            -created_by
+            -creation_date
+            -encoding
+            -info
+            -end
+    '''
+    def remove_all(self):
+        for field in self.editor['root']:
+            if self._should_remove(field):
+                #FIXME : hachoir does not support torrent metadata editing :<
+                del self.editor['/root/' + field.name]
+        hachoir_core.field.writeIntoFile(self.editor,
+            self.filename + parser.POSTFIX)
+        if self.backup is False:
+            mat.secure_remove(self.filename) #remove the old file
+            os.rename(self.filename + parser.POSTFIX, self.filename)
+
+    def is_clean(self):
+        for field in self.editor['root']:
+            if self._should_remove(field):
+                return False
+        return True
+
+    def get_meta(self):
+        metadata = {}
+        for field in self.editor['root']:
+            if self._should_remove(field):
+                try:#FIXME
+                    metadata[field.name] = field.value
+                except:
+                    metadata[field.name] = 'harmful content'
+        return metadata
+
+    def _should_remove(self, field):
+        if field.name in ('comment', 'created_by', 'creation_date', 'info'):
+            return True
+        else:
+            return False
+
 
 class PdfStripper(parser.Generic_parser):
     '''
