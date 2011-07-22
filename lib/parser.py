@@ -40,7 +40,7 @@ class Generic_parser(object):
         '''
         for field in self.editor:
             if self._should_remove(field):
-                self._remove(field)
+                self._remove(field.name)
         hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
         if self.backup is False:
             mat.secure_remove(self.filename) #remove the old file
@@ -61,7 +61,7 @@ class Generic_parser(object):
         '''
             Delete the given field
         '''
-        del self.editor[field.name]
+        del self.editor[field]
 
     def get_meta(self):
         '''
