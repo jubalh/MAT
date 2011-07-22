@@ -17,10 +17,10 @@ POSTFIX = ".cleaned"
 
 class Generic_parser(object):
     def __init__(self, realname, filename, parser, editor, backup, add2archive):
-        self.filename = filename
-        self.realname = realname
-        self.shortname = os.path.basename(filename)
-        self.mime = mimetypes.guess_type(filename)[0]
+        self.filename = filename #path + filename
+        self.realname = realname #path + filename
+        self.shortname = os.path.basename(filename) #only filename
+        self.mime = mimetypes.guess_type(filename)[0] #mimetype
         self.parser = parser
         self.editor = editor
         self.backup = backup
@@ -44,7 +44,7 @@ class Generic_parser(object):
         hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
         if self.backup is False:
             mat.secure_remove(self.filename) #remove the old file
-            os.rename(self.filename+ POSTFIX, self.filename)#rename the new
+            os.rename(self.filename+ POSTFIX, self.filename) #rename the new
 
     def remove_all_ugly(self):
         '''
@@ -52,33 +52,16 @@ class Generic_parser(object):
             this method is implemented :
             It is efficient, but destructive.
             In a perfect world, with nice fileformat,
-            this method does not exist.
+            this method would not exist.
         '''
         self.remove_all()
 
 
     def _remove(self, field):
         '''
-            Remove the given field
+            Delete the given field
         '''
         del self.editor[field.name]
-
-    def search(self, value):
-        return self.__search(value, self.editor)
-
-    def __search(self, value, graph):
-        '''
-            Search a given file
-        '''
-        for node in graph:
-            try:
-                iter(node)
-                return node.value + self.__search(value, node)
-            except:
-                if node.name == value:
-                    return value
-        return False
-
 
     def get_meta(self):
         '''
