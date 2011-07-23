@@ -76,6 +76,12 @@ class ZipStripper(GenericArchiveStripper):
         return metadata
 
     def remove_all(self):
+        self._remove_all(self, 'normal')
+
+    def remove_all_ugly(self):
+        self._remove_all(self, 'ugly')
+
+    def _remove_all(self, method):
         zipin = zipfile.ZipFile(self.filename, 'r')
         zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
             allowZip64=True)
@@ -85,12 +91,15 @@ class ZipStripper(GenericArchiveStripper):
                 try:
                     cfile = mat.create_class_file(item.filename, False,
                         self.add2archive)
-                    cfile.remove_all()
+                    if method is 'normal':
+                        cfile.remove_all()
+                    else:
+                        cfile.remove_all_ugly()
                     logging.debug('Processing %s from %s' % (item.filename,
                         self.filename))
                     zipout.write(item.filename)
                 except:
-                    logging.info('%s\' filefomart is not supported' %
+                    logging.info('%s\' fileformat is not supported' %
                         item.filename)
                     if self.add2archive:
                         zipout.write(item.filename)
