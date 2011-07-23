@@ -40,6 +40,8 @@ class ZipStripper(GenericArchiveStripper):
 
     def is_clean(self):
         zipin = zipfile.ZipFile(self.filename, 'r')
+        if zipin.comment != '':
+            return False
         for item in zipin.infolist():
             if not self.is_file_clean(item):
                 return False
@@ -69,6 +71,7 @@ class ZipStripper(GenericArchiveStripper):
             zipmeta['system'] = field.create_system
             zipmeta['zip_version'] = field.create_version
             metadata[field.filename] = zipmeta
+        metadata["%s comment" % self.filename] = zipin.comment
         zipin.close()
         return metadata
 
@@ -94,6 +97,7 @@ class ZipStripper(GenericArchiveStripper):
                 mat.secure_remove(item.filename)
             else:
                 self.folder_list.insert(0, item.filename)
+        zipout.comment = ''
         logging.info('%s treated' % self.filename)
         self.remove_folder()
         zipin.close()
