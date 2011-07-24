@@ -20,15 +20,6 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         The one that interest us is meta.xml
     '''
 
-    def remove_folder(self, folder_list):
-        for folder in folder_list:
-            dirname = folder.split('/')[0]
-            try:
-                shutil.rmtree(dirname)
-            except:#Some folder or open document format are buggies
-                pass
-        self.folder_list = []
-
     def _remove_all(self, method):
         '''
             FIXME ?
@@ -38,25 +29,24 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         zipin = zipfile.ZipFile(self.filename, 'r')
         zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
             allowZip64=True)
-        folder_list = []
         for item in zipin.namelist():
-            if os.path.basename(item) is not item:#add folders to folder_list
-                folder_list.insert(0, os.path.dirname(item))
-            if item.endswith('.xml') or item.startswith('manifest'):
+            name = os.path.join(self.tempdir, item)
+            if item.endswith('.xml') or item == 'mimetype':
+                #keep .xml files, and the "manifest" file
                 if item != 'meta.xml':#contains the metadata
-                    zipin.extract(item)
-                    zipout.write(item)
-                    mat.secure_remove(item)
-            elif item == 'mimetype':
-                zipin.extract(item)
+                    zipin.extract(item, self.tempdir)
+                    zipout.write(name, item)
+                    mat.secure_remove(name)
+            elif item.endswith('manifest.xml'):
+                zipin.extract(item, self.tempdir)
                 #remove line meta.xml
-                zipout.write(item)
-                mat.secure_remove(item)
+                zipout.write(name, item)
+                mat.secure_remove(name)
             else:
-                zipin.extract(item)
-                if os.path.isfile(item):
+                zipin.extract(item, self.tempdir)
+                if os.path.isfile(name):
                     try:
-                        cfile = mat.create_class_file(item, False,
+                        cfile = mat.create_class_file(name, False,
                             self.add2archive)
                         if method == 'normal':
                             cfile.remove_all()
@@ -64,18 +54,17 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                             cfile.remove_all_ugly()
                         logging.debug('Processing %s from %s' % (item,
                             self.filename))
-                        zipout.write(item)
+                        zipout.write(name, item)
                     except:
                         logging.info('%s\' fileformat is not supported' %
                             item)
                         if self.add2archive:
-                            zipout.write(item)
-                    mat.secure_remove(item)
+                            zipout.write(item, name)
+                    mat.secure_remove(name)
         zipout.comment = ''
         logging.info('%s treated' % self.filename)
         zipin.close()
         zipout.close()
-        self.remove_folder(folder_list)
 
         if self.backup is False:
             mat.secure_remove(self.filename) #remove the old file
