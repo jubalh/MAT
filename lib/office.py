@@ -3,12 +3,98 @@ import mimetypes
 import subprocess
 import tempfile
 import glob
+import logging
+import zipfile
+import shutil
 
 import hachoir_core
 
 import pdfrw
 import mat
 import parser
+import archive
+
+class OpenDocumentStripper(archive.GenericArchiveStripper):
+    '''
+        An open document file is a zip, with xml file into.
+        The one that interest us is meta.xml
+    '''
+
+    def remove_folder(self, folder_list):
+        for folder in folder_list:
+            dirname = folder.split('/')[0]
+            try:
+                shutil.rmtree(dirname)
+            except:#Some folder or open document format are buggies
+                pass
+        self.folder_list = []
+
+    def _remove_all(self, method):
+        '''
+            FIXME ?
+            There is a patch implementing the Zipfile.remove()
+            method here : http://bugs.python.org/issue6818
+        '''
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
+            allowZip64=True)
+        folder_list = []
+        for item in zipin.namelist():
+            if os.path.basename(item) is not item:#add folders to folder_list
+                folder_list.insert(0, os.path.dirname(item))
+            if item.endswith('.xml') or item.startswith('manifest'):
+                if item != 'meta.xml':#contains the metadata
+                    zipin.extract(item)
+                    zipout.write(item)
+                    mat.secure_remove(item)
+            elif item == 'mimetype':
+                zipin.extract(item)
+                #remove line meta.xml
+                zipout.write(item)
+                mat.secure_remove(item)
+            else:
+                zipin.extract(item)
+                if os.path.isfile(item):
+                    try:
+                        cfile = mat.create_class_file(item, False,
+                            self.add2archive)
+                        if method == 'normal':
+                            cfile.remove_all()
+                        else:
+                            cfile.remove_all_ugly()
+                        logging.debug('Processing %s from %s' % (item,
+                            self.filename))
+                        zipout.write(item)
+                    except:
+                        logging.info('%s\' fileformat is not supported' %
+                            item)
+                        if self.add2archive:
+                            zipout.write(item)
+                    mat.secure_remove(item)
+        zipout.comment = ''
+        logging.info('%s treated' % self.filename)
+        zipin.close()
+        zipout.close()
+        self.remove_folder(folder_list)
+
+        if self.backup is False:
+            mat.secure_remove(self.filename) #remove the old file
+            os.rename(self.filename + parser.POSTFIX, self.filename)
+
+    def is_clean(self):
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        try:
+            zipin.getinfo('meta.xml')
+        except KeyError:#no meta.xml in the file
+                zipin.close()
+                czf = archive.ZipStripper(self.realname, self.filename,
+                    self.parser, self.editor, self.backup, self.add2archive)
+                if czf.is_clean():
+                    return True
+                else:
+                    return False
+        return False
+
 
 class TorrentStripper(parser.Generic_parser):
     '''

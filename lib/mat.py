@@ -7,6 +7,7 @@
 import os
 import subprocess
 import logging
+import mimetypes
 
 import hachoir_core.cmd_line
 import hachoir_parser
@@ -14,7 +15,7 @@ import hachoir_editor
 
 import images
 import audio
-import misc
+import office
 import archive
 
 __version__ = "0.1"
@@ -29,7 +30,7 @@ strippers = {
     hachoir_parser.image.PngFile: images.PngStripper,
     hachoir_parser.image.bmp.BmpFile: images.BmpStripper,
     hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
-    hachoir_parser.misc.PDFDocument: misc.PdfStripper,
+    hachoir_parser.misc.PDFDocument: office.PdfStripper,
     hachoir_parser.archive.TarFile: archive.TarStripper,
     hachoir_parser.archive.gzip_parser.GzipParser: archive.GzipStripper,
     hachoir_parser.archive.bzip2_parser.Bzip2Parser: archive.Bzip2Stripper,
@@ -61,12 +62,14 @@ def create_class_file(name, backup, add2archive):
         corresponding to the filetype of the given file
     '''
     if is_secure(name):
-        print 'a'
         return
 
     filename = ""
     realname = name
-    filename = hachoir_core.cmd_line.unicodeFilename(name)
+    try:
+        filename = hachoir_core.cmd_line.unicodeFilename(name)
+    except TypeError:# get rid of "TypeError: decoding Unicode is not supported"
+        filename = name
     parser = hachoir_parser.createParser(filename)
     if not parser:
         logging.error("Unable to parse %s" % filename)
@@ -82,9 +85,26 @@ def create_class_file(name, backup, add2archive):
         stripper_class = strippers[editor.input.__class__]
     except KeyError:
         #Place for another lib than hachoir
-        logging.error("Don't have stripper for file type %s" % editor.description)
+        logging.error("Don't have stripper for format %s" % editor.description)
         return
-    if editor.input.__class__ == hachoir_parser.misc.PDFDocument:
+
+    if editor.input.__class__ == hachoir_parser.misc.PDFDocument:#pdf
         return stripper_class(filename, realname, backup)
-    return stripper_class(realname, filename, parser, editor, backup,
-        add2archive)
+
+    elif editor.input.__class__ == hachoir_parser.archive.zip.ZipFile:
+        #zip based format
+        mime = mimetypes.guess_type(filename)[0]
+        try:#Ugly workaround, cleaning open document delete mime (wtf?)
+            if mime.startswith(#Open document format
+            'application/vnd.oasis.opendocument'):
+                return office.OpenDocumentStripper(realname, filename, parser,
+                    editor, backup, add2archive)
+            else:#normal zip
+                return stripper_class(realname, filename, parser, editor,
+                    backup, add2archive)
+        except:#normal zip file
+            return stripper_class(realname, filename, parser, editor, backup,
+                add2archive)
+    else:#normal handling
+        return stripper_class(realname, filename, parser, editor, backup,
+            add2archive)
