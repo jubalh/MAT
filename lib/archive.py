@@ -1,10 +1,10 @@
 import tarfile
 import zipfile
 
-import sys
 import shutil
 import os
 import logging
+import tempfile
 
 import parser
 import mat
@@ -17,12 +17,14 @@ class GenericArchiveStripper(parser.Generic_parser):
         super(GenericArchiveStripper, self).__init__(realname,
             filename, parser, editor, backup, add2archive)
         self.compression = ''
-        self.folder_list = []
         self.add2archive = add2archive
+        self.tempdir = tempfile.mkdtemp()
 
-    def remove_folder(self):
-        [shutil.rmtree(folder) for folder in self.folder_list]
-        self.folder_list = []
+    def __del__(self):
+        '''
+            Remove the temp dir
+        '''
+        shutil.rmtree(self.tempdir)
 
     def remove_all(self):
         self._remove_all('normal')
@@ -50,20 +52,18 @@ class ZipStripper(GenericArchiveStripper):
         for item in zipin.infolist():
             if not self.is_file_clean(item):
                 return False
-            zipin.extract(item)
-            if os.path.isfile(item.filename):
+            zipin.extract(item, self.tempdir)
+            name = os.path.join(self.tempdir, item.filename)
+            if os.path.isfile(name):
                 try:
-                    cfile = mat.create_class_file(item.filename, False,
+                    cfile = mat.create_class_file(name, False,
                         self.add2archive)
                 except:
                     logging.error('%s is not supported' % item.filename)
                     #Returning false is the best solution imho
                     return False
-                mat.secure_remove(item.filename)
-            else:
-                self.folder_list.insert(0, item.filename)
+                mat.secure_remove(name)
         zipin.close()
-        self.remove_folder()
         return False
 
     def get_meta(self):
@@ -86,10 +86,11 @@ class ZipStripper(GenericArchiveStripper):
         zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
             allowZip64=True)
         for item in zipin.infolist():
-            zipin.extract(item)
-            if os.path.isfile(item.filename):
+            zipin.extract(item, self.tempdir)
+            name = os.path.join(self.tempdir, item.filename)
+            if os.path.isfile(name):
                 try:
-                    cfile = mat.create_class_file(item.filename, False,
+                    cfile = mat.create_class_file(name, False,
                         self.add2archive)
                     if method is 'normal':
                         cfile.remove_all()
@@ -97,18 +98,15 @@ class ZipStripper(GenericArchiveStripper):
                         cfile.remove_all_ugly()
                     logging.debug('Processing %s from %s' % (item.filename,
                         self.filename))
-                    zipout.write(item.filename)
+                    zipout.write(name, item.filename)
                 except:
                     logging.info('%s\' fileformat is not supported' %
                         item.filename)
                     if self.add2archive:
-                        zipout.write(item.filename)
-                mat.secure_remove(item.filename)
-            else:
-                self.folder_list.insert(0, item.filename)
+                        zipout.write(name, item.filename)
+                mat.secure_remove(name)
         zipout.comment = ''
         logging.info('%s treated' % self.filename)
-        self.remove_folder()
         zipin.close()
         zipout.close()
 
@@ -129,29 +127,27 @@ class TarStripper(GenericArchiveStripper):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         tarout = tarfile.open(self.filename + parser.POSTFIX,
             'w' + self.compression)
-        for current_file in tarin.getmembers():
-            tarin.extract(current_file)
-            if current_file.type is '0': #is current_file a regular file ?
+        for item in tarin.getmembers():
+            tarin.extract(item, self.tempdir)
+            name = os.path.join(self.tempdir, item.name)
+            if item.type is '0': #is item a regular file ?
                 #no backup file
                 try:
-                    cfile = mat.create_class_file(current_file.name, False,
+                    cfile = mat.create_class_file(name, False,
                     self.add2archive)
                     if method is 'normal':
                         cfile.remove_all()
                     else:
                         cfile.remove_all_ugly()
-                    tarout.add(current_file.name, filter=self._remove)
+                    tarout.add(name, item.name, filter=self._remove)
                 except:
                     logging.info('%s\' format is not supported' %
-                        current_file.name)
+                        item.name)
                     if self.add2archive:
-                        tarout.add(current_file.name, filter=self._remove)
-                mat.secure_remove(current_file.name)
-            else:
-                self.folder_list.insert(0, current_file.name)
+                        tarout.add(name, item.name,filter=self._remove)
+                mat.secure_remove(name)
         tarin.close()
         tarout.close()
-        self.remove_folder()
 
         if self.backup is False:
             mat.secure_remove(self.filename)
@@ -176,23 +172,19 @@ class TarStripper(GenericArchiveStripper):
 
     def is_clean(self):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
-        for current_file in tarin.getmembers():
-            if not self.is_file_clean(current_file):
+        for item in tarin.getmembers():
+            if not self.is_file_clean(item):
                 return False
-            tarin.extract(current_file)
-            if current_file.type is '0': #is current_file a regular file ?
+            tarin.extract(item, self.tempdir)
+            name = os.path.join(self.tempdir, item.name)
+            if item.type is '0': #is item a regular file ?
                 #no backup file
-                class_file = mat.create_class_file(current_file.name, False,
+                class_file = mat.create_class_file(name, False,
                     self.add2archive)
+                mat.secure_remove(name)
                 if not class_file.is_clean():#if the extracted file is not clean
-                    mat.secure_remove(current_file.name) #remove it
-                    self.remove_folder() #remove all the remaining folders
                     return False
-                mat.secure_remove(current_file.name)
-            else:
-                self.folder_list.insert(0, current_file.name)
         tarin.close()
-        self.remove_folder()
         return True
 
     def get_meta(self):
