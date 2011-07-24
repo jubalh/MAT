@@ -24,6 +24,11 @@ class GenericArchiveStripper(parser.Generic_parser):
         [shutil.rmtree(folder) for folder in self.folder_list]
         self.folder_list = []
 
+    def remove_all(self):
+        self._remove_all('normal')
+
+    def remove_all_ugly(self):
+        self._remove_all('ugly')
 
 class ZipStripper(GenericArchiveStripper):
     def is_file_clean(self, file):
@@ -75,11 +80,6 @@ class ZipStripper(GenericArchiveStripper):
         zipin.close()
         return metadata
 
-    def remove_all(self):
-        self._remove_all(self, 'normal')
-
-    def remove_all_ugly(self):
-        self._remove_all(self, 'ugly')
 
     def _remove_all(self, method):
         zipin = zipfile.ZipFile(self.filename, 'r')
@@ -125,7 +125,7 @@ class TarStripper(GenericArchiveStripper):
         current_file.gname = ''
         return current_file
 
-    def remove_all(self):
+    def _remove_all(self, method):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         tarout = tarfile.open(self.filename + parser.POSTFIX,
             'w' + self.compression)
@@ -136,7 +136,10 @@ class TarStripper(GenericArchiveStripper):
                 try:
                     cfile = mat.create_class_file(current_file.name, False,
                     self.add2archive)
-                    cfile.remove_all()
+                    if method is 'normal':
+                        cfile.remove_all()
+                    else:
+                        cfile.remove_all_ugly()
                     tarout.add(current_file.name, filter=self._remove)
                 except:
                     logging.info('%s\' format is not supported' %
