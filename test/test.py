@@ -23,17 +23,20 @@ class MATTest(unittest.TestCase):
         Create working copy of the clean and the dirty file in the TMP dir
     '''
         self.file_list = []
-        _, self.tmpdir = tempfile.mkstemp()
+        self.tmpdir = tempfile.mkdtemp()
 
         for clean, dirty in FILE_LIST:
-            shutil.copy2(clean, self.tmpdir + clean)
-            shutil.copy2(dirty, self.tmpdir + dirty)
-            self.file_list.append((self.tmpdir + clean, self.tmpdir + dirty))
+            shutil.copy2(clean, self.tmpdir + os.sep + clean)
+            shutil.copy2(dirty, self.tmpdir + os.sep + dirty)
+
+            self.file_list.append((self.tmpdir + os.sep + clean,
+                self.tmpdir + os.sep + dirty))
 
     def tearDown(self):
 	'''
         Remove the tmp folder
     '''
-        for root, dirs, files in os.walk(self.tmpdir, topdown=False):
-            [mat.secure_remove(os.path.join(toor, name)) for name in files]
-            [os.rmdir(os.path.join(root, name)) for name in dirs]
+        for clean, dirty in self.file_list:
+            mat.secure_remove(clean)
+            mat.secure_remove(dirty)
+        shutil.rmtree(self.tmpdir)
