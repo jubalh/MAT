@@ -59,9 +59,11 @@ class ZipStripper(GenericArchiveStripper):
                     cfile = mat.create_class_file(name, False,
                         self.add2archive)
                 except:
+                    #best solution I have found
                     logging.error('%s is not supported' % item.filename)
-                    #Returning false is the best solution imho
-                    return False
+                    _, ext = os.path.splitext(name)
+                    if ext not in parser.NOMETA:
+                        return False
                 mat.secure_remove(name)
         zipin.close()
         return False

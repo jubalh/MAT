@@ -27,7 +27,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             method here : http://bugs.python.org/issue6818
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
-        zipout = zipfile.ZipFile(self.basename + parser.POSTFIX + self.ext, 'w',
+        zipout = zipfile.ZipFile(self.output, 'w',
             allowZip64=True)
         for item in zipin.namelist():
             name = os.path.join(self.tempdir, item)
@@ -134,7 +134,7 @@ class PdfStripper(parser.Generic_parser):
     '''
     def __init__(self, filename, realname, backup):
         name, path = os.path.splitext(filename)
-        self.output = name + '.cleaned.' + ext
+        self.output = name + '.cleaned' + ext
         self.filename = filename
         self.backup = backup
         self.realname = realname
