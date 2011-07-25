@@ -13,10 +13,12 @@ import mimetypes
 
 import mat
 
-POSTFIX = ".cleaned"
+NOMETA = ('*.txt', '*.bmp', '*.py')
 
 class Generic_parser(object):
     def __init__(self, realname, filename, parser, editor, backup, add2archive):
+        basename, ext = os.path.splitext(filename)
+        self.output = basename + '.cleaned.' + ext
         self.filename = filename #path + filename
         self.realname = realname #path + filename
         self.shortname = os.path.basename(filename) #only filename
@@ -41,10 +43,8 @@ class Generic_parser(object):
         for field in self.editor:
             if self._should_remove(field):
                 self._remove(field.name)
-        hachoir_core.field.writeIntoFile(self.editor, self.filename + POSTFIX)
-        if self.backup is False:
-            mat.secure_remove(self.filename) #remove the old file
-            os.rename(self.filename+ POSTFIX, self.filename) #rename the new
+        hachoir_core.field.writeIntoFile(self.editor, self.output)
+        self.do_backup()
 
     def remove_all_ugly(self):
         '''
@@ -73,7 +73,7 @@ class Generic_parser(object):
                 try:
                     metadata[field.name] = field.value
                 except:
-                    metadata[field.name] = "harmful content"
+                    metadata[field.name] = 'harmful content'
         return metadata
 
     def _should_remove(self, key):
@@ -82,3 +82,11 @@ class Generic_parser(object):
             abstract method
         '''
         raise NotImplementedError()
+
+    def do_backup(self):
+        '''
+            Do a backup of the file if asked
+        '''
+        if self.backup is False:
+            mat.secure_remove(self.filename)
+            os.rename(self.output, self.filename)

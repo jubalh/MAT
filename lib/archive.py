@@ -83,7 +83,7 @@ class ZipStripper(GenericArchiveStripper):
 
     def _remove_all(self, method):
         zipin = zipfile.ZipFile(self.filename, 'r')
-        zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
+        zipout = zipfile.ZipFile(self.output, 'w',
             allowZip64=True)
         for item in zipin.infolist():
             zipin.extract(item, self.tempdir)
@@ -109,6 +109,7 @@ class ZipStripper(GenericArchiveStripper):
         logging.info('%s treated' % self.filename)
         zipin.close()
         zipout.close()
+        self.do_backup()
 
 
 class TarStripper(GenericArchiveStripper):
@@ -125,8 +126,7 @@ class TarStripper(GenericArchiveStripper):
 
     def _remove_all(self, method):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
-        tarout = tarfile.open(self.filename + parser.POSTFIX,
-            'w' + self.compression)
+        tarout = tarfile.open(self.output, 'w' + self.compression)
         for item in tarin.getmembers():
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
@@ -148,10 +148,7 @@ class TarStripper(GenericArchiveStripper):
                 mat.secure_remove(name)
         tarin.close()
         tarout.close()
-
-        if self.backup is False:
-            mat.secure_remove(self.filename)
-            os.rename(self.filename + parser.POSTFIX, self.filename)
+        self.do_backup()
 
     def is_file_clean(self, current_file):
         '''
@@ -179,8 +176,7 @@ class TarStripper(GenericArchiveStripper):
             name = os.path.join(self.tempdir, item.name)
             if item.type is '0': #is item a regular file ?
                 #no backup file
-                class_file = mat.create_class_file(name, False,
-                    self.add2archive)
+                class_file = mat.create_class_file(name, False,self.add2archive)
                 mat.secure_remove(name)
                 if not class_file.is_clean():#if the extracted file is not clean
                     return False

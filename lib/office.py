@@ -27,7 +27,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             method here : http://bugs.python.org/issue6818
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
-        zipout = zipfile.ZipFile(self.filename + parser.POSTFIX, 'w',
+        zipout = zipfile.ZipFile(self.basename + parser.POSTFIX + self.ext, 'w',
             allowZip64=True)
         for item in zipin.namelist():
             name = os.path.join(self.tempdir, item)
@@ -65,10 +65,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         logging.info('%s treated' % self.filename)
         zipin.close()
         zipout.close()
-
-        if self.backup is False:
-            mat.secure_remove(self.filename) #remove the old file
-            os.rename(self.filename + parser.POSTFIX, self.filename)
+        self.do_backup()
 
     def is_clean(self):
         zipin = zipfile.ZipFile(self.filename, 'r')
@@ -106,9 +103,7 @@ class TorrentStripper(parser.Generic_parser):
                 del self.editor['/root/' + field.name]
         hachoir_core.field.writeIntoFile(self.editor,
             self.filename + parser.POSTFIX)
-        if self.backup is False:
-            mat.secure_remove(self.filename) #remove the old file
-            os.rename(self.filename + parser.POSTFIX, self.filename)
+        self.do_backup()
 
     def is_clean(self):
         for field in self.editor['root']:
@@ -138,6 +133,8 @@ class PdfStripper(parser.Generic_parser):
         Represent a pdf file, with the help of pdfrw
     '''
     def __init__(self, filename, realname, backup):
+        name, path = os.path.splitext(filename)
+        self.output = name + '.cleaned.' + ext
         self.filename = filename
         self.backup = backup
         self.realname = realname
@@ -159,17 +156,14 @@ class PdfStripper(parser.Generic_parser):
         self.trailer.Info.ModDate = ''
 
         self.writer.trailer = self.trailer
-        self.writer.write(self.filename + parser.POSTFIX)
-        if self.backup is False:
-            mat.secure_remove(self.filename) #remove the old file
-            os.rename(self.filename + parser.POSTFIX, self.filename)
+        self.writer.write(self.output)
+        self.do_backup()
 
     def remove_all_ugly(self):
         '''
             Transform each pages into a jpg, clean them,
             then re-assemble them into a new pdf
         '''
-        output_file = self.realname + parser.POSTFIX + '.pdf'
         _, self.tmpdir = tempfile.mkstemp()
         subprocess.call(self.convert % (self.filename, self.tmpdir +
             'temp.jpg'), shell=True)#Convert pages to jpg
@@ -180,7 +174,7 @@ class PdfStripper(parser.Generic_parser):
             class_file.remove_all()
 
         subprocess.call(self.convert % (self.tmpdir +
-            'temp.jpg*', output_file), shell=True)#Assemble jpg into pdf
+            'temp.jpg*', self.output), shell=True)#Assemble jpg into pdf
 
         for current_file in glob.glob(self.tmpdir + 'temp*'):
         #remove jpg files
@@ -188,7 +182,7 @@ class PdfStripper(parser.Generic_parser):
 
         if self.backup is False:
             mat.secure_remove(self.filename) #remove the old file
-            os.rename(output_file, self.filename)#rename the new
+            os.rename(self.output, self.filename)#rename the new
             name = self.realname
         else:
             name = output_file
