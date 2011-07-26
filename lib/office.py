@@ -6,6 +6,8 @@ import glob
 import logging
 import zipfile
 import shutil
+import re
+from xml.etree import ElementTree
 
 import hachoir_core
 
@@ -19,6 +21,22 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         An open document file is a zip, with xml file into.
         The one that interest us is meta.xml
     '''
+
+    def get_meta(self):
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        metadata = {}
+        try:
+            content = zipin.read('meta.xml')
+            zipin.close()
+            tree = ElementTree.fromstring(content)
+            for node in tree.iter():
+                key = re.sub('{.*}', '', node.tag)
+                metadata[key] = node.text
+        except KeyError:#no meta.xml file found
+            logging.debug('%s has no opendocument metadata' % self.filename)
+            metadata[self.filename] = ''
+        return metadata
+
 
     def _remove_all(self, method):
         '''
@@ -56,8 +74,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                             self.filename))
                         zipout.write(name, item)
                     except:
-                        logging.info('%s\' fileformat is not supported' %
-                            item)
+                        logging.info('%s\' fileformat is not supported' %  item)
                         if self.add2archive:
                             zipout.write(item, name)
                     mat.secure_remove(name)
@@ -71,6 +88,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         zipin = zipfile.ZipFile(self.filename, 'r')
         try:
             zipin.getinfo('meta.xml')
+            return False
         except KeyError:#no meta.xml in the file
                 zipin.close()
                 czf = archive.ZipStripper(self.realname, self.filename,
@@ -79,53 +97,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                     return True
                 else:
                     return False
-        return False
-
-
-class TorrentStripper(parser.Generic_parser):
-    '''
-        A torrent file looks like:
-        -root
-            -start
-            -announce
-            -announce-list
-            -comment
-            -created_by
-            -creation_date
-            -encoding
-            -info
-            -end
-    '''
-    def remove_all(self):
-        for field in self.editor['root']:
-            if self._should_remove(field):
-                #FIXME : hachoir does not support torrent metadata editing :<
-                del self.editor['/root/' + field.name]
-        hachoir_core.field.writeIntoFile(self.editor,
-            self.filename + parser.POSTFIX)
-        self.do_backup()
-
-    def is_clean(self):
-        for field in self.editor['root']:
-            if self._should_remove(field):
-                return False
         return True
-
-    def get_meta(self):
-        metadata = {}
-        for field in self.editor['root']:
-            if self._should_remove(field):
-                try:#FIXME
-                    metadata[field.name] = field.value
-                except:
-                    metadata[field.name] = 'harmful content'
-        return metadata
-
-    def _should_remove(self, field):
-        if field.name in ('comment', 'created_by', 'creation_date', 'info'):
-            return True
-        else:
-            return False
 
 
 class PdfStripper(parser.Generic_parser):
