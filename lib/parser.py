@@ -13,7 +13,7 @@ import mimetypes
 
 import mat
 
-NOMETA = ('.txt', '.bmp', '.py', '.xml')
+NOMETA = ('.txt', '.bmp', '.py', '.xml', '.rdf')
 
 class Generic_parser(object):
     def __init__(self, realname, filename, parser, editor, backup, add2archive):
@@ -21,7 +21,7 @@ class Generic_parser(object):
         self.output = basename + '.cleaned' + ext
         self.filename = filename #path + filename
         self.realname = realname #path + filename
-        self.shortname = os.path.basename(filename) #only filename
+        self.basename = os.path.basename(filename) #only filename
         self.mime = mimetypes.guess_type(filename)[0] #mimetype
         self.parser = parser
         self.editor = editor

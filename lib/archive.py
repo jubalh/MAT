@@ -69,10 +69,13 @@ class ZipStripper(GenericArchiveStripper):
                         return False
                 except:
                     #best solution I have found
-                    logging.error('%s is not supported' % item.filename)
-                    _, ext = os.path.splitext(name)
+                    logging.info('%s\'s fileformat is not supported, or is a \
+harmless format' % item.filename)
+                    base, ext = os.path.splitext(name)
+                    bname = os.path.basename(item.filename)
                     if ext not in parser.NOMETA:
-                        return False
+                        if bname != 'mimetype':
+                            return False
                 mat.secure_remove(name)
         zipin.close()
         return True

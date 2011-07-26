@@ -34,7 +34,6 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                 metadata[key] = node.text
         except KeyError:#no meta.xml file found
             logging.debug('%s has no opendocument metadata' % self.filename)
-            metadata[self.filename] = ''
         return metadata
 
 
@@ -76,7 +75,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                     except:
                         logging.info('%s\' fileformat is not supported' %  item)
                         if self.add2archive:
-                            zipout.write(item, name)
+                            zipout.write(name, item)
                     mat.secure_remove(name)
         zipout.comment = ''
         logging.info('%s treated' % self.filename)

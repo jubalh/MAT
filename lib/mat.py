@@ -18,8 +18,8 @@ import audio
 import office
 import archive
 
-__version__ = "0.1"
-__author__ = "jvoisin"
+__version__ = '0.1'
+__author__ = 'jvoisin'
 
 LOGGING_LEVEL = logging.DEBUG
 
@@ -53,7 +53,7 @@ def is_secure(filename):
     '''
 
     if not(os.path.isfile(filename)): #check if the file exist
-        logging.error("Error: %s is not a valid file" % filename)
+        logging.error('Error: %s is not a valid file' % filename)
         return False
 
 def create_class_file(name, backup, add2archive):
@@ -64,7 +64,7 @@ def create_class_file(name, backup, add2archive):
     if is_secure(name):
         return
 
-    filename = ""
+    filename = ''
     realname = name
     try:
         filename = hachoir_core.cmd_line.unicodeFilename(name)
@@ -72,7 +72,7 @@ def create_class_file(name, backup, add2archive):
         filename = name
     parser = hachoir_parser.createParser(filename)
     if not parser:
-        logging.error("Unable to parse %s" % filename)
+        logging.info('Unable to parse %s' % filename)
         return
 
     editor = hachoir_editor.createEditor(parser)
@@ -85,7 +85,7 @@ def create_class_file(name, backup, add2archive):
         stripper_class = strippers[editor.input.__class__]
     except KeyError:
         #Place for another lib than hachoir
-        logging.error("Don't have stripper for format %s" % editor.description)
+        logging.info('Don\'t have stripper for format %s' % editor.description)
         return
 
     if editor.input.__class__ == hachoir_parser.misc.PDFDocument:#pdf
@@ -95,8 +95,7 @@ def create_class_file(name, backup, add2archive):
         #zip based format
         mime = mimetypes.guess_type(filename)[0]
         try:#Ugly workaround, cleaning open document delete mime (wtf?)
-            if mime.startswith(#Open document format
-            'application/vnd.oasis.opendocument'):
+            if mime.startswith('application/vnd.oasis.opendocument'):
                 return office.OpenDocumentStripper(realname, filename, parser,
                     editor, backup, add2archive)
             else:#normal zip
