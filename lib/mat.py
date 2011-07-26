@@ -17,7 +17,6 @@ import images
 import audio
 import office
 import archive
-import container
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
@@ -27,20 +26,20 @@ LOGGING_LEVEL = logging.DEBUG
 logging.basicConfig(level=LOGGING_LEVEL)
 
 STRIPPERS = {
-    hachoir_parser.archive.TarFile: archive.TarStripper,
-    hachoir_parser.archive.gzip_parser.GzipParser: archive.GzipStripper,
-    hachoir_parser.archive.bzip2_parser.Bzip2Parser: archive.Bzip2Stripper,
-    hachoir_parser.archive.zip.ZipFile: archive.ZipStripper,
-    hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
-    hachoir_parser.image.JpegFile: images.JpegStripper,
-    hachoir_parser.image.PngFile: images.PngStripper,
-    hachoir_parser.container.OggFile: container.OggStripper,
-    hachoir_parser.misc.PDFDocument: office.PdfStripper,
+    'application/x-tar': archive.TarStripper,
+    'application/x-gzip': archive.GzipStripper,
+    'application/x-bzip2': archive.Bzip2Stripper,
+    'application/zip': archive.ZipStripper,
+    'audio/mpeg': audio.MpegAudioStripper,
+    'image/jpeg': images.JpegStripper,
+    'image/png': images.PngStripper,
+    'application/x-pdf ': office.PdfStripper,
+    'application/vnd.oasis.opendocument': office.OpenDocumentStripper,
 }
 
 try:
     import mutagen
-    STRIPPERS[hachoir_parser.audio.FlacParser] = audio.FLACStripper
+    STRIPPERS[hachoir_parser.audio.FlacParser] = audio.FlacStripper
 except ImportError:
     print('unable to import python-mutagen : limited audio format support')
 
@@ -59,7 +58,7 @@ def is_secure(filename):
         Prevent shell injection
     '''
     if not(os.path.isfile(filename)):  # check if the file exist
-        logging.error('Error: %s is not a valid file' % filename)
+        logging.error('%s is not a valid file' % filename)
         return False
     else:
         return True
@@ -75,41 +74,28 @@ def create_class_file(name, backup, add2archive):
 
     filename = ''
     realname = name
+
     try:
         filename = hachoir_core.cmd_line.unicodeFilename(name)
     except TypeError:  # get rid of "decoding Unicode is not supported"
         filename = name
+
     parser = hachoir_parser.createParser(filename)
     if not parser:
         logging.info('Unable to parse %s' % filename)
         return
 
     editor = hachoir_editor.createEditor(parser)
+    mime = parser.mime_type
+
+    if mime.startswith('application/vnd.oasis.opendocument'):
+        mime = 'application/vnd.oasis.opendocument'  # opendocument fileformat
+
     try:
-        '''this part is a little tricky :
-        stripper_class will receice the name of the class $FILETYPEStripper,
-        (which herits from the "file" class), based on the editor
-        of given file (name)
-        '''
-        stripper_class = STRIPPERS[editor.input.__class__]
+        stripper_class = STRIPPERS[mime]
     except KeyError:
-        #Place for another lib than hachoir
         logging.info('Don\'t have stripper for format %s' % editor.description)
         return
 
-    if editor.input.__class__ == hachoir_parser.misc.PDFDocument:  # pdf
-        return stripper_class(filename, realname, backup)
-
-    elif editor.input.__class__ == hachoir_parser.archive.zip.ZipFile:
-        #zip based format
-        mime = mimetypes.guess_type(filename)[0]
-        if mime.startswith('application/vnd.oasis.opendocument'):
-            return office.OpenDocumentStripper(realname, filename, parser,
-                editor, backup, add2archive)
-        else:  # normal zip
-            return stripper_class(realname, filename, parser, editor,
-                backup, add2archive)
-
-    else:  # normal handling
-        return stripper_class(realname, filename, parser, editor, backup,
-            add2archive)
+    return stripper_class(realname, filename, parser, editor, backup,
+        add2archive)
