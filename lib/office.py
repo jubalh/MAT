@@ -89,8 +89,8 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             return False
         except KeyError:  # no meta.xml in the file
                 zipin.close()
-                czf = archive.ZipStripper(self.realname, self.filename,
-                    self.parser, self.editor, self.backup, self.add2archive)
+                czf = archive.ZipStripper(self.filename, self.parser,
+                    'application/zip', self.backup, self.add2archive)
                 if czf.is_clean():
                     return True
                 else:
@@ -102,14 +102,14 @@ class PdfStripper(parser.GenericParser):
     '''
         Represent a pdf file, with the help of pdfrw
     '''
-    def __init__(self, filename, realname, backup):
+    def __init__(self, filename, parser, mime, backup, add2archive):
         name, ext = os.path.splitext(filename)
         self.output = name + '.cleaned' + ext
         self.filename = filename
         self.backup = backup
         self.realname = realname
         self.shortname = os.path.basename(filename)
-        self.mime = mimetypes.guess_type(filename)[0]
+        self.mime = mime
         self.tempdir = tempfile.mkdtemp()
         self.trailer = pdfrw.PdfReader(self.filename)
         self.writer = pdfrw.PdfWriter()

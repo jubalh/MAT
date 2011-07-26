@@ -10,3 +10,6 @@ class MpegAudioStripper(parser.GenericParser):
             return True
         else:
             return False
+
+class FlacStripper(parser.GenericParser):
+    pass

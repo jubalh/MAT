@@ -11,7 +11,6 @@ import mimetypes
 
 import hachoir_core.cmd_line
 import hachoir_parser
-import hachoir_editor
 
 import images
 import audio
@@ -39,7 +38,7 @@ STRIPPERS = {
 
 try:
     import mutagen
-    STRIPPERS[hachoir_parser.audio.FlacParser] = audio.FlacStripper
+    STRIPPERS['audio/x-flac'] = audio.FlacStripper
 except ImportError:
     print('unable to import python-mutagen : limited audio format support')
 
@@ -85,7 +84,6 @@ def create_class_file(name, backup, add2archive):
         logging.info('Unable to parse %s' % filename)
         return
 
-    editor = hachoir_editor.createEditor(parser)
     mime = parser.mime_type
 
     if mime.startswith('application/vnd.oasis.opendocument'):
@@ -94,8 +92,7 @@ def create_class_file(name, backup, add2archive):
     try:
         stripper_class = STRIPPERS[mime]
     except KeyError:
-        logging.info('Don\'t have stripper for format %s' % editor.description)
+        logging.info('Don\'t have stripper for %s\' format' % filename)
         return
 
-    return stripper_class(realname, filename, parser, editor, backup,
-        add2archive)
+    return stripper_class(filename, parser, mime, backup, add2archive)

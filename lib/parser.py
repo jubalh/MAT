@@ -3,6 +3,7 @@
 '''
 
 import hachoir_core
+import hachoir_editor
 
 import os
 import mimetypes
@@ -13,17 +14,22 @@ NOMETA = ('.bmp', 'html', '.py', '.rdf', '.txt', '.xml')
 
 
 class GenericParser(object):
-    def __init__(self, realname, filename, parser, editor, backup,
-        add2archive):
+    def __init__(self, filename, parser, mime, backup, add2archive):
+        self.filename = ''
+        self.parser = parser
+        self.mime = mime
+        self.backup = backup
+        self.editor = hachoir_editor.createEditor(parser)
+        self.realname = filename
+        try:
+            self.filename = hachoir_core.cmd_line.unicodeFilename(filename)
+        except TypeError:  # get rid of "decoding Unicode is not supported"
+            self.filename = filename
         basename, ext = os.path.splitext(filename)
         self.output = basename + '.cleaned' + ext
-        self.filename = filename  # path + filename
-        self.realname = realname  # path + filename
         self.basename = os.path.basename(filename)  # only filename
-        self.mime = mimetypes.guess_type(filename)[0]  # mimetype
-        self.parser = parser
-        self.editor = editor
-        self.backup = backup
+
+
 
     def is_clean(self):
         '''
