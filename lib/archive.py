@@ -10,7 +10,7 @@ import parser
 import mat
 
 
-class GenericArchiveStripper(parser.Generic_parser):
+class GenericArchiveStripper(parser.GenericParser):
     '''
         Represent a generic archive
     '''
@@ -29,24 +29,40 @@ class GenericArchiveStripper(parser.Generic_parser):
         shutil.rmtree(self.tempdir)
 
     def remove_all(self):
+        '''
+            Call _remove_all() with in argument : "normal"
+        '''
         self._remove_all('normal')
 
     def remove_all_ugly(self):
+        '''
+            call remove_all() with in argument : "ugly"
+        '''
         self._remove_all('ugly')
 
+    def _remove_all(self, method):
+        '''
+            Remove all meta, normal way if method is "normal",
+            else, use the ugly way (with possible data loss)
+        '''
+        raise NotImplementedError
 
 class ZipStripper(GenericArchiveStripper):
     '''
         Represent a zip file
     '''
-    def is_file_clean(self, file):
-        if file.comment is not '':
+    def is_file_clean(self, fileinfo):
+        '''
+            Check if a ZipInfo object is clean of metadatas added
+            by zip itself, independently of the corresponding file metadatas
+        '''
+        if fileinfo.comment is not '':
             return False
-        elif file.date_time is not 0:
+        elif fileinfo.date_time is not 0:
             return False
-        elif file.create_system is not 0:
+        elif fileinfo.create_system is not 0:
             return False
-        elif file.create_version is not 0:
+        elif fileinfo.create_version is not 0:
             return False
         else:
             return True
@@ -74,7 +90,7 @@ class ZipStripper(GenericArchiveStripper):
                     #best solution I have found
                     logging.info('%s\'s fileformat is not supported, or is a \
 harmless format' % item.filename)
-                    base, ext = os.path.splitext(name)
+                    _, ext = os.path.splitext(name)
                     bname = os.path.basename(item.filename)
                     if ext not in parser.NOMETA:
                         if bname != 'mimetype':
@@ -84,6 +100,10 @@ harmless format' % item.filename)
         return True
 
     def get_meta(self):
+        '''
+            Return all the metadata of a ZipFile (don't return metadatas
+            of contained files : should it ?)
+        '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         metadata = {}
         for field in zipin.infolist():
@@ -231,6 +251,9 @@ class TarStripper(GenericArchiveStripper):
 
 
 class GzipStripper(TarStripper):
+    '''
+        Represent a tar.gz archive
+    '''
     def __init__(self, realname, filename, parser, editor, backup,
         add2archive):
         super(GzipStripper, self).__init__(realname,
@@ -239,6 +262,9 @@ class GzipStripper(TarStripper):
 
 
 class Bzip2Stripper(TarStripper):
+    '''
+        Represents a tar.bz2 archive
+    '''
     def __init__(self, realname, filename, parser, editor, backup,
         add2archive):
         super(Bzip2Stripper, self).__init__(realname,

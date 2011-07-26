@@ -1,7 +1,10 @@
 import parser
 
 
-class JpegStripper(parser.Generic_parser):
+class JpegStripper(parser.GenericParser):
+    '''
+        Represents a .jpeg file
+    '''
     def _should_remove(self, field):
         if field.name.startswith('comment'):
             return True
@@ -11,7 +14,10 @@ class JpegStripper(parser.Generic_parser):
             return False
 
 
-class PngStripper(parser.Generic_parser):
+class PngStripper(parser.GenericParser):
+    '''
+        Represents a .png file
+    '''
     def _should_remove(self, field):
         if field.name.startswith("text["):
             return True

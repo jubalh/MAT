@@ -1,7 +1,7 @@
 import parser
 
 
-class MpegAudioStripper(parser.Generic_parser):
+class MpegAudioStripper(parser.GenericParser):
     '''
         mpeg audio file (mp3, ...)
     '''

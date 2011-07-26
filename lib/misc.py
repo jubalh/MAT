@@ -2,7 +2,7 @@ import hachoir_core
 import parser
 
 
-class TorrentStripper(parser.Generic_parser):
+class TorrentStripper(parser.GenericParser):
     '''
         A torrent file looks like:
         -root
@@ -21,8 +21,7 @@ class TorrentStripper(parser.Generic_parser):
             if self._should_remove(field):
                 #FIXME : hachoir does not support torrent metadata editing :<
                 del self.editor['/root/' + field.name]
-        hachoir_core.field.writeIntoFile(self.editor,
-            self.filename + parser.POSTFIX)
+        hachoir_core.field.writeIntoFile(self.editor, self.output)
         self.do_backup()
 
     def is_clean(self):

@@ -6,6 +6,7 @@ import glob
 import logging
 import zipfile
 import re
+import shutil
 from xml.etree import ElementTree
 
 
@@ -97,7 +98,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         return True
 
 
-class PdfStripper(parser.Generic_parser):
+class PdfStripper(parser.GenericParser):
     '''
         Represent a pdf file, with the help of pdfrw
     '''
@@ -109,9 +110,16 @@ class PdfStripper(parser.Generic_parser):
         self.realname = realname
         self.shortname = os.path.basename(filename)
         self.mime = mimetypes.guess_type(filename)[0]
+        self.tempdir = tempfile.mkdtemp()
         self.trailer = pdfrw.PdfReader(self.filename)
         self.writer = pdfrw.PdfWriter()
         self.convert = 'gm convert -antialias -enhance %s %s'
+
+    def __del__(self):
+        '''
+            Remove the temp dir
+        '''
+        shutil.rmtree(self.tempdir)
 
     def remove_all(self):
         '''
@@ -133,19 +141,18 @@ class PdfStripper(parser.Generic_parser):
             Transform each pages into a jpg, clean them,
             then re-assemble them into a new pdf
         '''
-        _, self.tmpdir = tempfile.mkstemp()
-        subprocess.call(self.convert % (self.filename, self.tmpdir +
+        subprocess.call(self.convert % (self.filename, self.tempdir +
             'temp.jpg'), shell=True)  # Convert pages to jpg
 
-        for current_file in glob.glob(self.tmpdir + 'temp*'):
+        for current_file in glob.glob(self.tempdir + 'temp*'):
         #Clean every jpg image
-            class_file = mat.create_class_file(current_file, False)
+            class_file = mat.create_class_file(current_file, False, False)
             class_file.remove_all()
 
-        subprocess.call(self.convert % (self.tmpdir +
+        subprocess.call(self.convert % (self.tempdir +
             'temp.jpg*', self.output), shell=True)  # Assemble jpg into pdf
 
-        for current_file in glob.glob(self.tmpdir + 'temp*'):
+        for current_file in glob.glob(self.tempdir + 'temp*'):
         #remove jpg files
             mat.secure_remove(current_file)
 
@@ -155,7 +162,7 @@ class PdfStripper(parser.Generic_parser):
             name = self.realname
         else:
             name = self.output
-        class_file = mat.create_class_file(name, False)
+        class_file = mat.create_class_file(name, False, False)
         class_file.remove_all()
 
     def is_clean(self):

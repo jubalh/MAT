@@ -12,7 +12,7 @@ import mat
 NOMETA = ('.bmp', 'html', '.py', '.rdf', '.txt', '.xml')
 
 
-class Generic_parser(object):
+class GenericParser(object):
     def __init__(self, realname, filename, parser, editor, backup,
         add2archive):
         basename, ext = os.path.splitext(filename)
@@ -78,7 +78,7 @@ class Generic_parser(object):
             return True if the field is compromizing
             abstract method
         '''
-        raise NotImplementedError()
+        raise NotImplementedError
 
     def do_backup(self):
         '''

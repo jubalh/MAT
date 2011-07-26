@@ -25,7 +25,7 @@ LOGGING_LEVEL = logging.DEBUG
 
 logging.basicConfig(level=LOGGING_LEVEL)
 
-strippers = {
+STRIPPERS = {
     hachoir_parser.image.JpegFile: images.JpegStripper,
     hachoir_parser.image.PngFile: images.PngStripper,
     hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
@@ -83,7 +83,7 @@ def create_class_file(name, backup, add2archive):
         (which herits from the "file" class), based on the editor
         of given file (name)
         '''
-        stripper_class = strippers[editor.input.__class__]
+        stripper_class = STRIPPERS[editor.input.__class__]
     except KeyError:
         #Place for another lib than hachoir
         logging.info('Don\'t have stripper for format %s' % editor.description)
