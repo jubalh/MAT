@@ -80,4 +80,4 @@ if __name__ == '__main__':
     suite.addTest(unittest.makeSuite(TestRemovecli))
     suite.addTest(unittest.makeSuite(TestListcli))
     suite.addTest(unittest.makeSuite(TestisCleancli))
-    unittest.TextTestRunner(test.VERBOSITY).run(suite)
+    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(suite)

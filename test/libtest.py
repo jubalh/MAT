@@ -69,5 +69,5 @@ if __name__ == '__main__':
     Suite.addTest(unittest.makeSuite(TestRemovelib))
     Suite.addTest(unittest.makeSuite(TestListlib))
     Suite.addTest(unittest.makeSuite(TestisCleanlib))
-    unittest.TextTestRunner(test.VERBOSITY).run(Suite)
+    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
 
