@@ -17,6 +17,7 @@ import images
 import audio
 import office
 import archive
+import container
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
@@ -26,16 +27,22 @@ LOGGING_LEVEL = logging.DEBUG
 logging.basicConfig(level=LOGGING_LEVEL)
 
 STRIPPERS = {
-    hachoir_parser.image.JpegFile: images.JpegStripper,
-    hachoir_parser.image.PngFile: images.PngStripper,
-    hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
-    hachoir_parser.misc.PDFDocument: office.PdfStripper,
     hachoir_parser.archive.TarFile: archive.TarStripper,
     hachoir_parser.archive.gzip_parser.GzipParser: archive.GzipStripper,
     hachoir_parser.archive.bzip2_parser.Bzip2Parser: archive.Bzip2Stripper,
     hachoir_parser.archive.zip.ZipFile: archive.ZipStripper,
+    hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
+    hachoir_parser.image.JpegFile: images.JpegStripper,
+    hachoir_parser.image.PngFile: images.PngStripper,
+    hachoir_parser.container.OggFile: container.OggStripper,
+    hachoir_parser.misc.PDFDocument: office.PdfStripper,
 }
 
+try:
+    import mutagen
+    STRIPPERS[hachoir_parser.audio.FlacParser] = audio.FLACStripper
+except ImportError:
+    print('unable to import python-mutagen : limited audio format support')
 
 def secure_remove(filename):
     '''
@@ -51,10 +58,11 @@ def is_secure(filename):
     '''
         Prevent shell injection
     '''
-
     if not(os.path.isfile(filename)):  # check if the file exist
         logging.error('Error: %s is not a valid file' % filename)
         return False
+    else:
+        return True
 
 
 def create_class_file(name, backup, add2archive):
@@ -62,7 +70,7 @@ def create_class_file(name, backup, add2archive):
         return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
     '''
-    if is_secure(name):
+    if not is_secure(name):
         return
 
     filename = ''
@@ -95,16 +103,13 @@ def create_class_file(name, backup, add2archive):
     elif editor.input.__class__ == hachoir_parser.archive.zip.ZipFile:
         #zip based format
         mime = mimetypes.guess_type(filename)[0]
-        try:  # ugly workaround, cleaning open document delete mime (wtf?)
-            if mime.startswith('application/vnd.oasis.opendocument'):
-                return office.OpenDocumentStripper(realname, filename, parser,
-                    editor, backup, add2archive)
-            else:  # normal zip
-                return stripper_class(realname, filename, parser, editor,
-                    backup, add2archive)
-        except:  # normal zip
-            return stripper_class(realname, filename, parser, editor, backup,
-                add2archive)
+        if mime.startswith('application/vnd.oasis.opendocument'):
+            return office.OpenDocumentStripper(realname, filename, parser,
+                editor, backup, add2archive)
+        else:  # normal zip
+            return stripper_class(realname, filename, parser, editor,
+                backup, add2archive)
+
     else:  # normal handling
         return stripper_class(realname, filename, parser, editor, backup,
             add2archive)
