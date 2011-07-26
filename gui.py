@@ -16,7 +16,7 @@ SUPPORTED = (('image/png', 'image/jpeg', 'image/gif',
             '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3'))
 
 
-class cfile(GObject.GObject):
+class CFile(GObject.GObject):
     '''
         Contain the class-file of the file "path"
         This class exist just to be "around" my parser.Generic_parser class,
@@ -57,7 +57,7 @@ class ListStoreApp:
         vbox.pack_start(content, True, True, 0)
 
         #parser.class - name - type - cleaned
-        self.liststore= Gtk.ListStore(cfile, str, str, str)
+        self.liststore = Gtk.ListStore(CFile, str, str, str)
 
         treeview = Gtk.TreeView(model=self.liststore)
         treeview.set_search_column(1)  # name column is searchable
@@ -118,8 +118,8 @@ class ListStoreApp:
         colname = ['Filename', 'Mimetype', 'Cleaned']
 
         for i, j in enumerate(colname):
-            filenameColumn = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(j, filenameColumn, text=i + 1)
+            filename_column = Gtk.CellRendererText()
+            column = Gtk.TreeViewColumn(j, filename_column, text=i + 1)
             column.set_sort_column_id(i + 1)
             treeview.append_column(column)
 
@@ -189,7 +189,7 @@ class ListStoreApp:
             filter.add_pattern(item)
         return filter
 
-    def add_files(self, button):
+    def add_files(self, _):
         '''
             Add the files chosed by the filechoser ("Add" button)
         '''
@@ -225,12 +225,15 @@ class ListStoreApp:
         '''
             Append selected files by add_file to the self.liststore
         '''
-        cf = cfile(item, self.backup, self.add2archive)
+        cf = CFile(item, self.backup, self.add2archive)
         if cf.file is not None:
             self.liststore.append([cf, cf.file.filename,
                 cf.file.mime, 'unknow'])
 
-    def about(self, button=None):
+    def about(self, _):
+        '''
+            About popup
+        '''
         w = Gtk.AboutDialog()
         w.set_version(__version__)
         w.set_copyright('GNU Public License v2')
@@ -243,7 +246,7 @@ class ListStoreApp:
         if click:
             w.destroy()
 
-    def preferences(self, button=None):
+    def preferences(self, _):
         '''
             Preferences popup
         '''
@@ -288,26 +291,36 @@ non-anonymised) file to outputed archive')
             dialog.destroy()
 
     def invert(self, button, name):  # still not better :/
+        '''
+            Invert a preference state
+        '''
         if name is 'force':
             self.force = not self.force
-        elif name is 'ugly':
-            self.ugly = not self.ugly
+        elif name is 'add2archive':
+            self.add2archive = not self.add2archive
         elif name is 'backup':
             self.backup = not self.backup
 
     def clear_model(self, button=None):
         self.liststore.clear()
 
-    def all_if_empy(self, iter):
-        if not iter:
+    def all_if_empy(self, iterator):
+        '''
+            if no elements are selected, all elements are processed
+            thank's to this function
+        '''
+        if not iterator:
             return xrange(len(self.liststore))
         else:
-            return iter
+            return iterator
 
-    def mat_check(self, button=None):
-        _, iter = self.selection.get_selected_rows()
-        iter = self.all_if_empy(iter)
-        for i in iter:
+    def mat_check(self, _):
+        '''
+            Check if selected elements are clean
+        '''
+        _, iterator = self.selection.get_selected_rows()
+        iterator = self.all_if_empy(iterator)
+        for i in iterator:
             if self.liststore[i][0].file.is_clean():
                 string = 'clean'
             else:
@@ -315,10 +328,13 @@ non-anonymised) file to outputed archive')
             logging.info('%s is %s' % (self.liststore[i][1], string))
             self.liststore[i][3] = string
 
-    def mat_clean(self, button=None):
-        _, iter = self.selection.get_selected_rows()
-        iter = self.all_if_empy(iter)
-        for i in iter:
+    def mat_clean(self, _):
+        '''
+            Clean selected elements
+        '''
+        _, iterator = self.selection.get_selected_rows()
+        iterator = self.all_if_empy(iterator)
+        for i in iterator:
             logging.info('Cleaning %s' % self.liststore[i][1])
             if self.liststore[i][3] is not 'clean':
                 if self.force:
@@ -328,10 +344,13 @@ non-anonymised) file to outputed archive')
                         self.liststore[i][0].file.remove_all()
             self.liststore[i][3] = 'clean'
 
-    def mat_clean_dirty(self, button=None):
-        _, iter = self.selection.get_selected_rows()
-        iter = self.all_if_empy(iter)
-        for i in iter:
+    def mat_clean_dirty(self, _):
+        '''
+            Clean selected elements (ugly way)
+        '''
+        _, iterator = self.selection.get_selected_rows()
+        iterator = self.all_if_empy(iterator)
+        for i in iterator:
             logging.info('Cleaning (lossy way) %s' % self.liststore[i][1])
             if self.liststore[i][3] is not 'clean':
                 if self.force:
@@ -342,9 +361,6 @@ non-anonymised) file to outputed archive')
             self.liststore[i][3] = 'clean'
 
 
-def main():
+if __name__ == '__main__':
     ListStoreApp()
     Gtk.main()
-
-if __name__ == '__main__':
-    main()
