@@ -5,16 +5,15 @@ import tempfile
 import glob
 import logging
 import zipfile
-import shutil
 import re
 from xml.etree import ElementTree
 
-import hachoir_core
 
 import pdfrw
 import mat
 import parser
 import archive
+
 
 class OpenDocumentStripper(archive.GenericArchiveStripper):
     '''
@@ -32,10 +31,9 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             for node in tree.iter():
                 key = re.sub('{.*}', '', node.tag)
                 metadata[key] = node.text
-        except KeyError:#no meta.xml file found
+        except KeyError:  # no meta.xml file found
             logging.debug('%s has no opendocument metadata' % self.filename)
         return metadata
-
 
     def _remove_all(self, method):
         '''
@@ -50,7 +48,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             name = os.path.join(self.tempdir, item)
             if item.endswith('.xml') or item == 'mimetype':
                 #keep .xml files, and the "manifest" file
-                if item != 'meta.xml':#contains the metadata
+                if item != 'meta.xml':  # contains the metadata
                     zipin.extract(item, self.tempdir)
                     zipout.write(name, item)
                     mat.secure_remove(name)
@@ -73,7 +71,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                             self.filename))
                         zipout.write(name, item)
                     except:
-                        logging.info('%s\' fileformat is not supported' %  item)
+                        logging.info('%s\' fileformat is not supported' % item)
                         if self.add2archive:
                             zipout.write(name, item)
                     mat.secure_remove(name)
@@ -88,7 +86,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         try:
             zipin.getinfo('meta.xml')
             return False
-        except KeyError:#no meta.xml in the file
+        except KeyError:  # no meta.xml in the file
                 zipin.close()
                 czf = archive.ZipStripper(self.realname, self.filename,
                     self.parser, self.editor, self.backup, self.add2archive)
@@ -104,7 +102,7 @@ class PdfStripper(parser.Generic_parser):
         Represent a pdf file, with the help of pdfrw
     '''
     def __init__(self, filename, realname, backup):
-        name, path = os.path.splitext(filename)
+        name, ext = os.path.splitext(filename)
         self.output = name + '.cleaned' + ext
         self.filename = filename
         self.backup = backup
@@ -137,7 +135,7 @@ class PdfStripper(parser.Generic_parser):
         '''
         _, self.tmpdir = tempfile.mkstemp()
         subprocess.call(self.convert % (self.filename, self.tmpdir +
-            'temp.jpg'), shell=True)#Convert pages to jpg
+            'temp.jpg'), shell=True)  # Convert pages to jpg
 
         for current_file in glob.glob(self.tmpdir + 'temp*'):
         #Clean every jpg image
@@ -145,18 +143,18 @@ class PdfStripper(parser.Generic_parser):
             class_file.remove_all()
 
         subprocess.call(self.convert % (self.tmpdir +
-            'temp.jpg*', self.output), shell=True)#Assemble jpg into pdf
+            'temp.jpg*', self.output), shell=True)  # Assemble jpg into pdf
 
         for current_file in glob.glob(self.tmpdir + 'temp*'):
         #remove jpg files
             mat.secure_remove(current_file)
 
         if self.backup is False:
-            mat.secure_remove(self.filename) #remove the old file
-            os.rename(self.output, self.filename)#rename the new
+            mat.secure_remove(self.filename)  # remove the old file
+            os.rename(self.output, self.filename)  # rename the new
             name = self.realname
         else:
-            name = output_file
+            name = self.output
         class_file = mat.create_class_file(name, False)
         class_file.remove_all()
 

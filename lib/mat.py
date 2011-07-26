@@ -23,12 +23,11 @@ __author__ = 'jvoisin'
 
 LOGGING_LEVEL = logging.DEBUG
 
-logging.basicConfig(level = LOGGING_LEVEL)
+logging.basicConfig(level=LOGGING_LEVEL)
 
 strippers = {
     hachoir_parser.image.JpegFile: images.JpegStripper,
     hachoir_parser.image.PngFile: images.PngStripper,
-    hachoir_parser.image.bmp.BmpFile: images.BmpStripper,
     hachoir_parser.audio.MpegAudioFile: audio.MpegAudioStripper,
     hachoir_parser.misc.PDFDocument: office.PdfStripper,
     hachoir_parser.archive.TarFile: archive.TarStripper,
@@ -36,6 +35,7 @@ strippers = {
     hachoir_parser.archive.bzip2_parser.Bzip2Parser: archive.Bzip2Stripper,
     hachoir_parser.archive.zip.ZipFile: archive.ZipStripper,
 }
+
 
 def secure_remove(filename):
     '''
@@ -52,9 +52,10 @@ def is_secure(filename):
         Prevent shell injection
     '''
 
-    if not(os.path.isfile(filename)): #check if the file exist
+    if not(os.path.isfile(filename)):  # check if the file exist
         logging.error('Error: %s is not a valid file' % filename)
         return False
+
 
 def create_class_file(name, backup, add2archive):
     '''
@@ -68,7 +69,7 @@ def create_class_file(name, backup, add2archive):
     realname = name
     try:
         filename = hachoir_core.cmd_line.unicodeFilename(name)
-    except TypeError:# get rid of "TypeError: decoding Unicode is not supported"
+    except TypeError:  # get rid of "decoding Unicode is not supported"
         filename = name
     parser = hachoir_parser.createParser(filename)
     if not parser:
@@ -88,22 +89,22 @@ def create_class_file(name, backup, add2archive):
         logging.info('Don\'t have stripper for format %s' % editor.description)
         return
 
-    if editor.input.__class__ == hachoir_parser.misc.PDFDocument:#pdf
+    if editor.input.__class__ == hachoir_parser.misc.PDFDocument:  # pdf
         return stripper_class(filename, realname, backup)
 
     elif editor.input.__class__ == hachoir_parser.archive.zip.ZipFile:
         #zip based format
         mime = mimetypes.guess_type(filename)[0]
-        try:#Ugly workaround, cleaning open document delete mime (wtf?)
+        try:  # ugly workaround, cleaning open document delete mime (wtf?)
             if mime.startswith('application/vnd.oasis.opendocument'):
                 return office.OpenDocumentStripper(realname, filename, parser,
                     editor, backup, add2archive)
-            else:#normal zip
+            else:  # normal zip
                 return stripper_class(realname, filename, parser, editor,
                     backup, add2archive)
-        except:#normal zip file
+        except:  # normal zip
             return stripper_class(realname, filename, parser, editor, backup,
                 add2archive)
-    else:#normal handling
+    else:  # normal handling
         return stripper_class(realname, filename, parser, editor, backup,
             add2archive)

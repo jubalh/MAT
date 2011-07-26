@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 
-from gi.repository import Gtk, GObject, Gdk
+from gi.repository import Gtk, GObject
 import os
-import glob
 import logging
 from lib import mat
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
 
-logging.basicConfig(level = mat.LOGGING_LEVEL)
+logging.basicConfig(level=mat.LOGGING_LEVEL)
 
 SUPPORTED = (('image/png', 'image/jpeg', 'image/gif',
             'misc/pdf'),
             ('*.jpg', '*.jpeg', '*.png', '*.bmp', '*.pdf',
             '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3'))
+
 
 class cfile(GObject.GObject):
     '''
@@ -29,6 +29,7 @@ class cfile(GObject.GObject):
         except:
             self.file = None
 
+
 class ListStoreApp:
     '''
         Main GUI class
@@ -40,7 +41,8 @@ class ListStoreApp:
         self.add2archive = True
 
         self.window = Gtk.Window()
-        self.window.set_title('Metadata Anonymisation Toolkit %s' % __version__)
+        self.window.set_title('Metadata Anonymisation Toolkit %s' %
+            __version__)
         self.window.connect('destroy', Gtk.main_quit)
         self.window.set_default_size(800, 600)
 
@@ -55,13 +57,12 @@ class ListStoreApp:
         vbox.pack_start(content, True, True, 0)
 
         #parser.class - name - type - cleaned
-        self.liststore= Gtk.ListStore(cfile ,str, str, str)
+        self.liststore= Gtk.ListStore(cfile, str, str, str)
 
         treeview = Gtk.TreeView(model=self.liststore)
-        treeview.set_search_column(1) #name column is searchable
-        treeview.set_rules_hint(True) #alternate colors for rows
-        treeview.set_rubber_banding(True) #mouse selection
-        treeview.drag_dest_set(Gtk.DestDefaults.ALL, None, Gdk.DragAction.COPY)
+        treeview.set_search_column(1)  # name column is searchable
+        treeview.set_rules_hint(True)  # alternate colors for rows
+        treeview.set_rubber_banding(True)  # mouse selection
         self.add_columns(treeview)
         self.selection = treeview.get_selection()
         self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
@@ -80,12 +81,12 @@ class ListStoreApp:
         '''
         toolbar = Gtk.Toolbar()
 
-        toolbutton = Gtk.ToolButton(label = 'Add', stock_id=Gtk.STOCK_ADD)
+        toolbutton = Gtk.ToolButton(label='Add', stock_id=Gtk.STOCK_ADD)
         toolbutton.connect('clicked', self.add_files)
         toolbutton.set_tooltip_text('Add files')
         toolbar.add(toolbutton)
 
-        toolbutton = Gtk.ToolButton(label = 'Clean',
+        toolbutton = Gtk.ToolButton(label='Clean',
             stock_id=Gtk.STOCK_PRINT_REPORT)
         toolbutton.connect('clicked', self.mat_clean)
         toolbutton.set_tooltip_text('Clean selected files without data loss')
@@ -93,7 +94,8 @@ class ListStoreApp:
 
         toolbutton = Gtk.ToolButton(label='Brute Clean',
             stock_id=Gtk.STOCK_PRINT_WARNING)
-        toolbutton.set_tooltip_text('Clean selected files with possible data loss')
+        toolbutton.set_tooltip_text('Clean selected files with possible data \
+            loss')
         toolbar.add(toolbutton)
 
         toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
@@ -117,8 +119,8 @@ class ListStoreApp:
 
         for i, j in enumerate(colname):
             filenameColumn = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(j, filenameColumn, text=i+1)
-            column.set_sort_column_id(i+1)
+            column = Gtk.TreeViewColumn(j, filenameColumn, text=i + 1)
+            column.set_sort_column_id(i + 1)
             treeview.append_column(column)
 
     def create_menu_item(self, name, func, menu, pix):
@@ -156,8 +158,8 @@ class ListStoreApp:
             Gtk.STOCK_QUIT)
 
         edit_menu = self.create_sub_menu('Edit', menubar)
-        self.create_menu_item('Clear the filelist', self.clear_model, edit_menu,
-            Gtk.STOCK_REMOVE)
+        self.create_menu_item('Clear the filelist', self.clear_model,
+            edit_menu, Gtk.STOCK_REMOVE)
         self.create_menu_item('Preferences', self.preferences, edit_menu,
             Gtk.STOCK_PREFERENCES)
 
@@ -181,9 +183,9 @@ class ListStoreApp:
         '''
         filter = Gtk.FileFilter()
         filter.set_name('Supported files')
-        for item in SUPPORTED[0]: #add by mime
+        for item in SUPPORTED[0]:  # add by mime
             filter.add_mime_type(item)
-        for item in SUPPORTED[1]: #add by extension
+        for item in SUPPORTED[1]:  # add by extension
             filter.add_pattern(item)
         return filter
 
@@ -195,8 +197,7 @@ class ListStoreApp:
             title='Choose files',
             parent=None,
             action=Gtk.FileChooserAction.OPEN,
-            buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1)
-            )
+            buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1))
         chooser.set_default_response(0)
         chooser.set_select_multiple(True)
 
@@ -208,15 +209,15 @@ class ListStoreApp:
 
         response = chooser.run()
 
-        if response is 0: #Gtk.STOCK_OK
+        if response is 0:  # Gtk.STOCK_OK
             filenames = chooser.get_filenames()
             chooser.destroy()
             for item in filenames:
-                if os.path.isdir(item): #directory
+                if os.path.isdir(item):  # directory
                     for root, dirs, files in os.walk(item):
                         for name in files:
                             self.populate(os.path.join(root, name))
-                else: #regular file
+                else:  # regular file
                     self.populate(item)
         chooser.destroy()
 
@@ -226,7 +227,8 @@ class ListStoreApp:
         '''
         cf = cfile(item, self.backup, self.add2archive)
         if cf.file is not None:
-            self.liststore.append([cf, cf.file.filename, cf.file.mime,'unknow'])
+            self.liststore.append([cf, cf.file.filename,
+                cf.file.mime, 'unknow'])
 
     def about(self, button=None):
         w = Gtk.AboutDialog()
@@ -235,7 +237,7 @@ class ListStoreApp:
         w.set_comments('This software was coded during the GSoC 2011')
         w.set_website('https://gitweb.torproject.org/user/jvoisin/mat.git')
         w.set_website_label('Website')
-        w.set_authors(['Julien (jvoisin) Voisin',])
+        w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_program_name('Metadata Anonymistion Toolkit')
         click = w.run()
         if click:
@@ -250,29 +252,30 @@ class ListStoreApp:
         hbox = Gtk.HBox()
         content_area.pack_start(hbox, False, False, 0)
         icon = Gtk.Image(stock=Gtk.STOCK_PREFERENCES,
-            icon_size=Gtk.IconSize.DIALOG)#the little picture on the left
+            icon_size=Gtk.IconSize.DIALOG)  # the little picture on the left
 
         hbox.pack_start(icon, False, False, 0)
 
-        table = Gtk.Table(3, 2, False)#nb rows, nb lines
+        table = Gtk.Table(3, 2, False)  # nb rows, nb lines
         table.set_row_spacings(4)
         table.set_col_spacings(4)
         hbox.pack_start(table, True, True, 0)
 
         force = Gtk.CheckButton('Force Clean', False)
         force.connect('toggled', self.invert, 'force')
-        force.set_tooltip_text('Do not check if already clean before cleaning.')
+        force.set_tooltip_text('Do not check if already clean before cleaning')
         force.set_active(self.force)
 
         backup = Gtk.CheckButton('Backup', False)
         backup.connect('toggled', self.invert, 'backup')
-        backup.set_tooltip_text('Keep a backup copy.')
+        backup.set_tooltip_text('Keep a backup copy')
         backup.set_active(self.backup)
 
-        add2archive = Gtk.CheckButton('Add unsupported file to archives', False)
+        add2archive = Gtk.CheckButton('Add unsupported file to archives',
+            False)
         add2archive.connect('toggled', self.invert, 'add2archive')
-        add2archive.set_tooltip_text('Add non-supported (and so non-anonymised)\
- file to outputed archive.')
+        add2archive.set_tooltip_text('Add non-supported (and so \
+non-anonymised) file to outputed archive')
         add2archive.set_active(self.add2archive)
 
         table.attach_defaults(force, 0, 1, 0, 1)
@@ -281,10 +284,10 @@ class ListStoreApp:
 
         hbox.show_all()
         response = dialog.run()
-        if response is 0:#Gtk.STOCK_OK
+        if response is 0:  # Gtk.STOCK_OK
             dialog.destroy()
 
-    def invert(self, button, name): #Still not better :/
+    def invert(self, button, name):  # still not better :/
         if name is 'force':
             self.force = not self.force
         elif name is 'ugly':
@@ -338,8 +341,9 @@ class ListStoreApp:
                         self.liststore[i][0].file.remove_all_ugly()
             self.liststore[i][3] = 'clean'
 
+
 def main():
-    app = ListStoreApp()
+    ListStoreApp()
     Gtk.main()
 
 if __name__ == '__main__':

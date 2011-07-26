@@ -2,27 +2,25 @@
     Parent class of all parser
 '''
 
-import hachoir_core.error
-import hachoir_parser
-import hachoir_editor
+import hachoir_core
 
-import sys
 import os
-import subprocess
 import mimetypes
 
 import mat
 
-NOMETA = ('.txt', '.bmp', '.py', '.xml', '.rdf')
+NOMETA = ('.bmp', 'html', '.py', '.rdf', '.txt', '.xml')
+
 
 class Generic_parser(object):
-    def __init__(self, realname, filename, parser, editor, backup, add2archive):
+    def __init__(self, realname, filename, parser, editor, backup,
+        add2archive):
         basename, ext = os.path.splitext(filename)
         self.output = basename + '.cleaned' + ext
-        self.filename = filename #path + filename
-        self.realname = realname #path + filename
-        self.basename = os.path.basename(filename) #only filename
-        self.mime = mimetypes.guess_type(filename)[0] #mimetype
+        self.filename = filename  # path + filename
+        self.realname = realname  # path + filename
+        self.basename = os.path.basename(filename)  # only filename
+        self.mime = mimetypes.guess_type(filename)[0]  # mimetype
         self.parser = parser
         self.editor = editor
         self.backup = backup
@@ -55,7 +53,6 @@ class Generic_parser(object):
             this method would not exist.
         '''
         self.remove_all()
-
 
     def _remove(self, field):
         '''

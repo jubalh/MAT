@@ -1,8 +1,5 @@
 import parser
 
-class BmpStripper(parser.Generic_parser):
-    def _should_remove(self, field):
-        return False
 
 class JpegStripper(parser.Generic_parser):
     def _should_remove(self, field):
@@ -12,6 +9,7 @@ class JpegStripper(parser.Generic_parser):
             return True
         else:
             return False
+
 
 class PngStripper(parser.Generic_parser):
     def _should_remove(self, field):

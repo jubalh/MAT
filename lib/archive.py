@@ -9,11 +9,13 @@ import tempfile
 import parser
 import mat
 
+
 class GenericArchiveStripper(parser.Generic_parser):
     '''
         Represent a generic archive
     '''
-    def __init__(self, realname, filename, parser, editor, backup, add2archive):
+    def __init__(self, realname, filename, parser, editor, backup,
+        add2archive):
         super(GenericArchiveStripper, self).__init__(realname,
             filename, parser, editor, backup, add2archive)
         self.compression = ''
@@ -31,6 +33,7 @@ class GenericArchiveStripper(parser.Generic_parser):
 
     def remove_all_ugly(self):
         self._remove_all('ugly')
+
 
 class ZipStripper(GenericArchiveStripper):
     '''
@@ -94,7 +97,6 @@ harmless format' % item.filename)
         zipin.close()
         return metadata
 
-
     def _remove_all(self, method):
         '''
             So far, the zipfile module does not allow to write a ZipInfo
@@ -150,7 +152,7 @@ class TarStripper(GenericArchiveStripper):
         for item in tarin.getmembers():
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
-            if item.type is '0': #is item a regular file ?
+            if item.type is '0':  # is item a regular file ?
                 #no backup file
                 try:
                     cfile = mat.create_class_file(name, False,
@@ -164,7 +166,7 @@ class TarStripper(GenericArchiveStripper):
                     logging.info('%s\' format is not supported' %
                         item.name)
                     if self.add2archive:
-                        tarout.add(name, item.name,filter=self._remove)
+                        tarout.add(name, item.name, filter=self._remove)
                 mat.secure_remove(name)
         tarin.close()
         tarout.close()
@@ -194,7 +196,7 @@ class TarStripper(GenericArchiveStripper):
                 return False
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
-            if item.type is '0': #is item a regular file ?
+            if item.type is '0':  # is item a regular file ?
                 #no backup file
                 try:
                     class_file = mat.create_class_file(name,
@@ -216,7 +218,7 @@ class TarStripper(GenericArchiveStripper):
         metadata = {}
         for current_file in tarin.getmembers():
             if current_file.type is '0':
-                if not self.is_file_clean(current_file):#if there is meta
+                if not self.is_file_clean(current_file):  # if there is meta
                     current_meta = {}
                     current_meta['mtime'] = current_file.mtime
                     current_meta['uid'] = current_file.uid
@@ -229,14 +231,16 @@ class TarStripper(GenericArchiveStripper):
 
 
 class GzipStripper(TarStripper):
-    def __init__(self, realname, filename, parser, editor, backup, add2archive):
+    def __init__(self, realname, filename, parser, editor, backup,
+        add2archive):
         super(GzipStripper, self).__init__(realname,
             filename, parser, editor, backup, add2archive)
         self.compression = ':gz'
 
 
 class Bzip2Stripper(TarStripper):
-    def __init__(self, realname, filename, parser, editor, backup, add2archive):
+    def __init__(self, realname, filename, parser, editor, backup,
+        add2archive):
         super(Bzip2Stripper, self).__init__(realname,
             filename, parser, editor, backup, add2archive)
         self.compression = ':bz2'
