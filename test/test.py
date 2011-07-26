@@ -15,6 +15,7 @@ import unittest
 sys.path.append('..')
 from lib import mat
 
+VERBOSITY = 3
 FILE_LIST = zip(glob.glob('clean*'), glob.glob('dirty*'))
 
 class MATTest(unittest.TestCase):
