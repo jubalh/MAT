@@ -33,6 +33,9 @@ class GenericArchiveStripper(parser.Generic_parser):
         self._remove_all('ugly')
 
 class ZipStripper(GenericArchiveStripper):
+    '''
+        Represent a zip file
+    '''
     def is_file_clean(self, file):
         if file.comment is not '':
             return False
@@ -48,16 +51,22 @@ class ZipStripper(GenericArchiveStripper):
     def is_clean(self):
         zipin = zipfile.ZipFile(self.filename, 'r')
         if zipin.comment != '':
+            logging.debug('%s has a comment' % self.filename)
             return False
         for item in zipin.infolist():
-            if not self.is_file_clean(item):
-                return False
+            #I have not found a way to remove the crap added by zipfile :/
+            #if not self.is_file_clean(item):
+            #    logging.debug('%s from %s has compromizing zipinfo' %
+            #        (item.filename, self.filename))
+            #    return False
             zipin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.filename)
             if os.path.isfile(name):
                 try:
                     cfile = mat.create_class_file(name, False,
                         self.add2archive)
+                    if not cfile.is_clean():
+                        return False
                 except:
                     #best solution I have found
                     logging.error('%s is not supported' % item.filename)
@@ -66,7 +75,7 @@ class ZipStripper(GenericArchiveStripper):
                         return False
                 mat.secure_remove(name)
         zipin.close()
-        return False
+        return True
 
     def get_meta(self):
         zipin = zipfile.ZipFile(self.filename, 'r')
@@ -84,6 +93,12 @@ class ZipStripper(GenericArchiveStripper):
 
 
     def _remove_all(self, method):
+        '''
+            So far, the zipfile module does not allow to write a ZipInfo
+            object into a zipfile (and it's a shame !) : so data added
+            by zipfile itself could not be removed. It's a big concern.
+            Is shiping a patched version of zipfile.py a good idea ?
+        '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         zipout = zipfile.ZipFile(self.output, 'w',
             allowZip64=True)
@@ -108,9 +123,9 @@ class ZipStripper(GenericArchiveStripper):
                         zipout.write(name, item.filename)
                 mat.secure_remove(name)
         zipout.comment = ''
-        logging.info('%s treated' % self.filename)
         zipin.close()
         zipout.close()
+        logging.info('%s treated' % self.filename)
         self.do_backup()
 
 
@@ -178,10 +193,18 @@ class TarStripper(GenericArchiveStripper):
             name = os.path.join(self.tempdir, item.name)
             if item.type is '0': #is item a regular file ?
                 #no backup file
-                class_file = mat.create_class_file(name, False,self.add2archive)
+                try:
+                    class_file = mat.create_class_file(name,
+                        False, self.add2archive)
+                    if not class_file.is_clean():
+                        return False
+                except:
+                    #best solution I have found
+                    logging.error('%s is not supported' % item.filename)
+                    _, ext = os.path.splitext(name)
+                    if ext not in parser.NOMETA:
+                        return False
                 mat.secure_remove(name)
-                if not class_file.is_clean():#if the extracted file is not clean
-                    return False
         tarin.close()
         return True
 
