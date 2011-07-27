@@ -13,11 +13,6 @@ __author__ = 'jvoisin'
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
-SUPPORTED = (('image/png', 'image/jpeg', 'image/gif',
-            'misc/pdf'),
-            ('*.jpg', '*.jpeg', '*.png', '*.bmp', '*.pdf',
-            '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3',))
-
 
 class CFile(gobject.GObject):
     '''
@@ -182,19 +177,6 @@ class ListStoreApp:
 
         return menubar
 
-    def create_filter(self):
-        '''
-            Return a filter for
-            supported content
-        '''
-        filter = gtk.FileFilter()
-        filter.set_name('Supported files')
-        for item in SUPPORTED[0]:  # add by mime
-            filter.add_mime_type(item)
-        for item in SUPPORTED[1]:  # add by extension
-            filter.add_pattern(item)
-        return filter
-
     def add_files(self, _):
         '''
             Add the files chosed by the filechoser ("Add" button)
@@ -211,7 +193,11 @@ class ListStoreApp:
         filter.set_name('All files')
         filter.add_pattern('*')
         chooser.add_filter(filter)
-        chooser.add_filter(self.create_filter())
+
+        filter = gtk.FileFilter()
+        [filter.add_mime_type(i) for i in mat.STRIPPERS.keys()]
+        filter.set_name('Supported files')
+        chooser.add_filter(filter)
 
         response = chooser.run()
 
