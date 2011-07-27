@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-from gi.repository import Gtk, GObject
+#from gi.repository import gtk, GObject
+import gtk
+import gobject
+
 import os
 import logging
 from lib import mat
@@ -13,17 +16,17 @@ logging.basicConfig(level=mat.LOGGING_LEVEL)
 SUPPORTED = (('image/png', 'image/jpeg', 'image/gif',
             'misc/pdf'),
             ('*.jpg', '*.jpeg', '*.png', '*.bmp', '*.pdf',
-            '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3'))
+            '*.tar', '*.tar.bz2', '*.tar.gz', '*.mp3',))
 
 
-class CFile(GObject.GObject):
+class CFile(gobject.GObject):
     '''
         Contain the class-file of the file "path"
         This class exist just to be "around" my parser.Generic_parser class,
-        since Gtk.ListStore does not accept it.
+        since gtk.ListStore does not accept it.
     '''
     def __init__(self, path, backup, add2archive):
-        GObject.GObject.__init__(self)
+        gobject.GObject.__init__(self)
         try:
             self.file = mat.create_class_file(path, backup, add2archive)
         except:
@@ -35,41 +38,41 @@ class ListStoreApp:
         Main GUI class
     '''
     def __init__(self):
-        #preferences
+        # Preferences
+        self.add2archive = True
         self.backup = True
         self.force = False
-        self.add2archive = True
 
-        self.window = Gtk.Window()
+        self.window = gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' %
             __version__)
-        self.window.connect('destroy', Gtk.main_quit)
+        self.window.connect('destroy', gtk.main_quit)
         self.window.set_default_size(800, 600)
 
-        vbox = Gtk.VBox()
+        vbox = gtk.VBox()
         self.window.add(vbox)
 
         menubar = self.create_menu()
         toolbar = self.create_toolbar()
-        content = Gtk.ScrolledWindow()
+        content = gtk.ScrolledWindow()
         vbox.pack_start(menubar, False, True, 0)
         vbox.pack_start(toolbar, False, True, 0)
         vbox.pack_start(content, True, True, 0)
 
-        #parser.class - name - type - cleaned
-        self.liststore = Gtk.ListStore(CFile, str, str, str)
+        # parser.class - name - type - cleaned
+        self.liststore = gtk.ListStore(CFile, str, str, str)
 
-        treeview = Gtk.TreeView(model=self.liststore)
+        treeview = gtk.TreeView(model=self.liststore)
         treeview.set_search_column(1)  # name column is searchable
         treeview.set_rules_hint(True)  # alternate colors for rows
         treeview.set_rubber_banding(True)  # mouse selection
         self.add_columns(treeview)
         self.selection = treeview.get_selection()
-        self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
+        self.selection.set_mode(gtk.SELECTION_MULTIPLE)
 
         content.add(treeview)
 
-        self.statusbar = Gtk.Statusbar()
+        self.statusbar = gtk.Statusbar()
         self.statusbar.push(1, 'Ready')
         vbox.pack_start(self.statusbar, False, False, 0)
 
@@ -79,35 +82,37 @@ class ListStoreApp:
         '''
             Returns a vbox object, which contains a toolbar with buttons
         '''
-        toolbar = Gtk.Toolbar()
+        toolbar = gtk.Toolbar()
 
-        toolbutton = Gtk.ToolButton(label='Add', stock_id=Gtk.STOCK_ADD)
+        toolbutton = gtk.ToolButton(gtk.STOCK_ADD)
+        toolbutton.set_label('Add')
         toolbutton.connect('clicked', self.add_files)
         toolbutton.set_tooltip_text('Add files')
         toolbar.add(toolbutton)
 
-        toolbutton = Gtk.ToolButton(label='Clean',
-            stock_id=Gtk.STOCK_PRINT_REPORT)
+        toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
+        toolbutton.set_label('Clean')
         toolbutton.connect('clicked', self.mat_clean)
         toolbutton.set_tooltip_text('Clean selected files without data loss')
         toolbar.add(toolbutton)
 
-        toolbutton = Gtk.ToolButton(label='Brute Clean',
-            stock_id=Gtk.STOCK_PRINT_WARNING)
+        toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_WARNING)
+        toolbutton.set_label('Brute Clean')
         toolbutton.set_tooltip_text('Clean selected files with possible data \
             loss')
         toolbar.add(toolbutton)
 
-        toolbutton = Gtk.ToolButton(label='Check', stock_id=Gtk.STOCK_FIND)
+        toolbutton = gtk.ToolButton(gtk.STOCK_FIND)
+        toolbutton.set_label('Check')
         toolbutton.connect('clicked', self.mat_check)
         toolbutton.set_tooltip_text('Check selected files for harmful meta')
         toolbar.add(toolbutton)
 
-        toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
-        toolbutton.connect('clicked', Gtk.main_quit)
+        toolbutton = gtk.ToolButton(stock_id=gtk.STOCK_QUIT)
+        toolbutton.connect('clicked', gtk.main_quit)
         toolbar.add(toolbutton)
 
-        vbox = Gtk.VBox(spacing=3)
+        vbox = gtk.VBox(spacing=3)
         vbox.pack_start(toolbar, False, False, 0)
         return vbox
 
@@ -118,8 +123,8 @@ class ListStoreApp:
         colname = ['Filename', 'Mimetype', 'Cleaned']
 
         for i, j in enumerate(colname):
-            filename_column = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(j, filename_column, text=i + 1)
+            filename_column = gtk.CellRendererText()
+            column = gtk.TreeViewColumn(j, filename_column, text=i + 1)
             column.set_sort_column_id(i + 1)
             treeview.append_column(column)
 
@@ -127,8 +132,9 @@ class ListStoreApp:
         '''
             Create a MenuItem() like Preferences, Quit, Add, Clean, ...
         '''
-        item = Gtk.ImageMenuItem()
-        picture = Gtk.Image.new_from_stock(pix, Gtk.IconSize.MENU)
+        item = gtk.ImageMenuItem()
+        picture = gtk.Image()
+        picture.set_from_stock(pix, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
         item.set_label(name)
         item.connect('activate', func)
@@ -138,8 +144,8 @@ class ListStoreApp:
         '''
             Create a submenu like File, Edit, Clean, ...
         '''
-        submenu = Gtk.Menu()
-        menuitem = Gtk.MenuItem()
+        submenu = gtk.Menu()
+        menuitem = gtk.MenuItem()
         menuitem.set_submenu(submenu)
         menuitem.set_label(name)
         menubar.append(menuitem)
@@ -149,30 +155,30 @@ class ListStoreApp:
         '''
             Return a MenuBar
         '''
-        menubar = Gtk.MenuBar()
+        menubar = gtk.MenuBar()
 
         file_menu = self.create_sub_menu('Files', menubar)
         self.create_menu_item('Add files', self.add_files, file_menu,
-            Gtk.STOCK_ADD)
-        self.create_menu_item('Quit', Gtk.main_quit, file_menu,
-            Gtk.STOCK_QUIT)
+            gtk.STOCK_ADD)
+        self.create_menu_item('Quit', gtk.main_quit, file_menu,
+            gtk.STOCK_QUIT)
 
         edit_menu = self.create_sub_menu('Edit', menubar)
         self.create_menu_item('Clear the filelist', self.clear_model,
-            edit_menu, Gtk.STOCK_REMOVE)
+            edit_menu, gtk.STOCK_REMOVE)
         self.create_menu_item('Preferences', self.preferences, edit_menu,
-            Gtk.STOCK_PREFERENCES)
+            gtk.STOCK_PREFERENCES)
 
         clean_menu = self.create_sub_menu('Clean', menubar)
         self.create_menu_item('Clean', self.mat_clean, clean_menu,
-            Gtk.STOCK_PRINT_REPORT)
+            gtk.STOCK_PRINT_REPORT)
         self.create_menu_item('Clean (lossy way)', self.mat_clean_dirty,
-            clean_menu, Gtk.STOCK_PRINT_WARNING)
+            clean_menu, gtk.STOCK_PRINT_WARNING)
         self.create_menu_item('Check', self.mat_check, clean_menu,
-            Gtk.STOCK_FIND)
+            gtk.STOCK_FIND)
 
         help_menu = self.create_sub_menu('Help', menubar)
-        self.create_menu_item('About', self.about, help_menu, Gtk.STOCK_ABOUT)
+        self.create_menu_item('About', self.about, help_menu, gtk.STOCK_ABOUT)
 
         return menubar
 
@@ -181,7 +187,7 @@ class ListStoreApp:
             Return a filter for
             supported content
         '''
-        filter = Gtk.FileFilter()
+        filter = gtk.FileFilter()
         filter.set_name('Supported files')
         for item in SUPPORTED[0]:  # add by mime
             filter.add_mime_type(item)
@@ -193,15 +199,15 @@ class ListStoreApp:
         '''
             Add the files chosed by the filechoser ("Add" button)
         '''
-        chooser = Gtk.FileChooserDialog(
+        chooser = gtk.FileChooserDialog(
             title='Choose files',
             parent=None,
-            action=Gtk.FileChooserAction.OPEN,
-            buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1))
+            action=gtk.FILE_CHOOSER_ACTION_OPEN,
+            buttons=(gtk.STOCK_OK, 0, gtk.STOCK_CANCEL, 1))
         chooser.set_default_response(0)
         chooser.set_select_multiple(True)
 
-        filter = Gtk.FileFilter()
+        filter = gtk.FileFilter()
         filter.set_name('All files')
         filter.add_pattern('*')
         chooser.add_filter(filter)
@@ -209,7 +215,7 @@ class ListStoreApp:
 
         response = chooser.run()
 
-        if response is 0:  # Gtk.STOCK_OK
+        if response is 0:  # gtk.STOCK_OK
             filenames = chooser.get_filenames()
             chooser.destroy()
             for item in filenames:
@@ -234,7 +240,7 @@ class ListStoreApp:
         '''
             About popup
         '''
-        w = Gtk.AboutDialog()
+        w = gtk.AboutDialog()
         w.set_version(__version__)
         w.set_copyright('GNU Public License v2')
         w.set_comments('This software was coded during the GSoC 2011')
@@ -250,31 +256,31 @@ class ListStoreApp:
         '''
             Preferences popup
         '''
-        dialog = Gtk.Dialog('Preferences', self.window, 0, (Gtk.STOCK_OK, 0))
+        dialog = gtk.Dialog('Preferences', self.window, 0, (gtk.STOCK_OK, 0))
         content_area = dialog.get_content_area()
-        hbox = Gtk.HBox()
+        hbox = gtk.HBox()
         content_area.pack_start(hbox, False, False, 0)
-        icon = Gtk.Image(stock=Gtk.STOCK_PREFERENCES,
-            icon_size=Gtk.IconSize.DIALOG)  # the little picture on the left
+        icon = gtk.Image()
+        icon.set_from_stock(gtk.STOCK_PREFERENCES, gtk.ICON_SIZE_DIALOG)
 
         hbox.pack_start(icon, False, False, 0)
 
-        table = Gtk.Table(3, 2, False)  # nb rows, nb lines
+        table = gtk.Table(3, 2, False)  # nb rows, nb lines
         table.set_row_spacings(4)
         table.set_col_spacings(4)
         hbox.pack_start(table, True, True, 0)
 
-        force = Gtk.CheckButton('Force Clean', False)
+        force = gtk.CheckButton('Force Clean', False)
         force.connect('toggled', self.invert, 'force')
         force.set_tooltip_text('Do not check if already clean before cleaning')
         force.set_active(self.force)
 
-        backup = Gtk.CheckButton('Backup', False)
+        backup = gtk.CheckButton('Backup', False)
         backup.connect('toggled', self.invert, 'backup')
         backup.set_tooltip_text('Keep a backup copy')
         backup.set_active(self.backup)
 
-        add2archive = Gtk.CheckButton('Add unsupported file to archives',
+        add2archive = gtk.CheckButton('Add unsupported file to archives',
             False)
         add2archive.connect('toggled', self.invert, 'add2archive')
         add2archive.set_tooltip_text('Add non-supported (and so \
@@ -287,7 +293,7 @@ non-anonymised) file to outputed archive')
 
         hbox.show_all()
         response = dialog.run()
-        if response is 0:  # Gtk.STOCK_OK
+        if response is 0:  # gtk.STOCK_OK
             dialog.destroy()
 
     def invert(self, button, name):  # still not better :/
@@ -363,4 +369,4 @@ non-anonymised) file to outputed archive')
 
 if __name__ == '__main__':
     ListStoreApp()
-    Gtk.main()
+    gtk.main()
