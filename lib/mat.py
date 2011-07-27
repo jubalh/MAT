@@ -39,17 +39,29 @@ STRIPPERS = {
 try:
     import mutagen
     STRIPPERS['audio/x-flac'] = audio.FlacStripper
+    STRIPPERS['audio/x-ape'] = audio.Apev2Stripper
+    STRIPPERS['audio/x-wavpack'] = audio.Apev2Stripper
+    STRIPPERS['audio/vorbis'] = audio.OggStripper
 except ImportError:
     print('unable to import python-mutagen : limited audio format support')
+
 
 def secure_remove(filename):
     '''
         securely remove the file
     '''
+    removed = False
     try:
         subprocess.call('shred --remove %s' % filename, shell=True)
+        removed = True
     except:
-        logging.error('Unable to remove %s' % filename)
+        logging.error('Unable to securely remove %s' % filename)
+
+    if removed is False:
+        try:
+            os.remove(filename)
+        except:
+            logging.error('Unable to remove %s' % filename)
 
 
 def is_secure(filename):
@@ -72,8 +84,6 @@ def create_class_file(name, backup, add2archive):
         return
 
     filename = ''
-    realname = name
-
     try:
         filename = hachoir_core.cmd_line.unicodeFilename(name)
     except TypeError:  # get rid of "decoding Unicode is not supported"
@@ -85,6 +95,7 @@ def create_class_file(name, backup, add2archive):
         return
 
     mime = parser.mime_type
+    print mime
 
     if mime.startswith('application/vnd.oasis.opendocument'):
         mime = 'application/vnd.oasis.opendocument'  # opendocument fileformat
@@ -92,7 +103,7 @@ def create_class_file(name, backup, add2archive):
     try:
         stripper_class = STRIPPERS[mime]
     except KeyError:
-        logging.info('Don\'t have stripper for %s\' format' % filename)
+        logging.info('Don\'t have stripper for %s\'s format' % name)
         return
 
     return stripper_class(filename, parser, mime, backup, add2archive)

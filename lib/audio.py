@@ -2,9 +2,14 @@
     Care about audio fileformat
 '''
 from mutagen.flac import FLAC
+from mutagen.apev2 import APEv2
+from mutagen.oggvorbis import OggVorbis
+
+
 
 import parser
 import shutil
+
 
 class MpegAudioStripper(parser.GenericParser):
     '''
@@ -15,6 +20,80 @@ class MpegAudioStripper(parser.GenericParser):
             return True
         else:
             return False
+
+
+class OggStripper(parser.GenericParser):
+    '''
+        Represent an ogg vorbis file
+    '''
+    def remove_all(self):
+        if self.backup is True:
+            shutil.copy2(self.filename, self.output)
+            self.filename = self.output
+
+        mfile = OggVorbis(self.filename)
+        mfile.delete()
+        mfile.save()
+
+    def is_clean(self):
+        '''
+            Check if the "metadata" block is present in the file
+        '''
+        mfile = OggVorbis(self.filename)
+        print mfile.tags
+        if mfile.tags == []:
+            return True
+        else:
+            return False
+
+    def get_meta(self):
+        '''
+            Return the content of the metadata block if present
+        '''
+        metadata = {}
+        mfile = OggVorbis(self.filename)
+        for key, value in mfile.tags:
+            metadata[key] = value
+        return metadata
+
+class Apev2Stripper(parser.GenericParser):
+    '''
+        Represent a Apev2 audio file
+    '''
+    def remove_all(self):
+        '''
+            Remove the "metadata" block from the file
+        '''
+        if self.backup is True:
+            shutil.copy2(self.filename, self.output)
+            self.filename = self.output
+
+        mfile = APEv2(self.filename)
+        mfile.delete()
+        mfile.save()
+
+    def is_clean(self):
+        '''
+            Check if the "metadata" block is present in the file
+        '''
+        mfile = APEv2(self.filename)
+        if mfile.tags is None:
+            return True
+        else:
+            return False
+
+    def get_meta(self):
+        '''
+            Return the content of the metadata block if present
+        '''
+        metadata = {}
+        mfile = APEv2(self.filename)
+        if mfile.tags is None:
+            return metadata
+        for key, value in mfile.tags:
+            metadata[key] = value
+        return metadata
+
 
 class FlacStripper(parser.GenericParser):
     '''
@@ -30,6 +109,7 @@ class FlacStripper(parser.GenericParser):
 
         mfile = FLAC(self.filename)
         mfile.delete()
+        mfile.clear_pictures()
         mfile.save()
 
     def is_clean(self):
@@ -37,7 +117,7 @@ class FlacStripper(parser.GenericParser):
             Check if the "metadata" block is present in the file
         '''
         mfile = FLAC(self.filename)
-        if mfile.tags is None:
+        if mfile.tags is None and mfile.pictures == []:
             return True
         else:
             return False
@@ -52,4 +132,6 @@ class FlacStripper(parser.GenericParser):
             return metadata
         for key, value in mfile.tags:
             metadata[key] = value
+        if mfile.pictures != []:
+            metadata['picture :'] = 'yes'
         return metadata
