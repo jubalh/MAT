@@ -1,10 +1,12 @@
 '''
     Care about audio fileformat
 '''
-from mutagen.flac import FLAC
-from mutagen.apev2 import APEv2
-from mutagen.oggvorbis import OggVorbis
-
+try:
+    from mutagen.flac import FLAC
+    from mutagen.apev2 import APEv2
+    from mutagen.oggvorbis import OggVorbis
+except:
+    pass
 
 
 import parser
