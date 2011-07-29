@@ -32,9 +32,16 @@ STRIPPERS = {
     'audio/mpeg': audio.MpegAudioStripper,
     'image/jpeg': images.JpegStripper,
     'image/png': images.PngStripper,
-    'application/x-pdf ': office.PdfStripper,
     'application/vnd.oasis.opendocument': office.OpenDocumentStripper,
 }
+
+try:
+    import poppler
+    import cairo
+    STRIPPERS['application/x-pdf'] = office.PdfStripper
+    STRIPPERS['application/pdf'] = office.PdfStripper
+except ImportError:
+    print('Unable to import python-poppler and/or python-cairo: no pdf support')
 
 try:
     import mutagen
@@ -99,6 +106,8 @@ def create_class_file(name, backup, add2archive):
 
     if mime.startswith('application/vnd.oasis.opendocument'):
         mime = 'application/vnd.oasis.opendocument'  # opendocument fileformat
+
+    #stripper_class = STRIPPERS[mime]
 
     try:
         stripper_class = STRIPPERS[mime]

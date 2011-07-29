@@ -1,3 +1,7 @@
+'''
+    Care about office's formats
+'''
+
 import os
 import mimetypes
 import subprocess
@@ -9,8 +13,12 @@ import re
 import shutil
 from xml.etree import ElementTree
 
+try:
+    import cairo
+    import poppler
+except ImportError:
+    pass
 
-import pdfrw
 import mat
 import parser
 import archive
@@ -23,6 +31,9 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
     '''
 
     def get_meta(self):
+        '''
+            Return a dict with all the meta of the file
+        '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         metadata = {}
         try:
@@ -83,6 +94,9 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         self.do_backup()
 
     def is_clean(self):
+        '''
+            Check if the file is clean from harmful metadatas
+        '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         try:
             zipin.getinfo('meta.xml')
@@ -97,88 +111,48 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                     return False
         return True
 
-
 class PdfStripper(parser.GenericParser):
     '''
-        Represent a pdf file, with the help of pdfrw
+        Represent a pdf file
     '''
-    def __init__(self, filename, parser, mime, backup, add2archive):
-        name, ext = os.path.splitext(filename)
-        self.output = name + '.cleaned' + ext
-        self.filename = filename
-        self.backup = backup
-        self.realname = realname
-        self.shortname = os.path.basename(filename)
-        self.mime = mime
-        self.tempdir = tempfile.mkdtemp()
-        self.trailer = pdfrw.PdfReader(self.filename)
-        self.writer = pdfrw.PdfWriter()
-        self.convert = 'gm convert -antialias -enhance %s %s'
-
-    def __del__(self):
-        '''
-            Remove the temp dir
-        '''
-        shutil.rmtree(self.tempdir)
+    def is_clean(self):
+        #FIXME
+        return False
 
     def remove_all(self):
-        '''
-            Remove all the meta fields that are compromizing
-        '''
-        self.trailer.Info.Title = ''
-        self.trailer.Info.Author = ''
-        self.trailer.Info.Producer = ''
-        self.trailer.Info.Creator = ''
-        self.trailer.Info.CreationDate = ''
-        self.trailer.Info.ModDate = ''
-
-        self.writer.trailer = self.trailer
-        self.writer.write(self.output)
-        self.do_backup()
+        #FIXME
+        self.remove_all_ugly()
 
     def remove_all_ugly(self):
         '''
-            Transform each pages into a jpg, clean them,
-            then re-assemble them into a new pdf
+            Opening the pdf with poppler, then doing a render
+            on a cairo pdfsurface.
         '''
-        subprocess.call(self.convert % (self.filename, self.tempdir +
-            'temp.jpg'), shell=True)  # Convert pages to jpg
-
-        for current_file in glob.glob(self.tempdir + 'temp*'):
-        #Clean every jpg image
-            class_file = mat.create_class_file(current_file, False, False)
-            class_file.remove_all()
-
-        subprocess.call(self.convert % (self.tempdir +
-            'temp.jpg*', self.output), shell=True)  # Assemble jpg into pdf
-
-        for current_file in glob.glob(self.tempdir + 'temp*'):
-        #remove jpg files
-            mat.secure_remove(current_file)
-
-        if self.backup is False:
-            mat.secure_remove(self.filename)  # remove the old file
-            os.rename(self.output, self.filename)  # rename the new
-            name = self.realname
-        else:
-            name = self.output
-        class_file = mat.create_class_file(name, False, False)
-        class_file.remove_all()
-
-    def is_clean(self):
-        '''
-            Check if the file is clean from harmful metadatas
-        '''
-        for field in self.trailer.Info:
-            if field != '':
-                return False
-        return True
+        uri = 'file://' + self.filename
+        password = None
+        document = poppler.document_new_from_file(uri, password)
+        page = document.get_page(0)
+        page_width, page_height = page.get_size()
+        surface = cairo.PDFSurface(self.output, page_width, page_height)
+        context = cairo.Context(surface)
+        for i in xrange(document.get_n_pages()):
+            page = document.get_page(i)
+            context.translate(0, 0)
+            page.render(context)
+            context.show_page()
+        surface.finish()
 
     def get_meta(self):
-        '''
-            return a dict with all the meta of the file
-        '''
-        metadata = {}
-        for key, value in self.trailer.Info.iteritems():
-                metadata[key[1:]] = value[1:-1]
+        metadata={}
+        meta_list=('title', 'author', 'subject', 'keywords', 'creator',
+            'producer', 'creation-date', 'mod-date', 'metadata')
+        uri = 'file://' + self.filename
+        password = None
+        document = poppler.document_new_from_file(uri, password)
+        for key in meta_list:
+            self._get_meta(document, metadata, key)
         return metadata
+
+    def _get_meta(self, document, metadata, key):
+        if document.get_property(key) is not None:
+            metadata[key] = document.get_property(key)
