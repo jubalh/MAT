@@ -1,3 +1,6 @@
+'''
+    Take care of archives formats
+'''
 import tarfile
 import zipfile
 
@@ -67,6 +70,9 @@ class ZipStripper(GenericArchiveStripper):
             return True
 
     def is_clean(self):
+        '''
+            Check if the given file is clean from harmful metadata
+        '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         if zipin.comment != '':
             logging.debug('%s has a comment' % self.filename)
@@ -154,6 +160,9 @@ harmless format' % item.filename)
 
 
 class TarStripper(GenericArchiveStripper):
+    '''
+        Represent a tarfile archive
+    '''
     def _remove(self, current_file):
         '''
             remove the meta added by tar itself to the file
@@ -209,6 +218,9 @@ class TarStripper(GenericArchiveStripper):
             return True
 
     def is_clean(self):
+        '''
+            Check if the file is clean from harmful metadatas
+        '''
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for item in tarin.getmembers():
             if not self.is_file_clean(item):
@@ -233,6 +245,9 @@ class TarStripper(GenericArchiveStripper):
         return True
 
     def get_meta(self):
+        '''
+            Return a dict with all the meta of the file
+        '''
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         metadata = {}
         for current_file in tarin.getmembers():

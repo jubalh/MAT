@@ -6,7 +6,6 @@ import hachoir_core
 import hachoir_editor
 
 import os
-import mimetypes
 
 import mat
 
@@ -14,6 +13,9 @@ NOMETA = ('.bmp', 'html', '.py', '.rdf', '.txt', '.xml')
 
 
 class GenericParser(object):
+    '''
+        Parent class of all parsers
+    '''
     def __init__(self, filename, parser, mime, backup, add2archive):
         self.filename = ''
         self.parser = parser
@@ -28,7 +30,6 @@ class GenericParser(object):
         basename, ext = os.path.splitext(filename)
         self.output = basename + '.cleaned' + ext
         self.basename = os.path.basename(filename)  # only filename
-
 
 
     def is_clean(self):
@@ -68,7 +69,7 @@ class GenericParser(object):
 
     def get_meta(self):
         '''
-            return a dict with all the meta of the file
+            Return a dict with all the meta of the file
         '''
         metadata = {}
         for field in self.editor:

@@ -31,6 +31,9 @@ class TorrentStripper(parser.GenericParser):
         return True
 
     def get_meta(self):
+        '''
+            Return a dict with all the meta of the file
+        '''
         metadata = {}
         for field in self.editor['root']:
             if self._should_remove(field):

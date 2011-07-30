@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
-#from gi.repository import gtk, GObject
+'''
+    Metadata anonymisation toolkit - GUI edition
+'''
+
 import gtk
 import gobject
 
@@ -232,7 +235,7 @@ class ListStoreApp:
         w.set_comments('This software was coded during the GSoC 2011')
         w.set_website('https://gitweb.torproject.org/user/jvoisin/mat.git')
         w.set_website_label('Website')
-        w.set_authors(['Julien (jvoisin) Voisin', ])
+        w.set_authors(['Julien (jvoisin) Voisin',])
         w.set_program_name('Metadata Anonymistion Toolkit')
         click = w.run()
         if click:
@@ -282,7 +285,7 @@ non-anonymised) file to outputed archive')
         if response is 0:  # gtk.STOCK_OK
             dialog.destroy()
 
-    def invert(self, button, name):  # still not better :/
+    def invert(self, _, name):  # still not better :/
         '''
             Invert a preference state
         '''
@@ -293,7 +296,10 @@ non-anonymised) file to outputed archive')
         elif name is 'backup':
             self.backup = not self.backup
 
-    def clear_model(self, button=None):
+    def clear_model(self, _):
+        '''
+            Clear the whole list of files
+        '''
         self.liststore.clear()
 
     def all_if_empy(self, iterator):

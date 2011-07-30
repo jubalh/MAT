@@ -3,9 +3,9 @@
 '''
 try:
     from mutagen.flac import FLAC
-    from mutagen.apev2 import APEv2
+    from mutagen.apev2 import APEv2File
     from mutagen.oggvorbis import OggVorbis
-except:
+except ImportError:
     pass
 
 
@@ -70,7 +70,7 @@ class Apev2Stripper(parser.GenericParser):
             shutil.copy2(self.filename, self.output)
             self.filename = self.output
 
-        mfile = APEv2(self.filename)
+        mfile = APEv2File(self.filename)
         mfile.delete()
         mfile.save()
 
@@ -78,7 +78,7 @@ class Apev2Stripper(parser.GenericParser):
         '''
             Check if the "metadata" block is present in the file
         '''
-        mfile = APEv2(self.filename)
+        mfile = APEv2File(self.filename)
         if mfile.tags is None:
             return True
         else:
@@ -89,7 +89,7 @@ class Apev2Stripper(parser.GenericParser):
             Return the content of the metadata block if present
         '''
         metadata = {}
-        mfile = APEv2(self.filename)
+        mfile = APEv2File(self.filename)
         if mfile.tags is None:
             return metadata
         for key, value in mfile.tags:

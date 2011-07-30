@@ -8,7 +8,6 @@ import subprocess
 import sys
 
 sys.path.append('..')
-#import cli
 from lib import mat
 import test
 
@@ -57,7 +56,6 @@ class TestisCleancli(test.MATTest):
     '''
         check if cli.py correctly check if a file is clean or not
     '''
-    #FIXME : use an external file with string as const ?
     def test_clean(self):
         '''test is_clean on clean files'''
         for clean, _ in self.file_list:

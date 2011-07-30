@@ -3,14 +3,9 @@
 '''
 
 import os
-import mimetypes
-import subprocess
-import tempfile
-import glob
 import logging
 import zipfile
 import re
-import shutil
 from xml.etree import ElementTree
 
 try:
@@ -103,13 +98,13 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             zipin.getinfo('meta.xml')
             return False
         except KeyError:  # no meta.xml in the file
-                zipin.close()
-                czf = archive.ZipStripper(self.filename, self.parser,
-                    'application/zip', self.backup, self.add2archive)
-                if czf.is_clean():
-                    return True
-                else:
-                    return False
+            zipin.close()
+            czf = archive.ZipStripper(self.filename, self.parser,
+                'application/zip', self.backup, self.add2archive)
+            if czf.is_clean():
+                return True
+            else:
+                return False
         return True
 
 
@@ -172,7 +167,7 @@ class PdfStripper(parser.GenericParser):
         '''
             Return a dict with all the meta of the file
         '''
-        metadata={}
+        metadata = {}
         for key in self.meta_list:
             if key == 'creation-date' or key == 'mod-date':
                 #creation and modification are set to -1
@@ -181,5 +176,5 @@ class PdfStripper(parser.GenericParser):
             else:
                 if self.document.get_property(key) is not None and \
                     self.document.get_property(key) != '':
-                        metadata[key] = self.document.get_property(key)
+                    metadata[key] = self.document.get_property(key)
         return metadata

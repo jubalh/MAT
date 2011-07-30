@@ -12,6 +12,9 @@ __version__ = '0.1'
 
 
 def parse():
+    '''
+        Get, and parse options passed to the program
+    '''
     parser = optparse.OptionParser(usage='%prog [options] filename')
     parser.add_option('--add2archive', '-a', action='store_true',
         default=False, help='Add to outputed archive non-supported filetypes')
@@ -33,7 +36,10 @@ def parse():
     return values, arguments
 
 
-def display_version(*args):
+def display_version(*_):
+    '''
+        Display the program's version, and exit
+    '''
     print('Metadata Anonymisation Toolkit version %s') % mat.__version__
     print('CLI version %s') % __version__
     print('Hachoir version %s') % hachoir_core.__version__
@@ -87,6 +93,9 @@ def clean_meta_ugly(class_file, filename):
 
 
 def main():
+    '''
+        main function : get args, and launch the appropriate function
+    '''
     args, filenames = parse()
 
     #func receive the function correponding to the options given as parameters

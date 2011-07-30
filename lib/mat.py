@@ -7,7 +7,6 @@
 import os
 import subprocess
 import logging
-import mimetypes
 
 import hachoir_core.cmd_line
 import hachoir_parser
@@ -102,7 +101,6 @@ def create_class_file(name, backup, add2archive):
         return
 
     mime = parser.mime_type
-    print mime
 
     if mime.startswith('application/vnd.oasis.opendocument'):
         mime = 'application/vnd.oasis.opendocument'  # opendocument fileformat
