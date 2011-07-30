@@ -1,7 +1,26 @@
+Warning :
+    Mat only remove metadata from your files, it does not anonymise their
+    content, nor it can handle watermarking, steganography, or any too custom
+    metadata field/system.
+
+    If you really want to be anonym, use format that does not contain any
+    metadata, or better : use plain-text.
+
 Dependencies:
-    graphicsmagick : for full pdf support
-    python2.7 :
+    python2.7 : for tar, tar.bz2, tar.gz support
+    shred : for secure removal
+
+Optionals dependencies:
+    python-poppler, python-poppler : for pdf support
+    python-mutagen : for massive audio format support
 
 Usage:
-    cli.py --help
+        python cli.py --help
+    or
+        python gui.py
 
+Supported format:
+    see lib/mat.py
+
+Known Bugs:
+    Zipfiles are not totally cleaned
