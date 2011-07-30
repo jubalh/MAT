@@ -11,3 +11,4 @@ from pdftokens import PdfTokens
 
 PdfFileReader = PdfReader
 PdfFileWriter = PdfWriter
+
