@@ -131,11 +131,11 @@ class PdfStripper(parser.GenericParser):
             Check if the file is clean from harmful metadatas
         '''
         for key in self.meta_list:
-            if key != 'creation-date' and key != 'mod-date':
-                if self.document.get_property(key) is not None:
+            if key == 'creation-date' and key == 'mod-date':
+                if self.document.get_property(key) != -1:
                     return False
             else:
-                if self.document.get_property(key) != -1:
+                if self.document.get_property(key) is not None:
                     return False
         return True
 
@@ -149,20 +149,21 @@ class PdfStripper(parser.GenericParser):
         page = self.document.get_page(0)
         page_width, page_height = page.get_size()
         surface = cairo.PDFSurface(self.output, page_width, page_height)
-        context = cairo.Context(surface)
+        context = cairo.Context(surface) #  context draws on the surface
         for pagenum in xrange(self.document.get_n_pages()):
             page = self.document.get_page(pagenum)
             context.translate(0, 0)
-            page.render(context)
-            context.show_page()
+            page.render(context) #  render the page on context
+            context.show_page() #  draw context on surface
         surface.finish()
+
         #For now, poppler cannot write meta, so we must use pdfrw
         trailer = pdfrw.PdfReader(self.output)
-        trailer.Info.Producer = ''
-        trailer.Info.Creator = ''
+        trailer.Info.Producer = trailer.Info.Creator = None
         writer = pdfrw.PdfWriter()
         writer.trailer = trailer
         writer.write(self.output)
+        self.do_backup()
 
     def get_meta(self):
         '''
@@ -170,6 +171,12 @@ class PdfStripper(parser.GenericParser):
         '''
         metadata={}
         for key in self.meta_list:
-            if self.document.get_property(key) is not None:
-                metadata[key] = self.document.get_property(key)
+            if key == 'creation-date' or key == 'mod-date':
+                #creation and modification are set to -1
+                if self.document.get_property(key) != -1:
+                    metadata[key] = self.document.get_property(key)
+            else:
+                if self.document.get_property(key) is not None and \
+                    self.document.get_property(key) != '':
+                        metadata[key] = self.document.get_property(key)
         return metadata
