@@ -22,6 +22,7 @@ except ImportError:
 import mat
 import parser
 import archive
+import pdfrw
 
 
 class OpenDocumentStripper(archive.GenericArchiveStripper):
@@ -111,48 +112,64 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                     return False
         return True
 
+
 class PdfStripper(parser.GenericParser):
     '''
         Represent a pdf file
     '''
+    def __init__(self, filename, parser, mime, backup, add2archive):
+        super(PdfStripper, self).__init__(filename, parser, mime, backup,
+            add2archive)
+        uri = 'file://' + self.filename
+        self.password = None
+        self.document = poppler.document_new_from_file(uri, self.password)
+        self.meta_list = ('title', 'author', 'subject', 'keywords', 'creator',
+            'producer', 'creation-date', 'mod-date', 'metadata')
+
     def is_clean(self):
-        #FIXME
-        return False
+        '''
+            Check if the file is clean from harmful metadatas
+        '''
+        for key in self.meta_list:
+            if key != 'creation-date' and key != 'mod-date':
+                if self.document.get_property(key) is not None:
+                    return False
+            else:
+                if self.document.get_property(key) != -1:
+                    return False
+        return True
 
     def remove_all(self):
-        #FIXME
-        self.remove_all_ugly()
-
-    def remove_all_ugly(self):
         '''
             Opening the pdf with poppler, then doing a render
-            on a cairo pdfsurface.
+            on a cairo pdfsurface for each pages.
+            http://cairographics.org/documentation/pycairo/2/
+            python-poppler is not documented at all : have fun ;)
         '''
-        uri = 'file://' + self.filename
-        password = None
-        document = poppler.document_new_from_file(uri, password)
-        page = document.get_page(0)
+        page = self.document.get_page(0)
         page_width, page_height = page.get_size()
         surface = cairo.PDFSurface(self.output, page_width, page_height)
         context = cairo.Context(surface)
-        for i in xrange(document.get_n_pages()):
-            page = document.get_page(i)
+        for pagenum in xrange(self.document.get_n_pages()):
+            page = self.document.get_page(pagenum)
             context.translate(0, 0)
             page.render(context)
             context.show_page()
         surface.finish()
+        #For now, poppler cannot write meta, so we must use pdfrw
+        trailer = pdfrw.PdfReader(self.output)
+        trailer.Info.Producer = ''
+        trailer.Info.Creator = ''
+        writer = pdfrw.PdfWriter()
+        writer.trailer = trailer
+        writer.write(self.output)
 
     def get_meta(self):
+        '''
+            Return a dict with all the meta of the file
+        '''
         metadata={}
-        meta_list=('title', 'author', 'subject', 'keywords', 'creator',
-            'producer', 'creation-date', 'mod-date', 'metadata')
-        uri = 'file://' + self.filename
-        password = None
-        document = poppler.document_new_from_file(uri, password)
-        for key in meta_list:
-            self._get_meta(document, metadata, key)
+        for key in self.meta_list:
+            if self.document.get_property(key) is not None:
+                metadata[key] = self.document.get_property(key)
         return metadata
-
-    def _get_meta(self, document, metadata, key):
-        if document.get_property(key) is not None:
-            metadata[key] = document.get_property(key)
