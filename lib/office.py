@@ -120,7 +120,7 @@ class PdfStripper(parser.GenericParser):
     def __init__(self, filename, parser, mime, backup, add2archive):
         super(PdfStripper, self).__init__(filename, parser, mime, backup,
             add2archive)
-        uri = 'file://' + self.filename
+        uri = 'file://' + os.path.abspath(self.filename)
         self.password = None
         self.document = poppler.document_new_from_file(uri, self.password)
         self.meta_list = ('title', 'author', 'subject', 'keywords', 'creator',
@@ -131,11 +131,12 @@ class PdfStripper(parser.GenericParser):
             Check if the file is clean from harmful metadatas
         '''
         for key in self.meta_list:
-            if key == 'creation-date' and key == 'mod-date':
+            if key == 'creation-date' or key == 'mod-date':
                 if self.document.get_property(key) != -1:
                     return False
             else:
-                if self.document.get_property(key) is not None:
+                if self.document.get_property(key) is not None and \
+                    self.document.get_property(key) != '':
                     return False
         return True
 
@@ -179,4 +180,5 @@ class PdfStripper(parser.GenericParser):
                 if self.document.get_property(key) is not None and \
                     self.document.get_property(key) != '':
                         metadata[key] = self.document.get_property(key)
+        print metadata
         return metadata
