@@ -151,6 +151,7 @@ class PdfStripper(parser.GenericParser):
         page_width, page_height = page.get_size()
         surface = cairo.PDFSurface(self.output, page_width, page_height)
         context = cairo.Context(surface) #  context draws on the surface
+        logging.debug('Pdf rendering of %s' % self.filename)
         for pagenum in xrange(self.document.get_n_pages()):
             page = self.document.get_page(pagenum)
             context.translate(0, 0)
@@ -159,6 +160,7 @@ class PdfStripper(parser.GenericParser):
         surface.finish()
 
         #For now, poppler cannot write meta, so we must use pdfrw
+        logging.debug('Removing %s\'s superficial metadata' % self.filename)
         trailer = pdfrw.PdfReader(self.output)
         trailer.Info.Producer = trailer.Info.Creator = None
         writer = pdfrw.PdfWriter()
@@ -180,5 +182,4 @@ class PdfStripper(parser.GenericParser):
                 if self.document.get_property(key) is not None and \
                     self.document.get_property(key) != '':
                         metadata[key] = self.document.get_property(key)
-        print metadata
         return metadata
