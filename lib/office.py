@@ -6,6 +6,7 @@ import os
 import logging
 import zipfile
 import re
+import fileinput
 from xml.etree import ElementTree
 
 try:
@@ -54,17 +55,23 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             allowZip64=True)
         for item in zipin.namelist():
             name = os.path.join(self.tempdir, item)
-            if item.endswith('.xml') or item == 'mimetype':
+            if item.endswith('manifest.xml'):
+                zipin.extract(item, self.tempdir)
+                for line in fileinput.input(name, inplace=1):
+                    #remove the line which contains "meta.xml"
+                    line = line.strip()
+                    if not 'meta.xml' in line:
+                        print line
+                zipout.write(name, item)
+                mat.secure_remove(name)
+
+            elif item.endswith('.xml') or item == 'mimetype':
                 #keep .xml files, and the "manifest" file
                 if item != 'meta.xml':  # contains the metadata
                     zipin.extract(item, self.tempdir)
                     zipout.write(name, item)
                     mat.secure_remove(name)
-            elif item.endswith('manifest.xml'):
-                zipin.extract(item, self.tempdir)
-                #remove line meta.xml
-                zipout.write(name, item)
-                mat.secure_remove(name)
+
             else:
                 zipin.extract(item, self.tempdir)
                 if os.path.isfile(name):
