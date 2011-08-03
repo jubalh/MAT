@@ -4,9 +4,12 @@
 '''
 
 import sys
-from lib import mat
+import xml.sax
 import optparse
+
 import hachoir_core
+
+from lib import mat
 
 __version__ = '0.1'
 
@@ -15,7 +18,7 @@ def parse():
     '''
         Get, and parse options passed to the program
     '''
-    parser = optparse.OptionParser(usage='%prog [options] filename')
+    parser = optparse.OptionParser(usage='%prog [options] files')
     parser.add_option('--add2archive', '-a', action='store_true',
         default=False, help='Add to outputed archive non-supported filetypes')
     parser.add_option('--backup', '-b', action='store_true', default=False,
@@ -24,13 +27,15 @@ def parse():
         help='Check if a file is free of harmfull metadatas')
     parser.add_option('--display', '-d', action='store_true', default=False,
         help='List all the meta of a file without removing them')
+    parser.add_option('--list', '-l', action='store_true', default=False,
+        help='List all supported fileformat')
     parser.add_option('--ugly', '-u', action='store_true', default=False,
         help='Remove harmful meta, but loss can occure')
     parser.add_option('--version', '-v', action='callback',
         callback=display_version, help='Display version and exit')
 
     values, arguments = parser.parse_args()
-    if not arguments:
+    if not arguments and values.list is False:
         parser.print_help()
         sys.exit(0)
     return values, arguments
@@ -92,6 +97,26 @@ def clean_meta_ugly(class_file, filename):
         print('%s cleaned' % filename)
 
 
+def list_supported():
+    '''
+        Print all supported fileformat, and exit
+    '''
+    handler = mat.XMLParser()
+    parser = xml.sax.make_parser()
+    parser.setContentHandler(handler)
+    with open('FORMATS', 'r') as f:
+        parser.parse(f)
+
+    for item in handler.list:
+        print('%s (%s)' % (item['name'], item['extension']))
+        print('\tsupport : ' + item['support'])
+        print('\tmetadata : ' + item['metadata'])
+        print('\tmethod : ' + item['method'])
+        if item['support'] == 'partial':
+            print('\tremaining : ' + item['remaining'])
+        print('\n')
+    sys.exit(0)
+
 def main():
     '''
         main function : get args, and launch the appropriate function
@@ -105,6 +130,8 @@ def main():
         func = is_clean
     elif args.ugly is True:  # destructive anonymisation method
         func = clean_meta_ugly
+    elif args.list is True:
+        list_supported()
     else:  # clean the file
         func = clean_meta
 
