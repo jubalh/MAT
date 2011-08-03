@@ -1,4 +1,4 @@
-Warning :
+WARNING :
     Mat only remove metadata from your files, it does not anonymise their
     content, nor it can handle watermarking, steganography, or any too custom
     metadata field/system.
@@ -6,21 +6,55 @@ Warning :
     If you really want to be anonym, use format that does not contain any
     metadata, or better : use plain-text.
 
-Dependencies:
-    python2.7 : for tar, tar.bz2, tar.gz support
-    shred : for secure removal
 
-Optionals dependencies:
-    python-poppler, python-poppler : for pdf support
+DEPENDENCIES:
+    python2.6 (at least)
+    python-hachoir-core and python-hachoir-parser
+    shred (should be already installed)
+
+
+OPTIONALS DEPENDENCIES:
+    python-poppler and python-poppler : for pdf support
     python-mutagen : for massive audio format support
 
-Usage:
+
+USAGE:
         python cli.py --help
     or
         python gui.py
 
-Supported format:
-    see lib/mat.py
 
-Known Bugs:
+SUPPORTED FORMAT:
+        python cli -l
+    or
+        python gui.py -> help -> supported formats
+
+
+LICENSE:
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 2 as
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+    MA 02110-1301, USA.
+
+
+THANKS:
+    Mat would not exist without :
+    - the Google SUmmer of Code,
+    - the Python language
+    - the amazing (and messy) hachoir library,
+    - poppler and cairo's python bindings,
+    - and the mutagen library
+    many thanks to them !
+
+
+KNOWN BUGS:
     Zipfiles are not totally cleaned
