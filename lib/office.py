@@ -5,9 +5,7 @@
 import os
 import logging
 import zipfile
-import re
 import fileinput
-from xml.etree import ElementTree
 
 try:
     import cairo
@@ -36,10 +34,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         try:
             content = zipin.read('meta.xml')
             zipin.close()
-            tree = ElementTree.fromstring(content)
-            for node in tree.iter():
-                key = re.sub('{.*}', '', node.tag)
-                metadata[key] = node.text
+            metadata[self.filename] = 'harful meta'
         except KeyError:  # no meta.xml file found
             logging.debug('%s has no opendocument metadata' % self.filename)
         return metadata
