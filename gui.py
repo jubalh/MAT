@@ -9,6 +9,8 @@ import gobject
 
 import os
 import logging
+import xml.sax
+
 from lib import mat
 
 __version__ = '0.1'
@@ -177,6 +179,8 @@ class ListStoreApp:
 
         help_menu = self.create_sub_menu('Help', menubar)
         self.create_menu_item('About', self.about, help_menu, gtk.STOCK_ABOUT)
+        self.create_menu_item('Supported formats', self.supported, help_menu,
+            gtk.STOCK_INFO)
 
         return menubar
 
@@ -240,6 +244,48 @@ class ListStoreApp:
         click = w.run()
         if click:
             w.destroy()
+
+    def supported(self, _):
+        '''
+            List the supported formats
+        '''
+        dialog = gtk.Dialog('Supported formats', None, 0, (gtk.STOCK_CLOSE, 0))
+        content_area = dialog.get_content_area()
+        vbox = gtk.VBox(spacing=5)
+        content_area.pack_start(vbox, True, True, 0)
+
+        label = gtk.Label()
+        label.set_markup('<big><u>Supported fileformats</u></big>')
+        vbox.pack_start(label, True, True, 0)
+
+        #parsing xml
+        handler = mat.XMLParser()
+        parser = xml.sax.make_parser()
+        parser.setContentHandler(handler)
+        with open('FORMATS', 'r') as f:
+            parser.parse(f)
+
+        for item in handler.list:  # list of dict : one pict per format
+            #create one expander per format
+            title = '%s (%s)' % (item['name'], item['extension'])
+            support = '\t<b>support</b> : ' + item['support']
+            metadata = '\n\t<b>metadata</b> : ' + item['metadata']
+            method =  '\n\t<b>method</b> : ' + item['method']
+            content = support + metadata + method
+
+            if item['support'] == 'partial':
+                content += '\n\t<b>remaining</b> : ' + item['remaining']
+
+            expander = gtk.Expander(title)
+            vbox.pack_start(expander, False, False, 0)
+            label = gtk.Label()
+            label.set_markup(content)
+            expander.add(label)
+
+        dialog.show_all()
+        click = dialog.run()
+        if click is 0:
+            dialog.destroy()
 
     def preferences(self, _):
         '''
