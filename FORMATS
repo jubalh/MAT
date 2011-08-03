@@ -1,0 +1,86 @@
+<xml>
+    <format>
+        <name>Portable Network Graphics</name>
+        <extension>.png</extension>
+        <support>full</support>
+        <metadata>textual metadata + date</metadata>
+        <method>removal of harmful fields is done with hachoir</method>
+    </format>
+
+    <format>
+        <name>Jpeg</name>
+        <extension>.jpeg, .jpg</extension>
+        <support>full</support>
+        <metadata>comment + exif/photoshop/adobe</metadata>
+        <method>removal of harmful fields is done with hachoir</method>
+    </format>
+
+    <format>
+        <name>Open Document</name>
+        <extension>.odt, .odx, .ods, ...</extension>
+        <support>full</support>
+        <metadata>a meta.xml file</metadata>
+        <method>removal of the meta.xml file</method>
+    </format>
+
+    <format>
+        <name>Portable Document Fileformat</name>
+        <extension>.pdf</extension>
+        <support>full</support>
+        <metadata>a lot</metadata>
+        <method>rendering of the pdf file on a cairo surface with the help of
+            poppler in order to remove all the internal metadata,
+            then removal of the remaining metadata fields of the pdf itself with
+            pdfrw (the next version of python-cairo will support metadata,
+            so we should get rid of pdfrw)</method>
+    </format>
+
+    <format>
+        <name>Tape ARchive</name>
+        <extension>.tar, .tar.bz2, .tar.gz</extension>
+        <support>full</support>
+        <metadata>metadata from the file itself, metadata from the file contained
+            into the archive, and metadata added by tar to the file at then
+            creation of the archive</metadata>
+        <method>extraction of each file, treatement of the file, add treated file
+        to a new archive, right before the add, remove the metadata added by tar
+        itself. When the new archive is complete, remove all his metadata.</method>
+    </format>
+
+    <format>
+        <name>Zip</name>
+        <extension>.zip</extension>
+        <support>.partial</support>
+        <metadata>metadata from the file itself, metadata from the file contained
+            into the archive, and metadata added by zip to the file when added to
+            the archive.
+        </metadata>
+        <method>extraction of each file, treatement of the file, add treated file
+        to a new archive. When the new archive is complete, remove all his metadata</method>
+        <remaining>metadata added by zip itself to internal files</remaining>
+    </format>
+
+    <format>
+        <name>MPEG Audio</name>
+        <extension>.mp3, .mp2, .mp1</extension>
+        <support>full</support>
+        <metadata>id3</metadata>
+        <method>removal of harmful fields is done with hachoir</method>
+    </format>
+
+    <format>
+        <name>Ogg Vorbis</name>
+        <extension>.ogg</extension>
+        <support>full</support>
+        <metadata>Vorbis</metadata>
+        <method>removal of harmful fields is done with mutagen</method>
+    </format>
+
+    <format>
+        <name>Free Lossless Audio Codec</name>
+        <extension>.flac</extension>
+        <support>full</support>
+        <metadata>Flac, Vorbis</metadata>
+        <method>removal of harmful fields is done with mutagen</method>
+    </format>
+</xml>

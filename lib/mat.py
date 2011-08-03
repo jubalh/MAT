@@ -7,6 +7,7 @@
 import os
 import subprocess
 import logging
+import xml.sax
 
 import hachoir_core.cmd_line
 import hachoir_parser
@@ -45,11 +46,48 @@ except ImportError:
 try:
     import mutagen
     STRIPPERS['audio/x-flac'] = audio.FlacStripper
-    STRIPPERS['audio/x-ape'] = audio.Apev2Stripper
-    STRIPPERS['audio/x-wavpack'] = audio.Apev2Stripper
     STRIPPERS['audio/vorbis'] = audio.OggStripper
 except ImportError:
     print('unable to import python-mutagen : limited audio format support')
+
+
+class XMLParser(xml.sax.handler.ContentHandler):
+    '''
+        Parse the supported format xml, and return a corresponding
+        list of dict
+    '''
+    def __init__(self):
+        self.dict = {}
+        self.list = []
+        self.content, self.key = '', ''
+        self.between= False
+
+    def startElement(self, name, attrs):
+        '''
+            Called when entering into xml balise
+        '''
+        self.between = True
+        self.key = name
+        self.content = ''
+
+    def endElement(self, name):
+        '''
+            Called when exiting a xml balise
+        '''
+        if name == 'format':  # exiting a fileformat section
+            self.list.append(self.dict.copy())
+            self.dict.clear()
+        else:
+            content = self.content.replace('\n', ' ')
+            self.dict[self.key] = content
+            self.between = False
+
+    def characters(self, characters):
+        '''
+            Concatenate the content between opening and closing balises
+        '''
+        if self.between is True:
+            self.content += characters
 
 
 def secure_remove(filename):
