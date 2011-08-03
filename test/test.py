@@ -13,7 +13,19 @@ import tempfile
 import unittest
 
 VERBOSITY = 3
-FILE_LIST = zip(glob.glob('clean*'), glob.glob('dirty*'))
+
+clean = glob.glob('clean*')
+clean.sort()
+dirty  = glob.glob('dirty*')
+dirty.sort()
+FILE_LIST = zip(clean, dirty)
+
+try:
+    import poppler
+    import cairo
+except:
+    FILE_LIST.remove((('clean.pdf'), ('dirty.pdf')))
+
 
 class MATTest(unittest.TestCase):
     '''
