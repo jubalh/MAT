@@ -103,9 +103,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             zipin.close()
             czf = archive.ZipStripper(self.filename, self.parser,
                 'application/zip', self.backup, self.add2archive)
-            if czf.is_clean():
-                return True
-            else:
+            if not czf.is_clean():
                 return False
         return True
 

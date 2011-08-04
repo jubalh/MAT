@@ -1,9 +1,8 @@
 '''
     Take care of archives formats
 '''
-import tarfile
-import zipfile
 
+import zipfile
 import shutil
 import os
 import logging
@@ -11,7 +10,7 @@ import tempfile
 
 import parser
 import mat
-
+import tarfile
 
 class GenericArchiveStripper(parser.GenericParser):
     '''
@@ -224,6 +223,7 @@ class TarStripper(GenericArchiveStripper):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for item in tarin.getmembers():
             if not self.is_file_clean(item):
+                tarin.close()
                 return False
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
@@ -233,12 +233,14 @@ class TarStripper(GenericArchiveStripper):
                     class_file = mat.create_class_file(name,
                         False, self.add2archive)
                     if not class_file.is_clean():
+                        tarin.close()
                         return False
                 except:
                     #best solution I have found
                     logging.error('%s is not supported' % item.filename)
                     _, ext = os.path.splitext(name)
                     if ext not in parser.NOMETA:
+                        tarin.close()
                         return False
                 mat.secure_remove(name)
         tarin.close()

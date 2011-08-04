@@ -1,14 +1,13 @@
 '''
     Class for the testing suite :
-	- get the list of all test files
-	- create a copy of them on start
-	- remove the copy on end
+    - get the list of all test files
+    - create a copy of them on start
+    - remove the copy on end
 '''
 
 import shutil
 import os
 import glob
-import sys
 import tempfile
 import unittest
 

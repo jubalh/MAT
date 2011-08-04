@@ -123,6 +123,7 @@ def list_supported():
         print('\n')
     sys.exit(0)
 
+
 def main():
     '''
         main function : get args, and launch the appropriate function

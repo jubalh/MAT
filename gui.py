@@ -196,15 +196,15 @@ class ListStoreApp:
         chooser.set_default_response(0)
         chooser.set_select_multiple(True)
 
-        filter = gtk.FileFilter()
-        filter.set_name('All files')
-        filter.add_pattern('*')
-        chooser.add_filter(filter)
+        all_filter = gtk.FileFilter()
+        all_filter.set_name('All files')
+        all_filter.add_pattern('*')
+        chooser.add_filter(all_filter)
 
-        filter = gtk.FileFilter()
-        [filter.add_mime_type(i) for i in mat.STRIPPERS.keys()]
-        filter.set_name('Supported files')
-        chooser.add_filter(filter)
+        supported_filter = gtk.FileFilter()
+        [supported_filter.add_mime_type(i) for i in mat.STRIPPERS.keys()]
+        supported_filter.set_name('Supported files')
+        chooser.add_filter(supported_filter)
 
         response = chooser.run()
 
@@ -239,7 +239,7 @@ class ListStoreApp:
         w.set_comments('This software was coded during the GSoC 2011')
         w.set_website('https://gitweb.torproject.org/user/jvoisin/mat.git')
         w.set_website_label('Website')
-        w.set_authors(['Julien (jvoisin) Voisin',])
+        w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_program_name('Metadata Anonymistion Toolkit')
         click = w.run()
         if click:
@@ -262,17 +262,16 @@ class ListStoreApp:
         handler = mat.XMLParser()
         parser = xml.sax.make_parser()
         parser.setContentHandler(handler)
-        with open('FORMATS', 'r') as f:
-            parser.parse(f)
+        with open('FORMATS', 'r') as xmlfile:
+            parser.parse(xmlfile)
 
-        for item in handler.list:  # list of dict : one pict per format
+        for item in handler.list:  # list of dict : one dict per format
             #create one expander per format
             title = '%s (%s)' % (item['name'], item['extension'])
             support = '\t<b>support</b> : ' + item['support']
             metadata = '\n\t<b>metadata</b> : ' + item['metadata']
-            method =  '\n\t<b>method</b> : ' + item['method']
+            method = '\n\t<b>method</b> : ' + item['method']
             content = support + metadata + method
-
             if item['support'] == 'partial':
                 content += '\n\t<b>remaining</b> : ' + item['remaining']
 

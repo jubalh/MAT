@@ -31,7 +31,6 @@ class GenericParser(object):
         self.output = basename + '.cleaned' + ext
         self.basename = os.path.basename(filename)  # only filename
 
-
     def is_clean(self):
         '''
             Check if the file is clean from harmful metadatas
