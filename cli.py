@@ -27,6 +27,8 @@ def parse():
         help='Check if a file is free of harmfull metadatas')
     parser.add_option('--display', '-d', action='store_true', default=False,
         help='List all the meta of a file without removing them')
+    parser.add_option('--force', '-f', action='store_true', default=False,
+        help='Don\'t check if files are clean before cleaning')
     parser.add_option('--list', '-l', action='store_true', default=False,
         help='List all supported fileformat')
     parser.add_option('--ugly', '-u', action='store_true', default=False,
@@ -51,19 +53,23 @@ def display_version(*_):
     sys.exit(0)
 
 
-def list_meta(class_file, filename):
+def list_meta(class_file, filename, force):
     '''
         Print all the meta of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
-    if class_file.is_clean():
+    if force is False and class_file.is_clean():
         print('No harmful meta found')
     else:
-        for key, value in class_file.get_meta().iteritems():
-            print(key + ' : ' + str(value))
+        meta = class_file.get_meta()
+        if meta is None:
+            print('No harmful meta found')
+        else:
+            for key, value in class_file.get_meta().iteritems():
+                print(key + ' : ' + str(value))
 
 
-def is_clean(class_file, filename):
+def is_clean(class_file, filename, force):
     '''
         Say if 'filename' is clean or not
     '''
@@ -73,24 +79,24 @@ def is_clean(class_file, filename):
         print('[+] %s is not clean' % filename)
 
 
-def clean_meta(class_file, filename):
+def clean_meta(class_file, filename, force):
     '''
         Clean the file 'filename'
     '''
     print('[+] Cleaning %s' % filename)
-    if class_file.is_clean():
+    if force is False and class_file.is_clean():
         print('%s is already clean' % filename)
     else:
         class_file.remove_all()
         print('%s cleaned !' % filename)
 
 
-def clean_meta_ugly(class_file, filename):
+def clean_meta_ugly(class_file, filename, force):
     '''
         Clean the file 'filename', ugly way
     '''
     print('[+] Cleaning %s' % filename)
-    if class_file.is_clean():
+    if force is False and class_file.is_clean():
         print('%s is already clean' % filename)
     else:
         class_file.remove_all_ugly()
@@ -104,8 +110,8 @@ def list_supported():
     handler = mat.XMLParser()
     parser = xml.sax.make_parser()
     parser.setContentHandler(handler)
-    with open('FORMATS', 'r') as f:
-        parser.parse(f)
+    with open('FORMATS', 'r') as xmlfile:
+        parser.parse(xmlfile)
 
     for item in handler.list:
         print('%s (%s)' % (item['name'], item['extension']))
@@ -139,7 +145,7 @@ def main():
         class_file = mat.create_class_file(filename, args.backup,
             args.add2archive)
         if class_file is not None:
-            func(class_file, filename)
+            func(class_file, filename, args.force)
 
 if __name__ == '__main__':
     main()
