@@ -188,7 +188,11 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         (I don't like this format.)
     '''
     def is_clean(self):
-        return False
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        for item in zipin.namelist():
+            if item.startswith('docProps/'):
+                return False
+        return True
 
     def get_meta(self):
         '''
