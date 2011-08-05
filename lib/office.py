@@ -188,6 +188,49 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         It contains mostly xml, but can have media blobs, crap, ...
         (I don't like this format.)
     '''
+    def _remove_all(self, method):
+        '''
+            FIXME ?
+            There is a patch implementing the Zipfile.remove()
+            method here : http://bugs.python.org/issue6818
+        '''
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        zipout = zipfile.ZipFile(self.output, 'w',
+            allowZip64=True)
+        for item in zipin.namelist():
+            name = os.path.join(self.tempdir, item)
+            _, ext = os.path.splitext(name)
+            if item.startswith('docProps/'):  # metadatas
+                pass
+            elif ext in parser.NOMETA or item == '.rels':
+                #keep parser.NOMETA files, and the file named ".rels"
+                zipin.extract(item, self.tempdir)
+                zipout.write(name, item)
+                mat.secure_remove(name)
+            else:
+                zipin.extract(item, self.tempdir)
+                if os.path.isfile(name):
+                    try:
+                        cfile = mat.create_class_file(name, False,
+                            self.add2archive)
+                        if method == 'normal':
+                            cfile.remove_all()
+                        else:
+                            cfile.remove_all_ugly()
+                        logging.debug('Processing %s from %s' % (item,
+                            self.filename))
+                        zipout.write(name, item)
+                    except:
+                        logging.info('%s\' fileformat is not supported' % item)
+                        if self.add2archive:
+                            zipout.write(name, item)
+                    mat.secure_remove(name)
+        zipout.comment = ''
+        logging.info('%s treated' % self.filename)
+        zipin.close()
+        zipout.close()
+        self.do_backup()
+
     def is_clean(self):
         '''
             Check if the file is clean from harmful metadatas

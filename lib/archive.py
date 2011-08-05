@@ -97,7 +97,7 @@ harmless format' % item.filename)
                     _, ext = os.path.splitext(name)
                     bname = os.path.basename(item.filename)
                     if ext not in parser.NOMETA:
-                        if bname != 'mimetype':
+                        if bname != 'mimetype' and bname != '.rels':
                             return False
                 mat.secure_remove(name)
         zipin.close()
