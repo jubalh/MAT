@@ -7,7 +7,7 @@ import parser
 
 class JpegStripper(parser.GenericParser):
     '''
-        Represents a .jpeg file
+        represents a jpeg file
     '''
     def _should_remove(self, field):
         '''
@@ -23,7 +23,7 @@ class JpegStripper(parser.GenericParser):
 
 class PngStripper(parser.GenericParser):
     '''
-        Represents a .png file
+        represents a png file
     '''
     def _should_remove(self, field):
         '''

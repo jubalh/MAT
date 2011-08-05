@@ -125,7 +125,7 @@ loss')
             filename_column = gtk.CellRendererText()
             column = gtk.TreeViewColumn(j, filename_column, text=i + 1)
             column.set_sort_column_id(i + 1)
-            if i is 0:
+            if i is 0:  # place tooltip on this column
                 tips = TreeViewTooltips(column)
                 tips.add_view(treeview)
             treeview.append_column(column)
@@ -192,7 +192,7 @@ loss')
         '''
         chooser = gtk.FileChooserDialog(
             title='Choose files',
-            parent=None,
+            parent=self.window,
             action=gtk.FILE_CHOOSER_ACTION_OPEN,
             buttons=(gtk.STOCK_OK, 0, gtk.STOCK_CANCEL, 1))
         chooser.set_default_response(0)

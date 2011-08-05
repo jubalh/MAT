@@ -33,8 +33,8 @@ STRIPPERS = {
     'audio/mpeg': audio.MpegAudioStripper,
     'image/jpeg': images.JpegStripper,
     'image/png': images.PngStripper,
-    'application/vnd.oasis.opendocument': office.OpenDocumentStripper,
-    'application/vnd.openxmlformats-officedocument': office.OpenXmlStripper,
+    'application/opendocument': office.OpenDocumentStripper,
+    'application/officeopenxml': office.OpenXmlStripper,
 }
 
 try:
@@ -146,9 +146,9 @@ def create_class_file(name, backup, add2archive):
         mime = mimetypes.guess_type(name)[0]
 
     if mime.startswith('application/vnd.oasis.opendocument'):
-        mime = 'application/vnd.oasis.opendocument'  # opendocument fileformat
+        mime = 'application/opendocument'  # opendocument fileformat
     elif mime.startswith('application/vnd.openxmlformats-officedocument'):
-        mime = 'application/vnd.openxmlformats-officedocument'
+        mime = 'application/officeopenxml'  # office openxml
 
     try:
         stripper_class = STRIPPERS[mime]
