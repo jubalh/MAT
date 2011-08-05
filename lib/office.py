@@ -139,6 +139,7 @@ class PdfStripper(parser.GenericParser):
         '''
             Opening the pdf with poppler, then doing a render
             on a cairo pdfsurface for each pages.
+            Thanks to Lunar^for the idea.
             http://cairographics.org/documentation/pycairo/2/
             python-poppler is not documented at all : have fun ;)
         '''
@@ -188,11 +189,20 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         (I don't like this format.)
     '''
     def is_clean(self):
+        '''
+            Check if the file is clean from harmful metadatas
+        '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         for item in zipin.namelist():
             if item.startswith('docProps/'):
                 return False
-        return True
+        zipin.close()
+        czf = archive.ZipStripper(self.filename, self.parser,
+                'application/zip', self.backup, self.add2archive)
+        if not czf.is_clean():
+            return False
+        else:
+            return True
 
     def get_meta(self):
         '''
