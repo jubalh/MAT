@@ -1,3 +1,16 @@
+METADATA:
+    Metadata consist of information that characterizes data.
+    Metadata are used to provide documentation for data products.
+    In essence, metadata answer who, what, when, where, why, and how about
+    every facet of the data that are being documented.
+
+METADATA AND PRIVACY:
+    Metadata within a file can tell a lot about you.
+    Cameras record data about when a picture was taken and what
+    camera was used. Office documents like pdf or Office automatically adds
+    author and company information to documents and spreadsheets.
+    Maybe you don't want to disclose those informations on the web.
+
 WARNING :
     Mat only remove metadata from your files, it does not anonymise their
     content, nor it can handle watermarking, steganography, or any too custom
@@ -25,9 +38,76 @@ USAGE:
 
 
 SUPPORTED FORMAT:
-        python cli -l
-    or
-        python gui.py -> help -> supported formats
+    Portable Network Graphics (.png)
+        support : full
+        metadata : textual metadata + date
+        method : removal of harmful fields is done with hachoir
+
+
+    Jpeg (.jpeg, .jpg)
+        support : full
+        metadata : comment + exif/photoshop/adobe
+        method : removal of harmful fields is done with hachoir
+
+
+    Open Document (.odt, .odx, .ods, ...)
+        support : full
+        metadata : a meta.xml file
+        method : removal of the meta.xml file
+
+
+    Office Openxml (.docx, .pptx, .xlsx, ...)
+        support : full
+        metadata : a docProps folder containings xml metadata files
+        method : removal of the docProps folder
+
+
+    Portable Document Fileformat (.pdf)
+        support : full
+        metadata : a lot
+        method : rendering of the pdf file on a cairo surface with the help of
+                poppler in order to remove all the internal metadata,
+                then removal of the remaining metadata fields of the pdf itself with
+                pdfrw (the next version of python-cairo will support metadata,
+                so we should get rid of pdfrw)
+
+
+    Tape ARchive (.tar, .tar.bz2, .tar.gz)
+        support : full
+        metadata : metadata from the file itself, metadata from the file contained
+                into the archive, and metadata added by tar to the file at then
+                creation of the archive
+        method : extraction of each file, treatement of the file, add treated file
+            to a new archive, right before the add, remove the metadata added by tar
+            itself. When the new archive is complete, remove all his metadata.
+
+
+    Zip (.zip)
+        support : .partial
+        metadata : metadata from the file itself, metadata from the file contained
+                into the archive, and metadata added by zip to the file when added to
+                the archive.
+
+        method : extraction of each file, treatement of the file, add treated file
+            to a new archive. When the new archive is complete, remove all his metadata
+
+
+    MPEG Audio (.mp3, .mp2, .mp1)
+        support : full
+        metadata : id3
+        method : removal of harmful fields is done with hachoir
+
+
+    Ogg Vorbis (.ogg)
+        support : full
+        metadata : Vorbis
+        method : removal of harmful fields is done with mutagen
+
+
+    Free Lossless Audio Codec (.flac)
+        support : full
+        metadata : Flac, Vorbis
+        method : removal of harmful fields is done with mutagen
 
 
 LICENSE:
@@ -57,4 +137,5 @@ THANKS:
 
 
 KNOWN BUGS:
-    Zipfiles are not totally cleaned
+    Zipfiles are not totally cleaned, I know.
+    I am working on a patch for zipfile.py

@@ -80,7 +80,7 @@ class XMLParser(xml.sax.handler.ContentHandler):
             self.list.append(self.dict.copy())
             self.dict.clear()
         else:
-            content = self.content.replace('\n', ' ')
+            content = self.content.replace('\s', ' ')
             self.dict[self.key] = content
             self.between = False
 
