@@ -31,7 +31,6 @@ STRIPPERS = {
     'application/x-bzip2': archive.Bzip2Stripper,
     'application/zip': archive.ZipStripper,
     'audio/mpeg': audio.MpegAudioStripper,
-    'image/gif': images.GifStripper,
     'image/jpeg': images.JpegStripper,
     'image/png': images.PngStripper,
     'application/vnd.oasis.opendocument': office.OpenDocumentStripper,

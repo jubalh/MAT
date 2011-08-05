@@ -146,13 +146,13 @@ class PdfStripper(parser.GenericParser):
         page = self.document.get_page(0)
         page_width, page_height = page.get_size()
         surface = cairo.PDFSurface(self.output, page_width, page_height)
-        context = cairo.Context(surface) #  context draws on the surface
+        context = cairo.Context(surface)  # context draws on the surface
         logging.debug('Pdf rendering of %s' % self.filename)
         for pagenum in xrange(self.document.get_n_pages()):
             page = self.document.get_page(pagenum)
             context.translate(0, 0)
-            page.render(context) #  render the page on context
-            context.show_page() #  draw context on surface
+            page.render(context)  # render the page on context
+            context.show_page()  # draw context on surface
         surface.finish()
 
         #For now, poppler cannot write meta, so we must use pdfrw
@@ -253,16 +253,8 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         metadata = {}
-        try:
-            content = zipin.read('docProps/app.xml')
-            metadata['app'] = 'harful meta'
-        except KeyError:  # no app.xml file found
-            logging.debug('%s has no app.xml metadata' % self.filename)
-        try:
-            content = zipin.read('docProps/core.xml')
-            metadata['core'] = 'harmful meta'
-        except KeyError:  # no core.xml found
-            logging.debug('%s has no core.xml metadata' % self.filename)
+        for item in zipin.namelist():
+            if item.startswith('docProps/'):
+                metadata[item] = 'harmful content'
         zipin.close()
-
         return metadata

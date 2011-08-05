@@ -24,6 +24,14 @@
     </format>
 
     <format>
+        <name>Office Openxml</name>
+        <extension>.docx, .pptx, .xlsx, ...</extension>
+        <support>full</support>
+        <metadata>a docProps folder containings xml metadata files</metadata>
+        <method>removal of the docProps folder</method>
+    </format>
+
+    <format>
         <name>Portable Document Fileformat</name>
         <extension>.pdf</extension>
         <support>full</support>
