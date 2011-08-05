@@ -7,6 +7,7 @@
 import os
 import subprocess
 import logging
+import mimetypes
 import xml.sax
 
 import hachoir_core.cmd_line
@@ -30,9 +31,11 @@ STRIPPERS = {
     'application/x-bzip2': archive.Bzip2Stripper,
     'application/zip': archive.ZipStripper,
     'audio/mpeg': audio.MpegAudioStripper,
+    'image/gif': images.GifStripper,
     'image/jpeg': images.JpegStripper,
     'image/png': images.PngStripper,
     'application/vnd.oasis.opendocument': office.OpenDocumentStripper,
+    'application/vnd.openxmlformats-officedocument': office.OpenXmlStripper,
 }
 
 try:
@@ -140,15 +143,18 @@ def create_class_file(name, backup, add2archive):
 
     mime = parser.mime_type
 
+    if mime == 'application/zip': # some formats are zipped stuff
+        mime = mimetypes.guess_type(name)[0]
+
     if mime.startswith('application/vnd.oasis.opendocument'):
         mime = 'application/vnd.oasis.opendocument'  # opendocument fileformat
-
-    #stripper_class = STRIPPERS[mime]
+    elif mime.startswith('application/vnd.openxmlformats-officedocument'):
+        mime = 'application/vnd.openxmlformats-officedocument'
 
     try:
         stripper_class = STRIPPERS[mime]
     except KeyError:
-        logging.info('Don\'t have stripper for %s\'s format' % name)
+        logging.info('Don\'t have stripper for %s format' % mime)
         return
 
     return stripper_class(filename, parser, mime, backup, add2archive)

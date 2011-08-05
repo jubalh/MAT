@@ -178,3 +178,34 @@ class PdfStripper(parser.GenericParser):
                     self.document.get_property(key) != '':
                     metadata[key] = self.document.get_property(key)
         return metadata
+
+
+class OpenXmlStripper(archive.GenericArchiveStripper):
+    '''
+        Represent an office openxml document, which is like
+        an opendocument format, with some tricky stuff added.
+        It contains mostly xml, but can have media blobs, crap, ...
+        (I don't like this format.)
+    '''
+    def is_clean(self):
+        return False
+
+    def get_meta(self):
+        '''
+            Return a dict with all the meta of the file
+        '''
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        metadata = {}
+        try:
+            content = zipin.read('docProps/app.xml')
+            metadata['app'] = 'harful meta'
+        except KeyError:  # no app.xml file found
+            logging.debug('%s has no app.xml metadata' % self.filename)
+        try:
+            content = zipin.read('docProps/core.xml')
+            metadata['core'] = 'harmful meta'
+        except KeyError:  # no core.xml found
+            logging.debug('%s has no core.xml metadata' % self.filename)
+        zipin.close()
+
+        return metadata
