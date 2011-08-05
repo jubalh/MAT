@@ -53,7 +53,8 @@ class OggStripper(parser.GenericParser):
         '''
         metadata = {}
         mfile = OggVorbis(self.filename)
-        [metadata[key] = value for key, value in mfile.tags]
+        for key, value in mfile.tags:
+            metadata[key] = value
         return metadata
 
 class Apev2Stripper(parser.GenericParser):
@@ -89,7 +90,8 @@ class Apev2Stripper(parser.GenericParser):
         metadata = {}
         mfile = APEv2File(self.filename)
         if mfile.tags is not None:
-            [metadata[key] = value for key, value in mfile.tags]
+            for key, value in mfile.tags:
+                metadata[key] = value
         return metadata
 
 
@@ -127,7 +129,8 @@ class FlacStripper(parser.GenericParser):
         metadata = {}
         mfile = FLAC(self.filename)
         if mfile.tags is not None:
-            [metadata[key] = value for key, value in mfile.tags]
+            for key, value in mfile.tags:
+                metadata[key] = value
             if mfile.pictures != []:
                 metadata['picture :'] = 'yes'
         return metadata

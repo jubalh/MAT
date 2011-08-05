@@ -27,7 +27,8 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
 
     def get_meta(self):
         '''
-            Return a dict with all the meta of the file
+            Return a dict with all the meta of the file by
+            trying to read the meta.xml file.
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         metadata = {}
@@ -46,11 +47,14 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             method here : http://bugs.python.org/issue6818
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
-        zipout = zipfile.ZipFile(self.output, 'w',
-            allowZip64=True)
+        zipout = zipfile.ZipFile(self.output, 'w', allowZip64=True)
+
         for item in zipin.namelist():
             name = os.path.join(self.tempdir, item)
+            _, ext = os.path.splitext(name)
+
             if item.endswith('manifest.xml'):
+            # contain the list of all files present in the archive
                 zipin.extract(item, self.tempdir)
                 for line in fileinput.input(name, inplace=1):
                     #remove the line which contains "meta.xml"
@@ -60,8 +64,8 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                 zipout.write(name, item)
                 mat.secure_remove(name)
 
-            elif item.endswith('.xml') or item == 'mimetype':
-                #keep .xml files, and the "manifest" file
+            elif ext in parser.NOMETA or item == 'mimetype':
+                #keep NOMETA files, and the "manifest" file
                 if item != 'meta.xml':  # contains the metadata
                     zipin.extract(item, self.tempdir)
                     zipout.write(name, item)
@@ -98,14 +102,14 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         zipin = zipfile.ZipFile(self.filename, 'r')
         try:
             zipin.getinfo('meta.xml')
-            return False
         except KeyError:  # no meta.xml in the file
-            zipin.close()
             czf = archive.ZipStripper(self.filename, self.parser,
                 'application/zip', self.backup, self.add2archive)
-            if not czf.is_clean():
-                return False
-        return True
+            if czf.is_clean():
+                zipin.close()
+                return True
+        zipin.close()
+        return False
 
 
 class PdfStripper(parser.GenericParser):
@@ -129,8 +133,7 @@ class PdfStripper(parser.GenericParser):
             if key == 'creation-date' or key == 'mod-date':
                 if self.document.get_property(key) != -1:
                     return False
-            else:
-                if self.document.get_property(key) is not None and \
+            elif self.document.get_property(key) is not None and \
                     self.document.get_property(key) != '':
                     return False
         return True
@@ -174,9 +177,8 @@ class PdfStripper(parser.GenericParser):
                 #creation and modification are set to -1
                 if self.document.get_property(key) != -1:
                     metadata[key] = self.document.get_property(key)
-            else:
-                if self.document.get_property(key) is not None and \
-                    self.document.get_property(key) != '':
+            elif self.document.get_property(key) is not None and \
+                self.document.get_property(key) != '':
                     metadata[key] = self.document.get_property(key)
         return metadata
 
@@ -209,7 +211,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
                 mat.secure_remove(name)
             else:
                 zipin.extract(item, self.tempdir)
-                if os.path.isfile(name):
+                if os.path.isfile(name):  # don't care about folders
                     try:
                         cfile = mat.create_class_file(name, False,
                             self.add2archive)
