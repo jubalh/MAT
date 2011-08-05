@@ -42,7 +42,6 @@ class OggStripper(parser.GenericParser):
             Check if the "metadata" block is present in the file
         '''
         mfile = OggVorbis(self.filename)
-        print mfile.tags
         if mfile.tags == []:
             return True
         else:
@@ -54,8 +53,7 @@ class OggStripper(parser.GenericParser):
         '''
         metadata = {}
         mfile = OggVorbis(self.filename)
-        for key, value in mfile.tags:
-            metadata[key] = value
+        [metadata[key] = value for key, value in mfile.tags]
         return metadata
 
 class Apev2Stripper(parser.GenericParser):
@@ -90,10 +88,8 @@ class Apev2Stripper(parser.GenericParser):
         '''
         metadata = {}
         mfile = APEv2File(self.filename)
-        if mfile.tags is None:
-            return metadata
-        for key, value in mfile.tags:
-            metadata[key] = value
+        if mfile.tags is not None:
+            [metadata[key] = value for key, value in mfile.tags]
         return metadata
 
 
@@ -130,10 +126,8 @@ class FlacStripper(parser.GenericParser):
         '''
         metadata = {}
         mfile = FLAC(self.filename)
-        if mfile.tags is None:
-            return metadata
-        for key, value in mfile.tags:
-            metadata[key] = value
-        if mfile.pictures != []:
-            metadata['picture :'] = 'yes'
+        if mfile.tags is not None:
+            [metadata[key] = value for key, value in mfile.tags]
+            if mfile.pictures != []:
+                metadata['picture :'] = 'yes'
         return metadata
