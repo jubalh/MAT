@@ -190,20 +190,19 @@ loss')
         '''
             Add the files chosed by the filechoser ("Add" button)
         '''
-        chooser = gtk.FileChooserDialog(
-            title='Choose files',
-            parent=self.window,
-            action=gtk.FILE_CHOOSER_ACTION_OPEN,
+        chooser = gtk.FileChooserDialog(title='Choose files',
+            parent=self.window, action=gtk.FILE_CHOOSER_ACTION_OPEN,
             buttons=(gtk.STOCK_OK, 0, gtk.STOCK_CANCEL, 1))
         chooser.set_default_response(0)
         chooser.set_select_multiple(True)
 
-        all_filter = gtk.FileFilter()
+        all_filter = gtk.FileFilter()  # filter that shows all files
         all_filter.set_name('All files')
         all_filter.add_pattern('*')
         chooser.add_filter(all_filter)
 
         supported_filter = gtk.FileFilter()
+        # filter that shows only supported formats
         [supported_filter.add_mime_type(i) for i in mat.STRIPPERS.keys()]
         supported_filter.set_name('Supported files')
         chooser.add_filter(supported_filter)
@@ -251,10 +250,10 @@ loss')
         '''
             List the supported formats
         '''
-        dialog = gtk.Dialog('Supported formats', None, 0, (gtk.STOCK_CLOSE, 0))
-        content_area = dialog.get_content_area()
+        dialog = gtk.Dialog('Supported formats', self.window, 0,
+            (gtk.STOCK_CLOSE, 0))
         vbox = gtk.VBox(spacing=5)
-        content_area.pack_start(vbox, True, True, 0)
+        dialog.get_content_area().pack_start(vbox, True, True, 0)
 
         label = gtk.Label()
         label.set_markup('<big><u>Supported fileformats</u></big>')
@@ -293,54 +292,55 @@ loss')
             Preferences popup
         '''
         dialog = gtk.Dialog('Preferences', self.window, 0, (gtk.STOCK_OK, 0))
-        content_area = dialog.get_content_area()
         hbox = gtk.HBox()
-        content_area.pack_start(hbox, False, False, 0)
+        dialog.get_content_area().pack_start(hbox, False, False, 0)
+
         icon = gtk.Image()
         icon.set_from_stock(gtk.STOCK_PREFERENCES, gtk.ICON_SIZE_DIALOG)
-
         hbox.pack_start(icon, False, False, 0)
 
         table = gtk.Table(3, 2, False)  # nb rows, nb lines
-        table.set_row_spacings(4)
-        table.set_col_spacings(4)
         hbox.pack_start(table, True, True, 0)
 
         force = gtk.CheckButton('Force Clean', False)
         force.connect('toggled', self.invert, 'force')
         force.set_tooltip_text('Do not check if already clean before cleaning')
-        force.set_active(self.force)
+        force.set_active(not self.force)
+        table.attach(force, 0, 1, 0, 1)
 
         backup = gtk.CheckButton('Backup', False)
         backup.connect('toggled', self.invert, 'backup')
         backup.set_tooltip_text('Keep a backup copy')
-        backup.set_active(self.backup)
+        backup.set_active(not self.backup)
+        table.attach(backup, 0, 1, 1, 2)
 
         add2archive = gtk.CheckButton('Add unsupported file to archives',
             False)
         add2archive.connect('toggled', self.invert, 'add2archive')
         add2archive.set_tooltip_text('Add non-supported (and so \
 non-anonymised) file to outputed archive')
-        add2archive.set_active(self.add2archive)
-
-        table.attach_defaults(force, 0, 1, 0, 1)
-        table.attach_defaults(backup, 0, 1, 1, 2)
-        table.attach_defaults(add2archive, 0, 1, 2, 3)
+        add2archive.set_active(not self.add2archive)
+        table.attach(add2archive, 0, 1, 2, 3)
 
         hbox.show_all()
         response = dialog.run()
         if response is 0:  # gtk.STOCK_OK
             dialog.destroy()
 
-    def invert(self, _, name):  # still not better :/
+    def invert(self, button, name):  # still not better :/
         '''
             Invert a preference state
         '''
-        if name is 'force':
+        print self.force
+        print self.backup
+        print self.add2archive
+        print name
+        print '\n'
+        if name == 'force':
             self.force = not self.force
-        elif name is 'add2archive':
+        elif name == 'add2archive':
             self.add2archive = not self.add2archive
-        elif name is 'backup':
+        elif name == 'backup':
             self.backup = not self.backup
 
     def clear_model(self, _):
@@ -354,10 +354,10 @@ non-anonymised) file to outputed archive')
             if no elements are selected, all elements are processed
             thank's to this function
         '''
-        if not iterator:
-            return xrange(len(self.liststore))
-        else:
+        if iterator:
             return iterator
+        else:
+            return xrange(len(self.liststore))
 
     def mat_check(self, _):
         '''
@@ -382,11 +382,8 @@ non-anonymised) file to outputed archive')
         for i in iterator:
             logging.info('Cleaning %s' % self.liststore[i][1])
             if self.liststore[i][3] is not 'clean':
-                if self.force:
+                if self.force or not self.liststore[i][0].file.is_clean():
                     self.liststore[i][0].file.remove_all()
-                else:
-                    if not self.liststore[i][0].file.is_clean():
-                        self.liststore[i][0].file.remove_all()
             self.liststore[i][3] = 'clean'
 
     def mat_clean_dirty(self, _):
@@ -398,11 +395,8 @@ non-anonymised) file to outputed archive')
         for i in iterator:
             logging.info('Cleaning (lossy way) %s' % self.liststore[i][1])
             if self.liststore[i][3] is not 'clean':
-                if self.force:
+                if self.force or not self.liststore[i][0].file.is_clean():
                     self.liststore[i][0].file.remove_all_ugly()
-                else:
-                    if not self.liststore[i][0].file.is_clean():
-                        self.liststore[i][0].file.remove_all_ugly()
             self.liststore[i][3] = 'clean'
 
 
