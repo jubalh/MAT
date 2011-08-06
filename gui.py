@@ -38,9 +38,9 @@ class ListStoreApp:
     '''
     def __init__(self):
         # Preferences
-        self.add2archive = True
-        self.backup = True
         self.force = False
+        self.backup = True
+        self.add2archive = True
 
         self.window = gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' %
@@ -303,23 +303,23 @@ loss')
         hbox.pack_start(table, True, True, 0)
 
         force = gtk.CheckButton('Force Clean', False)
+        force.set_active(self.force)
         force.connect('toggled', self.invert, 'force')
         force.set_tooltip_text('Do not check if already clean before cleaning')
-        force.set_active(not self.force)
         table.attach(force, 0, 1, 0, 1)
 
         backup = gtk.CheckButton('Backup', False)
+        backup.set_active(self.backup)
         backup.connect('toggled', self.invert, 'backup')
         backup.set_tooltip_text('Keep a backup copy')
-        backup.set_active(not self.backup)
         table.attach(backup, 0, 1, 1, 2)
 
         add2archive = gtk.CheckButton('Add unsupported file to archives',
             False)
+        add2archive.set_active(self.add2archive)
         add2archive.connect('toggled', self.invert, 'add2archive')
         add2archive.set_tooltip_text('Add non-supported (and so \
 non-anonymised) file to outputed archive')
-        add2archive.set_active(not self.add2archive)
         table.attach(add2archive, 0, 1, 2, 3)
 
         hbox.show_all()
@@ -331,17 +331,12 @@ non-anonymised) file to outputed archive')
         '''
             Invert a preference state
         '''
-        print self.force
-        print self.backup
-        print self.add2archive
-        print name
-        print '\n'
         if name == 'force':
             self.force = not self.force
-        elif name == 'add2archive':
-            self.add2archive = not self.add2archive
         elif name == 'backup':
             self.backup = not self.backup
+        elif name == 'add2archive':
+            self.add2archive = not self.add2archive
 
     def clear_model(self, _):
         '''
