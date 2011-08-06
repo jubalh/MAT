@@ -134,8 +134,8 @@ class PdfStripper(parser.GenericParser):
                 if self.document.get_property(key) != -1:
                     return False
             elif self.document.get_property(key) is not None and \
-                    self.document.get_property(key) != '':
-                    return False
+                self.document.get_property(key) != '':
+                return False
         return True
 
     def remove_all(self):
@@ -179,7 +179,7 @@ class PdfStripper(parser.GenericParser):
                     metadata[key] = self.document.get_property(key)
             elif self.document.get_property(key) is not None and \
                 self.document.get_property(key) != '':
-                    metadata[key] = self.document.get_property(key)
+                metadata[key] = self.document.get_property(key)
         return metadata
 
 

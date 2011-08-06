@@ -43,7 +43,8 @@ try:
     STRIPPERS['application/x-pdf'] = office.PdfStripper
     STRIPPERS['application/pdf'] = office.PdfStripper
 except ImportError:
-    print('Unable to import python-poppler and/or python-cairo: no pdf support')
+    print('Unable to import python-poppler and/or python-cairo: no pdf \
+        support')
 
 try:
     import mutagen
@@ -62,7 +63,7 @@ class XMLParser(xml.sax.handler.ContentHandler):
         self.dict = {}
         self.list = []
         self.content, self.key = '', ''
-        self.between= False
+        self.between = False
 
     def startElement(self, name, attrs):
         '''
@@ -142,7 +143,7 @@ def create_class_file(name, backup, add2archive):
 
     mime = parser.mime_type
 
-    if mime == 'application/zip': # some formats are zipped stuff
+    if mime == 'application/zip':  # some formats are zipped stuff
         mime = mimetypes.guess_type(name)[0]
 
     if mime.startswith('application/vnd.oasis.opendocument'):

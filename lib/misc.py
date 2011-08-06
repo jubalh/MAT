@@ -1,3 +1,7 @@
+'''
+    Care about misc formats
+'''
+
 import hachoir_core
 import parser
 

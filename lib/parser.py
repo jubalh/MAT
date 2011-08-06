@@ -16,6 +16,7 @@ NOMETA = ('.bmp', '.rdf', '.txt', '.xml', '.rels')
 #xml : formated text
 #rels : openxml foramted text
 
+
 class GenericParser(object):
     '''
         Parent class of all parsers

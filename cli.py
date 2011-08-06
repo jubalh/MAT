@@ -137,7 +137,7 @@ def main():
         func = is_clean
     elif args.ugly is True:  # destructive anonymisation method
         func = clean_meta_ugly
-    elif args.list is True:
+    elif args.list is True:  # print the list of all supported format
         list_supported()
     else:  # clean the file
         func = clean_meta

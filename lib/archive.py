@@ -12,6 +12,7 @@ import parser
 import mat
 import tarfile
 
+
 class GenericArchiveStripper(parser.GenericParser):
     '''
         Represent a generic archive
@@ -47,6 +48,7 @@ class GenericArchiveStripper(parser.GenericParser):
             else, use the ugly way (with possible data loss)
         '''
         raise NotImplementedError
+
 
 class ZipStripper(GenericArchiveStripper):
     '''
@@ -231,7 +233,7 @@ class TarStripper(GenericArchiveStripper):
             if item.type is '0':  # is item a regular file ?
                 try:
                     class_file = mat.create_class_file(name,
-                        False, self.add2archive) #no backup file
+                        False, self.add2archive)  # no backup file
                     if not class_file.is_clean():
                         tarin.close()
                         return False

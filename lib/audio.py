@@ -3,7 +3,6 @@
 '''
 try:
     from mutagen.flac import FLAC
-    from mutagen.apev2 import APEv2File
     from mutagen.oggvorbis import OggVorbis
 except ImportError:
     pass
@@ -55,43 +54,6 @@ class OggStripper(parser.GenericParser):
         mfile = OggVorbis(self.filename)
         for key, value in mfile.tags:
             metadata[key] = value
-        return metadata
-
-class Apev2Stripper(parser.GenericParser):
-    '''
-        Represent a Apev2 audio file
-    '''
-    def remove_all(self):
-        '''
-            Remove the "metadata" block from the file
-        '''
-        if self.backup is True:
-            shutil.copy2(self.filename, self.output)
-            self.filename = self.output
-
-        mfile = APEv2File(self.filename)
-        mfile.delete()
-        mfile.save()
-
-    def is_clean(self):
-        '''
-            Check if the "metadata" block is present in the file
-        '''
-        mfile = APEv2File(self.filename)
-        if mfile.tags is None:
-            return True
-        else:
-            return False
-
-    def get_meta(self):
-        '''
-            Return the content of the metadata block if present
-        '''
-        metadata = {}
-        mfile = APEv2File(self.filename)
-        if mfile.tags is not None:
-            for key, value in mfile.tags:
-                metadata[key] = value
         return metadata
 
 

@@ -464,9 +464,9 @@ class TreeViewTooltips(object):
         '''
             as the pointer moves across the view, show a tooltip
         '''
-        path = view.get_path_at_pos(int(event.x), int(event.y))
-        if path:
-            path, col, x, y = path
+        path_at_pos = view.get_path_at_pos(int(event.x), int(event.y))
+        if path_at_pos:
+            path, col, x, y = path_at_pos
             tooltip = self.get_tooltip(view, col, path)
             if tooltip:
                 tooltip = str(tooltip).strip()
