@@ -129,8 +129,7 @@ harmless format' % item.filename)
             Is shiping a patched version of zipfile.py a good idea ?
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
-        zipout = zipfile.ZipFile(self.output, 'w',
-            allowZip64=True)
+        zipout = zipfile.ZipFile(self.output, 'w', allowZip64=True)
         for item in zipin.infolist():
             zipin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.filename)
@@ -146,9 +145,10 @@ harmless format' % item.filename)
                         self.filename))
                     zipout.write(name, item.filename)
                 except:
-                    logging.info('%s\' fileformat is not supported' %
+                    logging.info('%s\'s format is not supported or harmless' %
                         item.filename)
-                    if self.add2archive:
+                    _, ext = os.path.splitext(name)
+                    if self.add2archive or ext in parser.NOMETA:
                         zipout.write(name, item.filename)
                 mat.secure_remove(name)
         zipout.comment = ''
@@ -190,9 +190,10 @@ class TarStripper(GenericArchiveStripper):
                         cfile.remove_all_ugly()
                     tarout.add(name, item.name, filter=self._remove)
                 except:
-                    logging.info('%s\' format is not supported' %
+                    logging.info('%s\' format is not supported or harmless' %
                         item.name)
-                    if self.add2archive:
+                    _, ext = os.path.splitext(name)
+                    if self.add2archive or ext in parser.NOMETA:
                         tarout.add(name, item.name, filter=self._remove)
                 mat.secure_remove(name)
         tarin.close()
@@ -228,16 +229,15 @@ class TarStripper(GenericArchiveStripper):
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
             if item.type is '0':  # is item a regular file ?
-                #no backup file
                 try:
                     class_file = mat.create_class_file(name,
-                        False, self.add2archive)
+                        False, self.add2archive) #no backup file
                     if not class_file.is_clean():
                         tarin.close()
                         return False
                 except:
-                    #best solution I have found
-                    logging.error('%s is not supported' % item.filename)
+                    logging.error('%s\'s foramt is not supported or harmless' %
+                        item.filename)
                     _, ext = os.path.splitext(name)
                     if ext not in parser.NOMETA:
                         tarin.close()
