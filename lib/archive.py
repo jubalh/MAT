@@ -26,8 +26,13 @@ class GenericArchiveStripper(parser.GenericParser):
 
     def __del__(self):
         '''
-            Remove the temp dir
+            Remove the files inside the temp dir,
+            then remove the temp dir
         '''
+        for root, dirs, files in os.walk(self.tempdir):
+            for item in files:
+                path_file = os.path.join(root, item)
+                mat.secure_remove(path_file)
         shutil.rmtree(self.tempdir)
 
     def remove_all(self):
@@ -101,7 +106,6 @@ harmless format' % item.filename)
                     if ext not in parser.NOMETA:
                         if bname != 'mimetype' and bname != '.rels':
                             return False
-                mat.secure_remove(name)
         zipin.close()
         return True
 
@@ -152,7 +156,6 @@ harmless format' % item.filename)
                     _, ext = os.path.splitext(name)
                     if self.add2archive or ext in parser.NOMETA:
                         zipout.write(name, item.filename)
-                mat.secure_remove(name)
         zipout.comment = ''
         zipin.close()
         zipout.close()
@@ -197,7 +200,6 @@ class TarStripper(GenericArchiveStripper):
                     _, ext = os.path.splitext(name)
                     if self.add2archive or ext in parser.NOMETA:
                         tarout.add(name, item.name, filter=self._remove)
-                mat.secure_remove(name)
         tarin.close()
         tarout.close()
         self.do_backup()
@@ -244,7 +246,6 @@ class TarStripper(GenericArchiveStripper):
                     if ext not in parser.NOMETA:
                         tarin.close()
                         return False
-                mat.secure_remove(name)
         tarin.close()
         return True
 

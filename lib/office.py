@@ -62,14 +62,12 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                     if not 'meta.xml' in line:
                         print line
                 zipout.write(name, item)
-                mat.secure_remove(name)
 
             elif ext in parser.NOMETA or item == 'mimetype':
                 #keep NOMETA files, and the "manifest" file
                 if item != 'meta.xml':  # contains the metadata
                     zipin.extract(item, self.tempdir)
                     zipout.write(name, item)
-                    mat.secure_remove(name)
 
             else:
                 zipin.extract(item, self.tempdir)
@@ -88,7 +86,6 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                         logging.info('%s\' fileformat is not supported' % item)
                         if self.add2archive:
                             zipout.write(name, item)
-                    mat.secure_remove(name)
         zipout.comment = ''
         logging.info('%s treated' % self.filename)
         zipin.close()
@@ -208,7 +205,6 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
                 #keep parser.NOMETA files, and the file named ".rels"
                 zipin.extract(item, self.tempdir)
                 zipout.write(name, item)
-                mat.secure_remove(name)
             else:
                 zipin.extract(item, self.tempdir)
                 if os.path.isfile(name):  # don't care about folders
@@ -226,7 +222,6 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
                         logging.info('%s\' fileformat is not supported' % item)
                         if self.add2archive:
                             zipout.write(name, item)
-                    mat.secure_remove(name)
         zipout.comment = ''
         logging.info('%s treated' % self.filename)
         zipin.close()
