@@ -92,19 +92,20 @@ class ListStoreApp:
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
         toolbutton.set_label('Clean')
-        toolbutton.connect('clicked', self.mat_clean)
+        toolbutton.connect('clicked', self.process_files, self.mat_clean)
         toolbutton.set_tooltip_text('Clean selected files without data loss')
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_WARNING)
         toolbutton.set_label('Brute Clean')
+        toolbutton.connect('clicked', self.mat_clean_dirty)
         toolbutton.set_tooltip_text('Clean selected files with possible data \
 loss')
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_FIND)
         toolbutton.set_label('Check')
-        toolbutton.connect('clicked', self.mat_check)
+        toolbutton.connect('clicked', self.process_files, self.mat_check)
         toolbutton.set_tooltip_text('Check selected files for harmful meta')
         toolbar.add(toolbutton)
 
@@ -140,7 +141,7 @@ loss')
         picture.set_from_stock(pix, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
         item.set_label(name)
-        item.connect('activate', func)
+        item.connect('activate', self.process_files, func)
         menu.append(item)
 
     def create_sub_menu(self, name, menubar):
@@ -212,20 +213,24 @@ loss')
 
         if response is 0:  # gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            # filenames contains files and folders
-            for item in filenames:
-                for root, dirs, files in os.walk(item):
-                    [self.populate(os.path.join(root, name)) for name in files]
+            task = self.populate(filenames)
+            gobject.idle_add(task.next)  # asynchrone processing
         chooser.destroy()
 
-    def populate(self, item):
+    def populate(self, filenames):
         '''
             Append selected files by add_file to the self.liststore
         '''
-        cf = CFile(item, self.backup, self.add2archive)
-        if cf.file is not None:
-            self.liststore.append([cf, cf.file.basename, cf.file.mime,
-                'unknow'])
+        for filename in filenames:  # filenames : all selected files/folders
+            for root, dirs, files in os.walk(filename):
+                for item in files:
+                    path_to_file = os.path.join(root, item)
+                    cf = CFile(path_to_file, self.backup, self.add2archive)
+                    if cf.file is not None:
+                        self.liststore.append([cf, cf.file.basename,
+                            cf.file.mime, 'unknow'])
+                        yield True
+        yield False
 
     def about(self, _):
         '''
@@ -335,22 +340,20 @@ non-anonymised) file to outputed archive')
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 
-    def all_if_empy(self, iterator):
+    def process_files(self, button, function):
         '''
-            If no elements are selected, all elements are processed
-            thank's to this function
+            Launch the function "function" in a asynchrone way
         '''
-        if iterator:  # if the selection is not empty, process it
-            return iterator
-        else:  # else, return a range of the liststore's size
-            return xrange(len(self.liststore))
+        iterator = self.selection.get_selected_rows()[1]
+        if not iterator:  # if nothing is selected : select everything
+            iterator = xrange(len(self.liststore))
+        task = function(iterator)  # asynchrone way
+        gobject.idle_add(task.next)
 
-    def mat_check(self, _):
+    def mat_check(self, iterator):
         '''
             Check if selected elements are clean
         '''
-        _, iterator = self.selection.get_selected_rows()
-        iterator = self.all_if_empy(iterator)
         for line in iterator:
             if self.liststore[line][0].file.is_clean():
                 string = 'clean'
@@ -358,21 +361,23 @@ non-anonymised) file to outputed archive')
                 string = 'dirty'
             logging.info('%s is %s' % (self.liststore[line][1], string))
             self.liststore[line][3] = string
+            yield True
+        yield False
 
-    def mat_clean(self, _):
+    def mat_clean(self, iterator):
         '''
             Clean selected elements
         '''
-        _, iterator = self.selection.get_selected_rows()
-        iterator = self.all_if_empy(iterator)
         for line in iterator:
             logging.info('Cleaning %s' % self.liststore[line][1])
             if self.liststore[line][3] is not 'clean':
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all()
             self.liststore[line][3] = 'clean'
+            yield True
+        yield False
 
-    def mat_clean_dirty(self, _):
+    def mat_clean_dirty(self, iterator):
         '''
             Clean selected elements (ugly way)
         '''
@@ -384,6 +389,8 @@ non-anonymised) file to outputed archive')
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all_ugly()
             self.liststore[line][3] = 'clean'
+            yield True
+        yield False
 
 
 class TreeViewTooltips(object):
