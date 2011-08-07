@@ -222,15 +222,25 @@ loss')
             Append selected files by add_file to the self.liststore
         '''
         for filename in filenames:  # filenames : all selected files/folders
-            for root, dirs, files in os.walk(filename):
-                for item in files:
-                    path_to_file = os.path.join(root, item)
-                    cf = CFile(path_to_file, self.backup, self.add2archive)
-                    if cf.file is not None:
-                        self.liststore.append([cf, cf.file.basename,
-                            cf.file.mime, 'unknow'])
-                        yield True
+            if os.path.isdir(filename):  # directory
+                for root, dirs, files in os.walk(filename):
+                    for item in files:
+                        path_to_file = os.path.join(root, item)
+                        self.add_file_to_treeview(path_to_file)
+            else:
+                self.add_file_to_treeview(filename)
+            yield True
         yield False
+
+    def add_file_to_treeview(self, filename):
+        '''
+            Add a file to the list if his format is supported
+        '''
+        cf = CFile(filename, self.backup, self.add2archive)
+        if cf.file is not None:
+            self.liststore.append([cf, cf.file.basename,
+                cf.file.mime, 'unknow'])
+
 
     def about(self, _):
         '''
@@ -340,21 +350,21 @@ non-anonymised) file to outputed archive')
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 
-    def process_files(self, button, function):
+    def process_files(self, button, func):
         '''
             Launch the function "function" in a asynchrone way
         '''
         iterator = self.selection.get_selected_rows()[1]
         if not iterator:  # if nothing is selected : select everything
             iterator = xrange(len(self.liststore))
-        task = function(iterator)  # asynchrone way
+        task = func(iterator)  # launch func() in an asynchrone way
         gobject.idle_add(task.next)
 
     def mat_check(self, iterator):
         '''
             Check if selected elements are clean
         '''
-        for line in iterator:
+        for line in iterator:  # for each file in selection
             if self.liststore[line][0].file.is_clean():
                 string = 'clean'
             else:
@@ -368,7 +378,7 @@ non-anonymised) file to outputed archive')
         '''
             Clean selected elements
         '''
-        for line in iterator:
+        for line in iterator:  # for each file in selection
             logging.info('Cleaning %s' % self.liststore[line][1])
             if self.liststore[line][3] is not 'clean':
                 if self.force or not self.liststore[line][0].file.is_clean():
@@ -381,9 +391,7 @@ non-anonymised) file to outputed archive')
         '''
             Clean selected elements (ugly way)
         '''
-        _, iterator = self.selection.get_selected_rows()
-        iterator = self.all_if_empy(iterator)
-        for line in iterator:
+        for line in iterator:  # for each file in selection
             logging.info('Cleaning (lossy way) %s' % self.liststore[line][1])
             if self.liststore[line][3] is not 'clean':
                 if self.force or not self.liststore[line][0].file.is_clean():
