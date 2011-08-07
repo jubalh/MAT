@@ -21,13 +21,13 @@ logging.basicConfig(level=mat.LOGGING_LEVEL)
 
 class CFile(object):
     '''
-        Contain the class-file of the file "path"
+        Contain the "parser" class of the file "filename"
         This class exist just to be "around" my parser.Generic_parser class,
-        since gtk.ListStore does not accept it.
+        since the gtk.ListStore does not accept it.
     '''
-    def __init__(self, path, backup, add2archive):
+    def __init__(self, filename, backup, add2archive):
         try:
-            self.file = mat.create_class_file(path, backup, add2archive)
+            self.file = mat.create_class_file(filename, backup, add2archive)
         except:
             self.file = None
 
@@ -42,6 +42,7 @@ class ListStoreApp:
         self.backup = True
         self.add2archive = True
 
+        # Main window
         self.window = gtk.Window()
         self.window.set_title('Metadata Anonymisation Toolkit %s' %
             __version__)
@@ -117,9 +118,9 @@ loss')
 
     def add_columns(self, treeview):
         '''
-            Create the columns
+            Create the columns, and add them to the treeview
         '''
-        colname = ['Filename', 'Mimetype', 'Cleaned']
+        colname = ['Filename', 'Mimetype', 'State']
 
         for i, j in enumerate(colname):
             filename_column = gtk.CellRendererText()
@@ -166,8 +167,8 @@ loss')
             gtk.STOCK_QUIT)
 
         edit_menu = self.create_sub_menu('Edit', menubar)
-        self.create_menu_item('Clear the filelist', self.clear_model,
-            edit_menu, gtk.STOCK_REMOVE)
+        self.create_menu_item('Clear the filelist',
+            lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE)
         self.create_menu_item('Preferences', self.preferences, edit_menu,
             gtk.STOCK_PREFERENCES)
 
@@ -180,9 +181,9 @@ loss')
             gtk.STOCK_FIND)
 
         help_menu = self.create_sub_menu('Help', menubar)
-        self.create_menu_item('About', self.about, help_menu, gtk.STOCK_ABOUT)
         self.create_menu_item('Supported formats', self.supported, help_menu,
             gtk.STOCK_INFO)
+        self.create_menu_item('About', self.about, help_menu, gtk.STOCK_ABOUT)
 
         return menubar
 
@@ -211,14 +212,10 @@ loss')
 
         if response is 0:  # gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            chooser.destroy()
+            # filenames contains files and folders
             for item in filenames:
-                if os.path.isdir(item):  # directory
-                    for root, dirs, files in os.walk(item):
-                        for name in files:
-                            self.populate(os.path.join(root, name))
-                else:  # regular file
-                    self.populate(item)
+                for root, dirs, files in os.walk(item):
+                    [self.populate(os.path.join(root, name)) for name in files]
         chooser.destroy()
 
     def populate(self, item):
@@ -284,7 +281,7 @@ loss')
 
         dialog.show_all()
         click = dialog.run()
-        if click is 0:
+        if click is 0:  # Close
             dialog.destroy()
 
     def preferences(self, _):
@@ -327,7 +324,7 @@ non-anonymised) file to outputed archive')
         if response is 0:  # gtk.STOCK_OK
             dialog.destroy()
 
-    def invert(self, button, name):  # still not better :/
+    def invert(self, button, name):
         '''
             Invert a preference state
         '''
@@ -338,20 +335,14 @@ non-anonymised) file to outputed archive')
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 
-    def clear_model(self, _):
-        '''
-            Clear the whole list of files
-        '''
-        self.liststore.clear()
-
     def all_if_empy(self, iterator):
         '''
-            if no elements are selected, all elements are processed
+            If no elements are selected, all elements are processed
             thank's to this function
         '''
-        if iterator:
+        if iterator:  # if the selection is not empty, process it
             return iterator
-        else:
+        else:  # else, return a range of the liststore's size
             return xrange(len(self.liststore))
 
     def mat_check(self, _):
@@ -360,13 +351,13 @@ non-anonymised) file to outputed archive')
         '''
         _, iterator = self.selection.get_selected_rows()
         iterator = self.all_if_empy(iterator)
-        for i in iterator:
-            if self.liststore[i][0].file.is_clean():
+        for line in iterator:
+            if self.liststore[line][0].file.is_clean():
                 string = 'clean'
             else:
                 string = 'dirty'
-            logging.info('%s is %s' % (self.liststore[i][1], string))
-            self.liststore[i][3] = string
+            logging.info('%s is %s' % (self.liststore[line][1], string))
+            self.liststore[line][3] = string
 
     def mat_clean(self, _):
         '''
@@ -374,12 +365,12 @@ non-anonymised) file to outputed archive')
         '''
         _, iterator = self.selection.get_selected_rows()
         iterator = self.all_if_empy(iterator)
-        for i in iterator:
-            logging.info('Cleaning %s' % self.liststore[i][1])
-            if self.liststore[i][3] is not 'clean':
-                if self.force or not self.liststore[i][0].file.is_clean():
-                    self.liststore[i][0].file.remove_all()
-            self.liststore[i][3] = 'clean'
+        for line in iterator:
+            logging.info('Cleaning %s' % self.liststore[line][1])
+            if self.liststore[line][3] is not 'clean':
+                if self.force or not self.liststore[line][0].file.is_clean():
+                    self.liststore[line][0].file.remove_all()
+            self.liststore[line][3] = 'clean'
 
     def mat_clean_dirty(self, _):
         '''
@@ -387,12 +378,12 @@ non-anonymised) file to outputed archive')
         '''
         _, iterator = self.selection.get_selected_rows()
         iterator = self.all_if_empy(iterator)
-        for i in iterator:
-            logging.info('Cleaning (lossy way) %s' % self.liststore[i][1])
-            if self.liststore[i][3] is not 'clean':
-                if self.force or not self.liststore[i][0].file.is_clean():
-                    self.liststore[i][0].file.remove_all_ugly()
-            self.liststore[i][3] = 'clean'
+        for line in iterator:
+            logging.info('Cleaning (lossy way) %s' % self.liststore[line][1])
+            if self.liststore[line][3] is not 'clean':
+                if self.force or not self.liststore[line][0].file.is_clean():
+                    self.liststore[line][0].file.remove_all_ugly()
+            self.liststore[line][3] = 'clean'
 
 
 class TreeViewTooltips(object):
