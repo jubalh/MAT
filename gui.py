@@ -7,14 +7,18 @@
 import gtk
 import gobject
 
-import os
+import gettext
 import logging
+import os
 import xml.sax
 
 from lib import mat
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
+
+t = gettext.translation('gui', 'locale', fallback=True)
+_ = t.ugettext
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
@@ -73,7 +77,7 @@ class ListStoreApp:
         content.add(treeview)
 
         self.statusbar = gtk.Statusbar()
-        self.statusbar.push(1, 'Ready')
+        self.statusbar.push(1, _('Ready'))
         vbox.pack_start(self.statusbar, False, False, 0)
 
         self.window.show_all()
@@ -85,31 +89,32 @@ class ListStoreApp:
         toolbar = gtk.Toolbar()
 
         toolbutton = gtk.ToolButton(gtk.STOCK_ADD)
-        toolbutton.set_label('Add')
+        toolbutton.set_label(_('Add'))
         toolbutton.connect('clicked', self.add_files)
-        toolbutton.set_tooltip_text('Add files')
+        toolbutton.set_tooltip_text(_('Add files'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
-        toolbutton.set_label('Clean')
+        toolbutton.set_label(_('Clean'))
         toolbutton.connect('clicked', self.process_files, self.mat_clean)
-        toolbutton.set_tooltip_text('Clean selected files without data loss')
+        toolbutton.set_tooltip_text(_('Clean selected files without data loss'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_WARNING)
-        toolbutton.set_label('Brute Clean')
+        toolbutton.set_label(_('Brute Clean'))
         toolbutton.connect('clicked', self.mat_clean_dirty)
-        toolbutton.set_tooltip_text('Clean selected files with possible data \
-loss')
+        toolbutton.set_tooltip_text(_('Clean selected files with possible \
+data loss'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_FIND)
-        toolbutton.set_label('Check')
+        toolbutton.set_label(_('Check'))
         toolbutton.connect('clicked', self.process_files, self.mat_check)
-        toolbutton.set_tooltip_text('Check selected files for harmful meta')
+        toolbutton.set_tooltip_text(_('Check selected files for harmful meta'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(stock_id=gtk.STOCK_QUIT)
+        toolbutton.set_label(_('Quit'))
         toolbutton.connect('clicked', gtk.main_quit)
         toolbar.add(toolbutton)
 
@@ -121,7 +126,7 @@ loss')
         '''
             Create the columns, and add them to the treeview
         '''
-        colname = ['Filename', 'Mimetype', 'State']
+        colname = [_('Filename'), _('Mimetype'), _('State')]
 
         for i, j in enumerate(colname):
             filename_column = gtk.CellRendererText()
@@ -141,7 +146,7 @@ loss')
         picture.set_from_stock(pix, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
         item.set_label(name)
-        item.connect('activate', self.process_files, func)
+        item.connect('activate', func)
         menu.append(item)
 
     def create_sub_menu(self, name, menubar):
@@ -161,34 +166,52 @@ loss')
         '''
         menubar = gtk.MenuBar()
 
-        file_menu = self.create_sub_menu('Files', menubar)
-        self.create_menu_item('Add files', self.add_files, file_menu,
+        file_menu = self.create_sub_menu(_('Files'), menubar)
+        self.create_menu_item(_('Add files'), self.add_files, file_menu,
             gtk.STOCK_ADD)
-        self.create_menu_item('Quit', gtk.main_quit, file_menu,
+        self.create_menu_item(_('Quit'), gtk.main_quit, file_menu,
             gtk.STOCK_QUIT)
 
-        edit_menu = self.create_sub_menu('Edit', menubar)
-        self.create_menu_item('Clear the filelist',
+        edit_menu = self.create_sub_menu(_('Edit'), menubar)
+        self.create_menu_item(_('Clear the filelist'),
             lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE)
-        self.create_menu_item('Preferences', self.preferences, edit_menu,
+        self.create_menu_item(_('Preferences'), self.preferences, edit_menu,
             gtk.STOCK_PREFERENCES)
 
-        clean_menu = self.create_sub_menu('Clean', menubar)
-        self.create_menu_item('Clean', self.mat_clean, clean_menu,
-            gtk.STOCK_PRINT_REPORT)
-        self.create_menu_item('Clean (lossy way)', self.mat_clean_dirty,
-            clean_menu, gtk.STOCK_PRINT_WARNING)
-        self.create_menu_item('Check', self.mat_check, clean_menu,
-            gtk.STOCK_FIND)
+        process_menu = self.create_sub_menu(_('Process'), menubar)
+        item = gtk.ImageMenuItem()
+        picture = gtk.Image()
+        picture.set_from_stock(gtk.STOCK_PRINT_REPORT, gtk.ICON_SIZE_MENU)
+        item.set_image(picture)
+        item.set_label(_('Clean'))
+        item.connect('activate', self.process_files, self.mat_clean)
+        process_menu.append(item)
 
-        help_menu = self.create_sub_menu('Help', menubar)
-        self.create_menu_item('Supported formats', self.supported, help_menu,
+        item = gtk.ImageMenuItem()
+        picture = gtk.Image()
+        picture.set_from_stock(gtk.STOCK_PRINT_WARNING, gtk.ICON_SIZE_MENU)
+        item.set_image(picture)
+        item.set_label(_('Clean (lossy way)'))
+        item.connect('activate', self.process_files, self.mat_clean_dirty)
+        process_menu.append(item)
+
+        item = gtk.ImageMenuItem()
+        picture = gtk.Image()
+        picture.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_MENU)
+        item.set_image(picture)
+        item.set_label(_('Check'))
+        item.connect('activate', self.process_files, self.mat_check)
+        process_menu.append(item)
+
+
+        help_menu = self.create_sub_menu(_('Help'), menubar)
+        self.create_menu_item(_('Supported formats'), self.supported, help_menu,
             gtk.STOCK_INFO)
         self.create_menu_item('About', self.about, help_menu, gtk.STOCK_ABOUT)
 
         return menubar
 
-    def add_files(self, _):
+    def add_files(self, button):
         '''
             Add the files chosed by the filechoser ("Add" button)
         '''
@@ -222,12 +245,12 @@ loss')
             Append selected files by add_file to the self.liststore
         '''
         for filename in filenames:  # filenames : all selected files/folders
-            if os.path.isdir(filename):  # directory
+            if os.path.isdir(filename):  # if "filename" is a directory
                 for root, dirs, files in os.walk(filename):
                     for item in files:
                         path_to_file = os.path.join(root, item)
                         self.add_file_to_treeview(path_to_file)
-            else:
+            else:  # filename is a regular file
                 self.add_file_to_treeview(filename)
             yield True
         yield False
@@ -242,7 +265,7 @@ loss')
                 cf.file.mime, 'unknow'])
 
 
-    def about(self, _):
+    def about(self, button):
         '''
             About popup
         '''
@@ -258,7 +281,7 @@ loss')
         if click:
             w.destroy()
 
-    def supported(self, _):
+    def supported(self, button):
         '''
             List the supported formats
         '''
@@ -281,7 +304,8 @@ loss')
         for item in handler.list:  # list of dict : one dict per format
             #create one expander per format
             title = '%s (%s)' % (item['name'], item['extension'])
-            support = '\t<b>support</b> : ' + item['support']
+            support = ('\t<b>%s</b> : %s' % (_('support'), item['support']))
+            #support = '\t<b>support</b> : ' + item['support']
             metadata = '\n\t<b>metadata</b> : ' + item['metadata']
             method = '\n\t<b>method</b> : ' + item['method']
             content = support + metadata + method
@@ -299,11 +323,11 @@ loss')
         if click is 0:  # Close
             dialog.destroy()
 
-    def preferences(self, _):
+    def preferences(self, button):
         '''
             Preferences popup
         '''
-        dialog = gtk.Dialog('Preferences', self.window, 0, (gtk.STOCK_OK, 0))
+        dialog = gtk.Dialog(_('Preferences'), self.window, 0, (gtk.STOCK_OK, 0))
         hbox = gtk.HBox()
         dialog.get_content_area().pack_start(hbox, False, False, 0)
 
@@ -314,24 +338,25 @@ loss')
         table = gtk.Table(3, 2, False)  # nb rows, nb lines
         hbox.pack_start(table, True, True, 0)
 
-        force = gtk.CheckButton('Force Clean', False)
+        force = gtk.CheckButton(_('Force Clean'), False)
         force.set_active(self.force)
         force.connect('toggled', self.invert, 'force')
-        force.set_tooltip_text('Do not check if already clean before cleaning')
+        force.set_tooltip_text(_('Do not check if already clean before \
+cleaning'))
         table.attach(force, 0, 1, 0, 1)
 
-        backup = gtk.CheckButton('Backup', False)
+        backup = gtk.CheckButton(_('Backup'), False)
         backup.set_active(self.backup)
         backup.connect('toggled', self.invert, 'backup')
-        backup.set_tooltip_text('Keep a backup copy')
+        backup.set_tooltip_text(_('Keep a backup copy'))
         table.attach(backup, 0, 1, 1, 2)
 
-        add2archive = gtk.CheckButton('Add unsupported file to archives',
+        add2archive = gtk.CheckButton(_('Add unsupported file to archives'),
             False)
         add2archive.set_active(self.add2archive)
         add2archive.connect('toggled', self.invert, 'add2archive')
-        add2archive.set_tooltip_text('Add non-supported (and so \
-non-anonymised) file to outputed archive')
+        add2archive.set_tooltip_text(_('Add non-supported (and so \
+non-anonymised) file to outputed archive'))
         table.attach(add2archive, 0, 1, 2, 3)
 
         hbox.show_all()
@@ -366,9 +391,9 @@ non-anonymised) file to outputed archive')
         '''
         for line in iterator:  # for each file in selection
             if self.liststore[line][0].file.is_clean():
-                string = 'clean'
+                string = _('clean')
             else:
-                string = 'dirty'
+                string = _('dirty')
             logging.info('%s is %s' % (self.liststore[line][1], string))
             self.liststore[line][3] = string
             yield True
@@ -380,10 +405,10 @@ non-anonymised) file to outputed archive')
         '''
         for line in iterator:  # for each file in selection
             logging.info('Cleaning %s' % self.liststore[line][1])
-            if self.liststore[line][3] is not 'clean':
+            if self.liststore[line][3] is not _('clean'):
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all()
-            self.liststore[line][3] = 'clean'
+            self.liststore[line][3] = _('clean')
             yield True
         yield False
 
@@ -393,10 +418,10 @@ non-anonymised) file to outputed archive')
         '''
         for line in iterator:  # for each file in selection
             logging.info('Cleaning (lossy way) %s' % self.liststore[line][1])
-            if self.liststore[line][3] is not 'clean':
+            if self.liststore[line][3] is not _('clean'):
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all_ugly()
-            self.liststore[line][3] = 'clean'
+            self.liststore[line][3] = _('clean')
             yield True
         yield False
 
@@ -522,8 +547,8 @@ class TreeViewTooltips(object):
         '''
             add a gtk.TreeView to the tooltip
         '''
-        view.connect("motion-notify-event", self.__motion_handler)
-        view.connect("leave-notify-event", lambda i, j: self.__hide())
+        view.connect('motion-notify-event', self.__motion_handler)
+        view.connect('leave-notify-event', lambda i, j: self.__hide())
 
     def get_tooltip(self, view, column, path):
         '''
