@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#charset utf-8
 
 '''
     Metadata anonymisation toolkit - GUI edition
@@ -8,6 +9,7 @@ import gtk
 import gobject
 
 import gettext
+import locale
 import logging
 import os
 import xml.sax
@@ -17,8 +19,7 @@ from lib import mat
 __version__ = '0.1'
 __author__ = 'jvoisin'
 
-t = gettext.translation('gui', 'locale', fallback=True)
-_ = t.ugettext
+
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
@@ -36,7 +37,7 @@ class CFile(object):
             self.file = None
 
 
-class ListStoreApp:
+class GUI:
     '''
         Main GUI class
     '''
@@ -207,7 +208,7 @@ data loss'))
         help_menu = self.create_sub_menu(_('Help'), menubar)
         self.create_menu_item(_('Supported formats'), self.supported, help_menu,
             gtk.STOCK_INFO)
-        self.create_menu_item('About', self.about, help_menu, gtk.STOCK_ABOUT)
+        self.create_menu_item(_('About'), self.about, help_menu, gtk.STOCK_ABOUT)
 
         return menubar
 
@@ -215,21 +216,21 @@ data loss'))
         '''
             Add the files chosed by the filechoser ("Add" button)
         '''
-        chooser = gtk.FileChooserDialog(title='Choose files',
+        chooser = gtk.FileChooserDialog(title=_('Choose files'),
             parent=self.window, action=gtk.FILE_CHOOSER_ACTION_OPEN,
             buttons=(gtk.STOCK_OK, 0, gtk.STOCK_CANCEL, 1))
         chooser.set_default_response(0)
         chooser.set_select_multiple(True)
 
         all_filter = gtk.FileFilter()  # filter that shows all files
-        all_filter.set_name('All files')
+        all_filter.set_name(_('All files'))
         all_filter.add_pattern('*')
         chooser.add_filter(all_filter)
 
         supported_filter = gtk.FileFilter()
         # filter that shows only supported formats
         [supported_filter.add_mime_type(i) for i in mat.STRIPPERS.keys()]
-        supported_filter.set_name('Supported files')
+        supported_filter.set_name(_('Supported files'))
         chooser.add_filter(supported_filter)
 
         response = chooser.run()
@@ -262,7 +263,7 @@ data loss'))
         cf = CFile(filename, self.backup, self.add2archive)
         if cf.file is not None:
             self.liststore.append([cf, cf.file.basename,
-                cf.file.mime, 'unknow'])
+                cf.file.mime, _('unknow')])
 
 
     def about(self, button):
@@ -272,9 +273,9 @@ data loss'))
         w = gtk.AboutDialog()
         w.set_version(__version__)
         w.set_copyright('GNU Public License v2')
-        w.set_comments('This software was coded during the GSoC 2011')
+        w.set_comments(_('This software was coded during the GSoC 2011'))
         w.set_website('https://gitweb.torproject.org/user/jvoisin/mat.git')
-        w.set_website_label('Website')
+        w.set_website_label(_('Website'))
         w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_program_name('Metadata Anonymistion Toolkit')
         click = w.run()
@@ -285,7 +286,7 @@ data loss'))
         '''
             List the supported formats
         '''
-        dialog = gtk.Dialog('Supported formats', self.window, 0,
+        dialog = gtk.Dialog(_('Supported formats'), self.window, 0,
             (gtk.STOCK_CLOSE, 0))
         vbox = gtk.VBox(spacing=5)
         dialog.get_content_area().pack_start(vbox, True, True, 0)
@@ -304,8 +305,7 @@ data loss'))
         for item in handler.list:  # list of dict : one dict per format
             #create one expander per format
             title = '%s (%s)' % (item['name'], item['extension'])
-            support = ('\t<b>%s</b> : %s' % (_('support'), item['support']))
-            #support = '\t<b>support</b> : ' + item['support']
+            support = ('\t<b>%s</b> : %s' % ('support', item['support']))
             metadata = '\n\t<b>metadata</b> : ' + item['metadata']
             method = '\n\t<b>method</b> : ' + item['method']
             content = support + metadata + method
@@ -561,5 +561,11 @@ class TreeViewTooltips(object):
 
 
 if __name__ == '__main__':
-    ListStoreApp()
+    #Translations
+    t = gettext.translation('gui', 'locale', fallback=True)
+    _ = t.ugettext
+    t.install()
+
+    #Main
+    GUI()
     gtk.main()

@@ -1,0 +1,162 @@
+# Metadata ANonymisation Toolkit : GUI
+# Copyright (C) 2011 Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>
+# This file is distributed under the same license as the MAT package.
+# Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>, 2011
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1\n"
+"Report-Msgid-Bugs-To: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+"POT-Creation-Date: 2011-08-10 15:41+0200\n"
+"PO-Revision-Date: 2011-08-10 15:41+0200\n"
+"Last-Translator: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+"Language-Team: Fr Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+"Language: FR_fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gui.py:81
+msgid "Ready"
+msgstr "Prêt"
+
+#: gui.py:93
+msgid "Add"
+msgstr "Ajouter"
+
+#: gui.py:95 gui.py:171
+msgid "Add files"
+msgstr "Ajouter fichiers"
+
+#: gui.py:99 gui.py:187
+msgid "Clean"
+msgstr "Nettoyer"
+
+#: gui.py:101
+msgid "Clean selected files without data loss"
+msgstr "Nettoyer les fichiers séléctionnés sans pertes possibles d'informations"
+
+#: gui.py:105
+msgid "Brute Clean"
+msgstr "Nettoyer avec pertes possibles"
+
+#: gui.py:107
+msgid "Clean selected files with possible data loss"
+msgstr "Nettoyer avec pertes possibles d'informations"
+
+#: gui.py:112 gui.py:203
+msgid "Check"
+msgstr "Vérifier"
+
+#: gui.py:114
+msgid "Check selected files for harmful meta"
+msgstr "Vérifier l'état actuel des fichiers selectionnés"
+
+#: gui.py:118 gui.py:173
+msgid "Quit"
+msgstr "Quitter"
+
+#: gui.py:130
+msgid "Filename"
+msgstr "Nom"
+
+#: gui.py:130
+msgid "Mimetype"
+msgstr "Type mime"
+
+#: gui.py:130
+msgid "State"
+msgstr "État"
+
+#: gui.py:170
+msgid "Files"
+msgstr "Fichiers"
+
+#: gui.py:176
+msgid "Edit"
+msgstr "Edition"
+
+#: gui.py:177
+msgid "Clear the filelist"
+msgstr "Vider la liste de fichiers"
+
+#: gui.py:179 gui.py:331
+msgid "Preferences"
+msgstr "Préférences"
+
+#: gui.py:182
+msgid "Process"
+msgstr "Traiter"
+
+#: gui.py:195
+msgid "Clean (lossy way)"
+msgstr "Nettoyer (avec pertes possibles)"
+
+#: gui.py:208
+msgid "Help"
+msgstr "Aide"
+
+#: gui.py:209 gui.py:289
+msgid "Supported formats"
+msgstr "Formats supportés"
+
+#: gui.py:211
+msgid "About"
+msgstr "A propos"
+
+#: gui.py:219
+msgid "Choose files"
+msgstr "Sélection de fichiers"
+
+#: gui.py:226
+msgid "All files"
+msgstr "Tous"
+
+#: gui.py:233
+msgid "Supported files"
+msgstr "Supportés"
+
+#: gui.py:266
+msgid "unknow"
+msgstr "inconnu"
+
+#: gui.py:276
+msgid "This software was coded during the GSoC 2011"
+msgstr "Ce logiciel a été produit lors du GSoC 2011"
+
+#: gui.py:278
+msgid "Website"
+msgstr "Site internet"
+
+#: gui.py:342
+msgid "Force Clean"
+msgstr "Forcer traitement"
+
+#: gui.py:345
+msgid "Do not check if already clean before cleaning"
+msgstr "Ne pas vérifier l'état avant de traiter"
+
+#: gui.py:349
+msgid "Backup"
+msgstr "Copie de sauvegarde"
+
+#: gui.py:352
+msgid "Keep a backup copy"
+msgstr "Garde une copie de sauvegarde du fichier original"
+
+#: gui.py:355
+msgid "Add unsupported file to archives"
+msgstr "Ajout des formats non supportés"
+
+#: gui.py:359
+msgid "Add non-supported (and so non-anonymised) file to outputed archive"
+msgstr "Ajouter les fichiers de formats non-supportés (et donc, non traités) aux archives anonymisées"
+
+#: gui.py:395 gui.py:409 gui.py:412 gui.py:422 gui.py:425
+msgid "clean"
+msgstr "propre"
+
+#: gui.py:397
+msgid "dirty"
+msgstr "compromettant"
