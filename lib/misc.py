@@ -2,36 +2,33 @@
     Care about misc formats
 '''
 
-import hachoir_core
 import parser
+
+import bencode
 
 
 class TorrentStripper(parser.GenericParser):
     '''
-        A torrent file looks like:
-        -root
-            -start
-            -announce
-            -announce-list
-            -comment
-            -created_by
-            -creation_date
-            -encoding
-            -info
-            -end
+        Represent a torrent file with the help
+        of the bencode lib from Petru Paler
     '''
-    def remove_all(self):
-        for field in self.editor['root']:
-            if self._should_remove(field):
-                #FIXME : hachoir does not support torrent metadata editing :<
-                del self.editor['/root/' + field.name]
-        hachoir_core.field.writeIntoFile(self.editor, self.output)
-        self.do_backup()
+    def __init__(self, filename, parser, mime, backup, add2archive):
+        super(TorrentStripper, self).__init__(filename, parser, mime,
+            backup, add2archive)
+        self.fields = ['comment', 'creation date', 'created by']
 
     def is_clean(self):
-        for field in self.editor['root']:
-            if self._should_remove(field):
-                return False
+        '''
+            Check if the file is clean from harmful metadatas
+        '''
+        with open(self.filename, 'r') as f:
+            decoded = bencode.bdecode(f.read())
+        for key in self.fields:
+            try:
+                if decoded[key] != '':
+                    return False
+            except:
+                pass
         return True
 
     def get_meta(self):
@@ -39,16 +36,27 @@ class TorrentStripper(parser.GenericParser):
             Return a dict with all the meta of the file
         '''
         metadata = {}
-        for field in self.editor['root']:
-            if self._should_remove(field):
-                try:  # FIXME
-                    metadata[field.name] = field.value
-                except:
-                    metadata[field.name] = 'harmful content'
+        with open(self.filename, 'r') as f:
+            decoded = bencode.bdecode(f.read())
+        for key in self.fields:
+            try:
+                if decoded[key] != '':
+                    metadata[key] = decoded[key]
+            except:
+                pass
         return metadata
 
-    def _should_remove(self, field):
-        if field.name in ('comment', 'created_by', 'creation_date', 'info'):
-            return True
-        else:
-            return False
+    def remove_all(self):
+        '''
+            Remove all the files that are compromizing
+        '''
+        with open(self.filename, 'r') as f:
+            decoded = bencode.bdecode(f.read())
+        for key in self.fields:
+            try:
+                decoded[key] = ''
+            except:
+                pass
+        with open(self.output, 'w') as f:  # encode the decoded torrent
+            f.write(bencode.bencode(decoded))  # and write it in self.output
+        self.do_backup()

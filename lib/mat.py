@@ -17,6 +17,7 @@ import images
 import audio
 import office
 import archive
+import misc
 
 __version__ = '0.1'
 __author__ = 'jvoisin'
@@ -33,6 +34,7 @@ STRIPPERS = {
     'audio/mpeg': audio.MpegAudioStripper,
     'image/jpeg': images.JpegStripper,
     'image/png': images.PngStripper,
+    'application/x-bittorrent': misc.TorrentStripper,
     'application/opendocument': office.OpenDocumentStripper,
     'application/officeopenxml': office.OpenXmlStripper,
 }
