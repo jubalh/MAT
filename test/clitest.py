@@ -18,14 +18,14 @@ class TestRemovecli(test.MATTest):
     def test_remove(self):
         '''make sure that the cli remove all compromizing meta'''
         for _, dirty in self.file_list:
-            subprocess.call(['../cli.py', dirty])
+            subprocess.call(['../mat-cli.py', dirty])
             current_file = mat.create_class_file(dirty, False, True)
             self.assertTrue(current_file.is_clean())
 
     def test_remove_empty(self):
         '''Test removal with clean files'''
         for clean, _ in self.file_list:
-            subprocess.call(['../cli.py', clean])
+            subprocess.call(['../mat-cli.py', clean])
             current_file = mat.create_class_file(clean, False, True)
             self.assertTrue(current_file.is_clean())
 
@@ -37,7 +37,7 @@ class TestListcli(test.MATTest):
     def test_list_clean(self):
         '''check if get_meta returns meta'''
         for clean, _ in self.file_list:
-            proc = subprocess.Popen(['../cli.py', '-d', clean],
+            proc = subprocess.Popen(['../mat-cli.py', '-d', clean],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
             self.assertEqual(stdout.strip('\n'), "[+] File %s :\nNo harmful \
@@ -46,7 +46,7 @@ meta found" % clean)
     def test_list_dirty(self):
         '''check if get_meta returns all the expected meta'''
         for _, dirty in self.file_list:
-            proc = subprocess.Popen(['../cli.py', '-d', dirty],
+            proc = subprocess.Popen(['../mat-cli.py', '-d', dirty],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
             self.assertNotEqual(stdout, "[+] File %s" % dirty)
@@ -59,7 +59,7 @@ class TestisCleancli(test.MATTest):
     def test_clean(self):
         '''test is_clean on clean files'''
         for clean, _ in self.file_list:
-            proc = subprocess.Popen(['../cli.py', '-c', clean],
+            proc = subprocess.Popen(['../mat-cli.py', '-c', clean],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
             self.assertEqual(stdout.strip('\n'), '[+] %s is clean' % clean)
@@ -67,7 +67,7 @@ class TestisCleancli(test.MATTest):
     def test_dirty(self):
         '''test is_clean on dirty files'''
         for _, dirty in self.file_list:
-            proc = subprocess.Popen(['../cli.py', '-c', dirty],
+            proc = subprocess.Popen(['../mat-cli.py', '-c', dirty],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
             self.assertEqual(stdout.strip('\n'), '[+] %s is not clean' % dirty)
