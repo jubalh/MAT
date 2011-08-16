@@ -9,7 +9,7 @@ METADATA AND PRIVACY:
     Cameras record data about when a picture was taken and what
     camera was used. Office documents like pdf or Office automatically adds
     author and company information to documents and spreadsheets.
-    Maybe you don't want to disclose those informations on the web.
+    Maybe you don't want to disclose those information on the web.
 
 WARNING :
     Mat only remove metadata from your files, it does not anonymise their
@@ -27,7 +27,7 @@ DEPENDENCIES:
 
 
 OPTIONALS DEPENDENCIES:
-    python-poppler and python-poppler : for pdf support
+    python-poppler and python-cairo : for pdf support
     python-mutagen : for massive audio format support
 
 
@@ -110,6 +110,29 @@ SUPPORTED FORMAT:
         method : removal of harmful fields is done with mutagen
 
 
+HOW TO IMPLEMENT NEW FORMATS:
+    1. add the format's mimetype to the STRIPPER list in mat.py
+    2. inherit the GenericParser class (parser.py)
+    3. read the parser.py module
+    4. implement at least these three methods:
+        - is_clean(self)
+        - remove_all(self)
+        - get_meta(self)
+    5. don't forget to call the do_backup() method when necessary
+
+ALTERNATIVES AND COMPLEMENTS:
+for images:
+    exiftool (perl) : metadata manipulation
+    exiv2 (C++) : metadata manipulation
+    graphicsmagick (a fork from imagemagick) : cli image manipulation
+
+for pdf:
+    pdfminer (python) : pdf manipulation
+
+other tools:
+    an hexadecimal editor
+
+
 LICENSE:
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 2 as
@@ -128,7 +151,7 @@ LICENSE:
 
 THANKS:
     Mat would not exist without :
-    - the Google SUmmer of Code,
+    - the Google Summer of Code,
     - the Python language
     - the amazing (and messy) hachoir library,
     - poppler and cairo's python bindings,
