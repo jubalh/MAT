@@ -4,7 +4,8 @@
 
 import parser
 
-import bencode
+from bencode import bencode
+#import bencode
 
 
 class TorrentStripper(parser.GenericParser):

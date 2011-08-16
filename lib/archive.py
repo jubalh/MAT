@@ -10,7 +10,7 @@ import tempfile
 
 import parser
 import mat
-import tarfile
+from tarfile import tarfile
 
 
 class GenericArchiveStripper(parser.GenericParser):
