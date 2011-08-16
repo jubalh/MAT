@@ -8,7 +8,7 @@ import subprocess
 import sys
 
 sys.path.append('..')
-from lib import mat
+from mat import mat
 import test
 
 class TestRemovecli(test.MATTest):

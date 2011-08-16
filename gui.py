@@ -14,7 +14,7 @@ import logging
 import os
 import xml.sax
 
-from lib import mat
+from mat import mat
 
 __version__ = '0.1'
 __author__ = 'jvoisin'

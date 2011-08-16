@@ -9,7 +9,7 @@ import optparse
 
 import hachoir_core
 
-from lib import mat
+from mat import mat
 
 __version__ = '0.1'
 

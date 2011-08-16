@@ -91,8 +91,8 @@ class FlacStripper(parser.GenericParser):
         metadata = {}
         mfile = FLAC(self.filename)
         if mfile.tags is not None:
-            for key, value in mfile.tags:
-                metadata[key] = value
             if mfile.pictures != []:
                 metadata['picture :'] = 'yes'
+            for key, value in mfile.tags:
+                metadata[key] = value
         return metadata
