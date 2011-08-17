@@ -10,4 +10,5 @@ setup(name='MAT',
       license='GPLv2',
       url='https://gitweb.torproject.org/user/jvoisin/mat.git',
       packages=['mat'],
+      script=['mat-cli', 'mat-gui']
      )
