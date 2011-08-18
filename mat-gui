@@ -142,11 +142,15 @@ data loss'))
                 tips.add_view(treeview)
             treeview.append_column(column)
 
-    def create_menu_item(self, name, func, menu, pix):
+    def create_menu_item(self, name, func, menu, pix, shortcut):
         '''
             Create a MenuItem() like Preferences, Quit, Add, Clean, ...
         '''
         item = gtk.ImageMenuItem()
+        if shortcut :
+            key, mod = gtk.accelerator_parse(shortcut)
+            item.add_accelerator('activate', self.accelerator,
+                key, mod, gtk.ACCEL_VISIBLE)
         picture = gtk.Image()
         picture.set_from_stock(pix, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
@@ -173,18 +177,22 @@ data loss'))
 
         file_menu = self.create_sub_menu(_('Files'), menubar)
         self.create_menu_item(_('Add files'), self.add_files, file_menu,
-            gtk.STOCK_ADD)
+            gtk.STOCK_ADD, '<Control>O')
         self.create_menu_item(_('Quit'), gtk.main_quit, file_menu,
-            gtk.STOCK_QUIT)
+            gtk.STOCK_QUIT, '<Control>Q')
 
         edit_menu = self.create_sub_menu(_('Edit'), menubar)
         self.create_menu_item(_('Clear the filelist'),
-            lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE)
+            lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE,
+            '<Control>L')
         self.create_menu_item(_('Preferences'), self.preferences, edit_menu,
-            gtk.STOCK_PREFERENCES)
+            gtk.STOCK_PREFERENCES, '<Control>P')
 
         process_menu = self.create_sub_menu(_('Process'), menubar)
         item = gtk.ImageMenuItem()
+        key, mod = gtk.accelerator_parse('<Control>L')
+        item.add_accelerator('activate', self.accelerator,
+            key, mod, gtk.ACCEL_VISIBLE)
         picture = gtk.Image()
         picture.set_from_stock(gtk.STOCK_PRINT_REPORT, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
@@ -193,6 +201,9 @@ data loss'))
         process_menu.append(item)
 
         item = gtk.ImageMenuItem()
+        key, mod = gtk.accelerator_parse('<Control>S')
+        item.add_accelerator('activate', self.accelerator,
+            key, mod, gtk.ACCEL_VISIBLE)
         picture = gtk.Image()
         picture.set_from_stock(gtk.STOCK_PRINT_WARNING, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
@@ -201,6 +212,9 @@ data loss'))
         process_menu.append(item)
 
         item = gtk.ImageMenuItem()
+        key, mod = gtk.accelerator_parse('<Control>h')
+        item.add_accelerator('activate', self.accelerator,
+            key, mod, gtk.ACCEL_VISIBLE)
         picture = gtk.Image()
         picture.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
@@ -211,8 +225,9 @@ data loss'))
 
         help_menu = self.create_sub_menu(_('Help'), menubar)
         self.create_menu_item(_('Supported formats'), self.supported, help_menu,
-            gtk.STOCK_INFO)
-        self.create_menu_item(_('About'), self.about, help_menu, gtk.STOCK_ABOUT)
+            gtk.STOCK_INFO, False)
+        self.create_menu_item(_('About'), self.about, help_menu,
+                gtk.STOCK_ABOUT, False)
 
         return menubar
 
