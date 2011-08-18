@@ -1,0 +1,77 @@
+.TH METADATA "1" "August 2011" "Metadata Anonymisation Toolkit" "User Commands"
+
+
+.SH NAME
+MAT \- manual page for the Metadata Anonymisation Toolkit
+
+
+.SH SYNOPSIS
+.B mat-cli
+[\fIoptions\fR] \fIfiles\fR
+.TP
+.B mat-gui
+
+.SH DESCRIPTION
+The \fBMetadata Anonymisation Toolkit\fR is a lib (with a CLI and a GUI)
+created to anonymise file's \fBmetadata\fR. In essence, metadata answer who,
+what, when, where, why, and how about every face of the data that are being
+documented. They can be a \fBrisk for privacy\fR.
+
+
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-a\fR, \fB\-\-add2archive\fR
+Add to outputed archive non\-supported filetypes
+.TP
+\fB\-b\fR, \fB\-\-backup\fR
+Keep a backup copy
+.TP
+\fB\-c\fR, \fB\-\-check\fR
+Check if a file is free of harmfull metadatas
+.TP
+\fB\-d\fR, \fB\-\-display\fR
+List all the meta of a file without removing them
+.TP
+\fB\-f\fR, \fB\-\-force\fR
+Don't check if files are clean before cleaning
+.TP
+\fB\-l\fR, \fB\-\-list\fR
+List all supported fileformat
+.TP
+\fB\-u\fR, \fB\-\-ugly\fR
+Remove harmful meta, but loss can occure
+.TP
+\fB\-v\fR, \fB\-\-version\fR
+Display version and exit
+
+
+.SH EXAMPLES
+.TP
+\fBcli.py --display\fR mydocument.pdf
+Display the mydocument.pdf's harmful metadata
+.TP
+\fBcli.py --check *.jpg\fR
+Check all the jpg images from the current folder
+
+
+.SH NOTES
+MAT \fBonly process metadata\fR, it does \fBnot\fR handle file data.
+Blame yourself if you are traced back because of the data of your files.
+MAT is not perfect : In most of the cases, an foresic expert with a lot
+of time \fBcan trace back\fR your document.
+If you want absolute privacy, use plain-text.
+
+
+.SH AUTHOR
+Julien (\fBjvoisin\fR) Voisin <pouicpouicpouic@gmail.com>, during the GSoC 2011
+
+
+.SH BUGS
+MAT does not handle watermaking/tattoo for now.
+
+
+.SH "SEE ALSO"
+exiftool, hachoir-metadata
