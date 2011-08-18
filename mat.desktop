@@ -1,11 +1,11 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=mat
-GenericName=mat
+Name=Metadata Anonymisation Toolkit
+GenericName=Metadata Anonymisation Toolkit
 Version=1.0
 Type=Application
 Comment=Metadata Anonymisation Toolkit
 Comment[Fr]=Kit d'anonymisation de metadata
-TryExec=mat-gui.py
+TryExec=mat-gui
 Terminal=false
-Categories=Utility;FileTools;Security
+Categories=Applications;Utility;Security
