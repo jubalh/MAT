@@ -277,7 +277,7 @@ data loss'))
         w.set_website('https://gitweb.torproject.org/user/jvoisin/mat.git')
         w.set_website_label(_('Website'))
         w.set_authors(['Julien (jvoisin) Voisin', ])
-        w.set_program_name('Metadata Anonymistion Toolkit')
+        w.set_program_name('Metadata Anonymisation Toolkit')
         click = w.run()
         if click:
             w.destroy()
@@ -333,7 +333,7 @@ data loss'))
 
         icon = gtk.Image()
         icon.set_from_stock(gtk.STOCK_PREFERENCES, gtk.ICON_SIZE_DIALOG)
-        hbox.pack_start(icon, False, False, 0)
+        hbox.pack_start(icon, False, False, 20)
 
         table = gtk.Table(3, 2, False)  # nb rows, nb lines
         hbox.pack_start(table, True, True, 0)
