@@ -150,7 +150,7 @@ msgid "Add unsupported file to archives"
 msgstr "Ajout des formats non supportés"
 
 #: gui.py:359
-msgid "Add non-supported (and so non-anonymised) file to outputed archive"
+msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Ajouter les fichiers de formats non-supportés (et donc, non traités) aux archives anonymisées"
 
 #: gui.py:395 gui.py:409 gui.py:412 gui.py:422 gui.py:425

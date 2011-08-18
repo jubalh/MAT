@@ -54,6 +54,9 @@ class GUI:
         self.window.connect('destroy', gtk.main_quit)
         self.window.set_default_size(800, 600)
 
+        self.accelerator = gtk.AccelGroup()
+        self.window.add_accel_group(self.accelerator)
+
         vbox = gtk.VBox()
         self.window.add(vbox)
 
@@ -391,7 +394,7 @@ non-anonymised) file to output archive'))
             Check if selected elements are clean
         '''
         for line in iterator:  # for each file in selection
-            self.statusbar.push(0, 'Checking %s...' % self.liststore[line][1])
+            self.statusbar.push(0, _('Checking %s...') % self.liststore[line][1])
             if self.liststore[line][0].file.is_clean():
                 string = _('clean')
             else:
@@ -399,7 +402,7 @@ non-anonymised) file to output archive'))
             logging.info('%s is %s' % (self.liststore[line][1], string))
             self.liststore[line][3] = string
             yield True
-        self.statusbar.push(0, 'Ready')
+        self.statusbar.push(0, _('Ready'))
         yield False
 
     def mat_clean(self, iterator):
@@ -408,13 +411,13 @@ non-anonymised) file to output archive'))
         '''
         for line in iterator:  # for each file in selection
             logging.info('Cleaning %s' % self.liststore[line][1])
-            self.statusbar.push(0, 'Cleaning %s...' % self.liststore[line][1])
+            self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
             if self.liststore[line][3] is not _('clean'):
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all()
             self.liststore[line][3] = _('clean')
             yield True
-        self.statusbat.push(0, 'Ready')
+        self.statusbat.push(0, _('Ready'))
         yield False
 
     def mat_clean_dirty(self, iterator):
@@ -422,14 +425,14 @@ non-anonymised) file to output archive'))
             Clean selected elements (ugly way)
         '''
         for line in iterator:  # for each file in selection
-            logging.info('Cleaning (lossy way) %s' % self.liststore[line][1])
-            self.statusbar.push(0, 'Cleaning %s...' % self.liststore[line][1])
+            logging.info(_('Cleaning (lossy way) %s') % self.liststore[line][1])
+            self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
             if self.liststore[line][3] is not _('clean'):
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all_ugly()
             self.liststore[line][3] = _('clean')
             yield True
-        self.statusbar.push(0, 'Ready')
+        self.statusbar.push(0, _('Ready'))
         yield False
 
 
