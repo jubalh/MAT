@@ -68,7 +68,7 @@ class GUI:
         self.liststore = gtk.ListStore(object, str, str, str)
 
         treeview = gtk.TreeView(model=self.liststore)
-        treeview.set_search_column(1)  # name column is searchable
+        treeview.set_search_column(1)  # the filename column is searchable
         treeview.set_rules_hint(True)  # alternate colors for rows
         treeview.set_rubber_banding(True)  # mouse selection
         self.add_columns(treeview)
@@ -133,7 +133,8 @@ data loss'))
             filename_column = gtk.CellRendererText()
             column = gtk.TreeViewColumn(j, filename_column, text=i + 1)
             column.set_sort_column_id(i + 1)
-            if i is 0:  # place tooltip on this column
+            column.set_resizable(True)  # column is resizeable
+            if i is 0:  # place cell-specific tooltip on this column
                 tips = TreeViewTooltips(column)
                 tips.add_view(treeview)
             treeview.append_column(column)
@@ -356,7 +357,7 @@ cleaning'))
         add2archive.set_active(self.add2archive)
         add2archive.connect('toggled', self.invert, 'add2archive')
         add2archive.set_tooltip_text(_('Add non-supported (and so \
-non-anonymised) file to outputed archive'))
+non-anonymised) file to output archive'))
         table.attach(add2archive, 0, 1, 2, 3)
 
         hbox.show_all()
