@@ -12,8 +12,8 @@ METADATA AND PRIVACY:
     Maybe you don't want to disclose those information on the web.
 
 WARNING :
-    Mat only remove metadata from your files, it does not anonymise their
-    content, nor it can handle watermarking, steganography, or any too custom
+    Mat only removes metadata from your files, it does not anonymise their
+    content, nor can it handle watermarking, steganography, or any too custom
     metadata field/system.
 
     If you really want to be anonym, use format that does not contain any
