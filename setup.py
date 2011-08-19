@@ -10,5 +10,8 @@ setup(name='MAT',
       license='GPLv2',
       url='https://gitweb.torproject.org/user/jvoisin/mat.git',
       packages=['mat', 'mat.hachoir_editor', 'mat.pdfrw', 'mat.bencode', 'mat.tarfile'],
-      scripts=['mat-cli', 'mat-gui']
+      scripts=['mat-cli', 'mat-gui'],
+      data_files=[
+          ( 'share/applications/', [ 'mat.desktop' ] ),
+          ]
      )
