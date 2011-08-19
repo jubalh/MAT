@@ -8,8 +8,8 @@
 # for the specific language governing rights and limitations under the
 # License.
 
-# Written by Petru Paler
-# Modified by Julien (jvoisin) Voisin
+# Copyright 2007 Petru Paler
+# Copyright 2011 Julien (jvoisin) Voisin
 
 '''
     A quick (and also nice) lib to bencode/bdecode torrent files
