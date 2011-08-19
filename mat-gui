@@ -20,7 +20,6 @@ __version__ = '0.1'
 __author__ = 'jvoisin'
 
 
-
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
 
@@ -264,15 +263,20 @@ data loss'))
         '''
             Append selected files by add_file to the self.liststore
         '''
+        not_supported = []
         for filename in filenames:  # filenames : all selected files/folders
             if os.path.isdir(filename):  # if "filename" is a directory
                 for root, dirs, files in os.walk(filename):
                     for item in files:
                         path_to_file = os.path.join(root, item)
-                        self.add_file_to_treeview(path_to_file)
+                        if self.add_file_to_treeview(path_to_file):
+                            not_supported.append(item)
             else:  # filename is a regular file
                 self.add_file_to_treeview(filename)
+                if self.add_file_to_treeview(path_to_file):
+                    not_supported.append(item)
             yield True
+        self.popup_non_supported(not_supported)
         yield False
 
     def add_file_to_treeview(self, filename):
@@ -280,10 +284,38 @@ data loss'))
             Add a file to the list if his format is supported
         '''
         cf = CFile(filename, self.backup, self.add2archive)
-        if cf.file is not None:
+        if cf.file is not None:  # if the file is supported by the mat
             self.liststore.append([cf, cf.file.basename,
                 cf.file.mime, _('unknow')])
+            return False
+        else:
+            return True
 
+
+    def popup_non_supported(self, filelist):
+        dialog = gtk.Dialog(title=_('Not-supported'), parent=self.window,
+                flags=0, buttons=(gtk.STOCK_OK, 0))
+        vbox = gtk.VBox(spacing=5)
+        dialog.get_content_area().pack_start(vbox, True, True, 0)
+        store = gtk.ListStore(str, str)
+        
+        # append filename - mimetype to the store
+        [store.append([item, 'bleh']) for item in filelist]
+        
+        treeview = gtk.TreeView(store)
+        vbox.pack_start(treeview, True, True, 0)
+        
+        #create column
+        rendererText = gtk.CellRendererText()
+        column = gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
+        treeview.append_column(column)
+        column = gtk.TreeViewColumn(_('Mimetype'), rendererText, text=1)
+        treeview.append_column(column)
+
+        dialog.show_all()
+        click = dialog.run()
+        if click is 0:  # Ok button
+            dialog.destroy()
 
     def about(self, button):
         '''
