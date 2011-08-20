@@ -96,9 +96,6 @@ class GenericParser(object):
             Do a backup of the file if asked,
             and change his creation/access date
         '''
-        if self.backup is True:
-            os.utime(self.output, (0, 0))
-        else:
+        if self.backup is False:
             mat.secure_remove(self.filename)
             os.rename(self.output, self.filename)
-            os.utime(self.filename, (0, 0))
