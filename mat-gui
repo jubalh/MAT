@@ -98,16 +98,16 @@ class GUI:
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
-        toolbutton.set_label(_('Clean'))
+        toolbutton.set_label(_('Clean (lossless)'))
         toolbutton.connect('clicked', self.process_files, self.mat_clean)
         toolbutton.set_tooltip_text(_('Clean selected files without data loss'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_WARNING)
-        toolbutton.set_label(_('Brute Clean'))
-        toolbutton.connect('clicked', self.mat_clean_dirty)
+        toolbutton.set_label(_('Clean (strict)'))
+        toolbutton.connect('clicked', self.process_files, self.mat_clean_strict)
         toolbutton.set_tooltip_text(_('Clean selected files with possible \
-data loss'))
+data loss, but clean more efficiently'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_FIND)
@@ -130,7 +130,7 @@ data loss'))
             Create the columns, and add them to the treeview
         '''
         colname = [_('Filename'), _('Mimetype'), _('State'),
-            _('State of the cleaned file')]
+            _('Cleaned file')]
 
         for i, j in enumerate(colname):
             filename_column = gtk.CellRendererText()
@@ -196,7 +196,7 @@ data loss'))
         picture = gtk.Image()
         picture.set_from_stock(gtk.STOCK_PRINT_REPORT, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
-        item.set_label(_('Clean'))
+        item.set_label(_('Clean (lossless)'))
         item.connect('activate', self.process_files, self.mat_clean)
         process_menu.append(item)
 
@@ -207,8 +207,8 @@ data loss'))
         picture = gtk.Image()
         picture.set_from_stock(gtk.STOCK_PRINT_WARNING, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
-        item.set_label(_('Clean (lossy way)'))
-        item.connect('activate', self.process_files, self.mat_clean_dirty)
+        item.set_label(_('Clean (strict)'))
+        item.connect('activate', self.process_files, self.mat_clean_strict)
         process_menu.append(item)
 
         item = gtk.ImageMenuItem()
@@ -294,6 +294,10 @@ data loss'))
 
 
     def popup_non_supported(self, filelist):
+        '''
+            Popup that warn the user about the unsupported files
+            that he want to process
+        '''
         dialog = gtk.Dialog(title=_('Not-supported'), parent=self.window,
                 flags=0, buttons=(gtk.STOCK_OK, 0))
         vbox = gtk.VBox(spacing=5)
@@ -301,7 +305,7 @@ data loss'))
         store = gtk.ListStore(str, str)
 
         # append filename - mimetype to the store
-        [store.append([item, 'bleh']) for item in filelist]
+        [store.append([item, 'bleh']) for item in filelist]#FIXME
 
         treeview = gtk.TreeView(store)
         vbox.pack_start(treeview, True, True, 0)
@@ -444,13 +448,14 @@ non-anonymised) file to output archive'))
         '''
         for line in iterator:  # for each file in selection
             self.statusbar.push(0, _('Checking %s...') % self.liststore[line][1])
-            if self.liststore[line][0].file.is_clean():
-                string = _('clean')
-            else:
-                string = _('dirty')
-            logging.info('%s is %s' % (self.liststore[line][1], string))
-            self.liststore[line][3] = string
-            yield True
+            if self.liststore[line][3] != _('Clean (strict)'):
+                if self.liststore[line][0].file.is_clean():
+                    string = _('Clean (lossless)')
+                else:
+                    string = _('dirty')
+                logging.info('%s is %s' % (self.liststore[line][1], string))
+                self.liststore[line][3] = string
+                yield True
         self.statusbar.push(0, _('Ready'))
         yield False
 
@@ -459,33 +464,31 @@ non-anonymised) file to output archive'))
             Clean selected elements
         '''
         for line in iterator:  # for each file in selection
-            logging.info('Cleaning %s' % self.liststore[line][1])
+            logging.info('Cleaning (lossless) %s' % self.liststore[line][1])
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
-            if self.liststore[line][3] is not _('clean'):
+            if self.liststore[line][3] != _('Clean (strict)'):
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all()
-            if self.backup:  # the backup copy state
-                self.liststore[line][4] = _('clean')
-            else:
-                self.liststore[line][3] = _('clean')
+                if self.backup:  # the backup copy state
+                    self.liststore[line][4] = self.liststore[line][0].file.output
+                self.liststore[line][3] = _('Clean(lossless)')
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False
 
-    def mat_clean_dirty(self, iterator):
+    def mat_clean_strict(self, iterator):
         '''
             Clean selected elements (ugly way)
         '''
         for line in iterator:  # for each file in selection
-            logging.info(_('Cleaning (lossy way) %s') % self.liststore[line][1])
+            logging.info(_('Cleaning (strict) %s') % self.liststore[line][1])
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
-            if self.liststore[line][3] is not _('clean'):
+            if self.liststore[line][3] != _('Clean (strict)'):
                 if self.force or not self.liststore[line][0].file.is_clean():
                     self.liststore[line][0].file.remove_all_ugly()
-            if self.backup:  # the backup copy state
-                self.liststore[line][4] = _('clean')
-            else:
-                self.liststore[line][3] = _('clean')
+                if self.backup:  # the backup copy state
+                    self.liststore[line][4] = self.liststore[line][0].file.output
+                self.liststore[line][3] = _('Clean (strict)')
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False
