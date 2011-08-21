@@ -69,15 +69,15 @@ class GUI:
         # parser.class - name - type - cleaned
         self.liststore = gtk.ListStore(object, str, str, str, str)
 
-        treeview = gtk.TreeView(model=self.liststore)
-        treeview.set_search_column(1)  # the filename column is searchable
-        treeview.set_rules_hint(True)  # alternate colors for rows
-        treeview.set_rubber_banding(True)  # mouse selection
-        self.add_columns(treeview)
-        self.selection = treeview.get_selection()
+        self.treeview = gtk.TreeView(model=self.liststore)
+        self.treeview.set_search_column(1)  # filename column is searchable
+        self.treeview.set_rules_hint(True)  # alternate colors for rows
+        self.treeview.set_rubber_banding(True)  # mouse selection
+        self.add_columns()
+        self.selection = self.treeview.get_selection()
         self.selection.set_mode(gtk.SELECTION_MULTIPLE)
 
-        content.add(treeview)
+        content.add(self.treeview)
 
         self.statusbar = gtk.Statusbar()
         self.statusbar.push(1, _('Ready'))
@@ -125,12 +125,12 @@ data loss'))
         vbox.pack_start(toolbar, False, False, 0)
         return vbox
 
-    def add_columns(self, treeview):
+    def add_columns(self):
         '''
             Create the columns, and add them to the treeview
         '''
         colname = [_('Filename'), _('Mimetype'), _('State'),
-            _('State of the backup copy')]
+            _('State of the cleaned file')]
 
         for i, j in enumerate(colname):
             filename_column = gtk.CellRendererText()
@@ -139,8 +139,8 @@ data loss'))
             column.set_resizable(True)  # column is resizeable
             if i is 0:  # place cell-specific tooltip on this column
                 tips = TreeViewTooltips(column)
-                tips.add_view(treeview)
-            treeview.append_column(column)
+                tips.add_view(self.treeview)
+            self.treeview.append_column(column)
 
     def create_menu_item(self, name, func, menu, pix, shortcut):
         '''
@@ -299,13 +299,13 @@ data loss'))
         vbox = gtk.VBox(spacing=5)
         dialog.get_content_area().pack_start(vbox, True, True, 0)
         store = gtk.ListStore(str, str)
-        
+
         # append filename - mimetype to the store
         [store.append([item, 'bleh']) for item in filelist]
-        
+
         treeview = gtk.TreeView(store)
         vbox.pack_start(treeview, True, True, 0)
-        
+
         #create column
         rendererText = gtk.CellRendererText()
         column = gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
@@ -424,6 +424,7 @@ non-anonymised) file to output archive'))
             self.force = not self.force
         elif name == 'backup':
             self.backup = not self.backup
+            self.treeview.get_column(3).set_visible(self.backup)
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 
@@ -483,7 +484,7 @@ non-anonymised) file to output archive'))
                     self.liststore[line][0].file.remove_all_ugly()
             if self.backup:  # the backup copy state
                 self.liststore[line][4] = _('clean')
-            else: 
+            else:
                 self.liststore[line][3] = _('clean')
             yield True
         self.statusbar.push(0, _('Ready'))
