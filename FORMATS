@@ -72,7 +72,7 @@
 
     <format>
         <name>MPEG Audio</name>
-        <extension>.mp3, .mp2, .mp1</extension>
+        <extension>.mp3, .mp2, .mp1, .mpa</extension>
         <support>full</support>
         <metadata>id3</metadata>
         <method>removal of harmful fields is done with hachoir</method>

@@ -120,6 +120,7 @@ HOW TO IMPLEMENT NEW FORMATS:
         - get_meta(self)
     5. don't forget to call the do_backup() method when necessary
 
+
 ALTERNATIVES AND COMPLEMENTS:
 for images:
     exiftool (perl) : metadata manipulation
@@ -132,6 +133,10 @@ for pdf:
 other tools:
     an hexadecimal editor
 
+
+NOTES:
+    Formats that are not in the test suite are not well-tested,
+    please don't trust the MAT about them !
 
 LICENSE:
     This program is free software; you can redistribute it and/or modify
