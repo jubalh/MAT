@@ -18,23 +18,29 @@ def parse():
     '''
         Get, and parse options passed to the program
     '''
-    parser = optparse.OptionParser(usage='%prog [options] files')
-    parser.add_option('--add2archive', '-a', action='store_true',
+    parser = optparse.OptionParser(usage='%prog [options] files\n\
+The default behaviour is to clean files given in argument')
+    options = optparse.OptionGroup(parser, 'Options')
+    options.add_option('--add2archive', '-a', action='store_true',
         default=False, help='Add to output archive non-supported filetypes')
-    parser.add_option('--backup', '-b', action='store_true', default=False,
+    options.add_option('--backup', '-b', action='store_true', default=False,
         help='Keep a backup copy')
-    parser.add_option('--check', '-c',  action='store_true', default=False,
-        help='Check if a file is free of harmful metadatas')
-    parser.add_option('--display', '-d', action='store_true', default=False,
-        help='List all the meta of a file without removing them')
-    parser.add_option('--force', '-f', action='store_true', default=False,
+    options.add_option('--force', '-f', action='store_true', default=False,
         help='Don\'t check if files are clean before cleaning')
-    parser.add_option('--list', '-l', action='store_true', default=False,
+    options.add_option('--ugly', '-u', action='store_true', default=False,
+            help='Strict cleaning mode : loss can occur')
+
+    info = optparse.OptionGroup(parser, 'Informations')
+    info.add_option('--check', '-c',  action='store_true', default=False,
+        help='Check if a file is free of harmful metadatas')
+    info.add_option('--display', '-d', action='store_true', default=False,
+        help='List all the meta of a file without removing them')
+    info.add_option('--list', '-l', action='store_true', default=False,
         help='List all supported fileformat')
-    parser.add_option('--ugly', '-u', action='store_true', default=False,
-        help='Remove harmful meta, but loss can occur')
-    parser.add_option('--version', '-v', action='callback',
+    info.add_option('--version', '-v', action='callback',
         callback=display_version, help='Display version and exit')
+    parser.add_option_group(options)
+    parser.add_option_group(info)
 
     values, arguments = parser.parse_args()
     if not arguments and values.list is False:
