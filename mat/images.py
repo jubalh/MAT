@@ -13,9 +13,10 @@ class JpegStripper(parser.GenericParser):
         '''
             return True if the field is compromizing
         '''
-        if field.name.startswith('comment'):
+        name = field.name
+        if name.startswith('comment'):
             return True
-        elif field.name in ("photoshop", "exif", "adobe"):
+        elif name in ("photoshop", "exif", "adobe"):
             return True
         else:
             return False
@@ -29,9 +30,10 @@ class PngStripper(parser.GenericParser):
         '''
             return True if the field is compromizing
         '''
-        if field.name.startswith("text["):
+        name = field.name
+        if name.startswith("text[") or name.startswith('utf8_text'):
             return True
-        elif field.name is "time":
+        elif name == "time":
             return True
         else:
             return False
