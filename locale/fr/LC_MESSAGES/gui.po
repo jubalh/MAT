@@ -1,162 +1,180 @@
-# Metadata ANonymisation Toolkit : GUI
-# Copyright (C) 2011 Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>
-# This file is distributed under the same license as the MAT package.
-# Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>, 2011
+# Copyright (C) 2011 julien (jvoisin) voisin
+# This file is distributed under the same license as the whole package.
+# julien (jvoisin) voisin <julien.voisin@dustri.org>, 2011
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1\n"
-"Report-Msgid-Bugs-To: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
-"POT-Creation-Date: 2011-08-10 15:41+0200\n"
-"PO-Revision-Date: 2011-08-10 15:41+0200\n"
-"Last-Translator: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
-"Language-Team: Fr Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
-"Language: FR_fr\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: julien (jvoisin) voisin <julien.voisin@dustri.org>\n"
+"POT-Creation-Date: 2011-08-22 19:52+0200\n"
+"PO-Revision-Date: 2011-08-22:GTM+2\n"
+"Last-Translator: julien (jvoisin) voisin <julien.voisin@dustri.org>\n"
+"Language-Team: French <julien.voisin@dustri.org> \n"
+"Language: Francais\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: gui.py:81
+#: mat-gui:83 mat-gui:459 mat-gui:476 mat-gui:493
 msgid "Ready"
 msgstr "Prêt"
 
-#: gui.py:93
+#: mat-gui:95
 msgid "Add"
 msgstr "Ajouter"
 
-#: gui.py:95 gui.py:171
+#: mat-gui:97 mat-gui:179
 msgid "Add files"
 msgstr "Ajouter fichiers"
 
-#: gui.py:99 gui.py:187
-msgid "Clean"
-msgstr "Nettoyer"
+#: mat-gui:101 mat-gui:199 mat-gui:453
+msgid "Clean (lossless)"
+msgstr "Nettoyage (sans pertes)"
 
-#: gui.py:101
+#: mat-gui:103
 msgid "Clean selected files without data loss"
-msgstr "Nettoyer les fichiers séléctionnés sans pertes possibles d'informations"
+msgstr "Nettoie sans pertes possibles de données"
 
-#: gui.py:105
-msgid "Brute Clean"
-msgstr "Nettoyer avec pertes possibles"
+#: mat-gui:107 mat-gui:210 mat-gui:451 mat-gui:469 mat-gui:486 mat-gui:491
+msgid "Clean (strict)"
+msgstr "Nettoyage (strict)"
 
-#: gui.py:107
-msgid "Clean selected files with possible data loss"
-msgstr "Nettoyer avec pertes possibles d'informations"
+#: mat-gui:109
+msgid "Clean selected files with possible data loss, but clean more efficiently"
+msgstr "Nettoie de manière sure avec pertes possibles d'informations"
 
-#: gui.py:112 gui.py:203
+#: mat-gui:114 mat-gui:221
 msgid "Check"
-msgstr "Vérifier"
+msgstr "Vérification"
 
-#: gui.py:114
+#: mat-gui:116
 msgid "Check selected files for harmful meta"
-msgstr "Vérifier l'état actuel des fichiers selectionnés"
+msgstr "Vérifie l'état des fichiers"
 
-#: gui.py:118 gui.py:173
+#: mat-gui:120 mat-gui:181
 msgid "Quit"
 msgstr "Quitter"
 
-#: gui.py:130
+#: mat-gui:132 mat-gui:315
 msgid "Filename"
 msgstr "Nom"
 
-#: gui.py:130
+#: mat-gui:132 mat-gui:317
 msgid "Mimetype"
 msgstr "Type mime"
 
-#: gui.py:130
+#: mat-gui:132
 msgid "State"
 msgstr "État"
 
-#: gui.py:170
+#: mat-gui:133
+msgid "Cleaned file"
+msgstr "Fichier nettoyé"
+
+#: mat-gui:178
 msgid "Files"
 msgstr "Fichiers"
 
-#: gui.py:176
+#: mat-gui:184
 msgid "Edit"
 msgstr "Edition"
 
-#: gui.py:177
+#: mat-gui:185
 msgid "Clear the filelist"
-msgstr "Vider la liste de fichiers"
+msgstr "Vide la liste de fichiers"
 
-#: gui.py:179 gui.py:331
+#: mat-gui:188 mat-gui:386
 msgid "Preferences"
 msgstr "Préférences"
 
-#: gui.py:182
+#: mat-gui:191
 msgid "Process"
 msgstr "Traiter"
 
-#: gui.py:195
-msgid "Clean (lossy way)"
-msgstr "Nettoyer (avec pertes possibles)"
-
-#: gui.py:208
+#: mat-gui:226
 msgid "Help"
 msgstr "Aide"
 
-#: gui.py:209 gui.py:289
+#: mat-gui:227 mat-gui:345
 msgid "Supported formats"
 msgstr "Formats supportés"
 
-#: gui.py:211
+#: mat-gui:229
 msgid "About"
 msgstr "A propos"
 
-#: gui.py:219
+#: mat-gui:238
 msgid "Choose files"
-msgstr "Sélection de fichiers"
+msgstr "Selection de fichiers"
 
-#: gui.py:226
+#: mat-gui:245
 msgid "All files"
 msgstr "Tous"
 
-#: gui.py:233
+#: mat-gui:252
 msgid "Supported files"
 msgstr "Supportés"
 
-#: gui.py:266
+#: mat-gui:290
 msgid "unknow"
 msgstr "inconnu"
 
-#: gui.py:276
-msgid "This software was coded during the GSoC 2011"
-msgstr "Ce logiciel a été produit lors du GSoC 2011"
+#: mat-gui:301
+msgid "Not-supported"
+msgstr "non-supporté"
 
-#: gui.py:278
+#: mat-gui:332
+msgid "This software was coded during the GSoC 2011"
+msgstr "Ce logiciel a été forgé lors du GSoC 2011"
+
+#: mat-gui:334
 msgid "Website"
 msgstr "Site internet"
 
-#: gui.py:342
+#: mat-gui:397
 msgid "Force Clean"
-msgstr "Forcer traitement"
+msgstr "Nettoyage forcé"
 
-#: gui.py:345
+#: mat-gui:400
 msgid "Do not check if already clean before cleaning"
 msgstr "Ne pas vérifier l'état avant de traiter"
 
-#: gui.py:349
+#: mat-gui:404
 msgid "Backup"
 msgstr "Copie de sauvegarde"
 
-#: gui.py:352
+#: mat-gui:407
 msgid "Keep a backup copy"
-msgstr "Garde une copie de sauvegarde du fichier original"
+msgstr "Garde une copie de sauvegarde"
 
-#: gui.py:355
+#: mat-gui:410
 msgid "Add unsupported file to archives"
-msgstr "Ajout des formats non supportés"
+msgstr "Ajouter les formats non-supportés aux archives traités"
 
-#: gui.py:359
+#: mat-gui:414
 msgid "Add non-supported (and so non-anonymised) file to output archive"
-msgstr "Ajouter les fichiers de formats non-supportés (et donc, non traités) aux archives anonymisées"
+msgstr ""
 
-#: gui.py:395 gui.py:409 gui.py:412 gui.py:422 gui.py:425
-msgid "clean"
-msgstr "propre"
+#: mat-gui:450
+#, python-format
+msgid "Checking %s..."
+msgstr "Vérification de %s ..."
 
-#: gui.py:397
+#: mat-gui:455
 msgid "dirty"
 msgstr "compromettant"
+
+#: mat-gui:468 mat-gui:485
+#, python-format
+msgid "Cleaning %s..."
+msgstr "Nettoyage de %s..."
+
+#: mat-gui:474
+msgid "Clean(lossless)"
+msgstr "Nettoyage (sans pertes)"
+
+#: mat-gui:484
+#, python-format
+msgid "Cleaning (strict) %s"
+msgstr "Nettoyage (strict) %s"
