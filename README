@@ -32,9 +32,9 @@ OPTIONALS DEPENDENCIES:
 
 
 USAGE:
-        python cli.py --help
+        python mat-cli --help
     or
-        python gui.py
+        python mat-gui
 
 
 SUPPORTED FORMAT:
