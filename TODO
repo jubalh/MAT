@@ -4,4 +4,12 @@ GENERAL:
 	all "harmful meta" stuff
 
 GUI:
-    -Drag and Drop:
+    - Drag and Drop
+    - Fix the statusbar
+
+PICTURES:
+    - Add exiftool to optional dependencies libraries
+    - Binding to exiftool
+    - A function to check if exiftool is installed
+
+
