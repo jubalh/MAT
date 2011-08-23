@@ -12,6 +12,7 @@ setup(name='MAT',
       packages=['mat', 'mat.hachoir_editor', 'mat.pdfrw', 'mat.bencode', 'mat.tarfile'],
       scripts=['mat-cli', 'mat-gui'],
       data_files=[
-          ( 'share/applications/', [ 'mat.desktop' ] ),
+          ( '/usr/share/applications/', [ 'mat.desktop' ] ),
+          ( '', ['FORMATS'] ),
           ]
      )
