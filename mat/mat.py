@@ -32,8 +32,6 @@ STRIPPERS = {
     'application/x-bzip2': archive.Bzip2Stripper,
     'application/zip': archive.ZipStripper,
     'audio/mpeg': audio.MpegAudioStripper,
-    'image/jpeg': images.JpegStripper,
-    'image/png': images.PngStripper,
     'application/x-bittorrent': misc.TorrentStripper,
     'application/opendocument': office.OpenDocumentStripper,
     'application/officeopenxml': office.OpenXmlStripper,
@@ -53,7 +51,17 @@ try:
     STRIPPERS['audio/x-flac'] = audio.FlacStripper
     STRIPPERS['audio/vorbis'] = audio.OggStripper
 except ImportError:
-    print('unable to import python-mutagen : limited audio format support')
+    print('Unable to import python-mutagen: limited audio format support')
+
+try:
+    subprocess.Popen('exiftool_', stdout=open('/dev/null'))
+    import exiftool
+    #STRIPPERS['image/jpeg'] = exiftool.JpegStripper
+    #STRIPPERS['image/png'] = exiftool.PngStripper
+except:
+    #print('Unable to find exiftool: limited images support')
+    STRIPPERS['image/jpeg'] = images.JpegStripper
+    STRIPPERS['image/png'] = images.PngStripper
 
 
 class XMLParser(xml.sax.handler.ContentHandler):
