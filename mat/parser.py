@@ -17,6 +17,8 @@ NOMETA = ('.bmp', '.rdf', '.txt', '.xml', '.rels')
 #rels : openxml foramted text
 
 
+FIELD = object()
+
 class GenericParser(object):
     '''
         Parent class of all parsers
@@ -42,18 +44,34 @@ class GenericParser(object):
         '''
         for field in self.editor:
             if self._should_remove(field):
+                return self._is_clean(self.editor)
+        return True
+
+    def _is_clean(self, fieldset):
+        for field in fieldset:
+            remove = self._should_remove(field)
+            if remove is True:
                 return False
+            if remove is FIELD:
+                if not self._is_clean(field):
+                    return False
         return True
 
     def remove_all(self):
         '''
             Remove all the files that are compromizing
         '''
-        for field in self.editor:
-            if self._should_remove(field):
-                self._remove(field.name)
+        self._remove_all(self.editor)
         hachoir_core.field.writeIntoFile(self.editor, self.output)
         self.do_backup()
+
+    def _remove_all(self, fieldset):
+        for field in fieldset:
+            remove = self._should_remove(field)
+            if remove is True:
+                self._remove(fieldset, field.name)
+            if remove is FIELD:
+                self._remove_all(field)
 
     def remove_all_ugly(self):
         '''
@@ -65,24 +83,30 @@ class GenericParser(object):
         '''
         self.remove_all()
 
-    def _remove(self, field):
+    def _remove(self, fieldset, field):
         '''
             Delete the given field
         '''
-        del self.editor[field]
+        del fieldset[field]
 
     def get_meta(self):
         '''
             Return a dict with all the meta of the file
         '''
         metadata = {}
-        for field in self.editor:
-            if self._should_remove(field):
+        self._get_meta(self.editor, metadata)
+        return metadata
+
+    def _get_meta(self, fieldset, metadata):
+        for field in fieldset:
+            remove = self._should_remove(field)
+            if remove is True:
                 try:
                     metadata[field.name] = field.value
                 except:
                     metadata[field.name] = 'harmful content'
-        return metadata
+            if remove is FIELD:
+                self._get_meta(field)
 
     def _should_remove(self, key):
         '''
