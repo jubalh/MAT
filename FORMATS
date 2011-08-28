@@ -98,7 +98,7 @@
 	<name>Torrent</name>
 	<extension>.torrent</extension>
 	<support>full</support>
-	<metadata>torrent</support>
+	<metadata>torrent</metadata>
 	<method>remove all the compromizing metadata</method>
     </format>
 </xml>
