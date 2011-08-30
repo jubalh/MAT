@@ -121,7 +121,7 @@ def secure_remove(filename):
     '''
     removed = False
     try:
-        subprocess.call('shred --remove %s' % filename, shell=True)
+        subprocess.call(['shred', '--remove', filename])
         removed = True
     except:
         logging.error('Unable to securely remove %s' % filename)
