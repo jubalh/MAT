@@ -355,7 +355,7 @@ data loss, but clean more efficiently'))
         handler = mat.XMLParser()
         parser = xml.sax.make_parser()
         parser.setContentHandler(handler)
-        with open('FORMATS', 'r') as xmlfile:
+        with open(mat.get_sharedir() + 'FORMATS', 'r') as xmlfile:
             parser.parse(xmlfile)
 
         for item in handler.list:  # list of dict : one dict per format
