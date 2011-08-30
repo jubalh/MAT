@@ -6,7 +6,7 @@ import subprocess
 import images
 import parser
 
-class JpegStripper(parser.GenericParser):
+class Jpeg_Stripper(images.JpegStripper):
     '''
         Care about jpeg files with help
         of exiftool
@@ -15,6 +15,6 @@ class JpegStripper(parser.GenericParser):
         '''
             Remove all metadata with help of exiftool
         '''
-        subprocess.Popen('exiftool -filename=%s -all= %s' %
-                (self.output, self.filename))
+        subprocess.Popen(['exiftool', '-filename=', self.output,
+                '-all= ', self.filename])
 
