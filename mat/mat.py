@@ -54,6 +54,7 @@ except ImportError:
     print('Unable to import python-mutagen: limited audio format support')
 
 try:
+    #FIXME : WIP
     subprocess.Popen('exiftool_', stdout=open('/dev/null'))
     import exiftool
     #STRIPPERS['image/jpeg'] = exiftool.JpegStripper
@@ -62,6 +63,17 @@ except:
     #print('Unable to find exiftool: limited images support')
     STRIPPERS['image/jpeg'] = images.JpegStripper
     STRIPPERS['image/png'] = images.PngStripper
+
+
+def get_sharedir():
+    '''
+        An ugly hack to find where is the "FORMATS" file.
+        Blame intrigeri.
+    '''
+    if os.path.isfile('FORMATS'):
+        return ''
+    elif os.path.exist('/usr/local/share/mat/'):
+        return '/usr/local/share/mat/'
 
 
 class XMLParser(xml.sax.handler.ContentHandler):
