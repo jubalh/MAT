@@ -276,7 +276,9 @@ data loss, but clean more efficiently'))
                 if self.add_file_to_treeview(filename):
                     not_supported.append(item)
             yield True
-        self.popup_non_supported(not_supported)
+        #self.popup_non_supported(not_supported)
+        if len(not_supported):
+            self.popup_non_supported(not_supported)
         yield False
 
     def add_file_to_treeview(self, filename):
