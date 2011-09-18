@@ -72,7 +72,7 @@ def get_sharedir():
     '''
     if os.path.isfile('FORMATS'):
         return ''
-    elif os.path.exist('/usr/local/share/mat/'):
+    elif os.path.exists('/usr/local/share/mat/'):
         return '/usr/local/share/mat/'
 
 
