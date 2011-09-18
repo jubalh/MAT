@@ -273,8 +273,7 @@ data loss, but clean more efficiently'))
                         if self.add_file_to_treeview(path_to_file):
                             not_supported.append(item)
             else:  # filename is a regular file
-                self.add_file_to_treeview(filename)
-                if self.add_file_to_treeview(path_to_file):
+                if self.add_file_to_treeview(filename):
                     not_supported.append(item)
             yield True
         self.popup_non_supported(not_supported)
@@ -282,7 +281,7 @@ data loss, but clean more efficiently'))
 
     def add_file_to_treeview(self, filename):
         '''
-            Add a file to the list if his format is supported
+            Add a file to the list if it's format is supported
         '''
         cf = CFile(filename, self.backup, self.add2archive)
         if cf.file is not None:  # if the file is supported by the mat
