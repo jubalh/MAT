@@ -35,7 +35,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         try:
             content = zipin.read('meta.xml')
             zipin.close()
-            metadata[self.filename] = 'harful meta'
+            metadata[self.filename] = 'harmful meta'
         except KeyError:  # no meta.xml file found
             logging.debug('%s has no opendocument metadata' % self.filename)
         return metadata
