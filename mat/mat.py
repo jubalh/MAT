@@ -68,7 +68,6 @@ except:
 def get_sharedir():
     '''
         An ugly hack to find where is the "FORMATS" file.
-        Blame intrigeri.
     '''
     if os.path.isfile('FORMATS'):
         return ''
