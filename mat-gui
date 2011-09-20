@@ -436,6 +436,9 @@ non-anonymised) file to output archive'))
             self.force = not self.force
         elif name == 'backup':
             self.backup = not self.backup
+            for line in xrange(len(self.liststore)):
+                # change the "backup" property of all files
+                self.liststore[line][0].file.backup = self.backup
             self.treeview.get_column(3).set_visible(self.backup)
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
