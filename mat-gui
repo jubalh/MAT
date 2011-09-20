@@ -12,6 +12,7 @@ import gettext
 import locale
 import logging
 import os
+import sys
 import mimetypes
 import xml.sax
 
@@ -275,7 +276,7 @@ data loss, but clean more efficiently'))
                             not_supported.append(item)
             else:  # filename is a regular file
                 if self.add_file_to_treeview(filename):
-                    not_supported.append(item)
+                    not_supported.append(filename)
             yield True
         #self.popup_non_supported(not_supported)
         if len(not_supported):
@@ -286,6 +287,10 @@ data loss, but clean more efficiently'))
         '''
             Add a file to the list if it's format is supported
         '''
+        if not os.path.isfile(filename):
+            # if filename does not exist
+            return False
+
         cf = CFile(filename, self.backup, self.add2archive)
         if cf.file is not None:  # if the file is supported by the mat
             self.liststore.append([cf, cf.file.basename,
@@ -638,7 +643,6 @@ class TreeViewTooltips(object):
             name = model[path][0]
             return name.file.filename
 
-
 if __name__ == '__main__':
     #Translations
     t = gettext.translation('gui', 'locale', fallback=True)
@@ -646,5 +650,12 @@ if __name__ == '__main__':
     t.install()
 
     #Main
-    GUI()
+    gui = GUI()
+
+    #Add files from command line
+    infiles = [arg for arg in sys.argv[1:] if os.path.exists(arg)]
+    if infiles:
+      task = gui.populate(infiles)
+      gobject.idle_add(task.next)
+
     gtk.main()
