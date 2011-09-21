@@ -54,13 +54,12 @@ except ImportError:
     print('Unable to import python-mutagen: limited audio format support')
 
 try:
-    #FIXME : WIP
-    subprocess.Popen('exiftool_', stdout=open('/dev/null'))
+    subprocess.Popen('exiftool', stdout=open('/dev/null'))
     import exiftool
-    #STRIPPERS['image/jpeg'] = exiftool.JpegStripper
-    #STRIPPERS['image/png'] = exiftool.PngStripper
+    STRIPPERS['image/jpeg'] = exiftool.JpegStripper
+    STRIPPERS['image/png'] = images.PngStripper
 except:
-    #print('Unable to find exiftool: limited images support')
+    print('Unable to find exiftool: limited images support')
     STRIPPERS['image/jpeg'] = images.JpegStripper
     STRIPPERS['image/png'] = images.PngStripper
 
