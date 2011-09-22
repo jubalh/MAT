@@ -132,23 +132,14 @@ def secure_remove(filename):
             logging.error('Unable to remove %s' % filename)
 
 
-def is_secure(filename):
-    '''
-        Prevent shell injection
-    '''
-    if not(os.path.isfile(filename)):  # check if the file exist
-        logging.error('%s is not a valid file' % filename)
-        return False
-    else:
-        return True
-
-
 def create_class_file(name, backup, add2archive):
     '''
         return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
     '''
-    if not is_secure(name):
+    if not os.path.isfile(name):
+        # check if the file exists
+        logging.error('%s is not a valid file' % name)
         return
 
     filename = ''
