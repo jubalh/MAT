@@ -102,12 +102,14 @@ class GUI:
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
         toolbutton.set_label(_('Clean (lossless)'))
         toolbutton.connect('clicked', self.process_files, self.mat_clean)
-        toolbutton.set_tooltip_text(_('Clean selected files without data loss'))
+        toolbutton.set_tooltip_text(_('Clean selected files without possible \
+data loss'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_WARNING)
         toolbutton.set_label(_('Clean (strict)'))
-        toolbutton.connect('clicked', self.process_files, self.mat_clean_strict)
+        toolbutton.connect('clicked', self.process_files,
+                self.mat_clean_strict)
         toolbutton.set_tooltip_text(_('Clean selected files with possible \
 data loss, but clean more efficiently'))
         toolbar.add(toolbutton)
@@ -149,7 +151,7 @@ data loss, but clean more efficiently'))
             Create a MenuItem() like Preferences, Quit, Add, Clean, ...
         '''
         item = gtk.ImageMenuItem()
-        if shortcut :
+        if shortcut:
             key, mod = gtk.accelerator_parse(shortcut)
             item.add_accelerator('activate', self.accelerator,
                 key, mod, gtk.ACCEL_VISIBLE)
@@ -224,10 +226,9 @@ data loss, but clean more efficiently'))
         item.connect('activate', self.process_files, self.mat_check)
         process_menu.append(item)
 
-
         help_menu = self.create_sub_menu(_('Help'), menubar)
-        self.create_menu_item(_('Supported formats'), self.supported, help_menu,
-            gtk.STOCK_INFO, False)
+        self.create_menu_item(_('Supported formats'), self.supported,
+            help_menu, gtk.STOCK_INFO, False)
         self.create_menu_item(_('About'), self.about, help_menu,
                 gtk.STOCK_ABOUT, False)
 
@@ -272,14 +273,14 @@ data loss, but clean more efficiently'))
                 for root, dirs, files in os.walk(filename):
                     for item in files:
                         path_to_file = os.path.join(root, item)
+
                         if self.add_file_to_treeview(path_to_file):
                             not_supported.append(item)
             else:  # filename is a regular file
                 if self.add_file_to_treeview(filename):
                     not_supported.append(filename)
             yield True
-        #self.popup_non_supported(not_supported)
-        if len(not_supported):
+        if not_supported:
             self.popup_non_supported(not_supported)
         yield False
 
@@ -655,7 +656,7 @@ if __name__ == '__main__':
     #Add files from command line
     infiles = [arg for arg in sys.argv[1:] if os.path.exists(arg)]
     if infiles:
-      task = gui.populate(infiles)
-      gobject.idle_add(task.next)
+        task = gui.populate(infiles)
+        gobject.idle_add(task.next)
 
     gtk.main()

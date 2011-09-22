@@ -110,7 +110,7 @@ class XMLParser(xml.sax.handler.ContentHandler):
         '''
             Concatenate the content between opening and closing balises
         '''
-        if self.between is True:
+        if self.between:
             self.content += characters
 
 
