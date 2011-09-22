@@ -29,6 +29,7 @@ DEPENDENCIES:
 OPTIONALS DEPENDENCIES:
     python-poppler and python-cairo : for pdf support
     python-mutagen : for massive audio format support
+    exiftool : for _massive_ image format support
 
 
 USAGE:
