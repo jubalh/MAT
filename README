@@ -23,6 +23,7 @@ WARNING :
 DEPENDENCIES:
     python2.6 (at least)
     python-hachoir-core and python-hachoir-parser
+    python-pdfrw  or exiftool for full pdf support
     shred (should be already installed)
 
 
