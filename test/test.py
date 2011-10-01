@@ -13,10 +13,11 @@ import unittest
 
 VERBOSITY = 3
 
-clean = glob.glob('clean*')
+clean = glob.glob('clean.*')
 clean.sort()
-dirty  = glob.glob('dirty*')
+dirty  = glob.glob('dirty.*')
 dirty.sort()
+
 FILE_LIST = zip(clean, dirty)
 
 try:
