@@ -9,7 +9,7 @@ setup(name='MAT',
       author_email='julien.voisin@dustri.org',
       license='GPLv2',
       url='https://gitweb.torproject.org/user/jvoisin/mat.git',
-      packages=['mat', 'mat.hachoir_editor', 'mat.pdfrw', 'mat.bencode',
+      packages=['mat', 'mat.hachoir_editor', 'mat.bencode',
           'mat.tarfile'],
       scripts=['mat-cli', 'mat-gui'],
       data_files=[
