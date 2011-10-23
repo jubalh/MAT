@@ -170,13 +170,13 @@ class PdfStripper(parser.GenericParser):
         try:
             import exiftool
             if self.backup:
-                process = subprocess.Popen(['exiftool', '-all=',
-                    '-o %s' % self.output, self.filename],
+                process = subprocess.Popen(['exiftool', '-All',
+                    '-out', self.output, self.filename],
                     stdout=open('/dev/null'))
                 process.wait()
             else:
                 process = subprocess.Popen(['exiftool', '-overwrite_original',
-                    '-all=', self.filename], stdout=open('/dev/null'))
+                    '-All', self.filename], stdout=open('/dev/null'))
                 process.wait()
         except:
             try:
