@@ -7,6 +7,8 @@ GENERAL:
     - Handle exotic characters in filenames
     - use the return code of external apps used by mat
 	to check that everything went right
+    - proper handling of pdf with exiftool
+    - enhance the exiftool's presence test
 
 GUI:
     - Drag and Drop
