@@ -167,31 +167,38 @@ class PdfStripper(parser.GenericParser):
             from a pdf file, using exiftool,
             of pdfrw if exiftool is not installed
         '''
-        try:
+	processed = False
+	try:  # try with pdfrw
+	    import pdfrw
+	    #For now, poppler cannot write meta, so we must use pdfrw
+	    logging.debug('Removing %s\'s superficial metadata' % self.filename)
+	    trailer = pdfrw.PdfReader(self.output)
+	    trailer.Info.Producer = trailer.Info.Creator = None
+	    writer = pdfrw.PdfWriter()
+	    writer.trailer = trailer
+	    writer.write(self.output)
+	    self.do_backup()
+	    processed = True
+	except:
+	    pass
+
+        try:  # try with exiftool
             import exiftool
             if self.backup:
-                process = subprocess.Popen(['exiftool', '-All',
+                process = subprocess.Popen(['exiftool', '-All=',
                     '-out', self.output, self.filename],
                     stdout=open('/dev/null'))
                 process.wait()
             else:
                 process = subprocess.Popen(['exiftool', '-overwrite_original',
-                    '-All', self.filename], stdout=open('/dev/null'))
+                    '-All=', self.filename], stdout=open('/dev/null'))
                 process.wait()
+	    processed = True
         except:
-            try:
-                import pdfrw
-                #For now, poppler cannot write meta, so we must use pdfrw
-                logging.debug('Removing %s\'s superficial metadata' % self.filename)
-                trailer = pdfrw.PdfReader(self.output)
-                trailer.Info.Producer = trailer.Info.Creator = None
-                writer = pdfrw.PdfWriter()
-                writer.trailer = trailer
-                writer.write(self.output)
-                self.do_backup()
-            except:
-                logging.error('You don\'t have either python-pdfrw, or\
-                        exiftool: processed pdf are not totally clean !')
+	    pass
+
+	if processed == False:
+	    logging.error('Please install either pdfrw, or exiftool')
 
     def get_meta(self):
         '''
