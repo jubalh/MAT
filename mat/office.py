@@ -128,8 +128,8 @@ class PdfStripper(parser.GenericParser):
         '''
         for key in self.meta_list:
             if self.document.get_property(key) is not None and \
-                self.document.get_property(key) != '':
-                return False
+		self.document.get_property(key) != '':
+		return False
         return True
 
 
@@ -137,7 +137,7 @@ class PdfStripper(parser.GenericParser):
         '''
             Remove supperficial
         '''
-        self._remove_superficial_meta()
+        self._remove_meta()
 
 
     def remove_all_ugly(self):
@@ -159,9 +159,9 @@ class PdfStripper(parser.GenericParser):
             page.render(context)  # render the page on context
             context.show_page()  # draw context on surface
         surface.finish()
-        self._remove_superficial_meta()
+        self._remove_meta()
 
-    def _remove_superficial_meta(self):
+    def _remove_meta(self):
         '''
             Remove superficial/external metadata
             from a pdf file, using exiftool,
@@ -173,7 +173,7 @@ class PdfStripper(parser.GenericParser):
 	    #For now, poppler cannot write meta, so we must use pdfrw
 	    logging.debug('Removing %s\'s superficial metadata' % self.filename)
 	    trailer = pdfrw.PdfReader(self.output)
-	    trailer.Info.Producer = trailer.Info.Creator = None
+	    trailer.Info.Producer = trailer.Author = trailer.Info.Creator = None
 	    writer = pdfrw.PdfWriter()
 	    writer.trailer = trailer
 	    writer.write(self.output)
@@ -183,6 +183,7 @@ class PdfStripper(parser.GenericParser):
 	    pass
 
         try:  # try with exiftool
+	    subprocess.Popen('exiftool', stdout=open('/dev/null'))
             import exiftool
             if self.backup:
                 process = subprocess.Popen(['exiftool', '-All=',
@@ -197,7 +198,7 @@ class PdfStripper(parser.GenericParser):
         except:
 	    pass
 
-	if processed == False:
+	if processed is False:
 	    logging.error('Please install either pdfrw, or exiftool')
 
     def get_meta(self):
