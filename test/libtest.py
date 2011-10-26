@@ -19,7 +19,8 @@ class TestRemovelib(test.MATTest):
         for _, dirty in self.file_list:
             current_file = mat.create_class_file(dirty, False, True)
             current_file.remove_all()
-            self.assertTrue(current_file.is_clean())
+            current_file2 = mat.create_class_file(dirty, False, True)
+            self.assertTrue(current_file2.is_clean())
 
     def test_remove_empty(self):
         '''Test removal with clean files'''
