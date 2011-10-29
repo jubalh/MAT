@@ -35,6 +35,7 @@ class OggStripper(parser.GenericParser):
         mfile = OggVorbis(self.filename)
         mfile.delete()
         mfile.save()
+        return True
 
     def is_clean(self):
         '''
@@ -73,6 +74,7 @@ class FlacStripper(parser.GenericParser):
         mfile.delete()
         mfile.clear_pictures()
         mfile.save()
+        return True
 
     def is_clean(self):
         '''

@@ -93,9 +93,10 @@ def clean_meta(class_file, filename, force):
     if force is False and class_file.is_clean():
         print('%s is already clean' % filename)
     else:
-        class_file.remove_all()
-        print('%s cleaned !' % filename)
-
+        if class_file.remove_all():
+            print('%s cleaned !' % filename)
+        else:
+            print('Unable to clean %s', filename)
 
 def clean_meta_ugly(class_file, filename, force):
     '''

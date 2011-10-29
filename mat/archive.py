@@ -39,13 +39,13 @@ class GenericArchiveStripper(parser.GenericParser):
         '''
             Call _remove_all() with in argument : "normal"
         '''
-        self._remove_all('normal')
+        return self._remove_all('normal')
 
     def remove_all_ugly(self):
         '''
             call remove_all() with in argument : "ugly"
         '''
-        self._remove_all('ugly')
+        return self._remove_all('ugly')
 
     def _remove_all(self, method):
         '''
@@ -161,6 +161,7 @@ harmless format' % item.filename)
         zipout.close()
         logging.info('%s treated' % self.filename)
         self.do_backup()
+        return True
 
 
 class TarStripper(GenericArchiveStripper):
@@ -203,6 +204,7 @@ class TarStripper(GenericArchiveStripper):
         tarin.close()
         tarout.close()
         self.do_backup()
+        return True
 
     def is_file_clean(self, current_file):
         '''

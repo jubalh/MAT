@@ -3,12 +3,7 @@ GENERAL:
 	the ultimate goal is to remove
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
-    - What is wrong with the testsuite ?
     - Handle exotic characters in filenames
-    - use the return code of external apps used by mat
-	to check that everything went right
-    - proper handling of pdf with exiftool
-    - enhance the exiftool's presence test
 
 GUI:
     - Drag and Drop

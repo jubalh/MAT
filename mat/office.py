@@ -91,6 +91,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         zipin.close()
         zipout.close()
         self.do_backup()
+        return True
 
     def is_clean(self):
         '''
@@ -128,8 +129,8 @@ class PdfStripper(parser.GenericParser):
         '''
         for key in self.meta_list:
             if self.document.get_property(key) is not None and \
-		self.document.get_property(key) != '':
-		return False
+                self.document.get_property(key) != '':
+                return False
         return True
 
 
@@ -137,7 +138,7 @@ class PdfStripper(parser.GenericParser):
         '''
             Remove supperficial
         '''
-        self._remove_meta()
+        return self._remove_meta()
 
 
     def remove_all_ugly(self):
@@ -159,7 +160,7 @@ class PdfStripper(parser.GenericParser):
             page.render(context)  # render the page on context
             context.show_page()  # draw context on surface
         surface.finish()
-        self._remove_meta()
+        return self._remove_meta()
 
     def _remove_meta(self):
         '''
@@ -167,39 +168,40 @@ class PdfStripper(parser.GenericParser):
             from a pdf file, using exiftool,
             of pdfrw if exiftool is not installed
         '''
-	processed = False
-	try:  # try with pdfrw
-	    import pdfrw
-	    #For now, poppler cannot write meta, so we must use pdfrw
-	    logging.debug('Removing %s\'s superficial metadata' % self.filename)
-	    trailer = pdfrw.PdfReader(self.output)
-	    trailer.Info.Producer = trailer.Author = trailer.Info.Creator = None
-	    writer = pdfrw.PdfWriter()
-	    writer.trailer = trailer
-	    writer.write(self.output)
-	    self.do_backup()
-	    processed = True
-	except:
-	    pass
+        processed = False
+        try:# try with pdfrw
+            import pdfrw
+            #For now, poppler cannot write meta, so we must use pdfrw
+            logging.debug('Removing %s\'s superficial metadata' % self.filename)
+            trailer = pdfrw.PdfReader(self.output)
+            trailer.Info.Producer = trailer.Author = trailer.Info.Creator = None
+            writer = pdfrw.PdfWriter()
+            writer.trailer = trailer
+            writer.write(self.output)
+            self.do_backup()
+            processed = True
+        except:
+            pass
 
         try:  # try with exiftool
-	    subprocess.Popen('exiftool', stdout=open('/dev/null'))
+            subprocess.Popen('exiftool', stdout=open('/dev/null'))
             import exiftool
             if self.backup:
                 process = subprocess.Popen(['exiftool', '-All=',
-                    '-out', self.output, self.filename],
-                    stdout=open('/dev/null'))
+                    '-out', self.output, self.filename], stdout=open('/dev/null'))
                 process.wait()
             else:
                 process = subprocess.Popen(['exiftool', '-overwrite_original',
                     '-All=', self.filename], stdout=open('/dev/null'))
                 process.wait()
-	    processed = True
+            processed = True
         except:
-	    pass
+            pass
 
-	if processed is False:
-	    logging.error('Please install either pdfrw, or exiftool')
+        if processed is False:
+            logging.error('Please install either pdfrw, or exiftool to\
+                    fully handle pdf files')
+        return processed
 
     def get_meta(self):
         '''
@@ -260,6 +262,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         zipin.close()
         zipout.close()
         self.do_backup()
+        return True
 
     def is_clean(self):
         '''

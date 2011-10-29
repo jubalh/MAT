@@ -485,10 +485,10 @@ non-anonymised) file to output archive'))
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
             if self.liststore[line][3] != _('Clean (strict)'):
                 if self.force or not self.liststore[line][0].file.is_clean():
-                    self.liststore[line][0].file.remove_all()
+                    if self.liststore[line][0].file.remove_all():
+                        self.liststore[line][3] = _('Clean (lossless)')
                 if self.backup:  # the backup copy state
                     self.liststore[line][4] = self.liststore[line][0].file.output
-                self.liststore[line][3] = _('Clean (lossless)')
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False
@@ -502,10 +502,10 @@ non-anonymised) file to output archive'))
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
             if self.liststore[line][3] != _('Clean (strict)'):
                 if self.force or not self.liststore[line][0].file.is_clean():
-                    self.liststore[line][0].file.remove_all_ugly()
+                    if self.liststore[line][0].file.remove_all_ugly():
+                        self.liststore[line][3] = _('Clean (strict)')
                 if self.backup:  # the backup copy state
                     self.liststore[line][4] = self.liststore[line][0].file.output
-                self.liststore[line][3] = _('Clean (strict)')
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False
