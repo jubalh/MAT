@@ -111,6 +111,12 @@ SUPPORTED FORMAT:
         metadata : Flac, Vorbis
         method : removal of harmful fields is done with mutagen
 
+    Torrent (.torrent)
+        support : full
+        metadata : torrent
+        method : using the nice bencode lib from Petru Paler,
+            hardly tuned/rewritten.
+
 
 HOW TO IMPLEMENT NEW FORMATS:
     1. add the format's mimetype to the STRIPPER list in mat.py
