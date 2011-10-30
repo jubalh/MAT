@@ -130,8 +130,8 @@ HOW TO IMPLEMENT NEW FORMATS:
 
 HOW TO LAUNCHE THE TESTSUITE:
     1. cd ./test
-    2. python2.6 clitest : launch the testsuite for the CLI
-    3. python2.6 libtest : launch the testsuite for the mat internal library
+    2. python2.6 clitest.py : launch the testsuite for the CLI
+    3. python2.6 libtest.py : launch the testsuite for the mat internal library
 
 ALTERNATIVES AND COMPLEMENTS:
 for images:
