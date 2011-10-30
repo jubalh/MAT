@@ -99,7 +99,7 @@
 	<extension>.torrent</extension>
 	<support>full</support>
 	<metadata>torrent</metadata>
-	<method>remove all the compromizing metadata with a heavy tuned version
-        of the bencode lib from Petru Paled</method>
+	<method>remove all the compromizing metadata with a heavily tuned version
+        of the bencode lib by Petru Paled</method>
     </format>
 </xml>

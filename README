@@ -114,8 +114,8 @@ SUPPORTED FORMAT:
     Torrent (.torrent)
         support : full
         metadata : torrent
-        method : using the nice bencode lib from Petru Paler,
-            hardly tuned/rewritten.
+        method : using the nice bencode lib by Petru Paler,
+            heavily tuned/rewritten.
 
 
 HOW TO IMPLEMENT NEW FORMATS:
