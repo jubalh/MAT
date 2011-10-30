@@ -128,7 +128,7 @@ HOW TO IMPLEMENT NEW FORMATS:
         - get_meta(self)
     5. don't forget to call the do_backup() method when necessary
 
-HOW TO LAUNCHE THE TESTSUITE:
+HOW TO LAUNCH THE TESTSUITE:
     1. cd ./test
     2. python2.6 clitest.py : launch the testsuite for the CLI
     3. python2.6 libtest.py : launch the testsuite for the mat internal library
