@@ -3,7 +3,9 @@ GENERAL:
 	the ultimate goal is to remove
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
-    - Handle exotic characters in filenames
+
+TESTSUITE:
+    - return code ?
 
 GUI:
     - Drag and Drop
