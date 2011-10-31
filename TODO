@@ -19,6 +19,7 @@ DOCUMENTATION:
 GUI:
     - Drag and Drop
     - Fix the statusbar
+    - display harmrful meta per file
 
 FORMATS
     - microsoft office < 2007 (ugly and insane)
