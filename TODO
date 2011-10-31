@@ -4,6 +4,8 @@ GENERAL:
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
     - a better external app  handling
+    - cleaning a file (mat-gui) in a directory where you have no write permission :
+        pretends a cleaned file was created which is wrong !
 
 TESTSUITE:
     - return code ?
