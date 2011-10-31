@@ -18,3 +18,7 @@ GUI:
     - Drag and Drop
     - Fix the statusbar
 
+FORMATS
+    - microsoft office < 2007 (ugly and insane)
+    - fix zip (fix python's ziplib)
+    - video's format ?
