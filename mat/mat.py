@@ -73,6 +73,8 @@ def get_sharedir():
         return ''
     elif os.path.exists('/usr/local/share/mat/'):
         return '/usr/local/share/mat/'
+    elif os.path.exist('/usr/share/mat/'):
+        return '/usr/share/mat'
 
 
 class XMLParser(xml.sax.handler.ContentHandler):
