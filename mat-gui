@@ -50,8 +50,7 @@ class GUI:
 
         # Main window
         self.window = gtk.Window()
-        self.window.set_title('Metadata Anonymisation Toolkit %s' %
-            __version__)
+        self.window.set_title('Metadata Anonymisation Toolkit')
         self.window.connect('destroy', gtk.main_quit)
         self.window.set_default_size(800, 600)
 
