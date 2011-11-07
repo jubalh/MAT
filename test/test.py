@@ -10,6 +10,7 @@ import os
 import glob
 import tempfile
 import unittest
+import subprocess
 
 VERBOSITY = 3
 
@@ -20,11 +21,22 @@ dirty.sort()
 
 FILE_LIST = zip(clean, dirty)
 
-try:
+try:  # pdf render processing
     import poppler
     import cairo
 except:
     FILE_LIST.remove((('clean.pdf'), ('dirty.pdf')))
+
+try:  # python-mutagen : audio file format
+    import mutagen
+except:
+    FILE_LIST.remove(('clean.mp3'), ('dirty.mp3'))
+    FILE_LIST.remove(('clean.ogg'), ('dirty.ogg'))
+
+try:  # file format managed by exiftool
+    subprocess.Popen('exiftool', stdout=open('/dev/null'))
+except:
+    pass  # None for now
 
 
 class MATTest(unittest.TestCase):
