@@ -22,8 +22,13 @@ import misc
 __version__ = '0.1'
 __author__ = 'jvoisin'
 
-#LOGGING_LEVEL = logging.DEBUG
+#Silence
 LOGGING_LEVEL = logging.CRITICAL
+hachoir_core.config.quiet = True
+
+#Verbose
+#LOGGING_LEVEL = logging.DEBUG
+#hachoir_core.config.quiet = False
 
 logging.basicConfig(filename='report.log', level=LOGGING_LEVEL)
 
