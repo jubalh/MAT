@@ -22,9 +22,10 @@ import misc
 __version__ = '0.1'
 __author__ = 'jvoisin'
 
-LOGGING_LEVEL = logging.DEBUG
+#LOGGING_LEVEL = logging.DEBUG
+LOGGING_LEVEL = logging.CRITICAL
 
-logging.basicConfig(level=LOGGING_LEVEL)
+logging.basicConfig(filename='report.log', level=LOGGING_LEVEL)
 
 STRIPPERS = {
     'application/x-tar': archive.TarStripper,
