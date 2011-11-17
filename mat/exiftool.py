@@ -33,14 +33,14 @@ class ExiftoolStripper(parser.GenericParser):
         try:
             if self.backup:
                 # Note: '-All=' must be followed by a known exiftool option.
-                process = subprocess.Popen(['exiftool', '-All=',
+                process = subprocess.Popen(['exiftool', '-m', '-All=',
                     '-out', self.output, self.filename],
                     stdout=open('/dev/null'))
                 process.wait()
             else:
                 # Note: '-All=' must be followed by a known exiftool option.
                 process = subprocess.Popen(
-                    [ 'exiftool', '-All=', '-overwrite_original', self.filename ],
+                    [ 'exiftool', '-m', '-All=', '-overwrite_original', self.filename ],
                     stdout=open('/dev/null'))
                 process.wait()
             return True

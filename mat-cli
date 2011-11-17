@@ -61,7 +61,7 @@ def display_version(*_):
 
 def list_meta(class_file, filename, force):
     '''
-        Print all the metadataof 'filename' on stdout
+        Print all the metadata of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
     if force is False and class_file.is_clean():

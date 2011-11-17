@@ -18,9 +18,15 @@ import strippers
 __version__ = '0.1'
 __author__ = 'jvoisin'
 
-LOGGING_LEVEL = logging.DEBUG
+#Silence
+LOGGING_LEVEL = logging.CRITICAL
+hachoir_core.config.quiet = True
 
-logging.basicConfig(level=LOGGING_LEVEL)
+#Verbose
+#LOGGING_LEVEL = logging.DEBUG
+#hachoir_core.config.quiet = False
+
+logging.basicConfig(filename='report.log', level=LOGGING_LEVEL)
 
 
 def get_sharedir():
@@ -31,7 +37,7 @@ def get_sharedir():
         return ''
     elif os.path.exists('/usr/local/share/mat/'):
         return '/usr/local/share/mat/'
-    elif os.path.exist('/usr/share/mat/'):
+    elif os.path.exists('/usr/share/mat/'):
         return '/usr/share/mat'
 
 
