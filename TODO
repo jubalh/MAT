@@ -3,9 +3,6 @@ GENERAL:
 	the ultimate goal is to remove
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
-    - a better external app  handling
-    - cleaning a file (mat-gui) in a directory where you have no write permission :
-        pretends a cleaned file was created which is wrong !
 
 TESTSUITE:
     - return code ?
@@ -18,10 +15,9 @@ DOCUMENTATION:
 
 GUI:
     - Drag and Drop
-    - Fix the statusbar
     - display harmrful meta per file
 
 FORMATS
     - microsoft office < 2007 (ugly and insane)
     - fix zip (fix python's ziplib)
-    - video's format ?
+    - videos format ?

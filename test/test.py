@@ -30,7 +30,6 @@ except:
 try:  # python-mutagen : audio file format
     import mutagen
 except:
-    FILE_LIST.remove(('clean.mp3'), ('dirty.mp3'))
     FILE_LIST.remove(('clean.ogg'), ('dirty.ogg'))
 
 try:  # file format managed by exiftool
