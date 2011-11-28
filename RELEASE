@@ -1,0 +1,8 @@
+archive's creation :
+    git archive --format=tar.gz --prefix=mat-$VERSION/ $VERSION > mat-$VERSION.tar.gz
+
+signing:
+    gpg --armor --detach-sign mat-$VERSION.tar.gz
+
+upload:
+    https://mat.boum.org/files
