@@ -25,12 +25,12 @@ try:  # pdf render processing
     import poppler
     import cairo
 except:
-    FILE_LIST.remove((('clean.pdf'), ('dirty.pdf')))
+    FILE_LIST.remove(('clean.pdf', 'dirty.pdf'))
 
 try:  # python-mutagen : audio file format
     import mutagen
 except:
-    FILE_LIST.remove(('clean.ogg'), ('dirty.ogg'))
+    FILE_LIST.remove(('clean.ogg', 'dirty.ogg'))
 
 try:  # file format managed by exiftool
     subprocess.Popen('exiftool', stdout=open('/dev/null'))
