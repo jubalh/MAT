@@ -29,7 +29,7 @@ except ImportError:
     print('Unable to import python-poppler and/or python-cairo: no pdf \
         support')
 
-    try:  # mutangen-python : audio format support
+try:  # mutangen-python : audio format support
     import mutagen
     STRIPPERS['audio/x-flac'] = audio.FlacStripper
     STRIPPERS['audio/vorbis'] = audio.OggStripper
