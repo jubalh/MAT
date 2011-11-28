@@ -68,10 +68,10 @@ SUPPORTED FORMAT:
         support : full
         metadata : a lot
         method : rendering of the pdf file on a cairo surface with the help of
-                poppler in order to remove all the internal metadata,
-                then removal of the remaining metadata fields of the pdf itself with
-                pdfrw (the next version of python-cairo will support metadata,
-                so we should get rid of pdfrw)
+                poppler in order to remove all the internal metadata.
+                For now, cairo create some metadata.
+                They can be remove if you install either exiftool, or python-pdfrw.
+                The next version of python-cairo will support pdf metadata.
 
 
     Tape ARchive (.tar, .tar.bz2, .tar.gz)
