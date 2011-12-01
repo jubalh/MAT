@@ -3,18 +3,13 @@ GENERAL:
 	the ultimate goal is to remove
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
+    - Modify creation/modification date
+    (except for stupid formats like zip)
 
 TESTSUITE:
     - return code ?
-    - modularity : only test format that can be processed
-        on the actual config (and don't impose to have all deps
-        to run the testsuite)
-
-DOCUMENTATION:
-    - need updates (mainly about pdf processing)
 
 GUI:
-    - Drag and Drop
     - display harmrful meta per file
 
 FORMATS
