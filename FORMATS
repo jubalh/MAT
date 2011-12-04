@@ -39,11 +39,11 @@
         <extension>.pdf</extension>
         <support>full</support>
         <metadata>a lot</metadata>
-        <method> rendering of the pdf file on a cairo surface with the help of
+        <method> rendering of the PDF file on a cairo surface with the help of
                 poppler in order to remove all the internal metadata.
                 For now, cairo create some metadata.
                 They can be remove if you install either exiftool, or python-pdfrw.
-                The next version of python-cairo will support pdf metadata.
+                The next version of python-cairo will support PDF metadata.
     </format>
 
     <format>
