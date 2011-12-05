@@ -21,12 +21,14 @@ __author__ = 'jvoisin'
 #Silence
 LOGGING_LEVEL = logging.CRITICAL
 hachoir_core.config.quiet = True
+fname = ''
 
 #Verbose
 #LOGGING_LEVEL = logging.DEBUG
 #hachoir_core.config.quiet = False
+#logname = 'report.log'
 
-logging.basicConfig(filename='report.log', level=LOGGING_LEVEL)
+logging.basicConfig(filename=fname, level=LOGGING_LEVEL)
 
 
 def get_sharedir():
