@@ -21,7 +21,7 @@ dirty.sort()
 
 FILE_LIST = zip(clean, dirty)
 
-try:  # pdf render processing
+try:  # PDF render processing
     import poppler
     import cairo
 except:

@@ -112,7 +112,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
 
 class PdfStripper(parser.GenericParser):
     '''
-        Represent a pdf file
+        Represent a PDF file
     '''
     def __init__(self, filename, parser, mime, backup, add2archive):
         super(PdfStripper, self).__init__(filename, parser, mime, backup,
@@ -143,7 +143,7 @@ class PdfStripper(parser.GenericParser):
 
     def remove_all_ugly(self):
         '''
-            Opening the pdf with poppler, then doing a render
+            Opening the PDF with poppler, then doing a render
             on a cairo pdfsurface for each pages.
             Thanks to Lunar^for the idea.
             http://cairographics.org/documentation/pycairo/2/
@@ -153,7 +153,7 @@ class PdfStripper(parser.GenericParser):
         page_width, page_height = page.get_size()
         surface = cairo.PDFSurface(self.output, page_width, page_height)
         context = cairo.Context(surface)  # context draws on the surface
-        logging.debug('Pdf rendering of %s' % self.filename)
+        logging.debug('PDF rendering of %s' % self.filename)
         for pagenum in xrange(self.document.get_n_pages()):
             page = self.document.get_page(pagenum)
             context.translate(0, 0)
@@ -165,7 +165,7 @@ class PdfStripper(parser.GenericParser):
     def _remove_meta(self):
         '''
             Remove superficial/external metadata
-            from a pdf file, using exiftool,
+            from a PDF file, using exiftool,
             of pdfrw if exiftool is not installed
         '''
         processed = False
@@ -203,7 +203,7 @@ class PdfStripper(parser.GenericParser):
 
         if processed is False:
             logging.error('Please install either pdfrw, or exiftool to\
-                    fully handle pdf files')
+                    fully handle PDF files')
         return processed
 
     def get_meta(self):

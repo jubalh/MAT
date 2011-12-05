@@ -7,7 +7,7 @@ METADATA:
 METADATA AND PRIVACY:
     Metadata within a file can tell a lot about you.
     Cameras record data about when a picture was taken and what
-    camera was used. Office documents like pdf or Office automatically adds
+    camera was used. Office documents like PDF or Office automatically adds
     author and company information to documents and spreadsheets.
     Maybe you don't want to disclose those information on the web.
 
@@ -23,12 +23,12 @@ WARNING :
 DEPENDENCIES:
     python2.6 (at least)
     python-hachoir-core and python-hachoir-parser
-    python-pdfrw  or exiftool for full pdf support
+    python-pdfrw  or exiftool for full PDF support
     shred (should be already installed)
 
 
 OPTIONALS DEPENDENCIES:
-    python-poppler and python-cairo : for pdf support
+    python-poppler and python-cairo : for PDF support
     python-mutagen : for massive audio format support
     exiftool : for _massive_ image format support
 
@@ -67,11 +67,11 @@ SUPPORTED FORMAT:
     Portable Document Fileformat (.pdf)
         support : full
         metadata : a lot
-        method : rendering of the pdf file on a cairo surface with the help of
+        method : rendering of the PDF file on a cairo surface with the help of
                 poppler in order to remove all the internal metadata.
                 For now, cairo create some metadata.
                 They can be remove if you install either exiftool, or python-pdfrw.
-                The next version of python-cairo will support pdf metadata.
+                The next version of python-cairo will support PDF metadata.
 
 
     Tape ARchive (.tar, .tar.bz2, .tar.gz)
@@ -139,8 +139,8 @@ for images:
     exiv2 (C++) : metadata manipulation
     graphicsmagick (a fork from imagemagick) : cli image manipulation
 
-for pdf:
-    pdfminer (python) : pdf manipulation
+for PDF:
+    pdfminer (python) : PDF manipulation
 
 other tools:
     an hexadecimal editor
