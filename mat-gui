@@ -15,6 +15,7 @@ import os
 import sys
 import mimetypes
 import xml.sax
+import urllib2
 
 from mat import mat
 from mat import strippers
@@ -460,7 +461,7 @@ non-anonymised) file to output archive'))
             It basically add files.
         '''
         urls = selection.data.strip('\r\n\x00')  # strip stupid characters
-        cleaned_urls = map(self.clean_draged_file_path, urls.split())
+        cleaned_urls = map(self.clean_draged_file_path, urls.split('\n'))
         task = self.populate(cleaned_urls)
         gobject.idle_add(task.next)  # asynchrone processing
 
@@ -469,6 +470,7 @@ non-anonymised) file to output archive'))
             Since the dragged urls are ugly,
             we need to process them
         '''
+        url = urllib2.unquote(url)  # unescape stupid chars
         if url.startswith('file:\\\\\\'):  # windows
             return url[8:]  # 8 is len('file:///')
         elif url.startswith('file://'):  # nautilus, rox
