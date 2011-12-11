@@ -64,11 +64,24 @@ class TestisCleanlib(test.MATTest):
             current_file = mat.create_class_file(clean, False, True)
             self.assertTrue(current_file.is_clean())
 
+class TestFileAttributes(unittest.TestCase):
+    '''
+        test various stuffs about files (readable, writable, exist, ...)
+    '''
+    def test_not_readable(self):
+        self.assertFalse(mat.create_class_file('not_readable', False, True))
+
+    def test_not_writtable(self):
+        self.assertFalse(mat.create_class_file('not_writtable', False, True))
+
+    def test_not_exist(self):
+        self.assertFalse(mat.create_class_file('ilikecookies', False, True))
 
 if __name__ == '__main__':
     Suite = unittest.TestSuite()
     Suite.addTest(unittest.makeSuite(TestRemovelib))
     Suite.addTest(unittest.makeSuite(TestListlib))
     Suite.addTest(unittest.makeSuite(TestisCleanlib))
+    Suite.addTest(unittest.makeSuite(TestFileAttributes))
     unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
 

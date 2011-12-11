@@ -72,6 +72,27 @@ class TestisCleancli(test.MATTest):
             stdout, _ = proc.communicate()
             self.assertEqual(stdout.strip('\n'), '[+] %s is not clean' % dirty)
 
+class TestFileAttributes(unittest.TestCase):
+    '''
+        test various stuffs about files (readable, writable, exist, ...)
+    '''
+    def test_not_readable(self):
+        proc = subprocess.Popen(['../mat-cli', 'not_readable'],
+            stdout=subprocess.PIPE)
+        stdout, _ = proc.communicate()
+        self.assertEqual(stdout.strip('\n'), 'Unable to pocess  %s' % 'not_readable')
+
+    def test_not_writtable(self):
+        proc = subprocess.Popen(['../mat-cli', 'not_writtable'],
+            stdout=subprocess.PIPE)
+        stdout, _ = proc.communicate()
+        self.assertEqual(stdout.strip('\n'), 'Unable to pocess  %s' % 'not_writtable')
+
+    def test_not_exist(self):
+        proc = subprocess.Popen(['../mat-cli', 'ilikecookies'],
+            stdout=subprocess.PIPE)
+        stdout, _ = proc.communicate()
+        self.assertEqual(stdout.strip('\n'), 'Unable to pocess  %s' % 'ilikecookies')
 
 if __name__ == '__main__':
     suite = unittest.TestSuite()
