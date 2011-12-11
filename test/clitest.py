@@ -99,4 +99,6 @@ if __name__ == '__main__':
     suite.addTest(unittest.makeSuite(TestRemovecli))
     suite.addTest(unittest.makeSuite(TestListcli))
     suite.addTest(unittest.makeSuite(TestisCleancli))
-    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(suite)
+    test_result = unittest.TextTestRunner(verbosity=test.VERBOSITY).run(suite)
+    sys.exit(len(test_result.failures))
+

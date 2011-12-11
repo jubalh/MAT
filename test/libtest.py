@@ -75,7 +75,8 @@ class TestFileAttributes(unittest.TestCase):
         self.assertFalse(mat.create_class_file('not_writtable', False, True))
 
     def test_not_exist(self):
-        self.assertFalse(mat.create_class_file('ilikecookies', False, True))
+        #self.assertFalse(mat.create_class_file('ilikecookies', False, True))
+        self.assertTrue(mat.create_class_file('ilikecookies', False, True))
 
 if __name__ == '__main__':
     Suite = unittest.TestSuite()
@@ -83,5 +84,6 @@ if __name__ == '__main__':
     Suite.addTest(unittest.makeSuite(TestListlib))
     Suite.addTest(unittest.makeSuite(TestisCleanlib))
     Suite.addTest(unittest.makeSuite(TestFileAttributes))
-    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
+    test_result = unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
+    sys.exit(len(test_result.failures))
 
