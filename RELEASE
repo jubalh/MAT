@@ -1,3 +1,9 @@
+update changelog:
+    git log
+
+create a tag
+    git tag -s $VERSION
+
 archive's creation :
     git archive --format=tar.gz --prefix=mat-$VERSION/ $VERSION > mat-$VERSION.tar.gz
 
