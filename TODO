@@ -9,7 +9,10 @@ GENERAL:
 GUI:
     - display harmrful meta per file
 
-FORMATS
+FORMATS:
     - microsoft office < 2007 (ugly and insane)
     - fix zip (fix python's ziplib)
     - videos format ?
+
+MISC:
+    - a nautilus extension (right-clic -> clean with MAT)
