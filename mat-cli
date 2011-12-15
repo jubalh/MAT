@@ -11,8 +11,6 @@ import hachoir_core
 
 from mat import mat
 
-__version__ = '0.1'
-
 
 def parse():
     '''
@@ -54,7 +52,6 @@ def display_version(*_):
         Display the program's version, and exit
     '''
     print('Metadata Anonymisation Toolkit version %s') % mat.__version__
-    print('CLI version %s') % __version__
     print('Hachoir version %s') % hachoir_core.__version__
     sys.exit(0)
 
