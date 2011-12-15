@@ -1,2 +1,9 @@
+0.2 - 21dec2011
+    * Improvements for testsuites
+    * Improve log system
+    * Handle file with weird rights
+    * Drag'n'drop support
+    * Various bugfixes
+
 0.1 - 30oct2011
     * initial version

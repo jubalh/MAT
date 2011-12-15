@@ -5,18 +5,14 @@ GENERAL:
     - Fix the ugly function get_sharedir
     - Modify creation/modification date
     (except for stupid formats like zip)
-    - better log management
-    - cleaning a file (mat-gui) in a directory where you have no write
-    permission : pretend a cleaned file was created which is wrong !
-
-TESTSUITE:
-    - return code ?
 
 GUI:
     - display harmrful meta per file
-    - drag'n'drop does not work with filenames containing spaces
 
-FORMATS
+FORMATS:
     - microsoft office < 2007 (ugly and insane)
     - fix zip (fix python's ziplib)
     - videos format ?
+
+MISC:
+    - a nautilus extension (right-clic -> clean with MAT)
