@@ -59,8 +59,8 @@ class GUI:
         vbox = gtk.VBox()
         self.window.add(vbox)
 
-        menubar = self.create_menu()
-        toolbar = self.create_toolbar()
+        menubar = self.__create_menu()
+        toolbar = self.__create_toolbar()
         content = gtk.ScrolledWindow()
         vbox.pack_start(menubar, False, True, 0)
         vbox.pack_start(toolbar, False, True, 0)
@@ -73,11 +73,11 @@ class GUI:
         self.treeview.set_search_column(1)  # filename column is searchable
         self.treeview.set_rules_hint(True)  # alternate colors for rows
         self.treeview.set_rubber_banding(True)  # mouse selection
-        self.treeview.connect('drag_data_received', self.on_drag_data_received)
+        self.treeview.connect('drag_data_received', self.__on_drag_data_received)
         self.treeview.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                 gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
                 [('text/uri-list', 0, 80)], gtk.gdk.ACTION_COPY)
-        self.add_columns()
+        self.__add_columns()
         self.selection = self.treeview.get_selection()
         self.selection.set_mode(gtk.SELECTION_MULTIPLE)
 
@@ -89,7 +89,7 @@ class GUI:
 
         self.window.show_all()
 
-    def create_toolbar(self):
+    def __create_toolbar(self):
         '''
             Returns a vbox object, which contains a toolbar with buttons
         '''
@@ -97,28 +97,28 @@ class GUI:
 
         toolbutton = gtk.ToolButton(gtk.STOCK_ADD)
         toolbutton.set_label(_('Add'))
-        toolbutton.connect('clicked', self.add_files)
+        toolbutton.connect('clicked', self.__add_files)
         toolbutton.set_tooltip_text(_('Add files'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
         toolbutton.set_label(_('Clean (lossless)'))
-        toolbutton.connect('clicked', self.process_files, self.mat_clean)
+        toolbutton.connect('clicked', self.__process_files, self.__mat_clean)
         toolbutton.set_tooltip_text(_('Clean selected files without possible \
 data loss'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_WARNING)
         toolbutton.set_label(_('Clean (strict)'))
-        toolbutton.connect('clicked', self.process_files,
-                self.mat_clean_strict)
+        toolbutton.connect('clicked', self.__process_files,
+                self.__mat_clean_strict)
         toolbutton.set_tooltip_text(_('Clean selected files with possible \
 data loss, but clean more efficiently'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_FIND)
         toolbutton.set_label(_('Check'))
-        toolbutton.connect('clicked', self.process_files, self.mat_check)
+        toolbutton.connect('clicked', self.__process_files, self.__mat_check)
         toolbutton.set_tooltip_text(_('Check selected files for harmful meta'))
         toolbar.add(toolbutton)
 
@@ -131,7 +131,7 @@ data loss, but clean more efficiently'))
         vbox.pack_start(toolbar, False, False, 0)
         return vbox
 
-    def add_columns(self):
+    def __add_columns(self):
         '''
             Create the columns, and add them to the treeview
         '''
@@ -148,7 +148,7 @@ data loss, but clean more efficiently'))
                 tips.add_view(self.treeview)
             self.treeview.append_column(column)
 
-    def create_menu_item(self, name, func, menu, pix, shortcut):
+    def __create_menu_item(self, name, func, menu, pix, shortcut):
         '''
             Create a MenuItem() like Preferences, Quit, Add, Clean, ...
         '''
@@ -164,7 +164,7 @@ data loss, but clean more efficiently'))
         item.connect('activate', func)
         menu.append(item)
 
-    def create_sub_menu(self, name, menubar):
+    def __create_sub_menu(self, name, menubar):
         '''
             Create a submenu like File, Edit, Clean, ...
         '''
@@ -175,26 +175,26 @@ data loss, but clean more efficiently'))
         menubar.append(menuitem)
         return submenu
 
-    def create_menu(self):
+    def __create_menu(self):
         '''
             Return a MenuBar
         '''
         menubar = gtk.MenuBar()
 
-        file_menu = self.create_sub_menu(_('Files'), menubar)
-        self.create_menu_item(_('Add files'), self.add_files, file_menu,
+        file_menu = self.__create_sub_menu(_('Files'), menubar)
+        self.__create_menu_item(_('Add files'), self.__add_files, file_menu,
             gtk.STOCK_ADD, '<Control>O')
-        self.create_menu_item(_('Quit'), gtk.main_quit, file_menu,
+        self.__create_menu_item(_('Quit'), gtk.main_quit, file_menu,
             gtk.STOCK_QUIT, '<Control>Q')
 
-        edit_menu = self.create_sub_menu(_('Edit'), menubar)
-        self.create_menu_item(_('Clear the filelist'),
+        edit_menu = self.__create_sub_menu(_('Edit'), menubar)
+        self.__create_menu_item(_('Clear the filelist'),
             lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE,
             '<Control>L')
-        self.create_menu_item(_('Preferences'), self.preferences, edit_menu,
+        self.__create_menu_item(_('Preferences'), self.__preferences, edit_menu,
             gtk.STOCK_PREFERENCES, '<Control>P')
 
-        process_menu = self.create_sub_menu(_('Process'), menubar)
+        process_menu = self.__create_sub_menu(_('Process'), menubar)
         item = gtk.ImageMenuItem()
         key, mod = gtk.accelerator_parse('<Control>L')
         item.add_accelerator('activate', self.accelerator,
@@ -203,7 +203,7 @@ data loss, but clean more efficiently'))
         picture.set_from_stock(gtk.STOCK_PRINT_REPORT, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
         item.set_label(_('Clean (lossless)'))
-        item.connect('activate', self.process_files, self.mat_clean)
+        item.connect('activate', self.__process_files, self.__mat_clean)
         process_menu.append(item)
 
         item = gtk.ImageMenuItem()
@@ -214,7 +214,7 @@ data loss, but clean more efficiently'))
         picture.set_from_stock(gtk.STOCK_PRINT_WARNING, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
         item.set_label(_('Clean (strict)'))
-        item.connect('activate', self.process_files, self.mat_clean_strict)
+        item.connect('activate', self.__process_files, self.__mat_clean_strict)
         process_menu.append(item)
 
         item = gtk.ImageMenuItem()
@@ -225,18 +225,18 @@ data loss, but clean more efficiently'))
         picture.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
         item.set_label(_('Check'))
-        item.connect('activate', self.process_files, self.mat_check)
+        item.connect('activate', self.__process_files, self.__mat_check)
         process_menu.append(item)
 
-        help_menu = self.create_sub_menu(_('Help'), menubar)
-        self.create_menu_item(_('Supported formats'), self.supported,
+        help_menu = self.__create_sub_menu(_('Help'), menubar)
+        self.__create_menu_item(_('Supported formats'), self.__supported,
             help_menu, gtk.STOCK_INFO, False)
-        self.create_menu_item(_('About'), self.about, help_menu,
+        self.__create_menu_item(_('About'), self.__about, help_menu,
                 gtk.STOCK_ABOUT, False)
 
         return menubar
 
-    def add_files(self, button):
+    def __add_files(self, button):
         '''
             Add the files chosed by the filechoser ("Add" button)
         '''
@@ -261,11 +261,11 @@ data loss, but clean more efficiently'))
 
         if response is 0:  # gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            task = self.populate(filenames)
+            task = self.__populate(filenames)
             gobject.idle_add(task.next)  # asynchrone processing
         chooser.destroy()
 
-    def populate(self, filenames):
+    def __populate(self, filenames):
         '''
             Append selected files by add_file to the self.liststore
         '''
@@ -276,17 +276,17 @@ data loss, but clean more efficiently'))
                     for item in files:
                         path_to_file = os.path.join(root, item)
 
-                        if self.add_file_to_treeview(path_to_file):
+                        if self.__add_file_to_treeview(path_to_file):
                             not_supported.append(item)
             else:  # filename is a regular file
-                if self.add_file_to_treeview(filename):
+                if self.__add_file_to_treeview(filename):
                     not_supported.append(filename)
             yield True
         if not_supported:
-            self.popup_non_supported(not_supported)
+            self.__popup_non_supported(not_supported)
         yield False
 
-    def add_file_to_treeview(self, filename):
+    def __add_file_to_treeview(self, filename):
         '''
             Add a file to the list if it's format is supported
         '''
@@ -302,7 +302,7 @@ data loss, but clean more efficiently'))
         else:
             return True
 
-    def popup_non_supported(self, filelist):
+    def __popup_non_supported(self, filelist):
         '''
             Popup that warn the user about the unsupported files
             that he want to process
@@ -337,7 +337,7 @@ data loss, but clean more efficiently'))
         if click is 0:  # Ok button
             dialog.destroy()
 
-    def about(self, button):
+    def __about(self, button):
         '''
             About popup
         '''
@@ -353,7 +353,7 @@ data loss, but clean more efficiently'))
         if click:
             w.destroy()
 
-    def supported(self, button):
+    def __supported(self, button):
         '''
             List the supported formats
         '''
@@ -394,7 +394,7 @@ data loss, but clean more efficiently'))
         if click is 0:  # Close
             dialog.destroy()
 
-    def preferences(self, button):
+    def __preferences(self, button):
         '''
             Preferences popup
         '''
@@ -411,21 +411,21 @@ data loss, but clean more efficiently'))
 
         force = gtk.CheckButton(_('Force Clean'), False)
         force.set_active(self.force)
-        force.connect('toggled', self.invert, 'force')
+        force.connect('toggled', self.__invert, 'force')
         force.set_tooltip_text(_('Do not check if already clean before \
 cleaning'))
         table.attach(force, 0, 1, 0, 1)
 
         backup = gtk.CheckButton(_('Backup'), False)
         backup.set_active(self.backup)
-        backup.connect('toggled', self.invert, 'backup')
+        backup.connect('toggled', self.__invert, 'backup')
         backup.set_tooltip_text(_('Keep a backup copy'))
         table.attach(backup, 0, 1, 1, 2)
 
         add2archive = gtk.CheckButton(_('Add unsupported file to archives'),
             False)
         add2archive.set_active(self.add2archive)
-        add2archive.connect('toggled', self.invert, 'add2archive')
+        add2archive.connect('toggled', self.__invert, 'add2archive')
         add2archive.set_tooltip_text(_('Add non-supported (and so \
 non-anonymised) file to output archive'))
         table.attach(add2archive, 0, 1, 2, 3)
@@ -435,7 +435,7 @@ non-anonymised) file to output archive'))
         if response is 0:  # gtk.STOCK_OK
             dialog.destroy()
 
-    def invert(self, button, name):
+    def __invert(self, button, name):
         '''
             Invert a preference state
         '''
@@ -450,7 +450,7 @@ non-anonymised) file to output archive'))
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 
-    def on_drag_data_received(self, widget, context,
+    def __on_drag_data_received(self, widget, context,
             x, y, selection, target_type, timestamp):
         '''
             This function is called when something is
@@ -458,11 +458,11 @@ non-anonymised) file to output archive'))
             It basically add files.
         '''
         urls = selection.data.strip('\r\n\x00')  # strip stupid characters
-        cleaned_urls = map(self.clean_draged_file_path, urls.split('\n'))
-        task = self.populate(cleaned_urls)
+        cleaned_urls = map(self.__clean_draged_file_path, urls.split('\n'))
+        task = self.__populate(cleaned_urls)
         gobject.idle_add(task.next)  # asynchrone processing
 
-    def clean_draged_file_path(self, url):
+    def __clean_draged_file_path(self, url):
         '''
             Since the dragged urls are ugly,
             we need to process them
@@ -475,7 +475,7 @@ non-anonymised) file to output archive'))
         elif url.startswith('file:'):  # xffm
             return url[5:]  # 5 is len('file:')
 
-    def process_files(self, button, func):
+    def __process_files(self, button, func):
         '''
             Launch the function "func" in a asynchrone way
         '''
@@ -485,7 +485,7 @@ non-anonymised) file to output archive'))
         task = func(iterator)  # launch func() in an asynchrone way
         gobject.idle_add(task.next)
 
-    def mat_check(self, iterator):
+    def __mat_check(self, iterator):
         '''
             Check if selected elements are clean
         '''
@@ -502,7 +502,7 @@ non-anonymised) file to output archive'))
         self.statusbar.push(0, _('Ready'))
         yield False
 
-    def mat_clean(self, iterator):
+    def __mat_clean(self, iterator):
         '''
             Clean selected elements
         '''
@@ -510,8 +510,10 @@ non-anonymised) file to output archive'))
             logging.info('Cleaning (lossless) %s' % self.liststore[line][1])
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
             if self.liststore[line][3] != _('Clean (strict)'):
+                # if the file is not already strict cleaned
                 if self.force or not self.liststore[line][0].file.is_clean():
                     if self.liststore[line][0].file.remove_all():
+                        # if everything went fine
                         self.liststore[line][3] = _('Clean (lossless)')
                 if self.backup:  # the backup copy state
                     self.liststore[line][4] = self.liststore[line][0].file.output
@@ -519,7 +521,7 @@ non-anonymised) file to output archive'))
         self.statusbar.push(0, _('Ready'))
         yield False
 
-    def mat_clean_strict(self, iterator):
+    def __mat_clean_strict(self, iterator):
         '''
             Clean selected elements (ugly way)
         '''
@@ -527,8 +529,10 @@ non-anonymised) file to output archive'))
             logging.info(_('Cleaning (strict) %s') % self.liststore[line][1])
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
             if self.liststore[line][3] != _('Clean (strict)'):
+                # if the file is not already strict cleaned
                 if self.force or not self.liststore[line][0].file.is_clean():
                     if self.liststore[line][0].file.remove_all_ugly():
+                        # if everything went fine
                         self.liststore[line][3] = _('Clean (strict)')
                 if self.backup:  # the backup copy state
                     self.liststore[line][4] = self.liststore[line][0].file.output
@@ -682,7 +686,7 @@ if __name__ == '__main__':
     #Add files from command line
     infiles = [arg for arg in sys.argv[1:] if os.path.exists(arg)]
     if infiles:
-        task = gui.populate(infiles)
+        task = gui.__populate(infiles)
         gobject.idle_add(task.next)
 
     gtk.main()

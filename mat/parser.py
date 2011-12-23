@@ -61,9 +61,10 @@ class GenericParser(object):
         '''
             Remove all the files that are compromizing
         '''
-        self._remove_all(self.editor)
+        state = self._remove_all(self.editor)
         hachoir_core.field.writeIntoFile(self.editor, self.output)
         self.do_backup()
+        return state
 
     def _remove_all(self, fieldset):
         try:
