@@ -34,7 +34,7 @@ class CFile(object):
         try:
             self.file = mat.create_class_file(filename, backup, add2archive)
         except:
-            self.file = False
+            self.file = None
 
 
 class GUI:
@@ -73,7 +73,8 @@ class GUI:
         self.treeview.set_search_column(1)  # filename column is searchable
         self.treeview.set_rules_hint(True)  # alternate colors for rows
         self.treeview.set_rubber_banding(True)  # mouse selection
-        self.treeview.connect('drag_data_received', self.__on_drag_data_received)
+        self.treeview.connect('drag_data_received',
+                self.__on_drag_data_received)
         self.treeview.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                 gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
                 [('text/uri-list', 0, 80)], gtk.gdk.ACTION_COPY)
@@ -191,8 +192,8 @@ data loss, but clean more efficiently'))
         self.__create_menu_item(_('Clear the filelist'),
             lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE,
             '<Control>L')
-        self.__create_menu_item(_('Preferences'), self.__preferences, edit_menu,
-            gtk.STOCK_PREFERENCES, '<Control>P')
+        self.__create_menu_item(_('Preferences'), self.__preferences,
+                edit_menu, gtk.STOCK_PREFERENCES, '<Control>P')
 
         process_menu = self.__create_sub_menu(_('Process'), menubar)
         item = gtk.ImageMenuItem()
@@ -295,7 +296,7 @@ data loss, but clean more efficiently'))
             return False
 
         cf = CFile(filename, self.backup, self.add2archive)
-        if cf.file is not False:  # if the file is supported by the mat
+        if cf.file is not None:  # if the file is supported by the mat
             self.liststore.append([cf, cf.file.basename,
                 cf.file.mime, _('unknow'), 'None'])
             return False

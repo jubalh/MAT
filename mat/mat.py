@@ -108,17 +108,17 @@ def create_class_file(name, backup, add2archive):
     if not os.path.isfile(name):
         # check if the file exists
         logging.error('%s is not a valid file' % name)
-        return False
+        return None
 
     if not os.access(name, os.R_OK):
         #check read permissions
         logging.error('%s is is not readable' % name)
-        return False
+        return None
 
     if not os.access(name, os.W_OK):
         #check write permission
         logging.error('%s is not writtable' % name)
-        return False
+        return None
 
     filename = ''
     try:
@@ -129,7 +129,7 @@ def create_class_file(name, backup, add2archive):
     parser = hachoir_parser.createParser(filename)
     if not parser:
         logging.info('Unable to parse %s' % filename)
-        return False
+        return None
 
     mime = parser.mime_type
 
@@ -145,6 +145,6 @@ def create_class_file(name, backup, add2archive):
         stripper_class = strippers.STRIPPERS[mime]
     except KeyError:
         logging.info('Don\'t have stripper for %s format' % mime)
-        return False
+        return None
 
     return stripper_class(filename, parser, mime, backup, add2archive)
