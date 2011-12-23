@@ -7,6 +7,8 @@ import logging
 import zipfile
 import fileinput
 import subprocess
+import xml.dom.minidom as minidom
+import StringIO
 
 try:
     import cairo
@@ -17,7 +19,6 @@ except ImportError:
 import mat
 import parser
 import archive
-
 
 class OpenDocumentStripper(archive.GenericArchiveStripper):
     '''
@@ -34,8 +35,14 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         metadata = {}
         try:
             content = zipin.read('meta.xml')
+            dom1 = minidom.parseString(content)
+            a = dom1.getElementsByTagName('office:meta')
+            for i in a[0].childNodes:
+                msg = i.tagName + ' : '
+                for j in i.childNodes:
+                    msg += j.data
+                print(msg)
             zipin.close()
-            metadata[self.filename] = 'harmful meta'
         except KeyError:  # no meta.xml file found
             logging.debug('%s has no opendocument metadata' % self.filename)
         return metadata
