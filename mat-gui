@@ -34,7 +34,7 @@ class CFile(object):
         try:
             self.file = mat.create_class_file(filename, backup, add2archive)
         except:
-            self.file = None
+            self.file = False
 
 
 class GUI:
@@ -295,7 +295,7 @@ data loss, but clean more efficiently'))
             return False
 
         cf = CFile(filename, self.backup, self.add2archive)
-        if cf.file is not None:  # if the file is supported by the mat
+        if cf.file is not False:  # if the file is supported by the mat
             self.liststore.append([cf, cf.file.basename,
                 cf.file.mime, _('unknow'), 'None'])
             return False
