@@ -35,12 +35,15 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         try:
             content = zipin.read('meta.xml')
             dom1 = minidom.parseString(content)
-            a = dom1.getElementsByTagName('office:meta')
-            for i in a[0].childNodes:
-                msg = ''
-                for j in i.childNodes:
-                    msg += j.data
-                metadata[i.tagName] = msg
+            elements = dom1.getElementsByTagName('office:meta')
+            for i in elements[0].childNodes:
+                if i.tagName != 'meta:document-statistic':
+                    nodename = ''.join([k for k in i.nodeName.split(':')[1:]])
+                    metadata[nodename] = ''.join([j.data for j in i.childNodes])
+                else:
+                    # thank you w3c for not providing a nice
+                    # method to get all attributes from a node
+                    pass
             zipin.close()
         except KeyError:  # no meta.xml file found
             logging.debug('%s has no opendocument metadata' % self.filename)
