@@ -20,9 +20,6 @@ import urllib2
 from mat import mat
 from mat import strippers
 
-__version__ = '0.1'
-__author__ = 'jvoisin'
-
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
@@ -345,7 +342,7 @@ data loss, but clean more efficiently'))
             About popup
         '''
         w = gtk.AboutDialog()
-        w.set_version(__version__)
+        w.set_version(mat.__version__)
         w.set_copyright('GNU Public License v2')
         w.set_comments(_('This software was coded during the GSoC 2011'))
         w.set_website('https://mat.boum.org')
