@@ -1,3 +1,8 @@
+0.2.1 - 25dec2011
+    * Fix critical bugs in GUI
+    * Handle opendocument metadata
+    * Various bugfixes
+
 0.2 - 21dec2011
     * Improvements for testsuites
     * Improve log system
