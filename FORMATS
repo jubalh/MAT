@@ -44,6 +44,7 @@
                 For now, cairo create some metadata.
                 They can be remove if you install either exiftool, or python-pdfrw.
                 The next version of python-cairo will support PDF metadata.
+        </method>
     </format>
 
     <format>
