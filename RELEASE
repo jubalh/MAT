@@ -3,6 +3,7 @@ update changelog:
 
 update version number:
     mat/mat.py -> __version__ = $VERSION
+    setup.py
 
 create a tag
     git tag -s $VERSION

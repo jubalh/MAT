@@ -16,3 +16,6 @@ FORMATS:
 
 MISC:
     - a nautilus extension (right-clic -> clean with MAT)
+
+SETUP:
+    - handle l10n files
