@@ -41,16 +41,16 @@ class GenericArchiveStripper(parser.GenericParser):
         '''
         return self._remove_all('normal')
 
-    def remove_all_ugly(self):
+    def remove_all_strict(self):
         '''
-            call remove_all() with in argument : "ugly"
+            call remove_all() with in argument : "strict"
         '''
-        return self._remove_all('ugly')
+        return self._remove_all('strict')
 
     def _remove_all(self, method):
         '''
             Remove all meta, normal way if method is "normal",
-            else, use the ugly way (with possible data loss)
+            else, use the strict way (with possible data loss)
         '''
         raise NotImplementedError
 
@@ -146,7 +146,7 @@ harmless format' % item.filename)
                     if method is 'normal':
                         cfile.remove_all()
                     else:
-                        cfile.remove_all_ugly()
+                        cfile.remove_all_strict()
                     logging.debug('Processing %s from %s' % (item.filename,
                         self.filename))
                     zipout.write(name, item.filename)
@@ -193,7 +193,7 @@ class TarStripper(GenericArchiveStripper):
                     if method is 'normal':
                         cfile.remove_all()
                     else:
-                        cfile.remove_all_ugly()
+                        cfile.remove_all_strict()
                     tarout.add(name, item.name, filter=self._remove)
                 except:
                     logging.info('%s\' format is not supported or harmless' %

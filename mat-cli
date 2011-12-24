@@ -25,7 +25,7 @@ The default behaviour is to clean files given in argument')
         help='Keep a backup copy')
     options.add_option('--force', '-f', action='store_true', default=False,
         help='Don\'t check if files are clean before cleaning')
-    options.add_option('--ugly', '-u', action='store_true', default=False,
+    options.add_option('--strict', '-u', action='store_true', default=False,
             help='Strict cleaning mode : loss can occur')
 
     info = optparse.OptionGroup(parser, 'Informations')
@@ -42,6 +42,8 @@ The default behaviour is to clean files given in argument')
 
     values, arguments = parser.parse_args()
     if not arguments and values.list is False:
+        # if no argument and no files are passed,
+        # print help and exit
         parser.print_help()
         sys.exit(0)
     return values, arguments
@@ -65,11 +67,10 @@ def list_meta(class_file, filename, force):
         print('No harmful metadata found')
     else:
         meta = class_file.get_meta()
-        if meta is None:
-            print('No harmful metadata found')
-        else:
+        print ('Harmful metadata found:')
+        if meta is not None:
             for key, value in class_file.get_meta().iteritems():
-                print(key + ' : ' + str(value))
+                print('\t' + key + ' : ' + str(value))
 
 
 def is_clean(class_file, filename, force):
@@ -95,15 +96,15 @@ def clean_meta(class_file, filename, force):
         else:
             print('Unable to clean %s', filename)
 
-def clean_meta_ugly(class_file, filename, force):
+def clean_meta_strict(class_file, filename, force):
     '''
-        Clean the file 'filename', ugly way
+        Clean the file 'filename', strict way
     '''
     print('[+] Cleaning %s' % filename)
     if force is False and class_file.is_clean():
         print('%s is already clean' % filename)
     else:
-        class_file.remove_all_ugly()
+        class_file.remove_all_strict()
         print('%s cleaned' % filename)
 
 
@@ -139,8 +140,8 @@ def main():
         func = list_meta
     elif args.check is True:  # only check if the file is clean
         func = is_clean
-    elif args.ugly is True:  # destructive anonymisation method
-        func = clean_meta_ugly
+    elif args.strict is True:  # destructive anonymisation method
+        func = clean_meta_strict
     elif args.list is True:  # print the list of all supported format
         list_supported()
     else:  # clean the file

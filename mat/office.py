@@ -87,7 +87,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                         if method == 'normal':
                             cfile.remove_all()
                         else:
-                            cfile.remove_all_ugly()
+                            cfile.remove_all_strict()
                         logging.debug('Processing %s from %s' % (item,
                             self.filename))
                         zipout.write(name, item)
@@ -150,7 +150,7 @@ class PdfStripper(parser.GenericParser):
         return self._remove_meta()
 
 
-    def remove_all_ugly(self):
+    def remove_all_strict(self):
         '''
             Opening the PDF with poppler, then doing a render
             on a cairo pdfsurface for each pages.
@@ -261,7 +261,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
                         if method == 'normal':
                             cfile.remove_all()
                         else:
-                            cfile.remove_all_ugly()
+                            cfile.remove_all_strict()
                         logging.debug('Processing %s from %s' % (item,
                             self.filename))
                         zipout.write(name, item)

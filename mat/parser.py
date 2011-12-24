@@ -78,7 +78,7 @@ class GenericParser(object):
         except:
             return False
 
-    def remove_all_ugly(self):
+    def remove_all_strict(self):
         '''
             If the remove_all() is not efficient enough,
             this method is implemented :
