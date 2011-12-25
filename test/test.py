@@ -17,7 +17,7 @@ VERBOSITY = 3
 
 clean = glob.glob('clean*')
 clean.sort()
-dirty  = glob.glob('dirty*')
+dirty = glob.glob('dirty*')
 dirty.sort()
 
 FILE_LIST = zip(clean, dirty)
@@ -61,6 +61,7 @@ class MATTest(unittest.TestCase):
             Remove the tmp folder
         '''
         shutil.rmtree(self.tmpdir)
+
 
 def main():
     import clitest

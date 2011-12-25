@@ -10,6 +10,7 @@ import sys
 sys.path.append('..')
 from mat import mat
 
+
 class TestRemovelib(test.MATTest):
     '''
         test the remove_all() method
@@ -63,6 +64,7 @@ class TestisCleanlib(test.MATTest):
         for clean, _ in self.file_list:
             current_file = mat.create_class_file(clean, False, True)
             self.assertTrue(current_file.is_clean())
+
 
 class TestFileAttributes(unittest.TestCase):
     '''

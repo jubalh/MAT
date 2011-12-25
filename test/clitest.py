@@ -11,6 +11,7 @@ sys.path.append('..')
 from mat import mat
 import test
 
+
 class TestRemovecli(test.MATTest):
     '''
         test if cli correctly remove metadatas
@@ -71,6 +72,7 @@ class TestisCleancli(test.MATTest):
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
             self.assertEqual(stdout.strip('\n'), '[+] %s is not clean' % dirty)
+
 
 class TestFileAttributes(unittest.TestCase):
     '''
