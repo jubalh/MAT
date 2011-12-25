@@ -4,12 +4,14 @@ METADATA:
     In essence, metadata answer who, what, when, where, why, and how about
     every facet of the data that are being documented.
 
+
 METADATA AND PRIVACY:
     Metadata within a file can tell a lot about you.
     Cameras record data about when a picture was taken and what
     camera was used. Office documents like PDF or Office automatically adds
     author and company information to documents and spreadsheets.
     Maybe you don't want to disclose those information on the web.
+
 
 WARNING :
     Mat only removes metadata from your files, it does not anonymise their
@@ -128,10 +130,13 @@ HOW TO IMPLEMENT NEW FORMATS:
         - get_meta(self)
     5. don't forget to call the do_backup() method when necessary
 
+
 HOW TO LAUNCH THE TESTSUITE:
     1. cd ./test
-    2. python2.6 clitest.py : launch the testsuite for the CLI
-    3. python2.6 libtest.py : launch the testsuite for the mat internal library
+    2. python2.6 test.py    : launch all testsuites
+    3. python2.6 clitest.py : launch the testsuite for the CLI
+    4. python2.6 libtest.py : launch the testsuite for the mat internal library
+
 
 ALTERNATIVES AND COMPLEMENTS:
 for images:
@@ -149,6 +154,7 @@ other tools:
 NOTES:
     Formats that are not in the test suite are not well-tested,
     please don't trust the MAT about them !
+
 
 LICENSE:
     This program is free software; you can redistribute it and/or modify
@@ -173,6 +179,7 @@ THANKS:
     - the amazing (and messy) hachoir library,
     - poppler and cairo's python bindings,
     - and the mutagen library
+    - people on #tails@freenode
     many thanks to them !
 
 
