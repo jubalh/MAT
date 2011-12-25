@@ -11,6 +11,7 @@ import glob
 import tempfile
 import unittest
 import subprocess
+import sys
 
 VERBOSITY = 3
 
@@ -60,3 +61,19 @@ class MATTest(unittest.TestCase):
             Remove the tmp folder
         '''
         shutil.rmtree(self.tmpdir)
+
+def main():
+    import clitest
+    import libtest
+
+    failed_tests = 0
+
+    print('Running cli related tests:\n')
+    failed_tests += clitest.main()
+    print('\nRunning library related tests:\n')
+    failed_tests += libtest.main()
+    print('\nTotal failed tests: ' + str(failed_tests))
+    return failed_tests
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -77,12 +77,16 @@ class TestFileAttributes(unittest.TestCase):
     def test_not_exist(self):
         self.assertFalse(mat.create_class_file('ilikecookies', False, True))
 
-if __name__ == '__main__':
+
+def main():
     Suite = unittest.TestSuite()
     Suite.addTest(unittest.makeSuite(TestRemovelib))
     Suite.addTest(unittest.makeSuite(TestListlib))
     Suite.addTest(unittest.makeSuite(TestisCleanlib))
     Suite.addTest(unittest.makeSuite(TestFileAttributes))
     test_result = unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
-    sys.exit(len(test_result.failures))
+    return len(test_result.failures)
 
+
+if __name__ == '__main__':
+    sys.exit(main())
