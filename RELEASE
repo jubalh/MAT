@@ -1,9 +1,11 @@
 update changelog:
-    git log
+    git log -> CHANGELOG
 
 update version number:
     mat/mat.py -> __version__ = $VERSION
-    setup.py
+
+commit release changes
+    git commit CHANGELOG mat/mat.py
 
 create a tag
     git tag -s $VERSION

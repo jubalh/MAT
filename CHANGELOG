@@ -1,3 +1,8 @@
+0.2.2 - 29dec2011 - bugfix release
+    * Update documentation
+    * Improve tests
+    * Various bugfixes
+
 0.2.1 - 25dec2011
     * Fix critical bugs in GUI
     * Handle opendocument metadata
