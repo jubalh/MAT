@@ -19,7 +19,7 @@ setup(
     long_decription   = 'A Metadata Anonymisation Toolkit in Python, using python-hachoir',
     author            = mat.__author__,
     author_email      = 'julien.voisin@dustri.org',
-    plateforms        = 'linux',
+    platforms        = 'linux',
     license           = 'GPLv2',
     url               = 'https://mat.boum.org',
     packages          = ['mat', 'mat.hachoir_editor', 'mat.bencode', 'mat.tarfile'],
