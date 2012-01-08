@@ -262,11 +262,11 @@ data loss, but clean more efficiently'))
 
         if response is 0:  # gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            task = self.__populate(filenames)
+            task = self.populate(filenames)
             gobject.idle_add(task.next)  # asynchrone processing
         chooser.destroy()
 
-    def __populate(self, filenames):
+    def populate(self, filenames):
         '''
             Append selected files by add_file to the self.liststore
         '''
@@ -461,7 +461,7 @@ non-anonymised) file to output archive'))
         '''
         urls = selection.data.strip('\r\n\x00')  # strip stupid characters
         cleaned_urls = map(self.__clean_draged_file_path, urls.split('\n'))
-        task = self.__populate(cleaned_urls)
+        task = self.populate(cleaned_urls)
         gobject.idle_add(task.next)  # asynchrone processing
 
     def __clean_draged_file_path(self, url):
@@ -676,11 +676,27 @@ class TreeViewTooltips(object):
             name = model[path][0]
             return name.file.filename
 
+
+def translate():
+    ''''
+        Handle L10N of mat-gui
+    '''
+    # get system's language
+    current_lang, _ = locale.getdefaultlocale()
+    if current_lang:
+        langs = [current_lang]
+
+    # get the $LANG environnement's variable
+    language = os.environ.get('LANG', None)
+    if language:
+        print language
+        langs += language.split(':')
+
+    return gettext.translation('mat-gui', 'locale', langs, fallback=True).ugettext
+
+
 if __name__ == '__main__':
-    #Translations
-    t = gettext.translation('gui', 'locale', fallback=True)
-    _ = t.ugettext
-    t.install()
+    _ = translate()
 
     #Main
     gui = GUI()
@@ -688,7 +704,7 @@ if __name__ == '__main__':
     #Add files from command line
     infiles = [arg for arg in sys.argv[1:] if os.path.exists(arg)]
     if infiles:
-        task = gui.__populate(infiles)
+        task = gui.populate(infiles)
         gobject.idle_add(task.next)
 
     gtk.main()
