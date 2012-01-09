@@ -689,7 +689,6 @@ def translate():
     # get the $LANG environnement's variable
     language = os.environ.get('LANG', None)
     if language:
-        print language
         langs += language.split(':')
 
     return gettext.translation('mat-gui', 'locale', langs, fallback=True).ugettext
