@@ -1,0 +1,177 @@
+# Metadata Anonymisation Toolkit
+# Copyright (C) 2011 Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>"
+# This file is distributed under the same license as the mat package.
+# Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: fr\n"
+"Report-Msgid-Bugs-To: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+"POT-Creation-Date: 2012-01-07 00:09+0100\n"
+"PO-Revision-Date: 2012-01-07 00:09+0100\n"
+"Last-Translator: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+"Language-Team: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: mat-gui:88 mat-gui:504 mat-gui:523 mat-gui:542
+msgid "Ready"
+msgstr "Prêt"
+
+#: mat-gui:100
+msgid "Add"
+msgstr "Ajouter"
+
+#: mat-gui:102 mat-gui:186
+msgid "Add files"
+msgstr "Ajouter fichiers"
+
+#: mat-gui:106 mat-gui:206 mat-gui:498 mat-gui:519
+msgid "Clean (lossless)"
+msgstr "Nettoyer (sans pertes)"
+
+#: mat-gui:108
+msgid "Clean selected files without possible data loss"
+msgstr "Nettoie les fichiers selectionnés sans pertes possible de données"
+
+#: mat-gui:113 mat-gui:217 mat-gui:496 mat-gui:514 mat-gui:533 mat-gui:538
+msgid "Clean (strict)"
+msgstr "Nettoyer (strict)"
+
+#: mat-gui:116
+msgid "Clean selected files with possible data loss, but clean more efficiently"
+msgstr "Nettoie les fichiers selectionnés de manière stricte, mais des pertes de données sont possibles"
+
+#: mat-gui:121 mat-gui:228
+msgid "Check"
+msgstr "Vérifier"
+
+#: mat-gui:123
+msgid "Check selected files for harmful meta"
+msgstr "Vérifie si les fichiers selectionnés comportent des metadatas compromettantes"
+
+#: mat-gui:127 mat-gui:188
+msgid "Quit"
+msgstr "Quitter"
+
+#: mat-gui:139 mat-gui:331
+msgid "Filename"
+msgstr "Nom"
+
+#: mat-gui:139 mat-gui:333
+msgid "Mimetype"
+msgstr "Type Mime"
+
+#: mat-gui:139
+msgid "State"
+msgstr "État"
+
+#: mat-gui:140
+msgid "Cleaned file"
+msgstr "Fichier nettoyé"
+
+#: mat-gui:185
+msgid "Files"
+msgstr "Fichiers"
+
+#: mat-gui:191
+msgid "Edit"
+msgstr "Edition"
+
+#: mat-gui:192
+msgid "Clear the filelist"
+msgstr "Vider la liste de fichiers"
+
+#: mat-gui:195 mat-gui:403
+msgid "Preferences"
+msgstr "Préférences"
+
+#: mat-gui:198
+msgid "Process"
+msgstr "Traiter"
+
+#: mat-gui:232
+msgid "Help"
+msgstr "Aide"
+
+#: mat-gui:233 mat-gui:361
+msgid "Supported formats"
+msgstr "Formats supportés"
+
+#: mat-gui:235
+msgid "About"
+msgstr "À propos"
+
+#: mat-gui:244
+msgid "Choose files"
+msgstr "Choisir fichiers"
+
+#: mat-gui:251
+msgid "All files"
+msgstr "Tout les fichiers"
+
+#: mat-gui:258
+msgid "Supported files"
+msgstr "Fichiers supportés"
+
+#: mat-gui:301
+msgid "unknow"
+msgstr "inconnu"
+
+#: mat-gui:311
+msgid "Not-supported"
+msgstr "Non-supporté"
+
+#: mat-gui:348
+msgid "This software was coded during the GSoC 2011"
+msgstr "Ce logiciel fût forgé lors du GSoC 2011"
+
+#: mat-gui:350
+msgid "Website"
+msgstr "Site internet"
+
+#: mat-gui:414
+msgid "Force Clean"
+msgstr "Forcer le nettoyage"
+
+#: mat-gui:417
+msgid "Do not check if already clean before cleaning"
+msgstr "Ne pas vérifier si un fichier est propre avant le nettoyage"
+
+#: mat-gui:421
+msgid "Backup"
+msgstr "Sauvegarde"
+
+#: mat-gui:424
+msgid "Keep a backup copy"
+msgstr "Conserve une copie de sauvegarde"
+
+#: mat-gui:427
+msgid "Add unsupported file to archives"
+msgstr "Ajoute les types de fichiers non-supportés aux archives"
+
+#: mat-gui:431
+msgid "Add non-supported (and so non-anonymised) file to output archive"
+msgstr "Ajoute les types de fichiers non supportés (et donc, non-traités) aux archives produites"
+
+#: mat-gui:495
+#, python-format
+msgid "Checking %s..."
+msgstr "Vérifie %s..."
+
+#: mat-gui:500
+msgid "dirty"
+msgstr "compromettant"
+
+#: mat-gui:513 mat-gui:532
+#, python-format
+msgid "Cleaning %s..."
+msgstr "Nettoie %s..."
+
+#: mat-gui:531
+#, python-format
+msgid "Cleaning (strict) %s"
+msgstr "Nettoie de manière stricte %s..."
