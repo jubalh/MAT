@@ -1,0 +1,179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-12 19:12+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../mat-gui:88 ../mat-gui:504 ../mat-gui:523 ../mat-gui:542
+msgid "Ready"
+msgstr ""
+
+#: ../mat-gui:100
+msgid "Add"
+msgstr ""
+
+#: ../mat-gui:102 ../mat-gui:186
+msgid "Add files"
+msgstr ""
+
+#: ../mat-gui:106 ../mat-gui:206 ../mat-gui:498 ../mat-gui:519
+msgid "Clean (lossless)"
+msgstr ""
+
+#: ../mat-gui:108
+msgid "Clean selected files without possible data loss"
+msgstr ""
+
+#: ../mat-gui:113 ../mat-gui:217 ../mat-gui:496 ../mat-gui:514 ../mat-gui:533
+#: ../mat-gui:538
+msgid "Clean (strict)"
+msgstr ""
+
+#: ../mat-gui:116
+msgid ""
+"Clean selected files with possible data loss, but clean more efficiently"
+msgstr ""
+
+#: ../mat-gui:121 ../mat-gui:228
+msgid "Check"
+msgstr ""
+
+#: ../mat-gui:123
+msgid "Check selected files for harmful meta"
+msgstr ""
+
+#: ../mat-gui:127 ../mat-gui:188
+msgid "Quit"
+msgstr ""
+
+#: ../mat-gui:139 ../mat-gui:331
+msgid "Filename"
+msgstr ""
+
+#: ../mat-gui:139 ../mat-gui:333
+msgid "Mimetype"
+msgstr ""
+
+#: ../mat-gui:139
+msgid "State"
+msgstr ""
+
+#: ../mat-gui:140
+msgid "Cleaned file"
+msgstr ""
+
+#: ../mat-gui:185
+msgid "Files"
+msgstr ""
+
+#: ../mat-gui:191
+msgid "Edit"
+msgstr ""
+
+#: ../mat-gui:192
+msgid "Clear the filelist"
+msgstr ""
+
+#: ../mat-gui:195 ../mat-gui:403
+msgid "Preferences"
+msgstr ""
+
+#: ../mat-gui:198
+msgid "Process"
+msgstr ""
+
+#: ../mat-gui:232
+msgid "Help"
+msgstr ""
+
+#: ../mat-gui:233 ../mat-gui:361
+msgid "Supported formats"
+msgstr ""
+
+#: ../mat-gui:235
+msgid "About"
+msgstr ""
+
+#: ../mat-gui:244
+msgid "Choose files"
+msgstr ""
+
+#: ../mat-gui:251
+msgid "All files"
+msgstr ""
+
+#: ../mat-gui:258
+msgid "Supported files"
+msgstr ""
+
+#: ../mat-gui:301
+msgid "unknow"
+msgstr ""
+
+#: ../mat-gui:311
+msgid "Not-supported"
+msgstr ""
+
+#: ../mat-gui:348
+msgid "This software was coded during the GSoC 2011"
+msgstr ""
+
+#: ../mat-gui:350
+msgid "Website"
+msgstr ""
+
+#: ../mat-gui:414
+msgid "Force Clean"
+msgstr ""
+
+#: ../mat-gui:417
+msgid "Do not check if already clean before cleaning"
+msgstr ""
+
+#: ../mat-gui:421
+msgid "Backup"
+msgstr ""
+
+#: ../mat-gui:424
+msgid "Keep a backup copy"
+msgstr ""
+
+#: ../mat-gui:427
+msgid "Add unsupported file to archives"
+msgstr ""
+
+#: ../mat-gui:431
+msgid "Add non-supported (and so non-anonymised) file to output archive"
+msgstr ""
+
+#: ../mat-gui:495
+#, python-format
+msgid "Checking %s..."
+msgstr ""
+
+#: ../mat-gui:500
+msgid "dirty"
+msgstr ""
+
+#: ../mat-gui:513 ../mat-gui:532
+#, python-format
+msgid "Cleaning %s..."
+msgstr ""
+
+#: ../mat-gui:531
+#, python-format
+msgid "Cleaning (strict) %s"
+msgstr ""
