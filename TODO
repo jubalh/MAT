@@ -3,16 +3,27 @@ GENERAL:
 	the ultimate goal is to remove
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
-    - Modify creation/modification date
-    (except for stupid formats like zip)
+    - Modify creation/modification date : WIP
+    - the MAT crash on empty files
+
 
 GUI:
     - display harmrful meta per file
+
 
 FORMATS:
     - microsoft office < 2007 (ugly and insane)
     - fix zip (fix python's ziplib)
     - videos format ?
+    - torrent file : remove more fields ? remove tracker ?
+
 
 MISC:
     - a nautilus extension (right-clic -> clean with MAT)
+
+
+TESTSUITE
+    - add a ctime/mtime related test
+
+WATERMARK:
+    - do research
