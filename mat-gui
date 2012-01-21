@@ -533,7 +533,7 @@ non-anonymised) file to output archive'))
             if self.liststore[line][3] != _('Clean (strict)'):
                 # if the file is not already strict cleaned
                 if self.force or not self.liststore[line][0].file.is_clean():
-                    if self.liststore[line][0].file.remove_all_ugly():
+                    if self.liststore[line][0].file.remove_all_strict():
                         # if everything went fine
                         self.liststore[line][3] = _('Clean (strict)')
                 if self.backup:  # the backup copy state
