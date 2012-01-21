@@ -6,15 +6,18 @@ import hachoir_core
 import hachoir_editor
 
 import os
+import time
+import sys
 
 import mat
 
 NOMETA = ('.bmp', '.rdf', '.txt', '.xml', '.rels')
+EPOCH = 0
 #bmp : image
 #rdf : text
 #txt : plain text
 #xml : formated text
-#rels : openxml foramted text
+#rels : openxml formated text
 
 
 FIELD = object()
@@ -55,7 +58,14 @@ class GenericParser(object):
             if remove is FIELD:
                 if not self._is_clean(field):
                     return False
-        return True
+
+    def is_time_clean(self):
+        '''
+            Check if the atime and the mtime
+            of self.filename is Epoch
+        '''
+        stat = os.stat(self.filename)
+        return stat.st_atime == 0 and stat.st_mtime == 0
 
     def remove_all(self):
         '''
@@ -64,6 +74,7 @@ class GenericParser(object):
         state = self._remove_all(self.editor)
         hachoir_core.field.writeIntoFile(self.editor, self.output)
         self.do_backup()
+        self.set_time(EPOCH)
         return state
 
     def _remove_all(self, fieldset):
@@ -128,3 +139,19 @@ class GenericParser(object):
         if self.backup is False:
             mat.secure_remove(self.filename)
             os.rename(self.output, self.filename)
+
+    def set_time(self, time):
+        '''
+            Set the ctime of the file to $time
+        '''
+        filename = ''
+        if self.backup is True:
+            filename = self.output
+        else:
+            filename = self.filename
+
+        try:
+            os.utime(filename, (time, time))
+        except:
+            print "Unable to set %s's date to %s" % (filename, time)
+            sys.exit(1)

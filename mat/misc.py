@@ -60,4 +60,5 @@ class TorrentStripper(parser.GenericParser):
         with open(self.output, 'w') as f:  # encode the decoded torrent
             f.write(bencode.bencode(decoded))  # and write it in self.output
         self.do_backup()
+        self.set_time(parser.EPOCH)
         return True

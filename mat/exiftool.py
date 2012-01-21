@@ -43,6 +43,7 @@ class ExiftoolStripper(parser.GenericParser):
                     [ 'exiftool', '-m', '-All=', '-overwrite_original', self.filename ],
                     stdout=open('/dev/null'))
                 process.wait()
+            self.set_time(parser.EPOCH)
             return True
         except:
             return False

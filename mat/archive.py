@@ -5,12 +5,17 @@
 import zipfile
 import shutil
 import os
+import time
 import logging
 import tempfile
 
 import parser
 import mat
 from tarfile import tarfile
+
+#Zip fileformat does not handle dates
+#prior to 1980
+ZIP_TIME = 315529200 #1jan1980
 
 
 class GenericArchiveStripper(parser.GenericParser):
@@ -161,6 +166,9 @@ harmless format' % item.filename)
         zipout.close()
         logging.info('%s treated' % self.filename)
         self.do_backup()
+        #time = 1980
+        # TODO
+        #self.set_time(time)
         return True
 
 
@@ -204,6 +212,7 @@ class TarStripper(GenericArchiveStripper):
         tarin.close()
         tarout.close()
         self.do_backup()
+        self.set_time(parser.EPOCH)
         return True
 
     def is_file_clean(self, current_file):
