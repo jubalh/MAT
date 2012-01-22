@@ -100,7 +100,6 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         zipin.close()
         zipout.close()
         self.do_backup()
-        self.set_time(archive.ZIP_TIME)
         return True
 
     def is_clean(self):
@@ -214,8 +213,6 @@ class PdfStripper(parser.GenericParser):
         if processed is False:
             logging.error('Please install either pdfrw, or exiftool to\
                     fully handle PDF files')
-
-        self.set_time(parser.EPOCH)
         return processed
 
     def get_meta(self):
@@ -277,7 +274,6 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         zipin.close()
         zipout.close()
         self.do_backup()
-        self.set_time(archive.ZIP_TIME)
         return True
 
     def is_clean(self):
