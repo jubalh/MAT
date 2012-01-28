@@ -29,5 +29,9 @@ TESTSUITE
     - add a ctime/mtime related test
 
 
+SETUP:
+    - rename mat-cli to mat
+
+
 WATERMARK:
     - do research
