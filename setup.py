@@ -7,7 +7,7 @@ import subprocess
 
 from distutils.core import setup
 
-from mat import mat
+from lib import mat
 
 #Remove MANIFEST file, since distutils
 #doesn't properly update it when
@@ -20,7 +20,7 @@ def l10n():
     '''
         Compile .po files to .mo
     '''
-    for language in glob.glob('locale/*'):
+    for language in glob.glob('locale/*/'):
         fpath = os.path.join(language, 'LC_MESSAGES', 'mat-gui.po')
         output = fpath[:-2] + 'mo'
         subprocess.call(['msgfmt', fpath, '-o', output])
@@ -36,8 +36,8 @@ setup(
     platforms         = 'linux',
     license           = 'GPLv2',
     url               = 'https://mat.boum.org',
-    packages          = ['mat', 'mat.hachoir_editor', 'mat.bencode', 'mat.tarfile'],
-    scripts           = ['mat-cli', 'mat-gui'],
+    packages          = ['lib', 'lib.hachoir_editor', 'lib.bencode', 'lib.tarfile'],
+    scripts           = ['mat', 'mat-gui'],
     data_files        = [
         ( 'share/applications', ['mat.desktop'] ),
         ( 'share/mat', ['FORMATS'] ),
