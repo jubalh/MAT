@@ -36,7 +36,7 @@ OPTIONALS DEPENDENCIES:
 
 
 USAGE:
-        mat-cli --help
+        mat --help
     or
         mat-gui
 
