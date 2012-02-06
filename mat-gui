@@ -103,18 +103,9 @@ class GUI:
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
-        toolbutton.set_label(_('Clean (lossless)'))
+        toolbutton.set_label(_('Clean'))
         toolbutton.connect('clicked', self.__process_files, self.__mat_clean)
-        toolbutton.set_tooltip_text(_('Clean selected files without possible \
-data loss'))
-        toolbar.add(toolbutton)
-
-        toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_WARNING)
-        toolbutton.set_label(_('Clean (strict)'))
-        toolbutton.connect('clicked', self.__process_files,
-                self.__mat_clean_strict)
-        toolbutton.set_tooltip_text(_('Clean selected files with possible \
-data loss, but clean more efficiently'))
+        toolbutton.set_tooltip_text(_('Clean selected files'))
         toolbar.add(toolbutton)
 
         toolbutton = gtk.ToolButton(gtk.STOCK_FIND)
@@ -203,19 +194,8 @@ data loss, but clean more efficiently'))
         picture = gtk.Image()
         picture.set_from_stock(gtk.STOCK_PRINT_REPORT, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
-        item.set_label(_('Clean (lossless)'))
+        item.set_label(_('Clean'))
         item.connect('activate', self.__process_files, self.__mat_clean)
-        process_menu.append(item)
-
-        item = gtk.ImageMenuItem()
-        key, mod = gtk.accelerator_parse('<Control>S')
-        item.add_accelerator('activate', self.accelerator,
-            key, mod, gtk.ACCEL_VISIBLE)
-        picture = gtk.Image()
-        picture.set_from_stock(gtk.STOCK_PRINT_WARNING, gtk.ICON_SIZE_MENU)
-        item.set_image(picture)
-        item.set_label(_('Clean (strict)'))
-        item.connect('activate', self.__process_files, self.__mat_clean_strict)
         process_menu.append(item)
 
         item = gtk.ImageMenuItem()
@@ -276,7 +256,6 @@ data loss, but clean more efficiently'))
                 for root, dirs, files in os.walk(filename):
                     for item in files:
                         path_to_file = os.path.join(root, item)
-
                         if self.__add_file_to_treeview(path_to_file):
                             not_supported.append(item)
             else:  # filename is a regular file
@@ -493,11 +472,11 @@ non-anonymised) file to output archive'))
         '''
         for line in iterator:  # for each file in selection
             self.statusbar.push(0, _('Checking %s...') % self.liststore[line][1])
-            if self.liststore[line][3] != _('Clean (strict)'):
+            if self.force is True or self.liststore[line][3] != _('Clean'):
                 if self.liststore[line][0].file.is_clean():
-                    string = _('Clean (lossless)')
+                    string = _('Clean')
                 else:
-                    string = _('dirty')
+                    string = _('Dirty')
                 logging.info('%s is %s' % (self.liststore[line][1], string))
                 self.liststore[line][3] = string
                 yield True
@@ -509,33 +488,11 @@ non-anonymised) file to output archive'))
             Clean selected elements
         '''
         for line in iterator:  # for each file in selection
-            logging.info('Cleaning (lossless) %s' % self.liststore[line][1])
+            logging.info('Cleaning %s' % self.liststore[line][1])
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
-            if self.liststore[line][3] != _('Clean (strict)'):
-                # if the file is not already strict cleaned
-                if self.force or not self.liststore[line][0].file.is_clean():
-                    if self.liststore[line][0].file.remove_all():
-                        # if everything went fine
-                        self.liststore[line][3] = _('Clean (lossless)')
-                if self.backup:  # the backup copy state
-                    self.liststore[line][4] = self.liststore[line][0].file.output
-            yield True
-        self.statusbar.push(0, _('Ready'))
-        yield False
-
-    def __mat_clean_strict(self, iterator):
-        '''
-            Clean selected elements (ugly way)
-        '''
-        for line in iterator:  # for each file in selection
-            logging.info(_('Cleaning (strict) %s') % self.liststore[line][1])
-            self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
-            if self.liststore[line][3] != _('Clean (strict)'):
-                # if the file is not already strict cleaned
-                if self.force or not self.liststore[line][0].file.is_clean():
-                    if self.liststore[line][0].file.remove_all_strict():
-                        # if everything went fine
-                        self.liststore[line][3] = _('Clean (strict)')
+            if self.force is True or self.liststore[line][3] != _('Clean'):
+                if self.liststore[line][0].file.remove_all():
+                    self.liststore[line][3] = _('Clean')
                 if self.backup:  # the backup copy state
                     self.liststore[line][4] = self.liststore[line][0].file.output
             yield True

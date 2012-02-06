@@ -36,22 +36,9 @@ class GenericArchiveStripper(parser.GenericParser):
         shutil.rmtree(self.tempdir)
 
     def remove_all(self):
-        '''
-            Call _remove_all() with in argument : "normal"
-        '''
-        return self._remove_all('normal')
+        return self._remove_all()
 
-    def remove_all_strict(self):
-        '''
-            call remove_all() with in argument : "strict"
-        '''
-        return self._remove_all('strict')
-
-    def _remove_all(self, method):
-        '''
-            Remove all meta, normal way if method is "normal",
-            else, use the strict way (with possible data loss)
-        '''
+    def _remove_all(self):
         raise NotImplementedError
 
 
@@ -127,7 +114,7 @@ harmless format' % item.filename)
         zipin.close()
         return metadata
 
-    def _remove_all(self, method):
+    def _remove_all(self):
         '''
             So far, the zipfile module does not allow to write a ZipInfo
             object into a zipfile (and it's a shame !) : so data added
@@ -143,10 +130,7 @@ harmless format' % item.filename)
                 try:
                     cfile = mat.create_class_file(name, False,
                         self.add2archive)
-                    if method is 'normal':
-                        cfile.remove_all()
-                    else:
-                        cfile.remove_all_strict()
+                    cfile.remove_all()
                     logging.debug('Processing %s from %s' % (item.filename,
                         self.filename))
                     zipout.write(name, item.filename)
@@ -179,7 +163,7 @@ class TarStripper(GenericArchiveStripper):
         current_file.gname = ''
         return current_file
 
-    def _remove_all(self, method):
+    def _remove_all(self):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         tarout = tarfile.open(self.output, 'w' + self.compression)
         for item in tarin.getmembers():
@@ -190,10 +174,7 @@ class TarStripper(GenericArchiveStripper):
                 try:
                     cfile = mat.create_class_file(name, False,
                     self.add2archive)
-                    if method is 'normal':
-                        cfile.remove_all()
-                    else:
-                        cfile.remove_all_strict()
+                    cfile.remove_all()
                     tarout.add(name, item.name, filter=self._remove)
                 except:
                     logging.info('%s\' format is not supported or harmless' %

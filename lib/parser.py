@@ -78,16 +78,6 @@ class GenericParser(object):
         except:
             return False
 
-    def remove_all_strict(self):
-        '''
-            If the remove_all() is not efficient enough,
-            this method is implemented :
-            It is efficient, but destructive.
-            In a perfect world, with nice fileformat,
-            this method would not exist.
-        '''
-        self.remove_all()
-
     def _remove(self, fieldset, field):
         '''
             Delete the given field
