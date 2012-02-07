@@ -8,22 +8,20 @@ import parser
 class JpegStripper(parser.GenericParser):
     '''
         represents a jpeg file
-        remaining :
-        http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/CanonRaw.html
     '''
     def _should_remove(self, field):
         '''
             return True if the field is compromizing
         '''
-        name = field.name
-        if name.startswith('comment'):
-            return True
-        elif name in ('photoshop', 'exif', 'adobe', 'app12'):
-            return True
-        elif name in ('icc'):  # should we remove the icc profile ?
-            return True
-        else:
+        field_list = frozeset(['start_image', 'app0', 'start_frame',
+                'start_scan', 'data', 'end_image'])
+        if field.name in field_list:
             return False
+        elif field.name.startswith('quantization['):
+            return False
+        elif field.name.startswith('huffman['):
+            return False
+        return True
 
 
 class PngStripper(parser.GenericParser):
