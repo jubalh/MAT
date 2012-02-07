@@ -13,7 +13,7 @@ class JpegStripper(parser.GenericParser):
         '''
             return True if the field is compromizing
         '''
-        field_list = frozeset(['start_image', 'app0', 'start_frame',
+        field_list = frozenset(['start_image', 'app0', 'start_frame',
                 'start_scan', 'data', 'end_image'])
         if field.name in field_list:
             return False
@@ -33,14 +33,9 @@ class PngStripper(parser.GenericParser):
         '''
             return True if the field is compromizing
         '''
-        name = field.name
-        if name.startswith('text['):  # textual meta
-            return True
-        elif name.startswith('utf8_text['):  # uncompressed adobe crap
-            return True
-        elif name.startswith('compt_text['):  # compressed adobe crap
-            return True
-        elif name == "time":  # timestamp
-            return True
-        else:
+        field_list = frozenset(['id', 'header', 'physical', 'end'])
+        if field.name in field_list:
             return False
+        if field.name.startswith('data['):
+            return False
+        return True
