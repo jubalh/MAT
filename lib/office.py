@@ -19,6 +19,7 @@ import mat
 import parser
 import archive
 
+
 class OpenDocumentStripper(archive.GenericArchiveStripper):
     '''
         An open document file is a zip, with xml file into.
@@ -126,21 +127,21 @@ class PdfStripper(parser.GenericParser):
         uri = 'file://' + os.path.abspath(self.filename)
         self.password = None
         self.document = poppler.document_new_from_file(uri, self.password)
-        self.meta_list = ('title', 'author', 'subject', 'keywords', 'creator',
-            'producer', 'metadata')
+        self.meta_list = frozenset(['title', 'author', 'subject', 'keywords', 'creator',
+            'producer', 'metadata'])
 
     def is_clean(self):
         '''
             Check if the file is clean from harmful metadatas
         '''
         for key in self.meta_list:
-            if self.document.get_property(key) != None:
+            if self.document.get_property(key):
                 return False
         return True
 
     def remove_all(self):
         '''
-            Remove supperficial
+            Remove metadata
         '''
         return self._remove_meta()
 
@@ -148,11 +149,12 @@ class PdfStripper(parser.GenericParser):
         '''
             Opening the PDF with poppler, then doing a render
             on a cairo pdfsurface for each pages.
-            Thanks to Lunar^for the idea.
+
             http://cairographics.org/documentation/pycairo/2/
             python-poppler is not documented at all : have fun ;)
         '''
         page = self.document.get_page(0)
+        # assume that every pages are the same size
         page_width, page_height = page.get_size()
         surface = cairo.PDFSurface(self.output, page_width, page_height)
         context = cairo.Context(surface)  # context draws on the surface
@@ -165,8 +167,7 @@ class PdfStripper(parser.GenericParser):
         surface.finish()
 
         try:
-            import pdfrw
-            #For now, poppler cannot write meta, so we must use pdfrw
+            import pdfrw  # For now, poppler cannot write meta, so we must use pdfrw
             logging.debug('Removing %s\'s superficial metadata' % self.filename)
             trailer = pdfrw.PdfReader(self.output)
             trailer.Info.Producer = None
@@ -187,7 +188,7 @@ class PdfStripper(parser.GenericParser):
         '''
         metadata = {}
         for key in self.meta_list:
-            if self.document.get_property(key) is not None:
+            if self.document.get_property(key):
                 metadata[key] = self.document.get_property(key)
         return metadata
 
@@ -249,10 +250,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         zipin.close()
         czf = archive.ZipStripper(self.filename, self.parser,
                 'application/zip', self.backup, self.add2archive)
-        if not czf.is_clean():
-            return False
-        else:
-            return True
+        return czf.is_clean()
 
     def get_meta(self):
         '''
