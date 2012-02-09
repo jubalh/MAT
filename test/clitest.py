@@ -78,12 +78,6 @@ class TestFileAttributes(unittest.TestCase):
     '''
         test various stuffs about files (readable, writable, exist, ...)
     '''
-    def test_not_readable(self):
-        proc = subprocess.Popen(['../mat', 'not_readable'],
-            stdout=subprocess.PIPE)
-        stdout, _ = proc.communicate()
-        self.assertEqual(stdout.strip('\n'), 'Unable to pocess  %s' % 'not_readable')
-
     def test_not_writtable(self):
         proc = subprocess.Popen(['../mat', 'not_writtable'],
             stdout=subprocess.PIPE)

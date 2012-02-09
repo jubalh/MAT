@@ -70,9 +70,6 @@ class TestFileAttributes(unittest.TestCase):
     '''
         test various stuffs about files (readable, writable, exist, ...)
     '''
-    def test_not_readable(self):
-        self.assertFalse(mat.create_class_file('not_readable', False, True))
-
     def test_not_writtable(self):
         self.assertFalse(mat.create_class_file('not_writtable', False, True))
 
