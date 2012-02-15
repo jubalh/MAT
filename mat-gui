@@ -102,7 +102,7 @@ class GUI:
         toolbutton.set_tooltip_text(_('Add files'))
         toolbar.add(toolbutton)
 
-        toolbutton = gtk.ToolButton(gtk.STOCK_PRINT_REPORT)
+        toolbutton = gtk.ToolButton(gtk.STOCK_CLEAR)
         toolbutton.set_label(_('Clean'))
         toolbutton.connect('clicked', self.__process_files, self.__mat_clean)
         toolbutton.set_tooltip_text(_('Clean selected files'))
@@ -192,7 +192,7 @@ class GUI:
         item.add_accelerator('activate', self.accelerator,
             key, mod, gtk.ACCEL_VISIBLE)
         picture = gtk.Image()
-        picture.set_from_stock(gtk.STOCK_PRINT_REPORT, gtk.ICON_SIZE_MENU)
+        picture.set_from_stock(gtk.STOCK_CLEAR, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
         item.set_label(_('Clean'))
         item.connect('activate', self.__process_files, self.__mat_clean)
