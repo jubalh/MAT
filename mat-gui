@@ -73,6 +73,7 @@ class GUI:
         self.treeview.set_search_column(1)  # filename column is searchable
         self.treeview.set_rules_hint(True)  # alternate colors for rows
         self.treeview.set_rubber_banding(True)  # mouse selection
+        self.treeview.connect('row-activated', self.__popup_metadata)
         self.treeview.connect('drag_data_received',
                 self.__on_drag_data_received)
         self.treeview.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
@@ -282,6 +283,26 @@ class GUI:
         else:
             return True
 
+    def __popup_metadata(self, tv, nb, tvc):
+        '''
+            Popup that display on double-clic
+            metadata from a file
+        '''
+        meta = '<b>%s</b>\'s metadatas:\n' % self.liststore[nb][1]
+        if self.liststore[nb][0].file.is_clean():
+            meta += 'No metadata found'
+        else:
+            for i, j in self.liststore[nb][0].file.get_meta().iteritems():
+                meta += '\n' + str(i) + ' : ' + str(j)
+
+        w = gtk.MessageDialog(self.window,
+                gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
+                gtk.BUTTONS_CLOSE, '')
+        w.set_markup(meta)
+        click = w.run()
+        if click:
+            w.destroy()
+
     def __popup_non_supported(self, filelist):
         '''
             Popup that warn the user about the unsupported files
@@ -322,13 +343,14 @@ class GUI:
             About popup
         '''
         w = gtk.AboutDialog()
-        w.set_version(mat.__version__)
+        w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_copyright('GNU Public License v2')
         w.set_comments(_('This software was coded during the GSoC 2011'))
+        #w.about.set_logo(gtk.gdk.pixbuf_new_from_file(LOGO))
+        w.set_program_name('Metadata Anonymisation Toolkit')
+        w.set_version(mat.__version__)
         w.set_website('https://mat.boum.org')
         w.set_website_label(_('Website'))
-        w.set_authors(['Julien (jvoisin) Voisin', ])
-        w.set_program_name('Metadata Anonymisation Toolkit')
         click = w.run()
         if click:
             w.destroy()
@@ -363,7 +385,7 @@ class GUI:
         for item in handler.list:  # list of dict : one dict per format
             # create one expander per format
             # only if the format is supported
-            if strippers.STRIPPERS.has_key(item['mimetype'].split(',')[0]):
+            if item['mimetype'].split(',')[0] in strippers.STRIPPERS:
                 # some format have more than one mimetype
                 title = '%s (%s)' % (item['name'], item['extension'])
                 support = ('\t<b>%s</b> : %s' % ('support', item['support']))
@@ -389,7 +411,8 @@ class GUI:
         '''
             Preferences popup
         '''
-        dialog = gtk.Dialog(_('Preferences'), self.window, 0, (gtk.STOCK_OK, 0))
+        dialog = gtk.Dialog(_('Preferences'), self.window, 0,
+                (gtk.STOCK_OK, 0))
         hbox = gtk.HBox()
         dialog.get_content_area().pack_start(hbox, False, False, 0)
 
