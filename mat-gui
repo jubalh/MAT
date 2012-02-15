@@ -361,21 +361,24 @@ class GUI:
                     i.set_expanded(False)
 
         for item in handler.list:  # list of dict : one dict per format
-            #create one expander per format
-            title = '%s (%s)' % (item['name'], item['extension'])
-            support = ('\t<b>%s</b> : %s' % ('support', item['support']))
-            metadata = '\n\t<b>metadata</b> : ' + item['metadata']
-            method = '\n\t<b>method</b> : ' + item['method']
-            content = support + metadata + method
-            if item['support'] == 'partial':
-                content += '\n\t<b>remaining</b> : ' + item['remaining']
+            # create one expander per format
+            # only if the format is supported
+            if strippers.STRIPPERS.has_key(item['mimetype'].split(',')[0]):
+                # some format have more than one mimetype
+                title = '%s (%s)' % (item['name'], item['extension'])
+                support = ('\t<b>%s</b> : %s' % ('support', item['support']))
+                metadata = '\n\t<b>metadata</b> : ' + item['metadata']
+                method = '\n\t<b>method</b> : ' + item['method']
+                content = support + metadata + method
+                if item['support'] == 'partial':
+                    content += '\n\t<b>remaining</b> : ' + item['remaining']
 
-            expander = gtk.Expander(title)
-            vbox.pack_start(expander, False, False, 0)
-            label = gtk.Label()
-            label.set_markup(content)
-            expander.add(label)
-            expander.connect('activate', expander_callback)
+                expander = gtk.Expander(title)
+                vbox.pack_start(expander, False, False, 0)
+                label = gtk.Label()
+                label.set_markup(content)
+                expander.add(label)
+                expander.connect('activate', expander_callback)
 
         dialog.show_all()
         click = dialog.run()
