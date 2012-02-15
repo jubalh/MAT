@@ -2,6 +2,7 @@
     <format>
         <name>Portable Network Graphics</name>
         <extension>.png</extension>
+        <mimetype>image/png</mimetype>
         <support>full</support>
         <metadata>textual metadata + date</metadata>
         <method>removal of harmful fields is done with hachoir</method>
@@ -10,6 +11,7 @@
     <format>
         <name>Jpeg</name>
         <extension>.jpeg, .jpg</extension>
+        <mimetype>image/jpeg</mimetype>
         <support>partial</support>
         <metadata>comment + exif/photoshop/adobe</metadata>
         <method>removal of harmful fields is done with hachoir</method>
@@ -21,6 +23,7 @@
     <format>
         <name>Open Document</name>
         <extension>.odt, .odx, .ods, ...</extension>
+        <mimetype>application/opendocument</mimetype>
         <support>full</support>
         <metadata>a meta.xml file</metadata>
         <method>removal of the meta.xml file</method>
@@ -29,6 +32,7 @@
     <format>
         <name>Office Openxml</name>
         <extension>.docx, .pptx, .xlsx, ...</extension>
+        <mimetype>application/officeopenxml</mimetype>
         <support>full</support>
         <metadata>a docProps folder containings xml metadata files</metadata>
         <method>removal of the docProps folder</method>
@@ -37,6 +41,7 @@
     <format>
         <name>Portable Document Fileformat</name>
         <extension>.pdf</extension>
+        <mimetype>application/pdf</mimetype>
         <support>full</support>
         <metadata>a lot</metadata>
         <method> rendering of the PDF file on a cairo surface with the help of
@@ -50,6 +55,7 @@
     <format>
         <name>Tape ARchive</name>
         <extension>.tar, .tar.bz2, .tar.gz</extension>
+        <mimetype>application/x-tar, application/x-gzip, application/x-bzip2</mimetype>
         <support>full</support>
         <metadata>metadata from the file itself, metadata from the file contained
             into the archive, and metadata added by tar to the file at then
@@ -62,6 +68,7 @@
     <format>
         <name>Zip</name>
         <extension>.zip</extension>
+        <mimetype>application/zip</mimetype>
         <support>partial</support>
         <metadata>metadata from the file itself, metadata from the file contained
             into the archive, and metadata added by zip to the file when added to
@@ -74,6 +81,7 @@
     <format>
         <name>MPEG Audio</name>
         <extension>.mp3, .mp2, .mp1, .mpa</extension>
+        <mimetype>audio/mpeg</mimetype>
         <support>full</support>
         <metadata>id3</metadata>
         <method>removal of harmful fields is done with hachoir</method>
@@ -82,6 +90,7 @@
     <format>
         <name>Ogg Vorbis</name>
         <extension>.ogg</extension>
+        <mimetype>audio/vorbis</mimetype>
         <support>full</support>
         <metadata>Vorbis</metadata>
         <method>removal of harmful fields is done with mutagen</method>
@@ -90,6 +99,7 @@
     <format>
         <name>Free Lossless Audio Codec</name>
         <extension>.flac</extension>
+        <mimetype>audio/x-flac</mimetype>
         <support>full</support>
         <metadata>Flac, Vorbis</metadata>
         <method>removal of harmful fields is done with mutagen</method>
@@ -98,6 +108,7 @@
     <format>
 	<name>Torrent</name>
 	<extension>.torrent</extension>
+    <mimetype>application/torrent</mimetype>
 	<support>full</support>
 	<metadata>torrent</metadata>
 	<method>remove all the compromizing metadata with a heavily tuned version
