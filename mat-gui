@@ -354,6 +354,12 @@ class GUI:
         with open(path, 'r') as xmlfile:
             parser.parse(xmlfile)
 
+        def expander_callback(current):
+            ''' Close every expander except the current one '''
+            for i in vbox.get_children()[1:]:  # first child is a gtk.Label
+                if i != current:
+                    i.set_expanded(False)
+
         for item in handler.list:  # list of dict : one dict per format
             #create one expander per format
             title = '%s (%s)' % (item['name'], item['extension'])
@@ -369,6 +375,7 @@ class GUI:
             label = gtk.Label()
             label.set_markup(content)
             expander.add(label)
+            expander.connect('activate', expander_callback)
 
         dialog.show_all()
         click = dialog.run()
