@@ -11,6 +11,7 @@ import os
 import hachoir_core
 
 from lib import mat
+from lib import strippers
 
 
 def parse():
@@ -108,13 +109,15 @@ def list_supported():
         parser.parse(xmlfile)
 
     for item in handler.list:
-        print('%s (%s)' % (item['name'], item['extension']))
-        print('\tsupport : ' + item['support'])
-        print('\tmetadata : ' + item['metadata'])
-        print('\tmethod : ' + item['method'])
-        if item['support'] == 'partial':
-            print('\tremaining : ' + item['remaining'])
-        print('\n')
+        if strippers.STRIPPERS.has_key(item['mimetype'].split(',')[0]):
+            #on display localy supported formats
+            print 'ok'
+            print('%s (%s)' % (item['name'], item['extension']))
+            print('\tsupport : ' + item['support'])
+            print('\tmetadata : ' + item['metadata'])
+            print('\tmethod : ' + item['method'] + '\n')
+            if item['support'] == 'partial':
+                print('\tremaining : ' + item['remaining'] + '\n')
     sys.exit(0)
 
 
