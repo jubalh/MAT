@@ -4,9 +4,6 @@ GENERAL:
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
 
-GUI:
-    - display harmrful meta per file
-
 
 FORMATS:
     NEW:
