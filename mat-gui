@@ -73,6 +73,7 @@ class GUI:
         self.treeview.set_search_column(1)  # filename column is searchable
         self.treeview.set_rules_hint(True)  # alternate colors for rows
         self.treeview.set_rubber_banding(True)  # mouse selection
+        self.treeview.connect("key_press_event", self.treeview_keyboard_event)
         self.treeview.connect('row-activated', self.__popup_metadata)
         self.treeview.connect('drag_data_received',
                 self.__on_drag_data_received)
@@ -183,7 +184,7 @@ class GUI:
         edit_menu = self.__create_sub_menu(_('Edit'), menubar)
         self.__create_menu_item(_('Clear the filelist'),
             lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE,
-            '<Control>L')
+            '')
         self.__create_menu_item(_('Preferences'), self.__preferences,
                 edit_menu, gtk.STOCK_PREFERENCES, '<Control>P')
 
@@ -217,6 +218,19 @@ class GUI:
                 gtk.STOCK_ABOUT, False)
 
         return menubar
+
+
+    def treeview_keyboard_event(self, widget, event):
+        '''
+            Remove selected files from the treeview
+            when the use hit the 'suppr' key
+        '''
+        if gtk.gdk.keyval_name(event.keyval) == "Delete":
+            rows = []
+            model = self.liststore
+            self.selection.selected_foreach(lambda model, path, iter: rows.append(iter))
+            [self.liststore.remove(i) for i in rows]
+
 
     def __add_files(self, button):
         '''
