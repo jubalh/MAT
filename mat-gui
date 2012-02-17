@@ -155,7 +155,8 @@ class GUI:
         picture = gtk.Image()
         picture.set_from_stock(pix, gtk.ICON_SIZE_MENU)
         item.set_image(picture)
-        item.set_label(name)
+        item.set_label('_' + name)
+        item.set_use_underline(True)
         item.connect('activate', func)
         menu.append(item)
 
@@ -165,9 +166,9 @@ class GUI:
         '''
         submenu = gtk.Menu()
         menuitem = gtk.MenuItem()
-        menuitem.set_use_underline(True)
         menuitem.set_submenu(submenu)
         menuitem.set_label('_' + name)
+        menuitem.set_use_underline(True)
         menubar.append(menuitem)
         return submenu
 
@@ -221,7 +222,6 @@ class GUI:
 
         return menubar
 
-
     def treeview_keyboard_event(self, widget, event):
         '''
             Remove selected files from the treeview
@@ -229,10 +229,9 @@ class GUI:
         '''
         if gtk.gdk.keyval_name(event.keyval) == "Delete":
             rows = []
-            model = self.liststore
-            self.selection.selected_foreach(lambda model, path, iter: rows.append(iter))
+            self.selection.selected_foreach(
+                    lambda model, path, iter: rows.append(iter))
             [self.liststore.remove(i) for i in rows]
-
 
     def __add_files(self, button):
         '''
@@ -299,17 +298,17 @@ class GUI:
         else:
             return True
 
-    def __popup_metadata(self, tv, nb, tvc):
+    def __popup_metadata(self, widget, row, col):
         '''
             Popup that display on double-clic
             metadata from a file
         '''
-        label = '<b>%s</b>\'s metadatas:\n' % self.liststore[nb][1]
-        meta =''
-        if self.liststore[nb][0].file.is_clean():
+        label = '<b>%s</b>\'s metadatas:\n' % self.liststore[row][1]
+        meta = ''
+        if self.liststore[row][0].file.is_clean():
             meta = 'No metadata found'
         else:
-            iterator = self.liststore[nb][0].file.get_meta().iteritems()
+            iterator = self.liststore[row][0].file.get_meta().iteritems()
             for i, j in iterator:
                 name = '-<b>' + str(i) + '</b> : '
                 meta += ('\n' + name + str(j))
@@ -318,7 +317,7 @@ class GUI:
                 gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                 gtk.MESSAGE_INFO, gtk.BUTTONS_CLOSE, label)
         w.set_resizable(True)
-        w.set_size_request(400,300)
+        w.set_size_request(400, 300)
         scrolled_window = gtk.ScrolledWindow()
         scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         w.vbox.pack_start(scrolled_window, True, True, 0)
@@ -711,7 +710,8 @@ def translate():
     if language:
         langs += language.split(':')
 
-    return gettext.translation('mat-gui', 'locale', langs, fallback=True).ugettext
+    return gettext.translation('mat-gui', 'locale', langs,
+            fallback=True).ugettext
 
 
 if __name__ == '__main__':
