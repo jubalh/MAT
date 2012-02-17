@@ -165,8 +165,9 @@ class GUI:
         '''
         submenu = gtk.Menu()
         menuitem = gtk.MenuItem()
+        menuitem.set_use_underline(True)
         menuitem.set_submenu(submenu)
-        menuitem.set_label(name)
+        menuitem.set_label('_' + name)
         menubar.append(menuitem)
         return submenu
 
