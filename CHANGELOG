@@ -1,3 +1,11 @@
+0.3 -
+    * Merge the two cleaning mode in one
+    * Fix a pdf related critical security bug
+    * Greatly improve the GUI
+    * Remove every blacklist approach
+    * Preliminary implementation of mtime/atime
+    * As susual, many bugfixes
+
 0.2.2 - 29dec2011 - bugfix release
     * Update documentation
     * Improve tests
