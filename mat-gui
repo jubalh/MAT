@@ -184,7 +184,7 @@ class GUI:
         edit_menu = self.__create_sub_menu(_('Edit'), menubar)
         self.__create_menu_item(_('Clear the filelist'),
             lambda x: self.liststore.clear(), edit_menu, gtk.STOCK_REMOVE,
-            '')
+            None)
         self.__create_menu_item(_('Preferences'), self.__preferences,
                 edit_menu, gtk.STOCK_PREFERENCES, '<Control>P')
 
@@ -302,17 +302,31 @@ class GUI:
             Popup that display on double-clic
             metadata from a file
         '''
-        meta = '<b>%s</b>\'s metadatas:\n' % self.liststore[nb][1]
+        label = '<b>%s</b>\'s metadatas:\n' % self.liststore[nb][1]
+        meta =''
         if self.liststore[nb][0].file.is_clean():
-            meta += 'No metadata found'
+            meta = 'No metadata found'
         else:
-            for i, j in self.liststore[nb][0].file.get_meta().iteritems():
-                meta += '\n' + str(i) + ' : ' + str(j)
+            iterator = self.liststore[nb][0].file.get_meta().iteritems()
+            for i, j in iterator:
+                name = '-<b>' + str(i) + '</b> : '
+                meta += ('\n' + name + str(j))
 
         w = gtk.MessageDialog(self.window,
-                gtk.DIALOG_DESTROY_WITH_PARENT, gtk.MESSAGE_INFO,
-                gtk.BUTTONS_CLOSE, '')
-        w.set_markup(meta)
+                gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                gtk.MESSAGE_INFO, gtk.BUTTONS_CLOSE, label)
+        w.set_resizable(True)
+        w.set_size_request(400,300)
+        scrolled_window = gtk.ScrolledWindow()
+        scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        w.vbox.pack_start(scrolled_window, True, True, 0)
+        content = gtk.Label(meta)
+        content.set_selectable(True)
+        content.set_alignment(0, 0)
+        content.set_use_markup(True)
+        scrolled_window.add_with_viewport(content)
+        w.set_markup(label)
+        w.show_all()
         click = w.run()
         if click:
             w.destroy()
