@@ -62,6 +62,7 @@ class GUI:
         menubar = self.__create_menu()
         toolbar = self.__create_toolbar()
         content = gtk.ScrolledWindow()
+        content.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         vbox.pack_start(menubar, False, True, 0)
         vbox.pack_start(toolbar, False, True, 0)
         vbox.pack_start(content, True, True, 0)
