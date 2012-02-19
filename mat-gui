@@ -387,8 +387,7 @@ class GUI:
         w.set_website_label(_('Website'))
         w.set_position(gtk.WIN_POS_CENTER)
         click = w.run()
-        if click:
-            w.destroy()
+        w.destroy()
 
     def __supported(self, button):
         '''
