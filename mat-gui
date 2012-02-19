@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-#charset utf-8
+# -*- coding: utf-8 -*
+
 
 '''
     Metadata anonymisation toolkit - GUI edition
@@ -52,6 +53,7 @@ class GUI:
         self.window.set_title('Metadata Anonymisation Toolkit')
         self.window.connect('destroy', gtk.main_quit)
         self.window.set_default_size(800, 600)
+        self.window.set_icon(gtk.gdk.pixbuf_new_from_file_at_size("logo.png", 50, 50))
 
         self.accelerator = gtk.AccelGroup()
         self.window.add_accel_group(self.accelerator)
@@ -375,13 +377,15 @@ class GUI:
         '''
         w = gtk.AboutDialog()
         w.set_authors(['Julien (jvoisin) Voisin', ])
+        w.set_artists(['Marine Benoît', ])
         w.set_copyright('GNU Public License v2')
         w.set_comments(_('This software was coded during the GSoC 2011'))
-        #w.about.set_logo(gtk.gdk.pixbuf_new_from_file(LOGO))
+        w.set_logo(gtk.gdk.pixbuf_new_from_file_at_size('logo.png', 400, 200))
         w.set_program_name('Metadata Anonymisation Toolkit')
         w.set_version(mat.__version__)
         w.set_website('https://mat.boum.org')
         w.set_website_label(_('Website'))
+        w.set_position(gtk.WIN_POS_CENTER)
         click = w.run()
         if click:
             w.destroy()

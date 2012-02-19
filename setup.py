@@ -40,7 +40,7 @@ setup(
     scripts           = ['mat', 'mat-gui'],
     data_files        = [
         ( 'share/applications', ['mat.desktop'] ),
-        ( 'share/mat', ['FORMATS'] ),
+        ( 'share/mat', ['FORMATS', 'logo.png'] ),
         ( 'share/doc/mat', ['README', 'TODO'] ),
         ( 'share/mat/locale/', [i for i in l10n()] ),
     ],
