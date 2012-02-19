@@ -307,7 +307,9 @@ class GUI:
         meta = ''
         if self.liststore[row][0].file.is_clean():
             meta = 'No metadata found'
+            self.liststore[row][3] = _('Clean')
         else:
+            self.liststore[row][3] = _('Dirty')
             iterator = self.liststore[row][0].file.get_meta().iteritems()
             for i, j in iterator:
                 name = '-<b>' + str(i) + '</b> : '
