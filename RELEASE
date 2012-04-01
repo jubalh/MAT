@@ -10,6 +10,9 @@ commit release changes
 create a tag
     git tag -s $VERSION
 
+push the tag
+    git push --tags
+
 archive's creation :
     git archive --format=tar.gz --prefix=mat-$VERSION/ $VERSION > mat-$VERSION.tar.gz
 
