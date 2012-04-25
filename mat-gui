@@ -53,7 +53,8 @@ class GUI:
         self.window.set_title('Metadata Anonymisation Toolkit')
         self.window.connect('destroy', gtk.main_quit)
         self.window.set_default_size(800, 600)
-        self.window.set_icon(gtk.gdk.pixbuf_new_from_file_at_size("logo.png", 50, 50))
+        icon = gtk.gdk.pixbuf_new_from_file_at_size("logo.png", 50, 50)
+        self.window.set_icon(icon)
 
         self.accelerator = gtk.AccelGroup()
         self.window.add_accel_group(self.accelerator)
@@ -69,8 +70,8 @@ class GUI:
         vbox.pack_start(toolbar, False, True, 0)
         vbox.pack_start(content, True, True, 0)
 
-        # parser.class - name - type - cleaned
-        self.liststore = gtk.ListStore(object, str, str, str, str)
+        # parser.class - name - path - type - cleaned
+        self.liststore = gtk.ListStore(object, str, str, str, str, str)
 
         self.treeview = gtk.TreeView(model=self.liststore)
         self.treeview.set_search_column(1)  # filename column is searchable
@@ -82,7 +83,7 @@ class GUI:
                 self.__on_drag_data_received)
         self.treeview.drag_dest_set(gtk.DEST_DEFAULT_MOTION |
                 gtk.DEST_DEFAULT_HIGHLIGHT | gtk.DEST_DEFAULT_DROP,
-                [('text/uri-list', 0, 80)], gtk.gdk.ACTION_COPY)
+                [('text/uri-list', 0, 80), ], gtk.gdk.ACTION_COPY)
         self.__add_columns()
         self.selection = self.treeview.get_selection()
         self.selection.set_mode(gtk.SELECTION_MULTIPLE)
@@ -132,17 +133,14 @@ class GUI:
         '''
             Create the columns, and add them to the treeview
         '''
-        colname = [_('Filename'), _('Mimetype'), _('State'),
+        colname = [_('Path'), _('Filename'), _('Mimetype'), _('State'),
             _('Cleaned file')]
 
-        for i, j in enumerate(colname):
+        for i, j in enumerate(colname, 1):
             filename_column = gtk.CellRendererText()
-            column = gtk.TreeViewColumn(j, filename_column, text=i + 1)
-            column.set_sort_column_id(i + 1)
+            column = gtk.TreeViewColumn(j, filename_column, text=i)
+            column.set_sort_column_id(i)
             column.set_resizable(True)  # column is resizeable
-            if i is 0:  # place cell-specific tooltip on this column
-                tips = TreeViewTooltips(column)
-                tips.add_view(self.treeview)
             self.treeview.append_column(column)
 
     def __create_menu_item(self, name, func, menu, pix, shortcut):
@@ -294,8 +292,8 @@ class GUI:
 
         cf = CFile(filename, self.backup, self.add2archive)
         if cf.file is not None:  # if the file is supported by the mat
-            self.liststore.append([cf, cf.file.basename,
-                cf.file.mime, _('unknow'), 'None'])
+            self.liststore.append([cf, os.path.dirname(cf.file.filename) + os.path.sep,
+                cf.file.basename, cf.file.mime, _('unknow'), 'None'])
             return False
         else:
             return True
@@ -307,15 +305,16 @@ class GUI:
         '''
         label = '<b>%s</b>\'s metadatas:\n' % self.liststore[row][1]
         meta = ''
-        if self.liststore[row][0].file.is_clean():
+        if self.liststore[row][4] == _('Clean') or\
+                self.liststore[row][0].file.is_clean():
             meta = 'No metadata found'
-            self.liststore[row][3] = _('Clean')
+            self.liststore[row][4] = _('Clean')
         else:
-            self.liststore[row][3] = _('Dirty')
+            self.liststore[row][4] = _('Dirty')
             iterator = self.liststore[row][0].file.get_meta().iteritems()
             for i, j in iterator:
                 name = '-<b>' + str(i) + '</b> : '
-                meta += ('\n' + name + str(j))
+                meta += (name + str(j) + '\n')
 
         w = gtk.MessageDialog(self.window,
                 gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -386,7 +385,7 @@ class GUI:
         w.set_website('https://mat.boum.org')
         w.set_website_label(_('Website'))
         w.set_position(gtk.WIN_POS_CENTER)
-        click = w.run()
+        w.run()
         w.destroy()
 
     def __supported(self, button):
@@ -494,7 +493,7 @@ non-anonymised) file to output archive'))
             for line in xrange(len(self.liststore)):
                 # change the "backup" property of all files
                 self.liststore[line][0].file.backup = self.backup
-            self.treeview.get_column(3).set_visible(self.backup)
+            self.treeview.get_column(4).set_visible(self.backup)
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 
@@ -539,13 +538,13 @@ non-anonymised) file to output archive'))
         '''
         for line in iterator:  # for each file in selection
             self.statusbar.push(0, _('Checking %s...') % self.liststore[line][1])
-            if self.force is True or self.liststore[line][3] != _('Clean'):
+            if self.force is True or self.liststore[line][4] != _('Clean'):
                 if self.liststore[line][0].file.is_clean():
                     string = _('Clean')
                 else:
                     string = _('Dirty')
                 logging.info('%s is %s' % (self.liststore[line][1], string))
-                self.liststore[line][3] = string
+                self.liststore[line][4] = string
                 yield True
         self.statusbar.push(0, _('Ready'))
         yield False
@@ -557,148 +556,14 @@ non-anonymised) file to output archive'))
         for line in iterator:  # for each file in selection
             logging.info('Cleaning %s' % self.liststore[line][1])
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
-            if self.force is True or self.liststore[line][3] != _('Clean'):
+            if self.force is True or self.liststore[line][4] != _('Clean'):
                 if self.liststore[line][0].file.remove_all():
-                    self.liststore[line][3] = _('Clean')
+                    self.liststore[line][4] = _('Clean')
                 if self.backup:  # the backup copy state
-                    self.liststore[line][4] = self.liststore[line][0].file.output
+                    self.liststore[line][5] = os.path.basename(self.liststore[line][0].file.output)
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False
-
-
-class TreeViewTooltips(object):
-    '''
-        A dirty hack losely based on treeviewtooltip from Daniel J. Popowich
-        (dpopowich AT astro dot umass dot edu), to display differents tooltips
-        for each cell of the first row of the GUI.
-    '''
-    # Copyright (c) 2006, Daniel J. Popowich
-    #
-    # Permission is hereby granted, free of charge, to any person
-    # obtaining a copy of this software and associated documentation files
-    # (the "Software"), to deal in the Software without restriction,
-    # including without limitation the rights to use, copy, modify, merge,
-    # publish, distribute, sublicense, and/or sell copies of the Software,
-    # and to permit persons to whom the Software is furnished to do so,
-    # subject to the following conditions:
-    #
-    # The above copyright notice and this permission notice shall be
-    # included in all copies or substantial portions of the Software.
-    def __init__(self, namecol):
-        '''
-        Initialize the tooltip.
-            window: the popup window that holds the tooltip text, an
-                    instance of gtk.Window.
-            label:  a gtk.Label that is packed into the window.  The
-                    tooltip text is set in the label with the
-                    set_label() method, so the text can be plain or
-                    markup text.
-        '''
-        # create the window
-        self.window = window = gtk.Window(gtk.WINDOW_POPUP)
-        window.set_name('gtk-tooltips')
-        window.set_resizable(False)
-        window.set_border_width(4)
-        window.set_app_paintable(True)
-        window.connect("expose-event", self.__on_expose_event)
-
-        # create the label
-        self.label = label = gtk.Label()
-        label.set_line_wrap(True)
-        label.set_alignment(0.5, 0.5)
-        label.show()
-        window.add(label)
-
-        self.namecol = namecol
-        self.__save = None  # saves the current cell
-        self.__next = None  # the timer id for the next tooltip to be shown
-        self.__shown = False  # flag on whether the tooltip window is shown
-
-    def __show(self, tooltip, x, y):
-        '''
-            show the tooltip
-        '''
-        self.label.set_label(tooltip)  # set label
-        self.window.move(x, y)  # move the window
-        self.window.show()  # show it
-        self.__shown = True
-
-    def __hide(self):
-        '''
-            hide the tooltip
-        '''
-        self.__queue_next()
-        self.window.hide()
-        self.__shown = False
-
-    def __motion_handler(self, view, event):
-        '''
-            as the pointer moves across the view, show a tooltip
-        '''
-        path_at_pos = view.get_path_at_pos(int(event.x), int(event.y))
-        if path_at_pos:
-            path, col, x, y = path_at_pos
-            tooltip = self.get_tooltip(view, col, path)
-            if tooltip:
-                tooltip = str(tooltip).strip()
-                self.__queue_next((path, col), tooltip, int(event.x_root),
-                      int(event.y_root))
-                return
-        self.__hide()
-
-    def __queue_next(self, *args):
-        '''
-            queue next request to show a tooltip
-            if args is non-empty it means a request was made to show a
-            tooltip.  if empty, no request is being made, but any
-            pending requests should be cancelled anyway
-        '''
-        cell = None
-
-        if args:  # if called with args, break them out
-            cell, tooltip, x, y = args
-
-        # if it's the same cell as previously shown, just return
-        if self.__save == cell:
-            return
-
-        if self.__next:  # if we have something queued up, cancel it
-            gobject.source_remove(self.__next)
-            self.__next = None
-
-        if cell:  # if there was a request
-            if self.__shown:  # if tooltip is already shown show the new one
-                self.__show(tooltip, x, y)
-            else:  # else queue it up in 1/2 second
-                self.__next = gobject.timeout_add(500, self.__show,
-                    tooltip, x, y)
-        self.__save = cell  # save this cell
-
-    def __on_expose_event(self, window, event):
-        '''
-            this magic is required so the window appears with a 1-pixel
-            black border (default gtk Style).
-        '''
-        w, h = window.size_request()
-        window.style.paint_flat_box(window.window, gtk.STATE_NORMAL,
-            gtk.SHADOW_OUT, None, window, 'tooltip', 0, 0, w, h)
-
-    def add_view(self, view):
-        '''
-            add a gtk.TreeView to the tooltip
-        '''
-        view.connect('motion-notify-event', self.__motion_handler)
-        view.connect('leave-notify-event', lambda i, j: self.__hide())
-
-    def get_tooltip(self, view, column, path):
-        '''
-            See the module doc string for a description of this method
-        '''
-        if column is self.namecol:
-            model = view.get_model()
-            name = model[path][0]
-            return name.file.filename
 
 
 def translate():
