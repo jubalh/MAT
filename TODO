@@ -3,6 +3,8 @@ GENERAL:
 	the ultimate goal is to remove
 	all "harmful meta" stuff
     - Fix the ugly function get_sharedir
+    - Better handling of missing libraries if any
+      (pdfrw, exiftool, ...)
 
 
 FORMATS:
