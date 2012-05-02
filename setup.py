@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 import os
-import sys
-import glob
-import subprocess
 
-from distutils.core import setup
+from distutils.core import setup, Command
+from DistUtilsExtra.command import *
 
 from lib import mat
 
@@ -14,17 +12,6 @@ from lib import mat
 #the contents of directories changes.
 if os.path.exists('MANIFEST'):
     os.remove('MANIFEST')
-
-
-def l10n():
-    '''
-        Compile .po files to .mo
-    '''
-    for language in glob.glob('locale/*/'):
-        fpath = os.path.join(language, 'LC_MESSAGES', 'mat-gui.po')
-        output = fpath[:-2] + 'mo'
-        subprocess.call(['msgfmt', fpath, '-o', output])
-        yield output
 
 setup(
     name              = 'MAT',
@@ -42,6 +29,12 @@ setup(
         ( 'share/applications', ['mat.desktop'] ),
         ( 'share/mat', ['FORMATS', 'logo.png'] ),
         ( 'share/doc/mat', ['README', 'TODO'] ),
-        ( 'share/mat/locale/', [i for i in l10n()] ),
     ],
+    cmdclass          = {
+        'build': build_extra.build_extra,
+        'build_i18n': build_i18n.build_i18n,
+        'build_help': build_help.build_help,
+        'build_icons': build_icons.build_icons,
+        'clean': clean_i18n.clean_i18n,
+    },
 )
