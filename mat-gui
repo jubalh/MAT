@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-
 '''
     Metadata anonymisation toolkit - GUI edition
 '''
@@ -560,8 +559,8 @@ non-anonymised) file to output archive'))
             if self.force is True or self.liststore[line][4] != _('Clean'):
                 if self.liststore[line][0].file.remove_all():
                     self.liststore[line][4] = _('Clean')
-                if self.backup:  # the backup copy state
-                    self.liststore[line][5] = os.path.basename(self.liststore[line][0].file.output)
+                    if self.backup:  # the backup copy state
+                        self.liststore[line][5] = os.path.basename(self.liststore[line][0].file.output)
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False

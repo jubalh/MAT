@@ -23,11 +23,12 @@ STRIPPERS = {
 try:  # PDF support
     import poppler
     import cairo
+    import pdfrw
     STRIPPERS['application/x-pdf'] = office.PdfStripper
     STRIPPERS['application/pdf'] = office.PdfStripper
 except ImportError:
-    print('Unable to import python-poppler and/or python-cairo: no PDF \
-        support')
+    print('Unable to import python-poppler and/or python-cairo \
+and/or pdfrw: no PDF support')
 
 try:  # mutangen-python : audio format support
     import mutagen

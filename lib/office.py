@@ -179,8 +179,9 @@ class PdfStripper(parser.GenericParser):
             return True
         except:
             print('Unable to remove all metadata from %s, please install\
-                    pdfrw' % self.output)
+pdfrw' % self.output)
             return False
+        return True
 
     def get_meta(self):
         '''
