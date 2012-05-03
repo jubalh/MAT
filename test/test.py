@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*
+
 '''
     Class for the testing suite :
     - get the list of all test files
