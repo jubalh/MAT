@@ -1,3 +1,8 @@
+0.3.1 - 06may2012
+    * Better handling of missing libraries
+    * Improve the setup.py
+    * Bugfixes
+
 0.3 - 07mar2012
     * Merge the two cleaning mode in one
     * Fix a pdf related critical security bug
