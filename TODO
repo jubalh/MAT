@@ -2,9 +2,6 @@ GENERAL:
     - Complete the get_meta method:
 	the ultimate goal is to remove
 	all "harmful meta" stuff
-    - Fix the ugly function get_sharedir
-    - Better handling of missing libraries if any
-      (pdfrw, exiftool, ...)
 
 
 FORMATS:
@@ -14,8 +11,6 @@ FORMATS:
         - videos format ?
     ARCHIVES:
         - correctly handle mtime/atime for files inside archives
-    TORRENTS:
-        - remove more fields ? remove tracker ?
 
 
 MISC:
