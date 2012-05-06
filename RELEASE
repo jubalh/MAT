@@ -21,3 +21,6 @@ signing:
 
 upload:
     https://mat.boum.org/files
+
+add changelog
+    https://mat.boum.org/
