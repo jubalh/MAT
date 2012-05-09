@@ -36,7 +36,7 @@ def get_sharedir():
         An ugly hack to find where is the "FORMATS" file.
     '''
     if os.path.isfile('FORMATS'):
-        return ''
+        return '.'
     elif os.path.exists('/usr/local/share/mat/'):
         return '/usr/local/share/mat/'
     elif os.path.exists('/usr/share/mat/'):
