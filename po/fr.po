@@ -1,177 +1,169 @@
-# Metadata Anonymisation Toolkit
-# Copyright (C) 2011 Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>"
+# French translations for mat package.
+# Copyright (C) 2012 jvoisin
 # This file is distributed under the same license as the mat package.
-# Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+# jvoisin <julien.voisin@dustri.org>, 2012.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: fr\n"
-"Report-Msgid-Bugs-To: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
-"POT-Creation-Date: 2012-01-07 00:09+0100\n"
-"PO-Revision-Date: 2012-01-07 00:09+0100\n"
-"Last-Translator: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
-"Language-Team: Julien (jvoisin) Voisin <pouicpouicpouic@gmail.com>\n"
+"Project-Id-Version: mat 0.3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-09 19:37+0200\n"
+"PO-Revision-Date: 2012-05-09 19:45+0200\n"
+"Last-Translator: jvoisin <julien.voisin@dustri.org>\n"
+"Language-Team: French\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mat-gui:88 mat-gui:504 mat-gui:523 mat-gui:542
+#: mat-gui:94 mat-gui:549 mat-gui:565
 msgid "Ready"
 msgstr "Prêt"
 
-#: mat-gui:100
+#: mat-gui:106
 msgid "Add"
 msgstr "Ajouter"
 
-#: mat-gui:102 mat-gui:186
+#: mat-gui:108 mat-gui:182
 msgid "Add files"
 msgstr "Ajouter fichiers"
 
-#: mat-gui:106 mat-gui:206 mat-gui:498 mat-gui:519
-msgid "Clean (lossless)"
-msgstr "Nettoyer (sans pertes)"
+#: mat-gui:112 mat-gui:202 mat-gui:308 mat-gui:311 mat-gui:541 mat-gui:543
+#: mat-gui:559 mat-gui:561
+msgid "Clean"
+msgstr "Nettoyer"
 
-#: mat-gui:108
-msgid "Clean selected files without possible data loss"
-msgstr "Nettoie les fichiers selectionnés sans pertes possible de données"
+#: mat-gui:114
+msgid "Clean selected files"
+msgstr "Nettoyer les fichiers selectionnés"
 
-#: mat-gui:113 mat-gui:217 mat-gui:496 mat-gui:514 mat-gui:533 mat-gui:538
-msgid "Clean (strict)"
-msgstr "Nettoyer (strict)"
-
-#: mat-gui:116
-msgid "Clean selected files with possible data loss, but clean more efficiently"
-msgstr "Nettoie les fichiers selectionnés de manière stricte, mais des pertes de données sont possibles"
-
-#: mat-gui:121 mat-gui:228
+#: mat-gui:118 mat-gui:213
 msgid "Check"
 msgstr "Vérifier"
 
-#: mat-gui:123
+#: mat-gui:120
 msgid "Check selected files for harmful meta"
 msgstr "Vérifie si les fichiers selectionnés comportent des metadatas compromettantes"
 
-#: mat-gui:127 mat-gui:188
+#: mat-gui:124 mat-gui:184
 msgid "Quit"
 msgstr "Quitter"
 
-#: mat-gui:139 mat-gui:331
+#: mat-gui:136
+msgid "Path"
+msgstr "Chemin"
+
+#: mat-gui:136 mat-gui:363
 msgid "Filename"
 msgstr "Nom"
 
-#: mat-gui:139 mat-gui:333
+#: mat-gui:136 mat-gui:365
 msgid "Mimetype"
 msgstr "Type Mime"
 
-#: mat-gui:139
+#: mat-gui:136
 msgid "State"
 msgstr "État"
 
-#: mat-gui:140
+#: mat-gui:137
 msgid "Cleaned file"
 msgstr "Fichier nettoyé"
 
-#: mat-gui:185
+#: mat-gui:181
 msgid "Files"
 msgstr "Fichiers"
 
-#: mat-gui:191
+#: mat-gui:187
 msgid "Edit"
 msgstr "Edition"
 
-#: mat-gui:192
+#: mat-gui:188
 msgid "Clear the filelist"
 msgstr "Vider la liste de fichiers"
 
-#: mat-gui:195 mat-gui:403
+#: mat-gui:191 mat-gui:447
 msgid "Preferences"
 msgstr "Préférences"
 
-#: mat-gui:198
+#: mat-gui:194
 msgid "Process"
 msgstr "Traiter"
 
-#: mat-gui:232
+#: mat-gui:217
 msgid "Help"
 msgstr "Aide"
 
-#: mat-gui:233 mat-gui:361
+#: mat-gui:218 mat-gui:395
 msgid "Supported formats"
 msgstr "Formats supportés"
 
-#: mat-gui:235
+#: mat-gui:220
 msgid "About"
 msgstr "À propos"
 
-#: mat-gui:244
+#: mat-gui:240
 msgid "Choose files"
 msgstr "Choisir fichiers"
 
-#: mat-gui:251
+#: mat-gui:247
 msgid "All files"
-msgstr "Tout les fichiers"
+msgstr "Tous les fichiers"
 
-#: mat-gui:258
+#: mat-gui:254
 msgid "Supported files"
 msgstr "Fichiers supportés"
 
-#: mat-gui:301
+#: mat-gui:296
 msgid "unknow"
 msgstr "inconnu"
 
-#: mat-gui:311
-msgid "Not-supported"
-msgstr "Non-supporté"
+#: mat-gui:313 mat-gui:545
+msgid "Dirty"
+msgstr "Compromettant"
 
-#: mat-gui:348
+#: mat-gui:343
+msgid "Not-supported"
+msgstr ""
+
+#: mat-gui:381
 msgid "This software was coded during the GSoC 2011"
 msgstr "Ce logiciel fût forgé lors du GSoC 2011"
 
-#: mat-gui:350
+#: mat-gui:386
 msgid "Website"
 msgstr "Site internet"
 
-#: mat-gui:414
+#: mat-gui:459
 msgid "Force Clean"
 msgstr "Forcer le nettoyage"
 
-#: mat-gui:417
+#: mat-gui:462
 msgid "Do not check if already clean before cleaning"
 msgstr "Ne pas vérifier si un fichier est propre avant le nettoyage"
 
-#: mat-gui:421
+#: mat-gui:466
 msgid "Backup"
 msgstr "Sauvegarde"
 
-#: mat-gui:424
+#: mat-gui:469
 msgid "Keep a backup copy"
 msgstr "Conserve une copie de sauvegarde"
 
-#: mat-gui:427
+#: mat-gui:472
 msgid "Add unsupported file to archives"
 msgstr "Ajoute les types de fichiers non-supportés aux archives"
 
-#: mat-gui:431
+#: mat-gui:476
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Ajoute les types de fichiers non supportés (et donc, non-traités) aux archives produites"
 
-#: mat-gui:495
+#: mat-gui:540
 #, python-format
 msgid "Checking %s..."
 msgstr "Vérifie %s..."
 
-#: mat-gui:500
-msgid "dirty"
-msgstr "compromettant"
-
-#: mat-gui:513 mat-gui:532
+#: mat-gui:558
 #, python-format
 msgid "Cleaning %s..."
-msgstr "Nettoie %s..."
-
-#: mat-gui:531
-#, python-format
-msgid "Cleaning (strict) %s"
-msgstr "Nettoie de manière stricte %s..."
+msgstr ""
