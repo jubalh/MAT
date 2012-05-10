@@ -1,3 +1,7 @@
+update localisations
+    po/mat-gui.pot
+    po/*.po
+
 update changelog:
     git log -> CHANGELOG
 
