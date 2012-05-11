@@ -28,6 +28,7 @@ FILE_LIST = zip(clean, dirty)
 try:  # PDF render processing
     import poppler
     import cairo
+    import pdfrw
 except:
     FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
 
@@ -37,7 +38,7 @@ except:
     pass  # since wr don't have any ogg for now
     #FILE_LIST.remove(('clean.ogg', 'dirty.ogg'))
 
-try:  # file format managed by exiftool
+try:  # file format exclusively managed by exiftool
     subprocess.Popen('exiftool', stdout=open('/dev/null'))
 except:
     pass  # None for now

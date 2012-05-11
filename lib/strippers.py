@@ -20,24 +20,42 @@ STRIPPERS = {
     'application/officeopenxml': office.OpenXmlStripper,
 }
 
-try:  # PDF support
+
+# PDF support
+pdfSupport = True
+try:
     import poppler
+except ImportError:
+    print('Unable to import python-poppler: not PDF support')
+    pdfSupport = False
+
+try:
     import cairo
+except ImportError:
+    print('Unable to import python-cairo: no PDF support')
+    pdfSupport = False
+
+try:
     import pdfrw
+except ImportError:
+    print('Unable to import python-pdfrw: no PDf support')
+    pdfSupport = False
+
+if pdfSupport:
     STRIPPERS['application/x-pdf'] = office.PdfStripper
     STRIPPERS['application/pdf'] = office.PdfStripper
-except ImportError:
-    print('Unable to import python-poppler and/or python-cairo \
-and/or pdfrw: no PDF support')
 
-try:  # mutangen-python : audio format support
+
+# audio format support with mutagen-python
+try:
     import mutagen
     STRIPPERS['audio/x-flac'] = audio.FlacStripper
     STRIPPERS['audio/vorbis'] = audio.OggStripper
 except ImportError:
     print('Unable to import python-mutagen: limited audio format support')
 
-try:  # check if exiftool is installed on the system
+# exiftool
+try:
     subprocess.Popen('exiftool', stdout=open('/dev/null'))
     import exiftool
     STRIPPERS['image/jpeg'] = exiftool.JpegStripper
