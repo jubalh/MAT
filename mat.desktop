@@ -6,3 +6,4 @@ Type=Application
 Exec=mat-gui
 Terminal=false
 Categories=Application;Utility;Security
+Icon=logo.png
