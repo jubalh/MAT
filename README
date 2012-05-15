@@ -25,12 +25,11 @@ WARNING :
 DEPENDENCIES:
     python2.6 (at least)
     python-hachoir-core and python-hachoir-parser
-    python-pdfrw  or exiftool for full PDF support
+    python-pdfrw, python-cairo and python-poppler for full PDF support
     shred (should be already installed)
 
 
 OPTIONALS DEPENDENCIES:
-    python-poppler and python-cairo : for PDF support
     python-mutagen : for massive audio format support
     exiftool : for _massive_ image format support
 

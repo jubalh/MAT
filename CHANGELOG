@@ -2,6 +2,8 @@
     * Better handling of missing libraries
     * Improve the setup.py
     * Bugfixes
+    * ptyon-cairo, python-poppler and python-pdfrw
+        are now mandatory for pdf support
 
 0.3 - 07mar2012
     * Merge the two cleaning mode in one
