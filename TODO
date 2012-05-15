@@ -11,6 +11,8 @@ FORMATS:
         - videos format ?
     ARCHIVES:
         - correctly handle mtime/atime for files inside archives
+    PDF:
+        - add an option to allow to lose quality to reduce outputed pdf size
 
 
 MISC:
