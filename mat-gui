@@ -565,27 +565,8 @@ non-anonymised) file to output archive'))
         self.statusbar.push(0, _('Ready'))
         yield False
 
-
-def translate():
-    ''''
-        Handle L10N of mat-gui
-    '''
-    # get system's language
-    current_lang, _ = locale.getdefaultlocale()
-    if current_lang:
-        langs = [current_lang]
-
-    # get the $LANG environnement's variable
-    language = os.environ.get('LANG', None)
-    if language:
-        langs += language.split(':')
-
-    return gettext.translation('MAT', 'locale', langs,
-            fallback=True).ugettext
-
-
 if __name__ == '__main__':
-    _ = translate()
+    gettext.install('MAT', unicode=True)
 
     #Main
     gui = GUI()
