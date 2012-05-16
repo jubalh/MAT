@@ -580,7 +580,7 @@ def translate():
     if language:
         langs += language.split(':')
 
-    return gettext.translation('mat-gui', 'locale', langs,
+    return gettext.translation('MAT', 'locale', langs,
             fallback=True).ugettext
 
 
