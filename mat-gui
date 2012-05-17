@@ -52,8 +52,8 @@ class GUI:
         self.window.set_title('Metadata Anonymisation Toolkit')
         self.window.connect('destroy', gtk.main_quit)
         self.window.set_default_size(800, 600)
-        path = os.path.join(mat.get_sharedir(), 'logo.png')
-        icon = gtk.gdk.pixbuf_new_from_file_at_size(path, 50, 50)
+        self.logo = mat.get_sharedir('logo.png')
+        icon = gtk.gdk.pixbuf_new_from_file_at_size(self.logo, 50, 50)
         self.window.set_icon(icon)
 
         self.accelerator = gtk.AccelGroup()
@@ -379,7 +379,7 @@ class GUI:
         w.set_artists(['Marine Benoît', ])
         w.set_copyright('GNU Public License v2')
         w.set_comments(_('This software was coded during the GSoC 2011'))
-        w.set_logo(gtk.gdk.pixbuf_new_from_file_at_size('logo.png', 400, 200))
+        w.set_logo(gtk.gdk.pixbuf_new_from_file_at_size(self.logo, 400, 200))
         w.set_program_name('Metadata Anonymisation Toolkit')
         w.set_version(mat.__version__)
         w.set_website('https://mat.boum.org')
@@ -405,7 +405,7 @@ class GUI:
         handler = mat.XMLParser()
         parser = xml.sax.make_parser()
         parser.setContentHandler(handler)
-        path = os.path.join(mat.get_sharedir(), 'FORMATS')
+        path = mat.get_sharedir('FORMATS')
         with open(path, 'r') as xmlfile:
             parser.parse(xmlfile)
 

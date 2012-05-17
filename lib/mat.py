@@ -31,16 +31,16 @@ LOGGING_LEVEL = logging.DEBUG
 logging.basicConfig(filename=fname, level=LOGGING_LEVEL)
 
 
-def get_sharedir():
+def get_sharedir(filename):
     '''
-        An ugly hack to find where is the "FORMATS" file.
+        An ugly hack to find various files
     '''
-    if os.path.isfile('FORMATS'):
+    if os.path.exists(os.path.join('/usr/local/share/mat/', filename)):
+        return os.path.join('/usr/local/share/mat/', filename)
+    elif os.path.exists(os.path.join('/usr/share/mat/', filename)):
+        return os.path.join('/usr/share/mat', filename)
+    elif os.path.isfile('FORMATS'):
         return '.'
-    elif os.path.exists('/usr/local/share/mat/'):
-        return '/usr/local/share/mat/'
-    elif os.path.exists('/usr/share/mat/'):
-        return '/usr/share/mat'
 
 
 class XMLParser(xml.sax.handler.ContentHandler):
