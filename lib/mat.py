@@ -35,12 +35,12 @@ def get_sharedir(filename):
     '''
         An ugly hack to find various files
     '''
-    if os.path.exists(os.path.join('/usr/local/share/mat/', filename)):
+    if os.path.isfile(filename):
+        return '.'
+    elif os.path.exists(os.path.join('/usr/local/share/mat/', filename)):
         return os.path.join('/usr/local/share/mat/', filename)
     elif os.path.exists(os.path.join('/usr/share/mat/', filename)):
         return os.path.join('/usr/share/mat', filename)
-    elif os.path.isfile('FORMATS'):
-        return '.'
 
 
 class XMLParser(xml.sax.handler.ContentHandler):
