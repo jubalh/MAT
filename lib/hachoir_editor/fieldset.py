@@ -259,7 +259,7 @@ class EditableFieldSet(object):
         parts = name.partition('/')
         if parts[2]:
             fieldset = self[parts[0]]
-            del fieldset[part[2]]
+            del fieldset[parts[2]]
             return
         if name in self._deleted:
             raise MissingField(self, name)
