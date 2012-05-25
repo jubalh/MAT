@@ -6,7 +6,6 @@ import os
 import logging
 import zipfile
 import fileinput
-import subprocess
 import xml.dom.minidom as minidom
 
 try:

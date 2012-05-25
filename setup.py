@@ -2,7 +2,7 @@
 
 import os
 
-from distutils.core import setup, Command
+from distutils.core import setup
 from DistUtilsExtra.command import *
 
 from lib import mat
