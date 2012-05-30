@@ -1,0 +1,171 @@
+# French translations for mat package.
+# This file is distributed under the same license as the mat package.
+# K.N., 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: mat 0.3.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-05-09 19:37+0200\n"
+"PO-Revision-Date: 2012-05-29 11:13+0200\n"
+"Last-Translator: K.N.\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
+"Language: ge\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: mat-gui:94 mat-gui:549 mat-gui:565
+msgid "Ready"
+msgstr "Fertig"
+
+#: mat-gui:106
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: mat-gui:108 mat-gui:182
+msgid "Add files"
+msgstr "Dateien hinzufügen"
+
+#: mat-gui:112 mat-gui:202 mat-gui:308 mat-gui:311 mat-gui:541 mat-gui:543
+#: mat-gui:559 mat-gui:561
+msgid "Clean"
+msgstr "Säubern"
+
+#: mat-gui:114
+msgid "Clean selected files"
+msgstr "Ausgewählte Dateien säubern"
+
+#: mat-gui:118 mat-gui:213
+msgid "Check"
+msgstr "Prüfen"
+
+#: mat-gui:120
+msgid "Check selected files for harmful meta"
+msgstr "Ausgewählte Dateien auf unerwünschte Metadaten prüfen"
+
+#: mat-gui:124 mat-gui:184
+msgid "Quit"
+msgstr "Beenden"
+
+#: mat-gui:136
+msgid "Path"
+msgstr "Verzeichnis"
+
+#: mat-gui:136 mat-gui:363
+msgid "Filename"
+msgstr "Dateiname"
+
+#: mat-gui:136 mat-gui:365
+msgid "Mimetype"
+msgstr "Mimetyp"
+
+#: mat-gui:136
+msgid "State"
+msgstr "Status"
+
+#: mat-gui:137
+msgid "Cleaned file"
+msgstr "Gesäuberte Datei"
+
+#: mat-gui:181
+msgid "Files"
+msgstr "Dateien"
+
+#: mat-gui:187
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: mat-gui:188
+msgid "Clear the filelist"
+msgstr "Gesamte Liste säubern"
+
+#: mat-gui:191 mat-gui:447
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: mat-gui:194
+msgid "Process"
+msgstr "Prozess"
+
+#: mat-gui:217
+msgid "Help"
+msgstr "Hilfe"
+
+#: mat-gui:218 mat-gui:395
+msgid "Supported formats"
+msgstr "Unterstützte Formate"
+
+#: mat-gui:220
+msgid "About"
+msgstr "Über"
+
+#: mat-gui:240
+msgid "Choose files"
+msgstr "Dateien auswählen"
+
+#: mat-gui:247
+msgid "All files"
+msgstr "Alle Dateien"
+
+#: mat-gui:254
+msgid "Supported files"
+msgstr "Unterstützte Dateien"
+
+#: mat-gui:296
+msgid "unknow"
+msgstr "unbekannt"
+
+#: mat-gui:313 mat-gui:545
+msgid "Dirty"
+msgstr "Verschmutzt"
+
+#: mat-gui:343
+msgid "Not-supported"
+msgstr "Nicht unterstützt"
+
+#: mat-gui:381
+msgid "This software was coded during the GSoC 2011"
+msgstr "Diese Software wurde während des GSoC 2011 erstellt."
+
+#: mat-gui:386
+msgid "Website"
+msgstr "Webseite"
+
+#: mat-gui:459
+msgid "Force Clean"
+msgstr "Säubern erzwingen"
+
+#: mat-gui:462
+msgid "Do not check if already clean before cleaning"
+msgstr "Dateien vor dem Säubern nicht Prüfen"
+
+#: mat-gui:466
+msgid "Backup"
+msgstr "Backup"
+
+#: mat-gui:469
+msgid "Keep a backup copy"
+msgstr "Sicherungskopie behalten"
+
+#: mat-gui:472
+msgid "Add unsupported file to archives"
+msgstr "Nicht unterstützte Dateien im Archiv hinzufügen"
+
+#: mat-gui:476
+msgid "Add non-supported (and so non-anonymised) file to output archive"
+msgstr ""
+"Nicht unterstützte (und somit nicht gesäuberte) Dateien dem Ausgabe "
+"Archiv hinzufügen"
+
+#: mat-gui:540
+#, python-format
+msgid "Checking %s..."
+msgstr "Prüfe %s..."
+
+#: mat-gui:558
+#, python-format
+msgid "Cleaning %s..."
+msgstr "Säubere %s..."
+
