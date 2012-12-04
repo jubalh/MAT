@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=Metadata Anonymisation Toolkit
+Name=MAT
 GenericName=Metadata Anonymisation Toolkit
 Version=1.0
 Type=Application
 Exec=mat-gui
 Terminal=false
-Categories=Application;Utility;Security
-Icon=logo.png
+Categories=Utility;Security;System;
+Icon=logo
