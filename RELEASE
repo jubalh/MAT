@@ -6,7 +6,7 @@ update changelog:
     git log -> CHANGELOG
 
 update version number:
-    lib/mat.py -> __version__ = $VERSION
+    mat/mat.py -> __version__ = $VERSION
 
 commit release changes
     git commit CHANGELOG lib/mat.py

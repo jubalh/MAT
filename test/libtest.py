@@ -9,7 +9,7 @@ import unittest
 import test
 import sys
 sys.path.append('..')
-from lib import mat
+from MAT import mat
 
 
 class TestRemovelib(test.MATTest):

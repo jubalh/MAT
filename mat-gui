@@ -17,8 +17,8 @@ import mimetypes
 import xml.sax
 import urllib2
 
-from lib import mat
-from lib import strippers
+from MAT import mat
+from MAT import strippers
 
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)

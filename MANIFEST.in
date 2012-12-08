@@ -1,4 +1,4 @@
-include README FORMATS LICENSE mat-cli mat-gui
-recursive-include mat *.py
+include README FORMATS LICENSE mat mat-gui
+recursive-include MAT *.py
 recursive-include test *.py clean.* dirty.*
 recursive-include po *

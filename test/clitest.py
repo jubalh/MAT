@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 sys.path.append('..')
-from lib import mat
+from MAT import mat
 import test
 
 
