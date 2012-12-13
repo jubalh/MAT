@@ -14,7 +14,6 @@ import glob
 import tempfile
 import unittest
 import subprocess
-import sys
 
 VERBOSITY = 3
 
@@ -29,18 +28,18 @@ try:  # PDF render processing
     import poppler
     import cairo
     import pdfrw
-except:
+except ImportError:
     FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
 
 try:  # python-mutagen : audio file format
     import mutagen
-except:
+except ImportError:
     pass  # since wr don't have any ogg for now
     #FILE_LIST.remove(('clean.ogg', 'dirty.ogg'))
 
 try:  # file format exclusively managed by exiftool
     subprocess.Popen('exiftool', stdout=open('/dev/null'))
-except:
+except OSError:
     pass  # None for now
 
 
@@ -68,18 +67,12 @@ class MATTest(unittest.TestCase):
         shutil.rmtree(self.tmpdir)
 
 
-def main():
+if __name__ == '__main__':
     import clitest
     import libtest
 
-    failed_tests = 0
+    SUITE = unittest.TestSuite()
+    SUITE.addTests(clitest.get_tests())
+    SUITE.addTests(libtest.get_tests())
 
-    print('Running cli related tests:\n')
-    failed_tests += clitest.main()
-    print('\nRunning library related tests:\n')
-    failed_tests += libtest.main()
-    print('\nTotal failed tests: ' + str(failed_tests))
-    return failed_tests
-
-if __name__ == '__main__':
-    sys.exit(main())
+    unittest.TextTestRunner(verbosity=VERBOSITY).run(SUITE)

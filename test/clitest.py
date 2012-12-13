@@ -43,8 +43,8 @@ class TestListcli(test.MATTest):
             proc = subprocess.Popen(['../mat', '-d', clean],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
-            self.assertEqual(stdout.strip('\n'), "[+] File %s :\nNo harmful \
-metadata found" % clean)
+            self.assertEqual(str(stdout).strip('\n'), "[+] File %s \
+:\nNo harmful metadata found" % clean)
 
     def test_list_dirty(self):
         '''check if get_meta returns all the expected meta'''
@@ -52,7 +52,7 @@ metadata found" % clean)
             proc = subprocess.Popen(['../mat', '-d', dirty],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
-            self.assertNotEqual(stdout, "[+] File %s" % dirty)
+            self.assertNotEqual(str(stdout), "[+] File %s" % dirty)
 
 
 class TestisCleancli(test.MATTest):
@@ -65,7 +65,7 @@ class TestisCleancli(test.MATTest):
             proc = subprocess.Popen(['../mat', '-c', clean],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
-            self.assertEqual(stdout.strip('\n'), '[+] %s is clean' % clean)
+            self.assertEqual(str(stdout).strip('\n'), '[+] %s is clean' % clean)
 
     def test_dirty(self):
         '''test is_clean on dirty files'''
@@ -73,7 +73,7 @@ class TestisCleancli(test.MATTest):
             proc = subprocess.Popen(['../mat', '-c', dirty],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
-            self.assertEqual(stdout.strip('\n'), '[+] %s is not clean' % dirty)
+            self.assertEqual(str(stdout).strip('\n'), '[+] %s is not clean' % dirty)
 
 
 class TestFileAttributes(unittest.TestCase):
@@ -81,26 +81,28 @@ class TestFileAttributes(unittest.TestCase):
         test various stuffs about files (readable, writable, exist, ...)
     '''
     def test_not_writtable(self):
+        ''' test MAT's behaviour on non-writable file'''
         proc = subprocess.Popen(['../mat', 'not_writtable'],
             stdout=subprocess.PIPE)
         stdout, _ = proc.communicate()
-        self.assertEqual(stdout.strip('\n'), 'Unable to pocess  %s' % 'not_writtable')
+        self.assertEqual(str(stdout).strip('\n'), 'Unable to process  %s' % 'not_writtable')
 
     def test_not_exist(self):
+        ''' test MAT's behaviour on non-existent file'''
         proc = subprocess.Popen(['../mat', 'ilikecookies'],
             stdout=subprocess.PIPE)
         stdout, _ = proc.communicate()
-        self.assertEqual(stdout.strip('\n'), 'Unable to pocess  %s' % 'ilikecookies')
+        self.assertEqual(str(stdout).strip('\n'), 'Unable to process  %s' % 'ilikecookies')
 
 
-def main():
+def get_tests():
+    ''' Return every clitests'''
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestRemovecli))
     suite.addTest(unittest.makeSuite(TestListcli))
     suite.addTest(unittest.makeSuite(TestisCleancli))
-    test_result = unittest.TextTestRunner(verbosity=test.VERBOSITY).run(suite)
-    return len(test_result.failures)
+    return suite
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(get_tests())
