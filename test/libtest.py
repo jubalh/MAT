@@ -79,12 +79,13 @@ class TestFileAttributes(unittest.TestCase):
 
 
 def get_tests():
-    Suite = unittest.TestSuite()
-    Suite.addTest(unittest.makeSuite(TestRemovelib))
-    Suite.addTest(unittest.makeSuite(TestListlib))
-    Suite.addTest(unittest.makeSuite(TestisCleanlib))
-    Suite.addTest(unittest.makeSuite(TestFileAttributes))
-    return Suite
+    ''' Return every libtests'''
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(TestRemovelib))
+    suite.addTest(unittest.makeSuite(TestListlib))
+    suite.addTest(unittest.makeSuite(TestisCleanlib))
+    suite.addTest(unittest.makeSuite(TestFileAttributes))
+    return suite
 
 
 if __name__ == '__main__':

@@ -14,7 +14,6 @@ import glob
 import tempfile
 import unittest
 import subprocess
-import sys
 
 VERBOSITY = 3
 
@@ -68,16 +67,12 @@ class MATTest(unittest.TestCase):
         shutil.rmtree(self.tmpdir)
 
 
-def main():
+if __name__ == '__main__':
     import clitest
     import libtest
 
-    suite = unittest.TestSuite()
-    suite.addTests(clitest.get_tests())
-    suite.addTests(libtest.get_tests())
+    SUITE = unittest.TestSuite()
+    SUITE.addTests(clitest.get_tests())
+    SUITE.addTests(libtest.get_tests())
 
-    unittest.TextTestRunner(verbosity=VERBOSITY).run(suite)
-
-
-if __name__ == '__main__':
-    sys.exit(main())
+    unittest.TextTestRunner(verbosity=VERBOSITY).run(SUITE)
