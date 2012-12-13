@@ -291,7 +291,7 @@ class GUI:
             return False
 
         cf = CFile(filename, self.backup, self.add2archive)
-        if cf.file is not None:  # if the file is supported by the mat
+        if cf.file:  # if the file is supported by the mat
             self.liststore.append([cf, os.path.dirname(cf.file.filename) + os.path.sep,
                 cf.file.basename, cf.file.mime, _('unknow'), 'None'])
             return False
@@ -538,7 +538,7 @@ non-anonymised) file to output archive'))
         '''
         for line in iterator:  # for each file in selection
             self.statusbar.push(0, _('Checking %s...') % self.liststore[line][1])
-            if self.force is True or self.liststore[line][4] != _('Clean'):
+            if self.force or self.liststore[line][4] != _('Clean'):
                 if self.liststore[line][0].file.is_clean():
                     string = _('Clean')
                 else:
@@ -556,7 +556,7 @@ non-anonymised) file to output archive'))
         for line in iterator:  # for each file in selection
             logging.info('Cleaning %s' % self.liststore[line][1])
             self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
-            if self.force is True or self.liststore[line][4] != _('Clean'):
+            if self.force or self.liststore[line][4] != _('Clean'):
                 if self.liststore[line][0].file.remove_all():
                     self.liststore[line][4] = _('Clean')
                     if self.backup:  # the backup copy state
