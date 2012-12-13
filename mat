@@ -6,7 +6,6 @@
 import sys
 import xml.sax
 import optparse
-import os
 
 import hachoir_core
 
@@ -110,8 +109,6 @@ def list_supported():
 
     for item in handler.list:
         if strippers.STRIPPERS.has_key(item['mimetype'].split(',')[0]):
-            #on display localy supported formats
-            print 'ok'
             print('%s (%s)' % (item['name'], item['extension']))
             print('\tsupport : ' + item['support'])
             print('\tmetadata : ' + item['metadata'])
