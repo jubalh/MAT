@@ -40,11 +40,10 @@ The default behaviour is to clean files given in argument')
     parser.add_option_group(info)
 
     values, arguments = parser.parse_args()
-    if not arguments and values.list is False:
+    if not arguments and not values.list:
         # if no argument and no files are passed,
         # print help and exit
         parser.print_help()
-        sys.exit(0)
     return values, arguments
 
 
@@ -62,12 +61,12 @@ def list_meta(class_file, filename, force):
         Print all the metadata of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
-    if force is False and class_file.is_clean():
+    if not force and class_file.is_clean():
         print('No harmful metadata found')
     else:
         meta = class_file.get_meta()
         print ('Harmful metadata found:')
-        if meta is not None:
+        if meta:
             for key, value in class_file.get_meta().iteritems():
                 print('\t' + key + ' : ' + str(value))
 
@@ -87,7 +86,7 @@ def clean_meta(class_file, filename, force):
         Clean the file 'filename'
     '''
     print('[+] Cleaning %s' % filename)
-    if force is False and class_file.is_clean():
+    if not force and class_file.is_clean():
         print('%s is already clean' % filename)
     else:
         if class_file.remove_all():
@@ -125,11 +124,11 @@ def main():
     args, filenames = parse()
 
     #func receive the function correponding to the options given as parameters
-    if args.display is True:  # only print metadatas
+    if args.display:  # only print metadatas
         func = list_meta
-    elif args.check is True:  # only check if the file is clean
+    elif args.check:  # only check if the file is clean
         func = is_clean
-    elif args.list is True:  # print the list of all supported format
+    elif args.list:  # print the list of all supported format
         list_supported()
     else:  # clean the file
         func = clean_meta
@@ -137,7 +136,7 @@ def main():
     for filename in filenames:
         class_file = mat.create_class_file(filename, args.backup,
             args.add2archive)
-        if class_file is not None:
+        if class_file:
             func(class_file, filename, args.force)
         else:
             print('Unable to process %s' % filename)
