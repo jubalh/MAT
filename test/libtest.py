@@ -78,15 +78,14 @@ class TestFileAttributes(unittest.TestCase):
         self.assertFalse(mat.create_class_file('ilikecookies', False, True))
 
 
-def main():
+def get_tests():
     Suite = unittest.TestSuite()
     Suite.addTest(unittest.makeSuite(TestRemovelib))
     Suite.addTest(unittest.makeSuite(TestListlib))
     Suite.addTest(unittest.makeSuite(TestisCleanlib))
     Suite.addTest(unittest.makeSuite(TestFileAttributes))
-    test_result = unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
-    return len(test_result.failures)
+    return Suite
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(get_tests())

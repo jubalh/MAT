@@ -15,6 +15,7 @@ import tempfile
 import unittest
 import subprocess
 import sys
+import test
 
 VERBOSITY = 3
 
@@ -72,14 +73,12 @@ def main():
     import clitest
     import libtest
 
-    failed_tests = 0
+    Suite = unittest.TestSuite()
+    Suite.addTests(clitest.get_tests())
+    Suite.addTests(libtest.get_tests())
 
-    print('Running cli related tests:\n')
-    failed_tests += clitest.main()
-    print('\nRunning library related tests:\n')
-    failed_tests += libtest.main()
-    print('\nTotal failed tests: ' + str(failed_tests))
-    return failed_tests
+    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
+
 
 if __name__ == '__main__':
     sys.exit(main())

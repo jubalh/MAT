@@ -93,14 +93,13 @@ class TestFileAttributes(unittest.TestCase):
         self.assertEqual(stdout.strip('\n'), 'Unable to pocess  %s' % 'ilikecookies')
 
 
-def main():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestRemovecli))
-    suite.addTest(unittest.makeSuite(TestListcli))
-    suite.addTest(unittest.makeSuite(TestisCleancli))
-    test_result = unittest.TextTestRunner(verbosity=test.VERBOSITY).run(suite)
-    return len(test_result.failures)
+def get_tests():
+    Suite = unittest.TestSuite()
+    Suite.addTest(unittest.makeSuite(TestRemovecli))
+    Suite.addTest(unittest.makeSuite(TestListcli))
+    Suite.addTest(unittest.makeSuite(TestisCleancli))
+    return Suite
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(get_tests())
