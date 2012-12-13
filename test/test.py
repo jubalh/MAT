@@ -15,7 +15,6 @@ import tempfile
 import unittest
 import subprocess
 import sys
-import test
 
 VERBOSITY = 3
 
@@ -30,18 +29,18 @@ try:  # PDF render processing
     import poppler
     import cairo
     import pdfrw
-except:
+except ImportError:
     FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
 
 try:  # python-mutagen : audio file format
     import mutagen
-except:
+except ImportError:
     pass  # since wr don't have any ogg for now
     #FILE_LIST.remove(('clean.ogg', 'dirty.ogg'))
 
 try:  # file format exclusively managed by exiftool
     subprocess.Popen('exiftool', stdout=open('/dev/null'))
-except:
+except OSError:
     pass  # None for now
 
 
@@ -73,11 +72,11 @@ def main():
     import clitest
     import libtest
 
-    Suite = unittest.TestSuite()
-    Suite.addTests(clitest.get_tests())
-    Suite.addTests(libtest.get_tests())
+    suite = unittest.TestSuite()
+    suite.addTests(clitest.get_tests())
+    suite.addTests(libtest.get_tests())
 
-    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(Suite)
+    unittest.TextTestRunner(verbosity=VERBOSITY).run(suite)
 
 
 if __name__ == '__main__':
