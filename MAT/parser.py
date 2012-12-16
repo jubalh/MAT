@@ -9,15 +9,15 @@ import os
 
 import mat
 
-NOMETA = ('.bmp', '.rdf', '.txt', '.xml', '.rels')
-#bmp : image
-#rdf : text
-#txt : plain text
-#xml : formated text
-#rels : openxml foramted text
-
+NOMETA = ('.bmp',  # image
+          '.rdf',  # text
+          '.txt',  # plain text
+          '.xml',  # formated text (XML)
+          '.rels', # openXML formated text
+          )
 
 FIELD = object()
+
 
 class GenericParser(object):
     '''
