@@ -51,13 +51,13 @@ class ZipStripper(GenericArchiveStripper):
             Check if a ZipInfo object is clean of metadatas added
             by zip itself, independently of the corresponding file metadatas
         '''
-        if fileinfo.comment is not '':
+        if fileinfo.comment != '':
             return False
-        elif fileinfo.date_time is not 0:
+        elif fileinfo.date_time != 0:
             return False
-        elif fileinfo.create_system is not 0:
+        elif fileinfo.create_system != 0:
             return False
-        elif fileinfo.create_version is not 0:
+        elif fileinfo.create_version != 0:
             return False
         else:
             return True
@@ -169,7 +169,7 @@ class TarStripper(GenericArchiveStripper):
         for item in tarin.getmembers():
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
-            if item.type is '0':  # is item a regular file ?
+            if item.type == '0':  # is item a regular file ?
                 #no backup file
                 try:
                     cfile = mat.create_class_file(name, False,
@@ -191,15 +191,15 @@ class TarStripper(GenericArchiveStripper):
         '''
             Check metadatas added by tar
         '''
-        if current_file.mtime is not 0:
+        if current_file.mtime != 0:
             return False
-        elif current_file.uid is not 0:
+        elif current_file.uid != 0:
             return False
-        elif current_file.gid is not 0:
+        elif current_file.gid != 0:
             return False
-        elif current_file.uname is not '':
+        elif current_file.uname != '':
             return False
-        elif current_file.gname is not '':
+        elif current_file.gname != '':
             return False
         else:
             return True
@@ -215,7 +215,7 @@ class TarStripper(GenericArchiveStripper):
                 return False
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
-            if item.type is '0':  # is item a regular file ?
+            if item.type == '0':  # is item a regular file ?
                 try:
                     class_file = mat.create_class_file(name,
                         False, self.add2archive)  # no backup file
@@ -239,7 +239,7 @@ class TarStripper(GenericArchiveStripper):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         metadata = {}
         for current_file in tarin.getmembers():
-            if current_file.type is '0':
+            if current_file.type == '0':
                 if not self.is_file_clean(current_file):  # if there is meta
                     current_meta = {}
                     current_meta['mtime'] = current_file.mtime
