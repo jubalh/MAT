@@ -102,7 +102,7 @@ def secure_remove(filename):
             logging.error('Unable to remove %s' % filename)
 
 
-def create_class_file(name, backup, add2archive):
+def create_class_file(name, backup, **kwargs):
     '''
         return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
@@ -149,4 +149,7 @@ def create_class_file(name, backup, add2archive):
         logging.info('Don\'t have stripper for %s format' % mime)
         return None
 
-    return stripper_class(filename, parser, mime, backup, add2archive)
+    if mime.endswith('pdf') and mime.startswith('application/'):
+        return stripper_class(filename, parser, mime, backup, **kwargs)
+
+    return stripper_class(filename, parser, mime, backup, **kwargs)
