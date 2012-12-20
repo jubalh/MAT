@@ -107,8 +107,9 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         try:
             zipin.getinfo('meta.xml')
         except KeyError:  # no meta.xml in the file
+            kwargs =  {'backup':self.backup, 'add2archive':self.add2archive}
             czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', self.backup, self.add2archive)
+                'application/zip', **kwargs)
             if czf.is_clean():
                 zipin.close()
                 return True
@@ -120,11 +121,11 @@ class PdfStripper(parser.GenericParser):
     '''
         Represent a PDF file
     '''
-    def __init__(self, filename, parser, mime, backup, add2archive):
-        super(PdfStripper, self).__init__(filename, parser, mime, backup,
-            add2archive)
+    def __init__(self, filename, parser, mime, backup, **kwargs):
+        super(PdfStripper, self).__init__(filename, parser, mime, backup, **kwargs)
         uri = 'file://' + os.path.abspath(self.filename)
         self.password = None
+        self.quality = kwargs['low_pdf_quality']
         self.document = poppler.document_new_from_file(uri, self.password)
         self.meta_list = frozenset(['title', 'author', 'subject', 'keywords', 'creator',
             'producer', 'metadata'])
@@ -161,7 +162,10 @@ class PdfStripper(parser.GenericParser):
         for pagenum in xrange(self.document.get_n_pages()):
             page = self.document.get_page(pagenum)
             context.translate(0, 0)
-            page.render_for_printing(context)  # render the page on context
+            if self.quality:
+                page.render(context)  # render the page on context
+            else:
+                page.render_for_printing(context)  # render the page on context
             context.show_page()  # draw context on surface
         surface.finish()
 
@@ -175,7 +179,6 @@ class PdfStripper(parser.GenericParser):
             writer.trailer = trailer
             writer.write(self.output)
             self.do_backup()
-            return True
         except:
             print('Unable to remove all metadata from %s, please install\
 pdfrw' % self.output)
@@ -248,8 +251,9 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
             if item.startswith('docProps/'):
                 return False
         zipin.close()
+        kwargs =  {'backup':self.backup, 'add2archive':self.add2archive}
         czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', self.backup, self.add2archive)
+                'application/zip', **kwargs)
         return czf.is_clean()
 
     def get_meta(self):

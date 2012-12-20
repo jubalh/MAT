@@ -23,7 +23,7 @@ class GenericParser(object):
     '''
         Parent class of all parsers
     '''
-    def __init__(self, filename, parser, mime, backup, add2archive):
+    def __init__(self, filename, parser, mime, backup, **kwargs):
         self.filename = ''
         self.parser = parser
         self.mime = mime

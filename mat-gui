@@ -30,9 +30,9 @@ class CFile(object):
         This class exist just to be "around" my parser.Generic_parser class,
         since the gtk.ListStore does not accept it.
     '''
-    def __init__(self, filename, backup, add2archive):
+    def __init__(self, filename, backup, **kwargs):
         try:
-            self.file = mat.create_class_file(filename, backup, add2archive)
+            self.file = mat.create_class_file(filename, backup, **kwargs)
         except:
             self.file = None
 
@@ -46,6 +46,7 @@ class GUI:
         self.force = False
         self.backup = True
         self.add2archive = True
+        self.pdf_quality = False
 
         # Main window
         self.window = gtk.Window()
@@ -290,7 +291,7 @@ class GUI:
             # if filename does not exist
             return False
 
-        cf = CFile(filename, self.backup, self.add2archive)
+        cf = CFile(filename, self.backup, add2archive=self.add2archive, low_pdf_quality=self.pdf_quality)
         if cf.file:  # if the file is supported by the mat
             self.liststore.append([cf, os.path.dirname(cf.file.filename) + os.path.sep,
                 cf.file.basename, cf.file.mime, _('unknow'), 'None'])
@@ -469,17 +470,23 @@ cleaning'))
         backup.set_tooltip_text(_('Keep a backup copy'))
         table.attach(backup, 0, 1, 1, 2)
 
+        pdf_quality = gtk.CheckButton(_('Reduce PDF quality'), False)
+        pdf_quality.set_active(self.pdf_quality)
+        pdf_quality.connect('toggled', self.__invert, 'pdf_quality')
+        pdf_quality.set_tooltip_text(_('Reduce the produced PDF size and quality'))
+        table.attach(pdf_quality, 0, 1, 2, 3)
+
         add2archive = gtk.CheckButton(_('Add unsupported file to archives'),
             False)
         add2archive.set_active(self.add2archive)
         add2archive.connect('toggled', self.__invert, 'add2archive')
         add2archive.set_tooltip_text(_('Add non-supported (and so \
 non-anonymised) file to output archive'))
-        table.attach(add2archive, 0, 1, 2, 3)
+        table.attach(add2archive, 0, 1, 3, 4)
 
         hbox.show_all()
         response = dialog.run()
-        if response is 0:  # gtk.STOCK_OK
+        if response == 0:  # gtk.STOCK_OK
             for i in self.liststore:  # update preferences
                 i[0].backup = self.backup
                 i[0].add2archive = self.add2archive
@@ -497,6 +504,8 @@ non-anonymised) file to output archive'))
                 # change the "backup" property of all files
                 self.liststore[line][0].file.backup = self.backup
             self.treeview.get_column(4).set_visible(self.backup)
+        elif name == 'pdf_quality':
+            self.pdf_quality = not self.pdf_quality
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 

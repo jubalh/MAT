@@ -17,11 +17,10 @@ class GenericArchiveStripper(parser.GenericParser):
     '''
         Represent a generic archive
     '''
-    def __init__(self, filename, parser, mime, backup, add2archive):
-        super(GenericArchiveStripper, self).__init__(filename, parser, mime,
-        backup, add2archive)
+    def __init__(self, filename, parser, mime, backup, **kwargs):
+        super(GenericArchiveStripper, self).__init__(filename, parser, mime, backup, **kwargs)
         self.compression = ''
-        self.add2archive = add2archive
+        self.add2archive = kwargs['add2archive']
         self.tempdir = tempfile.mkdtemp()
 
     def __del__(self):
@@ -81,7 +80,7 @@ class ZipStripper(GenericArchiveStripper):
             if os.path.isfile(name):
                 try:
                     cfile = mat.create_class_file(name, False,
-                        self.add2archive)
+                        add2archive=self.add2archive)
                     if not cfile.is_clean():
                         return False
                 except:
@@ -129,7 +128,7 @@ harmless format' % item.filename)
             if os.path.isfile(name):
                 try:
                     cfile = mat.create_class_file(name, False,
-                        self.add2archive)
+                        add2archive=self.add2archive)
                     cfile.remove_all()
                     logging.debug('Processing %s from %s' % (item.filename,
                         self.filename))
@@ -173,7 +172,7 @@ class TarStripper(GenericArchiveStripper):
                 #no backup file
                 try:
                     cfile = mat.create_class_file(name, False,
-                    self.add2archive)
+                            add2archive=self.add2archive)
                     cfile.remove_all()
                     tarout.add(name, item.name, filter=self._remove)
                 except:
@@ -218,7 +217,7 @@ class TarStripper(GenericArchiveStripper):
             if item.type == '0':  # is item a regular file ?
                 try:
                     class_file = mat.create_class_file(name,
-                        False, self.add2archive)  # no backup file
+                        False, add2archive=self.add2archive)  # no backup file
                     if not class_file.is_clean():
                         tarin.close()
                         return False
@@ -256,9 +255,8 @@ class GzipStripper(TarStripper):
     '''
         Represent a tar.gz archive
     '''
-    def __init__(self, filename, parser, mime, backup, add2archive):
-        super(GzipStripper, self).__init__(filename, parser, mime, backup,
-            add2archive)
+    def __init__(self, filename, parser, mime, backup, **kwargs):
+        super(GzipStripper, self).__init__(filename, parser, mime, backup, **kwargs)
         self.compression = ':gz'
 
 
@@ -266,7 +264,6 @@ class Bzip2Stripper(TarStripper):
     '''
         Represents a tar.bz2 archive
     '''
-    def __init__(self, filename, parser, mime, backup, add2archive):
-        super(Bzip2Stripper, self).__init__(filename, parser, mime, backup,
-            add2archive)
+    def __init__(self, filename, parser, mime, backup, **kwargs):
+        super(Bzip2Stripper, self).__init__(filename, parser, mime, backup, **kwargs)
         self.compression = ':bz2'
