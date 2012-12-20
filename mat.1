@@ -42,6 +42,9 @@ Don't check if files are clean before cleaning
 \fB\-l\fR, \fB\-\-list\fR
 List all supported fileformat
 .TP
+\fB\-L\fR, \fB\-\-low-pdf-quality\fR
+Reduced the produced PDF size and quality
+.TP
 \fB\-v\fR, \fB\-\-version\fR
 Display version and exit
 
@@ -69,6 +72,8 @@ Julien (\fBjvoisin\fR) Voisin <julien.voisin@dustri.org>, during the GSoC 2011
 
 .SH BUGS
 MAT does not handle watermaking/tattoos for now.
+The --low-pdf-quality option may produce heavier PDF for very small files.
+You should only use it for big files.
 
 
 .SH "SEE ALSO"
