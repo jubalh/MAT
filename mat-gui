@@ -480,6 +480,9 @@ non-anonymised) file to output archive'))
         hbox.show_all()
         response = dialog.run()
         if response is 0:  # gtk.STOCK_OK
+            for i in self.liststore:  # update preferences
+                i[0].backup = self.backup
+                i[0].add2archive = self.add2archive
             dialog.destroy()
 
     def __invert(self, button, name):
