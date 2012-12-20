@@ -125,7 +125,7 @@ class PdfStripper(parser.GenericParser):
         super(PdfStripper, self).__init__(filename, parser, mime, backup, **kwargs)
         uri = 'file://' + os.path.abspath(self.filename)
         self.password = None
-        self.quality = kwargs['low_pdf_quality']
+        self.pdf_quality = kwargs['low_pdf_quality']
         self.document = poppler.document_new_from_file(uri, self.password)
         self.meta_list = frozenset(['title', 'author', 'subject', 'keywords', 'creator',
             'producer', 'metadata'])
@@ -162,7 +162,7 @@ class PdfStripper(parser.GenericParser):
         for pagenum in xrange(self.document.get_n_pages()):
             page = self.document.get_page(pagenum)
             context.translate(0, 0)
-            if self.quality:
+            if self.pdf_quality:
                 page.render(context)  # render the page on context
             else:
                 page.render_for_printing(context)  # render the page on context

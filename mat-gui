@@ -490,6 +490,8 @@ non-anonymised) file to output archive'))
             for i in self.liststore:  # update preferences
                 i[0].backup = self.backup
                 i[0].add2archive = self.add2archive
+                if i[2].startswith('pdf'):
+                    i[0].pdf_quality = self.pdf_quality
             dialog.destroy()
 
     def __invert(self, button, name):
