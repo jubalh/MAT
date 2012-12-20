@@ -9,7 +9,7 @@ import gtk
 import gobject
 
 import gettext
-import locale
+#import locale
 import logging
 import os
 import sys
@@ -257,7 +257,7 @@ class GUI:
 
         response = chooser.run()
 
-        if response is 0:  # gtk.STOCK_OK
+        if not response:  # gtk.STOCK_OK
             filenames = chooser.get_filenames()
             task = self.populate(filenames)
             gobject.idle_add(task.next)  # asynchrone processing
@@ -296,8 +296,7 @@ class GUI:
             self.liststore.append([cf, os.path.dirname(cf.file.filename) + os.path.sep,
                 cf.file.basename, cf.file.mime, _('unknow'), 'None'])
             return False
-        else:
-            return True
+        return True
 
     def __popup_metadata(self, widget, row, col):
         '''
@@ -368,7 +367,7 @@ class GUI:
 
         dialog.show_all()
         click = dialog.run()
-        if click is 0:  # Ok button
+        if not click:  # Ok button
             dialog.destroy()
 
     def __about(self, button):
@@ -438,7 +437,7 @@ class GUI:
 
         dialog.show_all()
         click = dialog.run()
-        if click is 0:  # Close
+        if not click:  # Close
             dialog.destroy()
 
     def __preferences(self, button):
@@ -486,7 +485,7 @@ non-anonymised) file to output archive'))
 
         hbox.show_all()
         response = dialog.run()
-        if response == 0:  # gtk.STOCK_OK
+        if not response:  # gtk.STOCK_OK
             for i in self.liststore:  # update preferences
                 i[0].backup = self.backup
                 i[0].add2archive = self.add2archive
@@ -581,6 +580,7 @@ non-anonymised) file to output archive'))
 
 if __name__ == '__main__':
     gettext.install('MAT', unicode=True)
+    _ = gettext.gettext
 
     #Main
     gui = GUI()
