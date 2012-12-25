@@ -89,11 +89,11 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                             self.filename))
                         zipout.write(name, item)
                     except:
-                        logging.info('%s\' fileformat is not supported' % item)
+                        logging.info('%s\'s fileformat is not supported' % item)
                         if self.add2archive:
                             zipout.write(name, item)
         zipout.comment = ''
-        logging.info('%s treated' % self.filename)
+        logging.info('%s processed' % self.filename)
         zipin.close()
         zipout.close()
         self.do_backup()
@@ -231,11 +231,11 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
                             self.filename))
                         zipout.write(name, item)
                     except:
-                        logging.info('%s\' fileformat is not supported' % item)
+                        logging.info('%s\'s fileformat is not supported' % item)
                         if self.add2archive:
                             zipout.write(name, item)
         zipout.comment = ''
-        logging.info('%s treated' % self.filename)
+        logging.info('%s processed' % self.filename)
         zipin.close()
         zipout.close()
         self.do_backup()
