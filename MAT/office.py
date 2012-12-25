@@ -83,7 +83,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
                 if os.path.isfile(name):
                     try:
                         cfile = mat.create_class_file(name, False,
-                            self.add2archive)
+                            add2archive=self.add2archive)
                         cfile.remove_all()
                         logging.debug('Processing %s from %s' % (item,
                             self.filename))
@@ -107,9 +107,8 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
         try:
             zipin.getinfo('meta.xml')
         except KeyError:  # no meta.xml in the file
-            kwargs =  {'backup':self.backup, 'add2archive':self.add2archive}
             czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', **kwargs)
+                'application/zip', False, add2archive=self.add2archive)
             if czf.is_clean():
                 zipin.close()
                 return True
@@ -226,7 +225,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
                 if os.path.isfile(name):  # don't care about folders
                     try:
                         cfile = mat.create_class_file(name, False,
-                            self.add2archive)
+                            add2archive=self.add2archive)
                         cfile.remove_all()
                         logging.debug('Processing %s from %s' % (item,
                             self.filename))
@@ -251,9 +250,8 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
             if item.startswith('docProps/'):
                 return False
         zipin.close()
-        kwargs =  {'backup':self.backup, 'add2archive':self.add2archive}
         czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', **kwargs)
+                'application/zip', False, add2archive=self.add2archive)
         return czf.is_clean()
 
     def get_meta(self):

@@ -22,14 +22,14 @@ class TestRemovecli(test.MATTest):
         '''make sure that the cli remove all compromizing meta'''
         for _, dirty in self.file_list:
             subprocess.call(['../mat', dirty])
-            current_file = mat.create_class_file(dirty, False, True)
+            current_file = mat.create_class_file(dirty, False, add2archive=True, low_pdf_quality=True)
             self.assertTrue(current_file.is_clean())
 
     def test_remove_empty(self):
         '''Test removal with clean files'''
         for clean, _ in self.file_list:
             subprocess.call(['../mat', clean])
-            current_file = mat.create_class_file(clean, False, True)
+            current_file = mat.create_class_file(clean, False, add2archive=True, low_pdf_quality=True)
             self.assertTrue(current_file.is_clean())
 
 
