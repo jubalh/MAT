@@ -446,6 +446,8 @@ class GUI:
         '''
         dialog = gtk.Dialog(_('Preferences'), self.window, 0,
                 (gtk.STOCK_OK, 0))
+        dialog.set_resizable(False)
+        dialog.set_deletable(False)
         hbox = gtk.HBox()
         dialog.get_content_area().pack_start(hbox, False, False, 0)
 
@@ -484,8 +486,7 @@ non-anonymised) file to output archive'))
         table.attach(add2archive, 0, 1, 3, 4)
 
         hbox.show_all()
-        response = dialog.run()
-        if not response:  # gtk.STOCK_OK
+        if not dialog.run():  # gtk.STOCK_OK
             for i in self.liststore:  # update preferences
                 i[0].backup = self.backup
                 i[0].add2archive = self.add2archive
