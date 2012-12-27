@@ -60,7 +60,10 @@ class ExiftoolStripper(parser.GenericParser):
 
     def get_meta(self):
         '''
-            Return every harmful meta with help of exiftool
+            Return every harmful meta with help of exiftool.
+            Exiftool output looks like this:
+            field name : value
+            field name : value
         '''
         out = subprocess.Popen(['exiftool', self.filename],
                 stdout=subprocess.PIPE).communicate()[0]
@@ -69,7 +72,7 @@ class ExiftoolStripper(parser.GenericParser):
         for i in out[:-1]:
             key = i.split(':')[0].strip()
             if key not in self.allowed:
-                meta[key] = i.split(':')[1].strip()
+                meta[key] = i.split(':')[1].strip()  # add the field name to the metadata set
         return meta
 
 
