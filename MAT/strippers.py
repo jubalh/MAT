@@ -60,7 +60,7 @@ try:
     import exiftool
     STRIPPERS['image/jpeg'] = exiftool.JpegStripper
     STRIPPERS['image/png'] = exiftool.PngStripper
-except:  # if exiftool is not installed, use hachoir
+except OSError:  # if exiftool is not installed, use hachoir
     print('Unable to find exiftool: limited images support')
     STRIPPERS['image/jpeg'] = images.JpegStripper
     STRIPPERS['image/png'] = images.PngStripper
