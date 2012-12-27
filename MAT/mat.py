@@ -92,13 +92,13 @@ def secure_remove(filename):
     try:
         subprocess.call(['shred', '--remove', filename])
         removed = True
-    except:
+    except OSError:
         logging.error('Unable to securely remove %s' % filename)
 
-    if removed is False:
+    if not removed:
         try:
             os.remove(filename)
-        except:
+        except OSError:
             logging.error('Unable to remove %s' % filename)
 
 
@@ -148,8 +148,5 @@ def create_class_file(name, backup, **kwargs):
     except KeyError:
         logging.info('Don\'t have stripper for %s format' % mime)
         return None
-
-    if mime.endswith('pdf') and mime.startswith('application/'):
-        return stripper_class(filename, parser, mime, backup, **kwargs)
 
     return stripper_class(filename, parser, mime, backup, **kwargs)
