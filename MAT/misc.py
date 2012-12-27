@@ -26,7 +26,7 @@ class TorrentStripper(parser.GenericParser):
             try:
                 if decoded[key] != '':
                     return False
-            except:
+            except KeyError:
                 pass
         return True
 
@@ -41,7 +41,7 @@ class TorrentStripper(parser.GenericParser):
             try:
                 if decoded[key] != '':
                     metadata[key] = decoded[key]
-            except:
+            except KeyError:
                 pass
         return metadata
 
@@ -54,7 +54,7 @@ class TorrentStripper(parser.GenericParser):
         for key in self.fields:
             try:
                 decoded[key] = ''
-            except:
+            except KeyError:
                 pass
         with open(self.output, 'w') as f:  # encode the decoded torrent
             f.write(bencode.bencode(decoded))  # and write it in self.output
