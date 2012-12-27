@@ -35,9 +35,6 @@ class GenericArchiveStripper(parser.GenericParser):
         shutil.rmtree(self.tempdir)
 
     def remove_all(self):
-        return self._remove_all()
-
-    def _remove_all(self):
         raise NotImplementedError
 
 
@@ -113,7 +110,7 @@ harmless format' % item.filename)
         zipin.close()
         return metadata
 
-    def _remove_all(self):
+    def remove_all(self):
         '''
             So far, the zipfile module does not allow to write a ZipInfo
             object into a zipfile (and it's a shame !) : so data added
@@ -162,7 +159,7 @@ class TarStripper(GenericArchiveStripper):
         current_file.gname = ''
         return current_file
 
-    def _remove_all(self):
+    def remove_all(self):
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         tarout = tarfile.open(self.output, 'w' + self.compression)
         for item in tarin.getmembers():

@@ -49,7 +49,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             logging.debug('%s has no opendocument metadata' % self.filename)
         return metadata
 
-    def _remove_all(self):
+    def remove_all(self):
         '''
             FIXME ?
             There is a patch implementing the Zipfile.remove()
@@ -140,12 +140,6 @@ class PdfStripper(parser.GenericParser):
 
     def remove_all(self):
         '''
-            Remove metadata
-        '''
-        return self._remove_meta()
-
-    def _remove_meta(self):
-        '''
             Opening the PDF with poppler, then doing a render
             on a cairo pdfsurface for each pages.
 
@@ -202,7 +196,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
         It contains mostly xml, but can have media blobs, crap, ...
         (I don't like this format.)
     '''
-    def _remove_all(self):
+    def remove_all(self):
         '''
             FIXME ?
             There is a patch implementing the Zipfile.remove()

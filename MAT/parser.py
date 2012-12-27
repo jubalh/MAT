@@ -59,7 +59,7 @@ class GenericParser(object):
 
     def remove_all(self):
         '''
-            Remove all the files that are compromizing
+            Remove all compromising fields
         '''
         state = self._remove_all(self.editor)
         hachoir_core.field.writeIntoFile(self.editor, self.output)
@@ -67,6 +67,9 @@ class GenericParser(object):
         return state
 
     def _remove_all(self, fieldset):
+        '''
+            Recursive way to handle tree metadatas
+        '''
         try:
             for field in fieldset:
                 remove = self._should_remove(field)
@@ -93,6 +96,9 @@ class GenericParser(object):
         return metadata
 
     def _get_meta(self, fieldset, metadata):
+        '''
+            Recursive way to handle tree metadatas
+        '''
         for field in fieldset:
             remove = self._should_remove(field)
             if remove is True:
@@ -101,11 +107,11 @@ class GenericParser(object):
                 except:
                     metadata[field.name] = 'harmful content'
             if remove is FIELD:
-                self._get_meta(field)
+                self._get_meta(field, None)
 
     def _should_remove(self, key):
         '''
-            return True if the field is compromizing
+            return True if the field is compromising
             abstract method
         '''
         raise NotImplementedError
@@ -115,6 +121,6 @@ class GenericParser(object):
             Do a backup of the file if asked,
             and change his creation/access date
         '''
-        if self.backup is False:
+        if not self.backup:
             mat.secure_remove(self.filename)
             os.rename(self.output, self.filename)
