@@ -30,6 +30,7 @@ setup(
         ( 'share/mat', ['FORMATS'] ),
         ( 'share/pixmaps', ['mat.png'] ),
         ( 'share/doc/mat', ['README', 'TODO'] ),
+        ( 'share/man/man1', ['mat.1', 'mat-gui.1'] ),
     ],
     cmdclass          = {
         'build': build_extra.build_extra,
