@@ -1,4 +1,4 @@
-0.3.3 - 5jan2012
+0.3.3 - 5jan2013
     * Settings can now be changed for already added files
     * Improved the testsuite robustness
     * Fix (hopefully) for good the setup.py
