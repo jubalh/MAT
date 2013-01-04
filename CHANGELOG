@@ -1,3 +1,10 @@
+0.3.3 - 5jan2012
+    * Settings can now be changed for already added files
+    * Improved the testsuite robustness
+    * Fix (hopefully) for good the setup.py
+    * Add the possibility to reduce produced pdf's quality and size
+    * Bugfixes
+
 0.3.2 - 27may2012
     * Add localisation (new translations are welcome)
     * Even more beter handling of missing libraries
