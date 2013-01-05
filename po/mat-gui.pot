@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-09 19:37+0200\n"
+"POT-Creation-Date: 2013-01-05 20:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,84 +17,84 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mat-gui:94 mat-gui:549 mat-gui:565
+#: mat-gui:95 mat-gui:563 mat-gui:579
 msgid "Ready"
 msgstr ""
 
-#: mat-gui:106
+#: mat-gui:107
 msgid "Add"
 msgstr ""
 
-#: mat-gui:108 mat-gui:182
+#: mat-gui:109 mat-gui:183
 msgid "Add files"
 msgstr ""
 
-#: mat-gui:112 mat-gui:202 mat-gui:308 mat-gui:311 mat-gui:541 mat-gui:543
-#: mat-gui:559 mat-gui:561
+#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
+#: mat-gui:573 mat-gui:575
 msgid "Clean"
 msgstr ""
 
-#: mat-gui:114
+#: mat-gui:115
 msgid "Clean selected files"
 msgstr ""
 
-#: mat-gui:118 mat-gui:213
+#: mat-gui:119 mat-gui:214
 msgid "Check"
 msgstr ""
 
-#: mat-gui:120
+#: mat-gui:121
 msgid "Check selected files for harmful meta"
 msgstr ""
 
-#: mat-gui:124 mat-gui:184
+#: mat-gui:125 mat-gui:185
 msgid "Quit"
 msgstr ""
 
-#: mat-gui:136
+#: mat-gui:137
 msgid "Path"
 msgstr ""
 
-#: mat-gui:136 mat-gui:363
+#: mat-gui:137 mat-gui:363
 msgid "Filename"
 msgstr ""
 
-#: mat-gui:136 mat-gui:365
+#: mat-gui:137 mat-gui:365
 msgid "Mimetype"
 msgstr ""
 
-#: mat-gui:136
+#: mat-gui:137
 msgid "State"
 msgstr ""
 
-#: mat-gui:137
+#: mat-gui:138
 msgid "Cleaned file"
 msgstr ""
 
-#: mat-gui:181
+#: mat-gui:182
 msgid "Files"
 msgstr ""
 
-#: mat-gui:187
+#: mat-gui:188
 msgid "Edit"
 msgstr ""
 
-#: mat-gui:188
+#: mat-gui:189
 msgid "Clear the filelist"
 msgstr ""
 
-#: mat-gui:191 mat-gui:447
+#: mat-gui:192 mat-gui:447
 msgid "Preferences"
 msgstr ""
 
-#: mat-gui:194
+#: mat-gui:195
 msgid "Process"
 msgstr ""
 
-#: mat-gui:217
+#: mat-gui:218
 msgid "Help"
 msgstr ""
 
-#: mat-gui:218 mat-gui:395
+#: mat-gui:219 mat-gui:395
 msgid "Supported formats"
 msgstr ""
 
@@ -102,23 +102,23 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: mat-gui:240
+#: mat-gui:241
 msgid "Choose files"
 msgstr ""
 
-#: mat-gui:247
+#: mat-gui:248
 msgid "All files"
 msgstr ""
 
-#: mat-gui:254
+#: mat-gui:255
 msgid "Supported files"
 msgstr ""
 
-#: mat-gui:296
+#: mat-gui:297
 msgid "unknow"
 msgstr ""
 
-#: mat-gui:313 mat-gui:545
+#: mat-gui:313 mat-gui:559
 msgid "Dirty"
 msgstr ""
 
@@ -134,36 +134,44 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: mat-gui:459
+#: mat-gui:461
 msgid "Force Clean"
 msgstr ""
 
-#: mat-gui:462
+#: mat-gui:464
 msgid "Do not check if already clean before cleaning"
 msgstr ""
 
-#: mat-gui:466
+#: mat-gui:468
 msgid "Backup"
 msgstr ""
 
-#: mat-gui:469
+#: mat-gui:471
 msgid "Keep a backup copy"
 msgstr ""
 
-#: mat-gui:472
+#: mat-gui:474
+msgid "Reduce PDF quality"
+msgstr ""
+
+#: mat-gui:477
+msgid "Reduce the produced PDF size and quality"
+msgstr ""
+
+#: mat-gui:480
 msgid "Add unsupported file to archives"
 msgstr ""
 
-#: mat-gui:476
+#: mat-gui:484
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr ""
 
-#: mat-gui:540
+#: mat-gui:554
 #, python-format
 msgid "Checking %s..."
 msgstr ""
 
-#: mat-gui:558
+#: mat-gui:572
 #, python-format
 msgid "Cleaning %s..."
 msgstr ""
