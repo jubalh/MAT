@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mat 0.3.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-09 19:37+0200\n"
+"POT-Creation-Date: 2013-01-05 20:03+0100\n"
 "PO-Revision-Date: 2012-05-29 11:13+0200\n"
 "Last-Translator: K.N.\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -16,84 +16,84 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: mat-gui:94 mat-gui:549 mat-gui:565
+#: mat-gui:95 mat-gui:563 mat-gui:579
 msgid "Ready"
 msgstr "Fertig"
 
-#: mat-gui:106
+#: mat-gui:107
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: mat-gui:108 mat-gui:182
+#: mat-gui:109 mat-gui:183
 msgid "Add files"
 msgstr "Dateien hinzufügen"
 
-#: mat-gui:112 mat-gui:202 mat-gui:308 mat-gui:311 mat-gui:541 mat-gui:543
-#: mat-gui:559 mat-gui:561
+#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
+#: mat-gui:573 mat-gui:575
 msgid "Clean"
 msgstr "Säubern"
 
-#: mat-gui:114
+#: mat-gui:115
 msgid "Clean selected files"
 msgstr "Ausgewählte Dateien säubern"
 
-#: mat-gui:118 mat-gui:213
+#: mat-gui:119 mat-gui:214
 msgid "Check"
 msgstr "Prüfen"
 
-#: mat-gui:120
+#: mat-gui:121
 msgid "Check selected files for harmful meta"
 msgstr "Ausgewählte Dateien auf unerwünschte Metadaten prüfen"
 
-#: mat-gui:124 mat-gui:184
+#: mat-gui:125 mat-gui:185
 msgid "Quit"
 msgstr "Beenden"
 
-#: mat-gui:136
+#: mat-gui:137
 msgid "Path"
 msgstr "Verzeichnis"
 
-#: mat-gui:136 mat-gui:363
+#: mat-gui:137 mat-gui:363
 msgid "Filename"
 msgstr "Dateiname"
 
-#: mat-gui:136 mat-gui:365
+#: mat-gui:137 mat-gui:365
 msgid "Mimetype"
 msgstr "Mimetyp"
 
-#: mat-gui:136
+#: mat-gui:137
 msgid "State"
 msgstr "Status"
 
-#: mat-gui:137
+#: mat-gui:138
 msgid "Cleaned file"
 msgstr "Gesäuberte Datei"
 
-#: mat-gui:181
+#: mat-gui:182
 msgid "Files"
 msgstr "Dateien"
 
-#: mat-gui:187
+#: mat-gui:188
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: mat-gui:188
+#: mat-gui:189
 msgid "Clear the filelist"
 msgstr "Gesamte Liste säubern"
 
-#: mat-gui:191 mat-gui:447
+#: mat-gui:192 mat-gui:447
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: mat-gui:194
+#: mat-gui:195
 msgid "Process"
 msgstr "Prozess"
 
-#: mat-gui:217
+#: mat-gui:218
 msgid "Help"
 msgstr "Hilfe"
 
-#: mat-gui:218 mat-gui:395
+#: mat-gui:219 mat-gui:395
 msgid "Supported formats"
 msgstr "Unterstützte Formate"
 
@@ -101,23 +101,23 @@ msgstr "Unterstützte Formate"
 msgid "About"
 msgstr "Über"
 
-#: mat-gui:240
+#: mat-gui:241
 msgid "Choose files"
 msgstr "Dateien auswählen"
 
-#: mat-gui:247
+#: mat-gui:248
 msgid "All files"
 msgstr "Alle Dateien"
 
-#: mat-gui:254
+#: mat-gui:255
 msgid "Supported files"
 msgstr "Unterstützte Dateien"
 
-#: mat-gui:296
+#: mat-gui:297
 msgid "unknow"
 msgstr "unbekannt"
 
-#: mat-gui:313 mat-gui:545
+#: mat-gui:313 mat-gui:559
 msgid "Dirty"
 msgstr "Verschmutzt"
 
@@ -133,39 +133,46 @@ msgstr "Diese Software wurde während des GSoC 2011 erstellt."
 msgid "Website"
 msgstr "Webseite"
 
-#: mat-gui:459
+#: mat-gui:461
 msgid "Force Clean"
 msgstr "Säubern erzwingen"
 
-#: mat-gui:462
+#: mat-gui:464
 msgid "Do not check if already clean before cleaning"
 msgstr "Dateien vor dem Säubern nicht Prüfen"
 
-#: mat-gui:466
+#: mat-gui:468
 msgid "Backup"
 msgstr "Backup"
 
-#: mat-gui:469
+#: mat-gui:471
 msgid "Keep a backup copy"
 msgstr "Sicherungskopie behalten"
 
-#: mat-gui:472
+#: mat-gui:474
+msgid "Reduce PDF quality"
+msgstr ""
+
+#: mat-gui:477
+msgid "Reduce the produced PDF size and quality"
+msgstr ""
+
+#: mat-gui:480
 msgid "Add unsupported file to archives"
 msgstr "Nicht unterstützte Dateien im Archiv hinzufügen"
 
-#: mat-gui:476
+#: mat-gui:484
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr ""
-"Nicht unterstützte (und somit nicht gesäuberte) Dateien dem Ausgabe "
-"Archiv hinzufügen"
+"Nicht unterstützte (und somit nicht gesäuberte) Dateien dem Ausgabe Archiv "
+"hinzufügen"
 
-#: mat-gui:540
+#: mat-gui:554
 #, python-format
 msgid "Checking %s..."
 msgstr "Prüfe %s..."
 
-#: mat-gui:558
+#: mat-gui:572
 #, python-format
 msgid "Cleaning %s..."
 msgstr "Säubere %s..."
-
