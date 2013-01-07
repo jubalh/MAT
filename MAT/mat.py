@@ -30,19 +30,21 @@ LOGGING_LEVEL = logging.DEBUG
 
 logging.basicConfig(filename=fname, level=LOGGING_LEVEL)
 
+def get_logo():
+    if os.path.isfile('./data/mat.png'):
+        return './data/mat.png'
+    elif os.path.isfile('/usr/share/pixmaps/mat.png'):
+        return '/usr/share/pixmaps/mat.png'
+    elif os.path.isfile('/usr/local/share/pixmaps/mat.png'):
+        return '/usr/local/share/pixmaps/mat.png'
 
-def get_sharedir(filename):
-    '''
-        An ugly hack to find various files
-    '''
-    if os.path.isfile(filename):
-        return filename
-    elif os.path.exists(os.path.join('/usr/local/share/mat/', filename)):
-        return os.path.join('/usr/local/share/mat/', filename)
-    elif os.path.exists(os.path.join('/usr/share/mat/', filename)):
-        return os.path.join('/usr/share/mat', filename)
-    elif os.path.exists(os.path.join('/usr/local/share/pixmaps/', filename)):
-        return os.path.join('/usr/local/share/pixmaps/', filename)
+def get_formats():
+    if os.path.isfile('./data/FORMATS'):
+        return './data/FORMATS'
+    elif os.path.isfile('/usr/share/mat/FORMATS'):
+        return '/usr/share/mat/FORMATS'
+    elif os.path.isfile('/usr/local/share/mat/FORMATS'):
+        return '/usr/local/share/mat/FORMATS'
 
 
 class XMLParser(xml.sax.handler.ContentHandler):

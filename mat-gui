@@ -53,7 +53,7 @@ class GUI:
         self.window.set_title('Metadata Anonymisation Toolkit')
         self.window.connect('destroy', gtk.main_quit)
         self.window.set_default_size(800, 600)
-        self.logo = mat.get_sharedir('mat.png')
+        self.logo = mat.get_logo()
         icon = gtk.gdk.pixbuf_new_from_file_at_size(self.logo, 50, 50)
         self.window.set_icon(icon)
 
@@ -405,7 +405,7 @@ class GUI:
         handler = mat.XMLParser()
         parser = xml.sax.make_parser()
         parser.setContentHandler(handler)
-        path = mat.get_sharedir('FORMATS')
+        path = mat.get_formats()
         with open(path, 'r') as xmlfile:
             parser.parse(xmlfile)
 

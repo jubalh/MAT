@@ -104,7 +104,7 @@ def list_supported():
     handler = mat.XMLParser()
     parser = xml.sax.make_parser()
     parser.setContentHandler(handler)
-    path = mat.get_sharedir('FORMATS')
+    path = mat.get_formats()
     with open(path, 'r') as xmlfile:
         parser.parse(xmlfile)
 

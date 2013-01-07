@@ -2,6 +2,7 @@
     <format>
         <name>Portable Network Graphics</name>
         <extension>.png</extension>
+        <mimetype>image/png</mimetype>
         <support>full</support>
         <metadata>textual metadata + date</metadata>
         <method>removal of harmful fields is done with hachoir</method>
@@ -10,14 +11,19 @@
     <format>
         <name>Jpeg</name>
         <extension>.jpeg, .jpg</extension>
-        <support>full</support>
+        <mimetype>image/jpeg</mimetype>
+        <support>partial</support>
         <metadata>comment + exif/photoshop/adobe</metadata>
         <method>removal of harmful fields is done with hachoir</method>
+	<remaining>Canon Raw tags :
+	    http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/CanonRaw.html
+	</remaining>
     </format>
 
     <format>
         <name>Open Document</name>
         <extension>.odt, .odx, .ods, ...</extension>
+        <mimetype>application/opendocument</mimetype>
         <support>full</support>
         <metadata>a meta.xml file</metadata>
         <method>removal of the meta.xml file</method>
@@ -26,6 +32,7 @@
     <format>
         <name>Office Openxml</name>
         <extension>.docx, .pptx, .xlsx, ...</extension>
+        <mimetype>application/officeopenxml</mimetype>
         <support>full</support>
         <metadata>a docProps folder containings xml metadata files</metadata>
         <method>removal of the docProps folder</method>
@@ -34,18 +41,21 @@
     <format>
         <name>Portable Document Fileformat</name>
         <extension>.pdf</extension>
+        <mimetype>application/pdf</mimetype>
         <support>full</support>
         <metadata>a lot</metadata>
-        <method>rendering of the pdf file on a cairo surface with the help of
-            poppler in order to remove all the internal metadata,
-            then removal of the remaining metadata fields of the pdf itself with
-            pdfrw (the next version of python-cairo will support metadata,
-            so we should get rid of pdfrw)</method>
+        <method> rendering of the PDF file on a cairo surface with the help of
+                poppler in order to remove all the internal metadata.
+                For now, cairo create some metadata.
+                They can be remove if you install either exiftool, or python-pdfrw.
+                The next version of python-cairo will support PDF metadata.
+        </method>
     </format>
 
     <format>
         <name>Tape ARchive</name>
         <extension>.tar, .tar.bz2, .tar.gz</extension>
+        <mimetype>application/x-tar, application/x-gzip, application/x-bzip2</mimetype>
         <support>full</support>
         <metadata>metadata from the file itself, metadata from the file contained
             into the archive, and metadata added by tar to the file at then
@@ -58,11 +68,11 @@
     <format>
         <name>Zip</name>
         <extension>.zip</extension>
-        <support>.partial</support>
+        <mimetype>application/zip</mimetype>
+        <support>partial</support>
         <metadata>metadata from the file itself, metadata from the file contained
             into the archive, and metadata added by zip to the file when added to
-            the archive.
-        </metadata>
+            the archive.</metadata>
         <method>extraction of each file, treatement of the file, add treated file
         to a new archive. When the new archive is complete, remove all his metadata</method>
         <remaining>metadata added by zip itself to internal files</remaining>
@@ -70,7 +80,8 @@
 
     <format>
         <name>MPEG Audio</name>
-        <extension>.mp3, .mp2, .mp1</extension>
+        <extension>.mp3, .mp2, .mp1, .mpa</extension>
+        <mimetype>audio/mpeg</mimetype>
         <support>full</support>
         <metadata>id3</metadata>
         <method>removal of harmful fields is done with hachoir</method>
@@ -79,6 +90,7 @@
     <format>
         <name>Ogg Vorbis</name>
         <extension>.ogg</extension>
+        <mimetype>audio/vorbis</mimetype>
         <support>full</support>
         <metadata>Vorbis</metadata>
         <method>removal of harmful fields is done with mutagen</method>
@@ -87,8 +99,19 @@
     <format>
         <name>Free Lossless Audio Codec</name>
         <extension>.flac</extension>
+        <mimetype>audio/x-flac</mimetype>
         <support>full</support>
         <metadata>Flac, Vorbis</metadata>
         <method>removal of harmful fields is done with mutagen</method>
+    </format>
+
+    <format>
+	<name>Torrent</name>
+	<extension>.torrent</extension>
+    <mimetype>application/torrent</mimetype>
+	<support>full</support>
+	<metadata>torrent</metadata>
+	<method>remove all the compromizing metadata with a heavily tuned version
+        of the bencode lib by Petru Paled</method>
     </format>
 </xml>

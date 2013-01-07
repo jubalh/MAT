@@ -27,8 +27,8 @@ setup(
     scripts           = ['mat', 'mat-gui'],
     data_files        = [
         ( 'share/applications', ['mat.desktop'] ),
-        ( 'share/mat', ['FORMATS'] ),
-        ( 'share/pixmaps', ['mat.png'] ),
+        ( 'share/mat', ['data/FORMATS'] ),
+        ( 'share/pixmaps', ['data/mat.png'] ),
         ( 'share/doc/mat', ['README', 'TODO'] ),
         ( 'share/man/man1', ['mat.1', 'mat-gui.1'] ),
     ],
