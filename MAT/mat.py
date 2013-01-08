@@ -15,7 +15,7 @@ import hachoir_parser
 
 import strippers
 
-__version__ = '0.3.3'
+__version__ = '0.3.4'
 __author__ = 'jvoisin'
 
 #Silence

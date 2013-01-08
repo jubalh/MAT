@@ -1,3 +1,8 @@
+0.3.4 - 8jan2013
+    * Bump dates
+    * Update localizations
+    * Refactor the way MAT's data are handled
+
 0.3.3 - 5jan2013
     * Settings can now be changed for already added files
     * Improved the testsuite robustness
