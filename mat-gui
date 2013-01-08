@@ -581,7 +581,6 @@ non-anonymised) file to output archive'))
 
 if __name__ == '__main__':
     gettext.install('MAT', unicode=True)
-    _ = gettext.gettext
 
     #Main
     gui = GUI()
