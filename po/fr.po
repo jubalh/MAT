@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mat 0.3.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-05 20:03+0100\n"
-"PO-Revision-Date: 2012-05-11 16:07+0100\n"
+"PO-Revision-Date: 2013-01-06 21:00-0000\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: mat-gui:95 mat-gui:563 mat-gui:579
 msgid "Ready"
@@ -162,12 +163,12 @@ msgstr "Réduit la qualité et la taille des PDF produits"
 
 #: mat-gui:480
 msgid "Add unsupported file to archives"
-msgstr "Ajoute les fichiers non supportés aux archives"
+msgstr "Ajoute le(s) fichier(s) non supporté(s) aux archives"
 
 #: mat-gui:484
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr ""
-"Ajoute les fichiers non supportés (et donc, non traités) aux archives "
+"Ajoute le(s) fichier(s) non supporté(s) (et donc, non traités) aux archives "
 "produites"
 
 #: mat-gui:554
