@@ -15,7 +15,7 @@ import tempfile
 import unittest
 import subprocess
 
-VERBOSITY = 3
+VERBOSITY = 5
 
 clean = glob.glob('clean*')
 clean.sort()
@@ -25,8 +25,9 @@ dirty.sort()
 FILE_LIST = zip(clean, dirty)
 
 try:  # PDF render processing
-    import poppler
     import cairo
+    import gi
+    from gi.repository import Poppler
     import pdfrw
 except ImportError:
     FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))

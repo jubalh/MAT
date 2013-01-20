@@ -10,7 +10,7 @@ import xml.dom.minidom as minidom
 
 try:
     import cairo
-    import poppler
+    from gi.repository import Poppler
 except ImportError:
     pass
 
@@ -125,7 +125,7 @@ class PdfStripper(parser.GenericParser):
         uri = 'file://' + os.path.abspath(self.filename)
         self.password = None
         self.pdf_quality = kwargs['low_pdf_quality']
-        self.document = poppler.document_new_from_file(uri, self.password)
+        self.document = Poppler.Document.new_from_file(uri, self.password)
         self.meta_list = frozenset(['title', 'author', 'subject', 'keywords', 'creator',
             'producer', 'metadata'])
 

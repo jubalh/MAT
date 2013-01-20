@@ -4,6 +4,7 @@
 
 import images
 import audio
+import gi
 import office
 import archive
 import misc
@@ -24,9 +25,9 @@ STRIPPERS = {
 # PDF support
 pdfSupport = True
 try:
-    import poppler
+    from gi.repository import Poppler
 except ImportError:
-    print('Unable to import python-poppler: not PDF support')
+    print('Unable to import Poppler')
     pdfSupport = False
 
 try:
