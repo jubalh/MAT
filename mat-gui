@@ -383,7 +383,7 @@ class GUI:
         w.set_artists(['Marine Benoît', ])
         w.set_copyright('GNU Public License v2')
         w.set_comments(_('This software was coded during the GSoC 2011'))
-        w.set_logo(Gdk.Pixbuf.new_from_file_at_size(self.logo, 400, 200))
+        w.set_logo(GdkPixbuf.Pixbuf.new_from_file_at_size(self.logo, 400, 200))
         w.set_program_name('Metadata Anonymisation Toolkit')
         w.set_version(mat.__version__)
         w.set_website('https://mat.boum.org')
