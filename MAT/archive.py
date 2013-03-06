@@ -47,16 +47,15 @@ class ZipStripper(GenericArchiveStripper):
             Check if a ZipInfo object is clean of metadatas added
             by zip itself, independently of the corresponding file metadatas
         '''
-        if fileinfo.comment != '':
+        if fileinfo.comment:
             return False
-        elif fileinfo.date_time != 0:
+        elif fileinfo.date_time:
             return False
-        elif fileinfo.create_system != 0:
+        elif fileinfo.create_system:
             return False
-        elif fileinfo.create_version != 0:
+        elif fileinfo.create_version:
             return False
-        else:
-            return True
+        return True
 
     def is_clean(self):
         '''

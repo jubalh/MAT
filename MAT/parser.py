@@ -101,7 +101,7 @@ class GenericParser(object):
         '''
         for field in fieldset:
             remove = self._should_remove(field)
-            if remove is True:
+            if remove:
                 try:
                     metadata[field.name] = field.value
                 except:
