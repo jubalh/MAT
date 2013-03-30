@@ -121,6 +121,12 @@ class GUI:
         toolbutton.set_tooltip_text(_('Check selected files for harmful meta'))
         toolbar.add(toolbutton)
 
+        toolbutton = gtk.ToolButton(gtk.STOCK_REMOVE)
+        toolbutton.set_label(_('Clear the filelist'))
+        toolbutton.connect('clicked', lambda x: self.liststore.clear())
+        toolbutton.set_tooltip_text(_('Clear the filelist'))
+        toolbar.add(toolbutton)
+
         toolbutton = gtk.ToolButton(stock_id=gtk.STOCK_QUIT)
         toolbutton.set_label(_('Quit'))
         toolbutton.connect('clicked', gtk.main_quit)
