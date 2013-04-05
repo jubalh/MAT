@@ -43,7 +43,7 @@ try:  # file format exclusively managed by exiftool
 except OSError:
     pass  # None for now
 
-FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
+#FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
 #FILE_LIST.remove(('clean é.tar', 'dirty é.tar'))
 FILE_LIST.remove(('clean é.tar.gz', 'dirty é.tar.gz'))
 #FILE_LIST.remove(('clean é.tar.bz2', 'dirty é.tar.bz2'))

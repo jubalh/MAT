@@ -6,6 +6,8 @@ import os
 import logging
 import zipfile
 import fileinput
+import tempfile
+import shutil
 import xml.dom.minidom as minidom
 
 try:
@@ -145,11 +147,16 @@ class PdfStripper(parser.GenericParser):
 
             http://cairographics.org/documentation/pycairo/2/
             python-poppler is not documented at all : have fun ;)
+
+            The use of an intermediate tempfile is necessary because
+            python-cairo segfaults on unicode.
+            See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=699457
         '''
+        output = tempfile.mkstemp()[1]
         page = self.document.get_page(0)
         # assume that every pages are the same size
         page_width, page_height = page.get_size()
-        surface = cairo.PDFSurface(self.output, page_width, page_height)
+        surface = cairo.PDFSurface(output, page_width, page_height)
         context = cairo.Context(surface)  # context draws on the surface
         logging.debug('PDF rendering of %s' % self.filename)
         for pagenum in xrange(self.document.get_n_pages()):
@@ -161,6 +168,7 @@ class PdfStripper(parser.GenericParser):
                 page.render_for_printing(context)  # render the page on context
             context.show_page()  # draw context on surface
         surface.finish()
+        shutil.move(output, self.output)
 
         try:
             import pdfrw  # For now, poppler cannot write meta, so we must use pdfrw
