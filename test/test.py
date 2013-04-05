@@ -35,18 +35,15 @@ except ImportError:
 try:  # python-mutagen : audio file format
     import mutagen
 except ImportError:
-    pass  # since wr don't have any ogg for now
-    #FILE_LIST.remove(('clean.ogg', 'dirty.ogg'))
+    FILE_LIST.remove(('clean é.ogg', 'dirty é.ogg'))
+    FILE_LIST.remove(('clean é.mp3', 'dirty é.mp3'))
+    FILE_LIST.remove(('clean é.flac', 'dirty é.flac'))
 
 try:  # file format exclusively managed by exiftool
     subprocess.Popen('exiftool', stdout=open('/dev/null'))
 except OSError:
     pass  # None for now
 
-#FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
-#FILE_LIST.remove(('clean é.tar', 'dirty é.tar'))
-FILE_LIST.remove(('clean é.tar.gz', 'dirty é.tar.gz'))
-#FILE_LIST.remove(('clean é.tar.bz2', 'dirty é.tar.bz2'))
 
 class MATTest(unittest.TestCase):
     '''
