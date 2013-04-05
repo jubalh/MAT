@@ -529,23 +529,27 @@ non-anonymised) file to output archive'))
             drag'n'droped into mat.
             It basically add files.
         '''
-        urls = selection.data.strip('\r\n\x00')  # strip stupid characters
-        cleaned_urls = map(self.__clean_draged_file_path, urls.split('\n'))
-        task = self.populate(cleaned_urls)
-        GObject.idle_add(task.next)  # asynchrone processing
 
-    def __clean_draged_file_path(self, url):
-        '''
-            Since the dragged urls are ugly,
-            we need to process them
-        '''
-        url = urllib2.unquote(url)  # unescape stupid chars
-        if url.startswith('file:\\\\\\'):  # windows
-            return url[8:]  # 8 is len('file:///')
-        elif url.startswith('file://'):  # nautilus, rox
-            return url[7:]  # 7 is len('file://')
-        elif url.startswith('file:'):  # xffm
-            return url[5:]  # 5 is len('file:')
+
+        def clean_path(url):
+            '''
+                Since the dragged urls are ugly,
+                we need to process them
+            '''
+            url = urllib2.unquote(url)  # unescape stupid chars
+            url = url.replace('\n', '')
+            if url.startswith('file:\\\\\\'):  # windows
+                return url[8:]  # 8 is len('file:///')
+            elif url.startswith('file://'):  # nautilus, rox
+                return url[7:]  # 7 is len('file://')
+            elif url.startswith('file:'):  # xffm
+                return url[5:]  # 5 is len('file:')
+
+        urls = selection.get_data().split('\r')
+        urls = urls[:-1]  # last entry in only a '\n'
+        urls = map(clean_path, urls)
+        task = self.populate(urls)
+        GObject.idle_add(task.next)  # asynchrone processing
 
     def __process_files(self, button, func):
         '''
