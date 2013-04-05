@@ -15,7 +15,7 @@ import tempfile
 import unittest
 import subprocess
 
-VERBOSITY = 3
+VERBOSITY = 15
 
 clean = glob.glob('clean*')
 clean.sort()
@@ -25,8 +25,9 @@ dirty.sort()
 FILE_LIST = zip(clean, dirty)
 
 try:  # PDF render processing
-    import poppler
     import cairo
+    import gi
+    from gi.repository import Poppler
     import pdfrw
 except ImportError:
     FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
@@ -42,6 +43,10 @@ try:  # file format exclusively managed by exiftool
 except OSError:
     pass  # None for now
 
+#FILE_LIST.remove(('clean é.pdf', 'dirty é.pdf'))
+#FILE_LIST.remove(('clean é.tar', 'dirty é.tar'))
+FILE_LIST.remove(('clean é.tar.gz', 'dirty é.tar.gz'))
+#FILE_LIST.remove(('clean é.tar.bz2', 'dirty é.tar.bz2'))
 
 class MATTest(unittest.TestCase):
     '''

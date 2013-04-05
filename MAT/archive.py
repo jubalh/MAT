@@ -10,7 +10,8 @@ import tempfile
 
 import parser
 import mat
-from tarfile import tarfile
+#from tarfile import tarfile
+import tarfile
 
 
 class GenericArchiveStripper(parser.GenericParser):
@@ -159,8 +160,8 @@ class TarStripper(GenericArchiveStripper):
         return current_file
 
     def remove_all(self):
-        tarin = tarfile.open(self.filename, 'r' + self.compression)
-        tarout = tarfile.open(self.output, 'w' + self.compression)
+        tarin = tarfile.open(self.filename, 'r' + self.compression, encoding='utf-8')
+        tarout = tarfile.open(self.output, 'w' + self.compression, encoding='utf-8')
         for item in tarin.getmembers():
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
