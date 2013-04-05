@@ -131,7 +131,7 @@ class GUI:
         toolbutton.set_tooltip_text(_('Clear the filelist'))
         toolbar.add(toolbutton)
 
-        toolbutton = gtk.ToolButton(stock_id=gtk.STOCK_QUIT)
+        toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
         toolbutton.set_label(_('Quit'))
         toolbutton.connect('clicked', Gtk.main_quit)
         toolbar.add(toolbutton)
@@ -438,7 +438,8 @@ class GUI:
                 if item['support'] == 'partial':
                     content += '\n\t<b>remaining</b> : ' + item['remaining']
 
-                expander = Gtk.Expander(title)
+                expander = Gtk.Expander()
+                expander.set_label(title)
                 vbox.pack_start(expander, False, False, 0)
                 label = Gtk.Label()
                 label.set_markup(content)
