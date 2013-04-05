@@ -12,7 +12,6 @@ import subprocess
 
 STRIPPERS = {
     'application/x-tar': archive.TarStripper,
-    'application/x-gzip': archive.GzipStripper,
     'application/x-bzip2': archive.Bzip2Stripper,
     'application/zip': archive.ZipStripper,
     'audio/mpeg': audio.MpegAudioStripper,
@@ -52,6 +51,7 @@ try:
     import mutagen
     STRIPPERS['audio/x-flac'] = audio.FlacStripper
     STRIPPERS['audio/vorbis'] = audio.OggStripper
+    STRIPPERS['audio/mpeg'] = audio.MpegAudioStripper
 except ImportError:
     print('Unable to import python-mutagen: limited audio format support')
 
