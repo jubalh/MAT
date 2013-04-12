@@ -1,9 +1,3 @@
-GENERAL:
-    - Complete the get_meta method:
-	the ultimate goal is to remove
-	all "harmful meta" stuff
-
-
 FORMATS:
     NEW:
         - microsoft office < 2007 (ugly and insane)
@@ -11,17 +5,16 @@ FORMATS:
         - videos format ?
     ARCHIVES:
         - correctly handle mtime/atime for files inside archives
-    PDF:
-        - add an option to allow to lose quality to reduce outputed pdf size
 
+GUI:
+    - Improve the "supported formats" dialog
+    - Add a popup to warn the user about non-supported format because of missing dependencies
 
 MISC:
     - a nautilus extension (right-clic -> clean with MAT)
-
+    - support non-utf8 filenames
+    - support files with a \n in their name
 
 TESTSUITE
     - add a ctime/mtime related test
 
-
-WATERMARK:
-    - do research
