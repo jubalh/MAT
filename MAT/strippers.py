@@ -7,8 +7,10 @@ import audio
 import gi
 import office
 import archive
+import mat
 import misc
 import subprocess
+import logging
 
 STRIPPERS = {
     'application/x-tar': archive.TarStripper,
@@ -20,25 +22,26 @@ STRIPPERS = {
     'application/officeopenxml': office.OpenXmlStripper,
 }
 
+logging.basicConfig(level=mat.LOGGING_LEVEL)
 
 # PDF support
 pdfSupport = True
 try:
     from gi.repository import Poppler
 except ImportError:
-    print('Unable to import Poppler')
+    logging.info('Unable to import Poppler: no PDF support')
     pdfSupport = False
 
 try:
     import cairo
 except ImportError:
-    print('Unable to import python-cairo: no PDF support')
+    logging.info('Unable to import python-cairo: no PDF support')
     pdfSupport = False
 
 try:
     import pdfrw
 except ImportError:
-    print('Unable to import python-pdfrw: no PDf support')
+    logging.info('Unable to import python-pdfrw: no PDf support')
     pdfSupport = False
 
 if pdfSupport:
@@ -53,7 +56,7 @@ try:
     STRIPPERS['audio/vorbis'] = audio.OggStripper
     STRIPPERS['audio/mpeg'] = audio.MpegAudioStripper
 except ImportError:
-    print('Unable to import python-mutagen: limited audio format support')
+    logging.info('Unable to import python-mutagen: limited audio format support')
 
 # exiftool
 try:
@@ -62,6 +65,6 @@ try:
     STRIPPERS['image/jpeg'] = exiftool.JpegStripper
     STRIPPERS['image/png'] = exiftool.PngStripper
 except OSError:  # if exiftool is not installed, use hachoir instead
-    print('Unable to find exiftool: limited images support')
+    logging.info('Unable to find exiftool: limited images support')
     STRIPPERS['image/jpeg'] = images.JpegStripper
     STRIPPERS['image/png'] = images.PngStripper

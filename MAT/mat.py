@@ -13,7 +13,6 @@ import xml.sax
 import hachoir_core.cmd_line
 import hachoir_parser
 
-import strippers
 
 __version__ = '0.3.4'
 __author__ = 'jvoisin'
@@ -29,6 +28,8 @@ LOGGING_LEVEL = logging.DEBUG
 #logname = 'report.log'
 
 logging.basicConfig(filename=fname, level=LOGGING_LEVEL)
+
+import strippers  # this is loaded here because we need LOGGING_LEVEL
 
 def get_logo():
     if os.path.isfile('./data/mat.png'):
