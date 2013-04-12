@@ -53,9 +53,9 @@
     </format>
 
     <format>
-        <name>Tape ARchive</name>
-        <extension>.tar, .tar.bz2, .tar.gz</extension>
-        <mimetype>application/x-tar, application/x-gzip, application/x-bzip2</mimetype>
+        <name>Tape ARchive and Bziped ones</name>
+        <extension>.tar, .tar.bz2</extension>
+        <mimetype>application/x-tar, application/x-bzip2</mimetype>
         <support>full</support>
         <metadata>metadata from the file itself, metadata from the file contained
             into the archive, and metadata added by tar to the file at then
