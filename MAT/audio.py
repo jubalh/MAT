@@ -9,7 +9,7 @@ except ImportError:
     pass
 
 import parser
-import mutagenpowered
+import mutagenstripper
 
 
 class MpegAudioStripper(parser.GenericParser):
@@ -20,7 +20,7 @@ class MpegAudioStripper(parser.GenericParser):
         return field.name in ("id3v1", "id3v2")
 
 
-class OggStripper(mutagenpowered.MutagenStripper):
+class OggStripper(mutagenstripper.MutagenStripper):
     '''
         Represent an ogg vorbis file
     '''
@@ -28,7 +28,7 @@ class OggStripper(mutagenpowered.MutagenStripper):
         self.mfile = OggVorbis(self.filename)
 
 
-class FlacStripper(mutagenpowered.MutagenStripper):
+class FlacStripper(mutagenstripper.MutagenStripper):
     '''
         Represent a Flac audio file
     '''
