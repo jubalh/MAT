@@ -5,12 +5,10 @@
     Metadata anonymisation toolkit - GUI edition
 '''
 
-import gi
-from gi.repository import GObject
-from gi.repository import Gtk, Gdk, GdkPixbuf
+from gi.repository import GObject, Gtk
+from gi.repository import Gdk, GdkPixbuf
 
 import gettext
-#import locale
 import logging
 import os
 import sys
@@ -21,24 +19,21 @@ import urllib2
 from MAT import mat
 from MAT import strippers
 
-
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
 
-class CFile(object):
+class CFile(GObject.Object):
     '''
         Contain the "parser" class of the file "filename"
         This class exist just to be "around" my parser.Generic_parser class,
-        since the Gtk.ListStore does not accept it.
+        since the Gtk.ListStore does not accept it because it does not
+        extends Gobject.Object
     '''
     def __init__(self, filename, backup, **kwargs):
-        try:
-            self.file = mat.create_class_file(filename, backup, **kwargs)
-        except:
-            self.file = None
+        self.file = mat.create_class_file(filename, backup, **kwargs)
 
 
-class GUI:
+class GUI(object):
     '''
         Main GUI class
     '''
@@ -50,204 +45,101 @@ class GUI:
         self.pdf_quality = False
 
         # Main window
-        self.window = Gtk.Window()
-        self.window.set_title('Metadata Anonymisation Toolkit')
-        self.window.connect('destroy', Gtk.main_quit)
-        self.window.set_default_size(800, 600)
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file(os.path.join(mat.get_datadir(), 'mat.ui'))
+        self.builder.connect_signals(self)
+
         self.logo = mat.get_logo()
         icon = GdkPixbuf.Pixbuf.new_from_file_at_size(self.logo, 50, 50)
+
+        self.window = self.builder.get_object('MainWindow')
         self.window.set_icon(icon)
+        self.liststore = self.builder.get_object('Liststore')
+        ''' The liststore contains:
+                0: a CFile instance which represent the file
+                1: the file's path
+                2: the file's name
+                3: the file's mimetype
+                4: the file's state (translated string)
+                5: the cleaned copy's path
+                6: the file's state (-1: unknown, 0: clean, 1: dirty)
+        '''
 
-        self.accelerator = Gtk.AccelGroup()
-        self.window.add_accel_group(self.accelerator)
+        self.treeview = self.builder.get_object('Treeview')
+        self.treeview.get_column(4).set_visible(self.backup)
 
-        vbox = Gtk.VBox()
-        self.window.add(vbox)
-
-        menubar = self.__create_menu()
-        toolbar = self.__create_toolbar()
-        content = Gtk.ScrolledWindow()
-        content.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        vbox.pack_start(menubar, False, True, 0)
-        vbox.pack_start(toolbar, False, True, 0)
-        vbox.pack_start(content, True, True, 0)
-
-        # parser.class - name - path - type - cleaned
-        self.liststore = Gtk.ListStore(object, str, str, str, str, str)
-
-        self.treeview = Gtk.TreeView(model=self.liststore)
-        self.treeview.set_search_column(1)  # filename column is searchable
-        self.treeview.set_rules_hint(True)  # alternate colors for rows
-        self.treeview.set_rubber_banding(True)  # mouse selection
-        self.treeview.connect("key_press_event", self.treeview_keyboard_event)
-        self.treeview.connect('row-activated', self.__popup_metadata)
-        self.treeview.connect('drag_data_received',
-                self.__on_drag_data_received)
-        self.treeview.drag_dest_set(Gtk.DestDefaults.MOTION |
-                Gtk.DestDefaults.HIGHLIGHT | Gtk.DestDefaults.DROP,
-                [], Gdk.DragAction.COPY)
-        targets = Gtk.TargetList.new([])
-        targets.add_uri_targets(80)
-        self.treeview.drag_dest_set_target_list(targets)
-        self.__add_columns()
-        self.selection = self.treeview.get_selection()
-        self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
-
-        content.add(self.treeview)
-
-        self.statusbar = Gtk.Statusbar()
+        self.statusbar = self.builder.get_object('Statusbar')
         self.statusbar.push(1, _('Ready'))
-        vbox.pack_start(self.statusbar, False, False, 0)
+
+        self.__init_supported_popup()
+        self.__set_drag_treeview()
 
         self.window.show_all()
 
-    def __create_toolbar(self):
+    def __init_supported_popup(self):
+        ''' Initialize the "supported formats" popup '''
+        self.supported_dict = mat.XMLParser()
+        parser = xml.sax.make_parser()
+        parser.setContentHandler(self.supported_dict)
+        path = os.path.join(mat.get_datadir(), 'FORMATS')
+        with open(path, 'r') as xmlfile:
+            parser.parse(xmlfile)
+
+        supported_cbox = self.builder.get_object('supported_cbox')
+        store = Gtk.ListStore(int, str)
+        for i, j in enumerate(self.supported_dict.list):
+            store.append([i, j['name']])
+        supported_cbox.set_model(store)
+        supported_cbox.set_active(0)
+
+        self.builder.get_object('supported_metadata').set_buffer(Gtk.TextBuffer())
+        self.builder.get_object('supported_remaining').set_buffer(Gtk.TextBuffer())
+        self.builder.get_object('supported_method').set_buffer(Gtk.TextBuffer())
+
+        self.cb_update_supported_popup(supported_cbox)  # to initially fill the dialog
+
+    def __set_drag_treeview(self):
+        ''' Setup the drag'n'drop handling by the treeview '''
+        self.treeview.drag_dest_set(Gtk.DestDefaults.MOTION |
+            Gtk.DestDefaults.HIGHLIGHT | Gtk.DestDefaults.DROP,
+            [], Gdk.DragAction.COPY)
+        targets = Gtk.TargetList.new([])
+        targets.add_uri_targets(80)
+        self.treeview.drag_dest_set_target_list(targets)
+
+    def cb_update_supported_popup(self, w):
         '''
-            Returns a vbox object, which contains a toolbar with buttons
+            Fill GtkEntries of the supported_format_popups
+            with corresponding data.
         '''
-        toolbar = Gtk.Toolbar()
+        i = w.get_active_iter()
+        index, _ = w.get_model()[i]
+        support = self.builder.get_object('supported_support')
+        support.set_text(self.supported_dict.list[index]['support'])
+        metadata = self.builder.get_object('supported_metadata').get_buffer()
+        metadata.set_text(self.supported_dict.list[index]['metadata'])
+        method = self.builder.get_object('supported_method').get_buffer()
+        method.set_text(self.supported_dict.list[index]['method'])
+        remaining = self.builder.get_object('supported_remaining').get_buffer()
+        remaining.set_text(self.supported_dict.list[index]['remaining'])
 
-        toolbutton = Gtk.ToolButton(Gtk.STOCK_ADD)
-        toolbutton.set_label(_('Add'))
-        toolbutton.connect('clicked', self.__add_files)
-        toolbutton.set_tooltip_text(_('Add files'))
-        toolbar.add(toolbutton)
-
-        toolbutton = Gtk.ToolButton(Gtk.STOCK_CLEAR)
-        toolbutton.set_label(_('Clean'))
-        toolbutton.connect('clicked', self.__process_files, self.__mat_clean)
-        toolbutton.set_tooltip_text(_('Clean selected files'))
-        toolbar.add(toolbutton)
-
-        toolbutton = Gtk.ToolButton(Gtk.STOCK_FIND)
-        toolbutton.set_label(_('Check'))
-        toolbutton.connect('clicked', self.__process_files, self.__mat_check)
-        toolbutton.set_tooltip_text(_('Check selected files for harmful meta'))
-        toolbar.add(toolbutton)
-
-        toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_REMOVE)
-        toolbutton.set_label(_('Clear the filelist'))
-        toolbutton.connect('clicked', lambda x: self.liststore.clear())
-        toolbutton.set_tooltip_text(_('Clear the filelist'))
-        toolbar.add(toolbutton)
-
-        toolbutton = Gtk.ToolButton(stock_id=Gtk.STOCK_QUIT)
-        toolbutton.set_label(_('Quit'))
-        toolbutton.connect('clicked', Gtk.main_quit)
-        toolbar.add(toolbutton)
-
-        vbox = Gtk.VBox(spacing=3)
-        vbox.pack_start(toolbar, False, False, 0)
-        return vbox
-
-    def __add_columns(self):
-        '''
-            Create the columns, and add them to the treeview
-        '''
-        colname = [_('Path'), _('Filename'), _('Mimetype'), _('State'),
-            _('Cleaned file')]
-
-        for i, j in enumerate(colname, 1):
-            filename_column = Gtk.CellRendererText()
-            column = Gtk.TreeViewColumn(j, filename_column, text=i)
-            column.set_sort_column_id(i)
-            column.set_resizable(True)  # column is resizeable
-            self.treeview.append_column(column)
-
-    def __create_menu_item(self, name, func, menu, pix, shortcut):
-        '''
-            Create a MenuItem() like Preferences, Quit, Add, Clean, ...
-        '''
-        item = Gtk.ImageMenuItem()
-        if shortcut:
-            key, mod = Gtk.accelerator_parse(shortcut)
-            item.add_accelerator('activate', self.accelerator,
-                key, mod, Gtk.AccelFlags.VISIBLE)
-        picture = Gtk.Image()
-        picture.set_from_stock(pix, Gtk.IconSize.MENU)
-        item.set_image(picture)
-        item.set_label('_' + name)
-        item.set_use_underline(True)
-        item.connect('activate', func)
-        menu.append(item)
-
-    def __create_sub_menu(self, name, menubar):
-        '''
-            Create a submenu like File, Edit, Clean, ...
-        '''
-        submenu = Gtk.Menu()
-        menuitem = Gtk.MenuItem()
-        menuitem.set_submenu(submenu)
-        menuitem.set_label('_' + name)
-        menuitem.set_use_underline(True)
-        menubar.append(menuitem)
-        return submenu
-
-    def __create_menu(self):
-        '''
-            Return a MenuBar
-        '''
-        menubar = Gtk.MenuBar()
-
-        file_menu = self.__create_sub_menu(_('Files'), menubar)
-        self.__create_menu_item(_('Add files'), self.__add_files, file_menu,
-            Gtk.STOCK_ADD, '<Control>O')
-        self.__create_menu_item(_('Quit'), Gtk.main_quit, file_menu,
-            Gtk.STOCK_QUIT, '<Control>Q')
-
-        edit_menu = self.__create_sub_menu(_('Edit'), menubar)
-        self.__create_menu_item(_('Clear the filelist'),
-            lambda x: self.liststore.clear(), edit_menu, Gtk.STOCK_REMOVE,
-            None)
-        self.__create_menu_item(_('Preferences'), self.__preferences,
-                edit_menu, Gtk.STOCK_PREFERENCES, '<Control>P')
-
-        process_menu = self.__create_sub_menu(_('Process'), menubar)
-        item = Gtk.ImageMenuItem()
-        key, mod = Gtk.accelerator_parse('<Control>L')
-        item.add_accelerator('activate', self.accelerator,
-            key, mod, Gtk.AccelFlags.VISIBLE)
-        picture = Gtk.Image()
-        picture.set_from_stock(Gtk.STOCK_CLEAR, Gtk.IconSize.MENU)
-        item.set_image(picture)
-        item.set_label(_('Clean'))
-        item.connect('activate', self.__process_files, self.__mat_clean)
-        process_menu.append(item)
-
-        item = Gtk.ImageMenuItem()
-        key, mod = Gtk.accelerator_parse('<Control>h')
-        item.add_accelerator('activate', self.accelerator,
-            key, mod, Gtk.AccelFlags.VISIBLE)
-        picture = Gtk.Image()
-        picture.set_from_stock(Gtk.STOCK_FIND, Gtk.IconSize.MENU)
-        item.set_image(picture)
-        item.set_label(_('Check'))
-        item.connect('activate', self.__process_files, self.__mat_check)
-        process_menu.append(item)
-
-        help_menu = self.__create_sub_menu(_('Help'), menubar)
-        self.__create_menu_item(_('Supported formats'), self.__supported,
-            help_menu, Gtk.STOCK_INFO, False)
-        self.__create_menu_item(_('About'), self.__about, help_menu,
-                Gtk.STOCK_ABOUT, False)
-
-        return menubar
-
-    def treeview_keyboard_event(self, widget, event):
+    def cb_treeview_keyboard_event(self, widget, event):
         '''
             Remove selected files from the treeview
             when the use hit the 'suppr' key
         '''
         if Gdk.keyval_name(event.keyval) == "Delete":
             rows = []
-            self.selection.selected_foreach(
-                    lambda model, path, iter: rows.append(iter))
+            self.treeview.get_selection().selected_foreach(
+                lambda model, path, iter: rows.append(iter))
             [self.liststore.remove(i) for i in rows]
 
-    def __add_files(self, button):
-        '''
-            Add the files chosed by the filechoser ("Add" button)
-        '''
+    def cb_close_application(self, _):
+        ''' Close the application '''
+        Gtk.main_quit()
+
+    def cb_add_files(self, button):
+        ''' Add the files chosed by the filechoser ("Add" button) '''
         chooser = Gtk.FileChooserDialog(title=_('Choose files'),
             parent=self.window, action=Gtk.FileChooserAction.OPEN,
             buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1))
@@ -259,8 +151,8 @@ class GUI:
         all_filter.add_pattern('*')
         chooser.add_filter(all_filter)
 
-        supported_filter = Gtk.FileFilter()
         # filter that shows only supported formats
+        supported_filter = Gtk.FileFilter()
         [supported_filter.add_mime_type(i) for i in strippers.STRIPPERS.keys()]
         supported_filter.set_name(_('Supported files'))
         chooser.add_filter(supported_filter)
@@ -269,58 +161,24 @@ class GUI:
 
         if not response:  # Gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            task = self.populate(filenames)
-            GObject.idle_add(task.next)  # asynchrone processing
+            GObject.idle_add(self.populate(filenames).next)  # asynchrone processing
         chooser.destroy()
 
-    def populate(self, filenames):
-        '''
-            Append selected files by add_file to the self.liststore
-        '''
-        not_supported = []
-        for filename in filenames:  # filenames : all selected files/folders
-            if os.path.isdir(filename):  # if "filename" is a directory
-                for root, dirs, files in os.walk(filename):
-                    for item in files:
-                        path_to_file = os.path.join(root, item)
-                        if self.__add_file_to_treeview(path_to_file):
-                            not_supported.append(item)
-            else:  # filename is a regular file
-                if self.__add_file_to_treeview(filename):
-                    not_supported.append(filename)
-            yield True
-        if not_supported:
-            self.__popup_non_supported(not_supported)
-        yield False
-
-    def __add_file_to_treeview(self, filename):
-        '''
-            Add a file to the list if it's format is supported
-        '''
-        if not os.path.isfile(filename):
-            # if filename does not exist
-            return False
-
-        cf = CFile(filename, self.backup, add2archive=self.add2archive, low_pdf_quality=self.pdf_quality)
-        if cf.file:  # if the file is supported by the mat
-            self.liststore.append([cf, os.path.dirname(cf.file.filename) + os.path.sep,
-                cf.file.basename, cf.file.mime, _('unknow'), 'None'])
-            return False
-        return True
-
-    def __popup_metadata(self, widget, row, col):
+    def cb_popup_metadata(self, widget, row, col):
         '''
             Popup that display on double-clic
             metadata from a file
+
+            FIXME: use a prettier GUI ?
         '''
         label = '<b>%s</b>\'s metadatas:\n' % self.liststore[row][1]
         meta = ''
-        if self.liststore[row][4] == _('Clean') or\
-                self.liststore[row][0].file.is_clean():
+        if not self.liststore[row][6] or self.liststore[row][0].file.is_clean():
             meta = 'No metadata found'
             self.liststore[row][4] = _('Clean')
         else:
             self.liststore[row][4] = _('Dirty')
+            self.liststore[row][6] = 1
             iterator = self.liststore[row][0].file.get_meta().iteritems()
             for i, j in iterator:
                 name = '-<b>' + str(i) + '</b> : '
@@ -345,45 +203,8 @@ class GUI:
         if click:
             w.destroy()
 
-    def __popup_non_supported(self, filelist):
-        '''
-            Popup that warn the user about the unsupported files
-            that he want to process
-        '''
-        dialog = Gtk.Dialog(title=_('Not-supported'), parent=self.window,
-                flags=0, buttons=(Gtk.STOCK_OK, 0))
-        vbox = Gtk.VBox(spacing=5)
-        dialog.get_content_area().pack_start(vbox, True, True, 0)
-        store = Gtk.ListStore(str, str)
-
-        # append filename - mimetype to the store
-        #FIXME : I'm ugly
-        for item in filelist:
-            mime = mimetypes.guess_type(item)[0]
-            if mime:
-                store.append([item, mime])
-            else:
-                store.append([item, 'unknown'])
-
-        treeview = Gtk.TreeView(store)
-        vbox.pack_start(treeview, True, True, 0)
-
-        #create column
-        rendererText = Gtk.CellRendererText()
-        column = Gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
-        treeview.append_column(column)
-        column = Gtk.TreeViewColumn(_('Mimetype'), rendererText, text=1)
-        treeview.append_column(column)
-
-        dialog.show_all()
-        click = dialog.run()
-        if not click:  # Ok button
-            dialog.destroy()
-
-    def __about(self, button):
-        '''
-            About popup
-        '''
+    def cb_about_popup(self, button):
+        ''' About popup '''
         w = Gtk.AboutDialog()
         w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_artists(['Marine Benoît', ])
@@ -398,63 +219,28 @@ class GUI:
         w.run()
         w.destroy()
 
-    def __supported(self, button):
-        '''
-            List the supported formats
-        '''
-        dialog = Gtk.Dialog(_('Supported formats'), self.window, 0,
-            (Gtk.STOCK_CLOSE, 0))
-        vbox = Gtk.VBox(spacing=5)
-        dialog.get_content_area().pack_start(vbox, True, True, 0)
-
-        label = Gtk.Label()
-        label.set_markup('<big><u>Supported fileformats</u></big>')
-        vbox.pack_start(label, True, True, 0)
-
-        #parsing xml
-        handler = mat.XMLParser()
-        parser = xml.sax.make_parser()
-        parser.setContentHandler(handler)
-        path = mat.get_formats()
-        with open(path, 'r') as xmlfile:
-            parser.parse(xmlfile)
-
-        def expander_callback(current):
-            ''' Close every expander except the current one '''
-            for i in vbox.get_children()[1:]:  # first child is a Gtk.Label
-                if i != current:
-                    i.set_expanded(False)
-
-        for item in handler.list:  # list of dict : one dict per format
-            # create one expander per format
-            # only if the format is supported
-            if item['mimetype'].split(',')[0] in strippers.STRIPPERS:
-                # some format have more than one mimetype
-                title = '%s (%s)' % (item['name'], item['extension'])
-                support = ('\t<b>%s</b> : %s' % ('support', item['support']))
-                metadata = '\n\t<b>metadata</b> : ' + item['metadata']
-                method = '\n\t<b>method</b> : ' + item['method']
-                content = support + metadata + method
-                if item['support'] == 'partial':
-                    content += '\n\t<b>remaining</b> : ' + item['remaining']
-
-                expander = Gtk.Expander()
-                expander.set_label(title)
-                vbox.pack_start(expander, False, False, 0)
-                label = Gtk.Label()
-                label.set_markup(content)
-                expander.add(label)
-                expander.connect('activate', expander_callback)
-
+    def cb_supported_popup(self, w):
+        ''' Show the "supported formats" popup'''
+        dialog = self.builder.get_object('SupportedWindow')
         dialog.show_all()
         click = dialog.run()
         if not click:  # Close
-            dialog.destroy()
+            dialog.hide()
 
-    def __preferences(self, button):
-        '''
-            Preferences popup
-        '''
+    def cb_clear_list(self, _):
+        ''' Clear the file list '''
+        self.liststore.clear()
+
+    def cb_mat_check(self, button):
+        ''' Callback for checking files '''
+        self.__process_files(self.mat_check)
+
+    def cb_mat_clean(self, button):
+        ''' Callback for cleaning files '''
+        self.__process_files(self.mat_clean)
+
+    def cb_preferences_popup(self, button):
+        ''' Preferences popup '''
         dialog = Gtk.Dialog(_('Preferences'), self.window, 0,
                 (Gtk.STOCK_OK, 0))
         dialog.set_resizable(False)
@@ -472,8 +258,7 @@ class GUI:
         force = Gtk.CheckButton(_('Force Clean'), False)
         force.set_active(self.force)
         force.connect('toggled', self.__invert, 'force')
-        force.set_tooltip_text(_('Do not check if already clean before \
-cleaning'))
+        force.set_tooltip_text(_('Do not check if already clean before cleaning'))
         table.attach(force, 0, 1, 0, 1)
 
         backup = Gtk.CheckButton(_('Backup'), False)
@@ -498,38 +283,20 @@ non-anonymised) file to output archive'))
 
         hbox.show_all()
         if not dialog.run():  # Gtk.STOCK_OK
-            for i in self.liststore:  # update preferences
-                i[0].backup = self.backup
-                i[0].add2archive = self.add2archive
-                if i[2].startswith('pdf'):
-                    i[0].pdf_quality = self.pdf_quality
+            for file in self.liststore:  # update preferences
+                file[0].backup = self.backup
+                file[0].add2archive = self.add2archive
+                if file[2].startswith('pdf'):
+                    file[0].pdf_quality = self.pdf_quality
             dialog.destroy()
 
-    def __invert(self, button, name):
-        '''
-            Invert a preference state
-        '''
-        if name == 'force':
-            self.force = not self.force
-        elif name == 'backup':
-            self.backup = not self.backup
-            for line in xrange(len(self.liststore)):
-                # change the "backup" property of all files
-                self.liststore[line][0].file.backup = self.backup
-            self.treeview.get_column(4).set_visible(self.backup)
-        elif name == 'pdf_quality':
-            self.pdf_quality = not self.pdf_quality
-        elif name == 'add2archive':
-            self.add2archive = not self.add2archive
-
-    def __on_drag_data_received(self, widget, context,
+    def cb_drag_data_received(self, widget, context,
             x, y, selection, target_type, timestamp):
         '''
             This function is called when something is
             drag'n'droped into mat.
             It basically add files.
         '''
-
 
         def clean_path(url):
             '''
@@ -551,43 +318,126 @@ non-anonymised) file to output archive'))
         task = self.populate(urls)
         GObject.idle_add(task.next)  # asynchrone processing
 
-    def __process_files(self, button, func):
+    def __add_file_to_treeview(self, filename):
+        '''
+            Add a file to the list if its format is supported
+        '''
+        cf = CFile(filename, self.backup, add2archive=self.add2archive,
+                low_pdf_quality=self.pdf_quality)
+        if cf.file:  # if the file is supported by the mat
+            self.liststore.append([cf, os.path.dirname(cf.file.filename) + os.path.sep,
+                cf.file.basename, cf.file.mime, _('unknow'), 'None', -1])
+            return False
+        return True
+
+    def __process_files(self, func):
         '''
             Launch the function "func" in a asynchrone way
         '''
-        iterator = self.selection.get_selected_rows()[1]
+        iterator = self.treeview.get_selection().get_selected_rows()[1]
         if not iterator:  # if nothing is selected : select everything
             iterator = xrange(len(self.liststore))
         task = func(iterator)  # launch func() in an asynchrone way
         GObject.idle_add(task.next)
 
-    def __mat_check(self, iterator):
+    def __invert(self, button, name):
+        ''' Invert a preference state '''
+        if name == 'force':
+            self.force = not self.force
+        elif name == 'pdf_quality':
+            self.pdf_quality = not self.pdf_quality
+        elif name == 'add2archive':
+            self.add2archive = not self.add2archive
+        elif name == 'backup':
+            self.backup = not self.backup
+            for line in xrange(len(self.liststore)):
+                # change the "backup" property of all files
+                self.liststore[line][0].file.backup = self.backup
+            self.treeview.get_column(4).set_visible(self.backup)
+
+    def populate(self, filenames):
         '''
-            Check if selected elements are clean
+            Append selected files by add_file to the self.liststore
         '''
+        not_supported = []
+        for filename in filenames:  # filenames : all selected files/folders
+            if os.path.isdir(filename):  # if "filename" is a directory
+                for root, dirs, files in os.walk(filename):
+                    for item in files:
+                        path_to_file = os.path.join(root, item)
+                        if self.__add_file_to_treeview(path_to_file):
+                            not_supported.append(item)
+                        yield True
+            else:  # filename is a regular file
+                if self.__add_file_to_treeview(filename):
+                    not_supported.append(filename)
+                yield True
+        if not_supported:
+            self.__popup_non_supported(not_supported)
+        yield False
+
+    def __popup_non_supported(self, filelist):
+        '''
+            Popup that warn the user about the unsupported files
+            that he want to process
+        '''
+        dialog = Gtk.Dialog(title=_('Not-supported'), parent=self.window,
+                flags=0, buttons=(Gtk.STOCK_OK, 0))
+        vbox = Gtk.VBox(spacing=5)
+        dialog.get_content_area().pack_start(vbox, True, True, 0)
+        store = Gtk.ListStore(str, str)
+
+        # append filename - mimetype to the store
+        for item in filelist:
+            mime = mimetypes.guess_type(item)[0]
+            if mime:
+                store.append([item, mime])
+            else:
+                store.append([item, 'unknown'])
+
+        treeview = Gtk.TreeView(store)
+        vbox.pack_start(treeview, True, True, 0)
+
+        #create column
+        rendererText = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
+        treeview.append_column(column)
+        column = Gtk.TreeViewColumn(_('Mimetype'), rendererText, text=1)
+        treeview.append_column(column)
+
+        dialog.show_all()
+        click = dialog.run()
+        if not click:  # Ok button
+            dialog.destroy()
+
+    def mat_check(self, iterator):
+        ''' Check elements in iterator are clean '''
         for line in iterator:  # for each file in selection
-            self.statusbar.push(0, _('Checking %s...') % self.liststore[line][1])
-            if self.force or self.liststore[line][4] != _('Clean'):
+            print self.liststore[line][0].file
+            logging.info('Checking %s' % self.liststore[line][2])
+            self.statusbar.push(0, _('Checking %s...') % self.liststore[line][2])
+
+            if self.force or self.liststore[line][6]:
                 if self.liststore[line][0].file.is_clean():
-                    string = _('Clean')
+                    self.liststore[line][4] = _('Clean')
+                    self.liststore[line][6] = 0
                 else:
-                    string = _('Dirty')
-                logging.info('%s is %s' % (self.liststore[line][1], string))
-                self.liststore[line][4] = string
+                    self.liststore[line][4] = _('Dirty')
+                    self.liststore[line][6] = 1
+                logging.info('%s is %s' % (self.liststore[line][1], self.liststore[line][4]))
                 yield True
         self.statusbar.push(0, _('Ready'))
         yield False
 
-    def __mat_clean(self, iterator):
-        '''
-            Clean selected elements
-        '''
+    def mat_clean(self, iterator):
+        ''' Clean elements in iterator '''
         for line in iterator:  # for each file in selection
-            logging.info('Cleaning %s' % self.liststore[line][1])
-            self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][1])
-            if self.force or self.liststore[line][4] != _('Clean'):
+            logging.info('Cleaning %s' % self.liststore[line][2])
+            self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][2])
+            if self.force or self.liststore[line][6]:
                 if self.liststore[line][0].file.remove_all():
                     self.liststore[line][4] = _('Clean')
+                    self.liststore[line][6] = 0
                     if self.backup:  # the backup copy state
                         self.liststore[line][5] = os.path.basename(self.liststore[line][0].file.output)
             yield True
@@ -597,7 +447,6 @@ non-anonymised) file to output archive'))
 if __name__ == '__main__':
     gettext.install('MAT', unicode=True)
 
-    #Main
     gui = GUI()
 
     #Add files from command line

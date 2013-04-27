@@ -6,6 +6,7 @@
 import sys
 import xml.sax
 import optparse
+import os
 
 import hachoir_core
 
@@ -104,7 +105,7 @@ def list_supported():
     handler = mat.XMLParser()
     parser = xml.sax.make_parser()
     parser.setContentHandler(handler)
-    path = mat.get_formats()
+    path = os.path.join(mat.get_formats(), 'FORMATS')
     with open(path, 'r') as xmlfile:
         parser.parse(xmlfile)
 
