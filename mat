@@ -114,9 +114,9 @@ def list_supported():
             print('%s (%s)' % (item['name'], item['extension']))
             print('\tsupport : ' + item['support'])
             print('\tmetadata : ' + item['metadata'])
-            print('\tmethod : ' + item['method'] + '\n')
-            if item['support'] == 'partial':
-                print('\tremaining : ' + item['remaining'] + '\n')
+            print('\tmethod : ' + item['method'])
+            print('\tremaining : ' + item['remaining'])
+            print('\n')
     sys.exit(0)
 
 
