@@ -8,6 +8,9 @@ FORMATS:
 
 GUI:
     - Add a popup to warn the user about non-supported format because of missing dependencies
+    - Correctly handle the case of the user tick "backup", clean, and then untick "backup":
+        -- remove the backup copy ?
+        -- refresh the state of files maked 'clean'
 
 MISC:
     - a nautilus extension (right-clic -> clean with MAT)
