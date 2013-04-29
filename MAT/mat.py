@@ -14,7 +14,7 @@ import hachoir_core.cmd_line
 import hachoir_parser
 
 
-__version__ = '0.3.4'
+__version__ = '0.4'
 __author__ = 'jvoisin'
 
 #Silence
