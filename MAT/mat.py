@@ -39,14 +39,13 @@ def get_logo():
     elif os.path.isfile('/usr/local/share/pixmaps/mat.png'):
         return '/usr/local/share/pixmaps/mat.png'
 
-def get_formats():
-    if os.path.isfile('./data/FORMATS'):
-        return './data/FORMATS'
-    elif os.path.isfile('/usr/share/mat/FORMATS'):
-        return '/usr/share/mat/FORMATS'
-    elif os.path.isfile('/usr/local/share/mat/FORMATS'):
-        return '/usr/local/share/mat/FORMATS'
-
+def get_datadir():
+    if os.path.isdir('./data/'):
+        return './data/'
+    elif os.path.isdir('/usr/share/mat/'):
+        return '/usr/share/mat/'
+    elif os.path.isdir('/usr/local/share/mat/'):
+        return '/usr/local/share/mat/'
 
 class XMLParser(xml.sax.handler.ContentHandler):
     '''
