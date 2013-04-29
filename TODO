@@ -1,19 +1,17 @@
 FORMATS:
     NEW:
         - microsoft office < 2007 (ugly and insane)
-        - fix zip (fix python's ziplib)
+        - fix zip (fix python's ziplib) !!!
         - videos format ?
     ARCHIVES:
         - correctly handle mtime/atime for files inside archives
 
 GUI:
-    - Improve the "supported formats" dialog
     - Add a popup to warn the user about non-supported format because of missing dependencies
 
 MISC:
     - a nautilus extension (right-clic -> clean with MAT)
     - support non-utf8 filenames
-    - support files with a \n in their name
 
 TESTSUITE
     - add a ctime/mtime related test
