@@ -144,7 +144,8 @@ def create_class_file(name, backup, **kwargs):
     mime = parser.mime_type
 
     if mime == 'application/zip':  # some formats are zipped stuff
-        mime = mimetypes.guess_type(name)[0]
+        if mimetypes.guess_type(name)[0] is not None:
+            mime =  mimetypes.guess_type(name)[0]
 
     if mime.startswith('application/vnd.oasis.opendocument'):
         mime = 'application/opendocument'  # opendocument fileformat
