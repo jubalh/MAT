@@ -313,7 +313,6 @@ non-anonymised) file to output archive'))
                 return url[5:]  # 5 is len('file:')
 
         urls = selection.get_uris()
-        urls = urls[:-1]  # last entry in always a '\n'
         urls = map(clean_path, urls)
         GObject.idle_add(self.populate(urls).next)  # asynchrone processing
 
@@ -412,7 +411,6 @@ non-anonymised) file to output archive'))
     def mat_check(self, iterator):
         ''' Check elements in iterator are clean '''
         for line in iterator:  # for each file in selection
-            print self.liststore[line][0].file
             msg = 'Checking %s ' % self.liststore[line][2]
             logging.info(msg)
             self.statusbar.push(0, msg)
