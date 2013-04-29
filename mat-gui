@@ -411,7 +411,7 @@ non-anonymised) file to output archive'))
     def mat_check(self, iterator):
         ''' Check elements in iterator are clean '''
         for line in iterator:  # for each file in selection
-            msg = 'Checking %s ' % self.liststore[line][2]
+            msg = _('Checking %s') % self.liststore[line][2].decode('utf-8', 'replace')
             logging.info(msg)
             self.statusbar.push(0, msg)
 
@@ -430,7 +430,7 @@ non-anonymised) file to output archive'))
     def mat_clean(self, iterator):
         ''' Clean elements in iterator '''
         for line in iterator:  # for each file in selection
-            msg = _('Cleaning %s') % self.liststore[line][2]
+            msg = _('Cleaning %s') % self.liststore[line][2].decode('utf-8', 'replace')
             logging.info(msg)
             self.statusbar.push(0, msg)
             if self.force or self.liststore[line][6]:
