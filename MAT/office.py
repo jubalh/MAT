@@ -181,7 +181,7 @@ class PdfStripper(parser.GenericParser):
             writer.write(self.output)
             self.do_backup()
         except:
-            print('Unable to remove all metadata from %s, please install\
+            logging.error('Unable to remove all metadata from %s, please install\
 pdfrw' % self.output)
             return False
         return True
