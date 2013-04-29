@@ -94,6 +94,13 @@ class TestFileAttributes(unittest.TestCase):
         stdout, _ = proc.communicate()
         self.assertEqual(str(stdout).strip('\n'), 'Unable to process  %s' % 'ilikecookies')
 
+    def test_empty(self):
+        ''' test MAT's behaviour on empty file'''
+        proc = subprocess.Popen(['../mat', 'empty_file'],
+            stdout=subprocess.PIPE)
+        stdout, _ = proc.communicate()
+        self.assertEqual(str(stdout).strip('\n'), 'Unable to process  %s' % 'ilikecookies')
+
 
 def get_tests():
     ''' Return every clitests'''

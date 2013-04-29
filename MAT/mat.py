@@ -125,6 +125,11 @@ def create_class_file(name, backup, **kwargs):
         logging.error('%s is not writtable' % name)
         return None
 
+    if not os.path.getsize(name):
+        #check if the file is not empty (hachoir crash on empty files)
+        logging.error('%s is empty' % name)
+        return None
+
     filename = ''
     try:
         filename = hachoir_core.cmd_line.unicodeFilename(name)
