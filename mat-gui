@@ -304,19 +304,18 @@ non-anonymised) file to output archive'))
                 we need to process them
             '''
             url = urllib2.unquote(url)  # unescape stupid chars
-            url = url.replace('\n', '')
+            url = url.decode('utf-8')  # decode in utf-8
             if url.startswith('file:\\\\\\'):  # windows
                 return url[8:]  # 8 is len('file:///')
-            elif url.startswith('file://'):  # nautilus, rox
+            elif url.startswith('file://'):  # nautilus, rox, thunar
                 return url[7:]  # 7 is len('file://')
             elif url.startswith('file:'):  # xffm
                 return url[5:]  # 5 is len('file:')
 
-        urls = selection.get_data().split('\r')
-        urls = urls[:-1]  # last entry in only a '\n'
+        urls = selection.get_uris()
+        urls = urls[:-1]  # last entry in always a '\n'
         urls = map(clean_path, urls)
-        task = self.populate(urls)
-        GObject.idle_add(task.next)  # asynchrone processing
+        GObject.idle_add(self.populate(urls).next)  # asynchrone processing
 
     def __add_file_to_treeview(self, filename):
         '''
@@ -414,8 +413,9 @@ non-anonymised) file to output archive'))
         ''' Check elements in iterator are clean '''
         for line in iterator:  # for each file in selection
             print self.liststore[line][0].file
-            logging.info('Checking %s' % self.liststore[line][2])
-            self.statusbar.push(0, _('Checking %s...') % self.liststore[line][2])
+            msg = 'Checking %s ' % self.liststore[line][2]
+            logging.info(msg)
+            self.statusbar.push(0, msg)
 
             if self.force or self.liststore[line][6]:
                 if self.liststore[line][0].file.is_clean():
@@ -432,8 +432,9 @@ non-anonymised) file to output archive'))
     def mat_clean(self, iterator):
         ''' Clean elements in iterator '''
         for line in iterator:  # for each file in selection
-            logging.info('Cleaning %s' % self.liststore[line][2])
-            self.statusbar.push(0, _('Cleaning %s...') % self.liststore[line][2])
+            msg = _('Cleaning %s') % self.liststore[line][2]
+            logging.info(msg)
+            self.statusbar.push(0, msg)
             if self.force or self.liststore[line][6]:
                 if self.liststore[line][0].file.remove_all():
                     self.liststore[line][4] = _('Clean')
