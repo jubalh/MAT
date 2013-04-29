@@ -72,11 +72,16 @@ class TestFileAttributes(unittest.TestCase):
         test various stuffs about files (readable, writable, exist, ...)
     '''
     def test_not_writtable(self):
+        ''' test MAT's behaviour on non-writable file'''
         self.assertFalse(mat.create_class_file('not_writtable', False, add2archive=True, low_pdf_quality=True))
 
     def test_not_exist(self):
+        ''' test MAT's behaviour on non-existent file'''
         self.assertFalse(mat.create_class_file('ilikecookies', False, add2archive=True, low_pdf_quality=True))
 
+    def test_empty(self):
+        ''' test MAT's behaviour on empty file'''
+        self.assertFalse(mat.create_class_file('empty_file', False, add2archive=True, low_pdf_quality=True))
 
 def get_tests():
     ''' Return every libtests'''
