@@ -183,7 +183,6 @@
         </child>
         <child>
           <object class="GtkToolbar" id="Toolbar">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
               <object class="GtkToolButton" id="add">
@@ -263,8 +262,8 @@
             <property name="can_focus">False</property>
             <child>
               <object class="GtkTreeView" id="Treeview">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="events"/>
                 <property name="hexpand">True</property>
                 <property name="model">Liststore</property>
                 <property name="rules_hint">True</property>
@@ -273,12 +272,6 @@
                 <property name="rubber_banding">True</property>
                 <signal name="drag-data-received" handler="cb_drag_data_received" swapped="no"/>
                 <signal name="row-activated" handler="cb_popup_metadata" swapped="no"/>
-                <signal name="key-press-event" handler="cb_treeview_keyboard_event" swapped="no"/>
-                <child internal-child="selection">
-                  <object class="GtkTreeSelection" id="treeview-selection1">
-                    <property name="mode">multiple</property>
-                  </object>
-                </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="tvc_path">
                     <property name="resizable">True</property>
@@ -490,6 +483,11 @@
                 <property name="entry_text_column">1</property>
                 <property name="id_column">1</property>
                 <signal name="changed" handler="cb_update_supported_popup" swapped="no"/>
+                <child internal-child="entry">
+                  <object class="GtkEntry" id="comboboxtext-entry2">
+                    <property name="can_focus">False</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="left_attach">1</property>

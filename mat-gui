@@ -100,8 +100,10 @@ class GUI(object):
 
     def __set_drag_treeview(self):
         ''' Setup the drag'n'drop handling by the treeview '''
-        self.treeview.drag_dest_set(Gtk.DestDefaults.MOTION |
-            Gtk.DestDefaults.HIGHLIGHT | Gtk.DestDefaults.DROP,
+        self.treeview.drag_dest_set(
+            Gtk.DestDefaults.MOTION |
+            Gtk.DestDefaults.HIGHLIGHT |
+            Gtk.DestDefaults.DROP,
             [], Gdk.DragAction.COPY)
         targets = Gtk.TargetList.new([])
         targets.add_uri_targets(80)
@@ -122,17 +124,6 @@ class GUI(object):
         method.set_text(self.supported_dict.list[index]['method'])
         remaining = self.builder.get_object('supported_remaining').get_buffer()
         remaining.set_text(self.supported_dict.list[index]['remaining'])
-
-    def cb_treeview_keyboard_event(self, widget, event):
-        '''
-            Remove selected files from the treeview
-            when the use hit the 'suppr' key
-        '''
-        if Gdk.keyval_name(event.keyval) == "Delete":
-            rows = []
-            self.treeview.get_selection().selected_foreach(
-                lambda model, path, iter: rows.append(iter))
-            [self.liststore.remove(i) for i in rows]
 
     def cb_close_application(self, _):
         ''' Close the application '''
@@ -168,8 +159,6 @@ class GUI(object):
         '''
             Popup that display on double-clic
             metadata from a file
-
-            FIXME: use a prettier GUI ?
         '''
         label = '<b>%s</b>\'s metadatas:\n' % self.liststore[row][1]
         meta = ''
@@ -181,7 +170,7 @@ class GUI(object):
             self.liststore[row][6] = 1
             iterator = self.liststore[row][0].file.get_meta().iteritems()
             for i, j in iterator:
-                name = '-<b>' + str(i) + '</b> : '
+                name = '-<b>' + str(i) + '</b>: '
                 meta += (name + str(j) + '\n')
 
         w = Gtk.MessageDialog(self.window,
