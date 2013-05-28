@@ -160,10 +160,10 @@ class GUI(object):
             Popup that display on double-clic
             metadata from a file
         '''
-        label = '<b>%s</b>\'s metadatas:\n' % self.liststore[row][1]
+        label = _('<b>%s</b>\'s metadatas:\n') % self.liststore[row][1]
         meta = ''
         if not self.liststore[row][6] or self.liststore[row][0].file.is_clean():
-            meta = 'No metadata found'
+            meta = _('No metadata found')
             self.liststore[row][4] = _('Clean')
         else:
             self.liststore[row][4] = _('Dirty')
@@ -380,7 +380,7 @@ non-anonymised) file to output archive'))
             if mime:
                 store.append([item, mime])
             else:
-                store.append([item, 'unknown'])
+                store.append([item, _('unknown')])
 
         treeview = Gtk.TreeView(store)
         vbox.pack_start(treeview, True, True, 0)

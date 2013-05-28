@@ -22,7 +22,7 @@
   <object class="GtkWindow" id="MainWindow">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Metadata Anonymisation Toolkit</property>
+    <property name="title">Metadata Anonymisation Toolkit</property>
     <property name="window_position">center</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
@@ -272,6 +272,9 @@
                 <property name="rubber_banding">True</property>
                 <signal name="drag-data-received" handler="cb_drag_data_received" swapped="no"/>
                 <signal name="row-activated" handler="cb_popup_metadata" swapped="no"/>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                </child>
                 <child>
                   <object class="GtkTreeViewColumn" id="tvc_path">
                     <property name="resizable">True</property>

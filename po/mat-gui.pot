@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-05 20:03+0100\n"
+"POT-Creation-Date: 2013-05-28 15:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,161 +17,177 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mat-gui:95 mat-gui:563 mat-gui:579
+#: mat-gui:72 mat-gui:416 mat-gui:432
 msgid "Ready"
 msgstr ""
 
-#: mat-gui:107
-msgid "Add"
-msgstr ""
-
-#: mat-gui:109 mat-gui:183
-msgid "Add files"
-msgstr ""
-
-#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
-#: mat-gui:573 mat-gui:575
-msgid "Clean"
-msgstr ""
-
-#: mat-gui:115
-msgid "Clean selected files"
-msgstr ""
-
-#: mat-gui:119 mat-gui:214
-msgid "Check"
-msgstr ""
-
-#: mat-gui:121
-msgid "Check selected files for harmful meta"
-msgstr ""
-
-#: mat-gui:125 mat-gui:185
-msgid "Quit"
-msgstr ""
-
-#: mat-gui:137
-msgid "Path"
-msgstr ""
-
-#: mat-gui:137 mat-gui:363
-msgid "Filename"
-msgstr ""
-
-#: mat-gui:137 mat-gui:365
-msgid "Mimetype"
-msgstr ""
-
-#: mat-gui:137
-msgid "State"
-msgstr ""
-
-#: mat-gui:138
-msgid "Cleaned file"
-msgstr ""
-
-#: mat-gui:182
-msgid "Files"
-msgstr ""
-
-#: mat-gui:188
-msgid "Edit"
-msgstr ""
-
-#: mat-gui:189
-msgid "Clear the filelist"
-msgstr ""
-
-#: mat-gui:192 mat-gui:447
-msgid "Preferences"
-msgstr ""
-
-#: mat-gui:195
-msgid "Process"
-msgstr ""
-
-#: mat-gui:218
-msgid "Help"
-msgstr ""
-
-#: mat-gui:219 mat-gui:395
-msgid "Supported formats"
-msgstr ""
-
-#: mat-gui:220
-msgid "About"
-msgstr ""
-
-#: mat-gui:241
+#: mat-gui:134
 msgid "Choose files"
 msgstr ""
 
-#: mat-gui:248
+#: mat-gui:141
 msgid "All files"
 msgstr ""
 
-#: mat-gui:255
+#: mat-gui:148
 msgid "Supported files"
 msgstr ""
 
-#: mat-gui:297
-msgid "unknow"
+#: mat-gui:163
+#, python-format
+msgid "<b>%s</b>'s metadatas:\n"
 msgstr ""
 
-#: mat-gui:313 mat-gui:559
+#: mat-gui:166
+msgid "No metadata found"
+msgstr ""
+
+#: mat-gui:167 mat-gui:409 mat-gui:427 data/mat.ui:204
+msgid "Clean"
+msgstr ""
+
+#: mat-gui:169 mat-gui:412
 msgid "Dirty"
 msgstr ""
 
-#: mat-gui:343
-msgid "Not-supported"
-msgstr ""
-
-#: mat-gui:381
+#: mat-gui:201
 msgid "This software was coded during the GSoC 2011"
 msgstr ""
 
-#: mat-gui:386
+#: mat-gui:206
 msgid "Website"
 msgstr ""
 
-#: mat-gui:461
+#: mat-gui:233 data/mat.ui:87
+msgid "Preferences"
+msgstr ""
+
+#: mat-gui:247
 msgid "Force Clean"
 msgstr ""
 
-#: mat-gui:464
+#: mat-gui:250
 msgid "Do not check if already clean before cleaning"
 msgstr ""
 
-#: mat-gui:468
+#: mat-gui:253
 msgid "Backup"
 msgstr ""
 
-#: mat-gui:471
+#: mat-gui:256
 msgid "Keep a backup copy"
 msgstr ""
 
-#: mat-gui:474
+#: mat-gui:259
 msgid "Reduce PDF quality"
 msgstr ""
 
-#: mat-gui:477
+#: mat-gui:262
 msgid "Reduce the produced PDF size and quality"
 msgstr ""
 
-#: mat-gui:480
+#: mat-gui:265
 msgid "Add unsupported file to archives"
 msgstr ""
 
-#: mat-gui:484
+#: mat-gui:269
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr ""
 
-#: mat-gui:554
-#, python-format
-msgid "Checking %s..."
+#: mat-gui:316
+msgid "unknow"
 msgstr ""
 
-#: mat-gui:572
+#: mat-gui:371
+msgid "Not-supported"
+msgstr ""
+
+#: mat-gui:383
+msgid "unknown"
+msgstr ""
+
+#: mat-gui:390 data/mat.ui:299
+msgid "Filename"
+msgstr ""
+
+#: mat-gui:392 data/mat.ui:316
+msgid "Mimetype"
+msgstr ""
+
+#: mat-gui:403
 #, python-format
-msgid "Cleaning %s..."
+msgid "Checking %s"
+msgstr ""
+
+#: mat-gui:422
+#, python-format
+msgid "Cleaning %s"
+msgstr ""
+
+#: data/mat.ui:43
+msgid "_File"
+msgstr ""
+
+#: data/mat.ui:79
+msgid "_Edit"
+msgstr ""
+
+#: data/mat.ui:98 data/mat.ui:230
+msgid "Clear"
+msgstr ""
+
+#: data/mat.ui:113
+msgid "_Process"
+msgstr ""
+
+#: data/mat.ui:147
+msgid "_Help"
+msgstr ""
+
+#: data/mat.ui:191
+msgid "Add"
+msgstr ""
+
+#: data/mat.ui:217
+msgid "Check"
+msgstr ""
+
+#: data/mat.ui:243
+msgid "Quit"
+msgstr ""
+
+#: data/mat.ui:282
+msgid "Path"
+msgstr ""
+
+#: data/mat.ui:333
+msgid "State"
+msgstr ""
+
+#: data/mat.ui:350
+msgid "Cleaned copy"
+msgstr ""
+
+#: data/mat.ui:388
+msgid "Supported formats"
+msgstr ""
+
+#: data/mat.ui:431
+msgid "Support"
+msgstr ""
+
+#: data/mat.ui:444
+msgid "Metadata"
+msgstr ""
+
+#: data/mat.ui:457
+msgid "Method"
+msgstr ""
+
+#: data/mat.ui:470
+msgid "Remaining"
+msgstr ""
+
+#: data/mat.ui:507
+msgid "Fileformat"
 msgstr ""
