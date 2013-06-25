@@ -29,8 +29,8 @@ class CFile(GObject.Object):
         since the Gtk.ListStore does not accept it because it does not
         extends Gobject.Object
     '''
-    def __init__(self, filename, backup, **kwargs):
-        self.file = mat.create_class_file(filename, backup, **kwargs)
+    def __init__(self, filename, **kwargs):
+        self.file = mat.create_class_file(filename, 0, **kwargs)
 
 
 class GUI(object):
@@ -39,8 +39,6 @@ class GUI(object):
     '''
     def __init__(self):
         # Preferences
-        self.force = False
-        self.backup = True
         self.add2archive = True
         self.pdf_quality = False
 
@@ -55,18 +53,13 @@ class GUI(object):
         self.window = self.builder.get_object('MainWindow')
         self.window.set_icon(icon)
         self.liststore = self.builder.get_object('Liststore')
-        ''' The liststore contains:
-                0: a CFile instance which represent the file
-                1: the file's path
-                2: the file's name
-                3: the file's mimetype
-                4: the file's state (translated string)
-                5: the cleaned copy's path
-                6: the file's state (-1: unknown, 0: clean, 1: dirty)
+        ''' The Liststore contains:
+                0: The CFile instance that represents the file
+                1: The file's name
+                2: The file's state (Localised string)
         '''
 
         self.treeview = self.builder.get_object('Treeview')
-        self.treeview.get_column(4).set_visible(self.backup)
 
         self.statusbar = self.builder.get_object('Statusbar')
         self.statusbar.push(1, _('Ready'))
@@ -77,7 +70,7 @@ class GUI(object):
         self.window.show_all()
 
     def __init_supported_popup(self):
-        ''' Initialize the "supported formats" popup '''
+        ''' Initialise the "supported formats" popup '''
         self.supported_dict = mat.XMLParser()
         parser = xml.sax.make_parser()
         parser.setContentHandler(self.supported_dict)
@@ -130,7 +123,7 @@ class GUI(object):
         Gtk.main_quit()
 
     def cb_add_files(self, button):
-        ''' Add the files chosed by the filechoser ("Add" button) '''
+        ''' Add the files chosen by the filechoser ("Add" button) '''
         chooser = Gtk.FileChooserDialog(title=_('Choose files'),
             parent=self.window, action=Gtk.FileChooserAction.OPEN,
             buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1))
@@ -162,12 +155,11 @@ class GUI(object):
         '''
         label = _('<b>%s</b>\'s metadatas:\n') % self.liststore[row][1]
         meta = ''
-        if not self.liststore[row][6] or self.liststore[row][0].file.is_clean():
+        if self.liststore[row][0].file.is_clean():
             meta = _('No metadata found')
-            self.liststore[row][4] = _('Clean')
+            self.liststore[row][2] = _('Clean')
         else:
-            self.liststore[row][4] = _('Dirty')
-            self.liststore[row][6] = 1
+            self.liststore[row][2] = _('Dirty')
             iterator = self.liststore[row][0].file.get_meta().iteritems()
             for i, j in iterator:
                 name = '-<b>' + str(i) + '</b>: '
@@ -222,11 +214,11 @@ class GUI(object):
 
     def cb_mat_check(self, button):
         ''' Callback for checking files '''
-        self.__process_files(self.mat_check)
+        self.__process_files(self.__mat_check)
 
     def cb_mat_clean(self, button):
         ''' Callback for cleaning files '''
-        self.__process_files(self.mat_clean)
+        self.__process_files(self.__mat_clean)
 
     def cb_preferences_popup(self, button):
         ''' Preferences popup '''
@@ -241,26 +233,14 @@ class GUI(object):
         icon.set_from_stock(Gtk.STOCK_PREFERENCES, Gtk.IconSize.DIALOG)
         hbox.pack_start(icon, False, False, 20)
 
-        table = Gtk.Table(3, 2, False)  # nb rows, nb lines
+        table = Gtk.Table(2, 2, False)  # nb rows, nb lines
         hbox.pack_start(table, True, True, 0)
-
-        force = Gtk.CheckButton(_('Force Clean'), False)
-        force.set_active(self.force)
-        force.connect('toggled', self.__invert, 'force')
-        force.set_tooltip_text(_('Do not check if already clean before cleaning'))
-        table.attach(force, 0, 1, 0, 1)
-
-        backup = Gtk.CheckButton(_('Backup'), False)
-        backup.set_active(self.backup)
-        backup.connect('toggled', self.__invert, 'backup')
-        backup.set_tooltip_text(_('Keep a backup copy'))
-        table.attach(backup, 0, 1, 1, 2)
 
         pdf_quality = Gtk.CheckButton(_('Reduce PDF quality'), False)
         pdf_quality.set_active(self.pdf_quality)
         pdf_quality.connect('toggled', self.__invert, 'pdf_quality')
         pdf_quality.set_tooltip_text(_('Reduce the produced PDF size and quality'))
-        table.attach(pdf_quality, 0, 1, 2, 3)
+        table.attach(pdf_quality, 0, 1, 0, 1)
 
         add2archive = Gtk.CheckButton(_('Add unsupported file to archives'),
             False)
@@ -268,15 +248,14 @@ class GUI(object):
         add2archive.connect('toggled', self.__invert, 'add2archive')
         add2archive.set_tooltip_text(_('Add non-supported (and so \
 non-anonymised) file to output archive'))
-        table.attach(add2archive, 0, 1, 3, 4)
+        table.attach(add2archive, 0, 1, 1, 2)
 
         hbox.show_all()
         if not dialog.run():  # Gtk.STOCK_OK
             for file in self.liststore:  # update preferences
-                file[0].backup = self.backup
-                file[0].add2archive = self.add2archive
-                if file[2].startswith('pdf'):
-                    file[0].pdf_quality = self.pdf_quality
+                file[0].file.add2archive = self.add2archive
+                if file[0].file.mime.startswith('pdf'):
+                    file[0].file.pdf_quality = self.pdf_quality
             dialog.destroy()
 
     def cb_drag_data_received(self, widget, context,
@@ -292,7 +271,7 @@ non-anonymised) file to output archive'))
                 Since the dragged urls are ugly,
                 we need to process them
             '''
-            url = urllib2.unquote(url)  # unescape stupid chars
+            url = urllib2.unquote(url)  # unquote url
             url = url.decode('utf-8')  # decode in utf-8
             if url.startswith('file:\\\\\\'):  # windows
                 return url[8:]  # 8 is len('file:///')
@@ -309,11 +288,10 @@ non-anonymised) file to output archive'))
         '''
             Add a file to the list if its format is supported
         '''
-        cf = CFile(filename, self.backup, add2archive=self.add2archive,
+        cf = CFile(filename, add2archive=self.add2archive,
                 low_pdf_quality=self.pdf_quality)
         if cf.file:  # if the file is supported by the mat
-            self.liststore.append([cf, os.path.dirname(cf.file.filename) + os.path.sep,
-                cf.file.basename, cf.file.mime, _('unknow'), 'None', -1])
+            self.liststore.append([cf, cf.file.basename, _('Unknown')])
             return False
         return True
 
@@ -329,18 +307,10 @@ non-anonymised) file to output archive'))
 
     def __invert(self, button, name):
         ''' Invert a preference state '''
-        if name == 'force':
-            self.force = not self.force
-        elif name == 'pdf_quality':
+        if name == 'pdf_quality':
             self.pdf_quality = not self.pdf_quality
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
-        elif name == 'backup':
-            self.backup = not self.backup
-            for line in xrange(len(self.liststore)):
-                # change the "backup" property of all files
-                self.liststore[line][0].file.backup = self.backup
-            self.treeview.get_column(4).set_visible(self.backup)
 
     def populate(self, filenames):
         '''
@@ -385,7 +355,7 @@ non-anonymised) file to output archive'))
         treeview = Gtk.TreeView(store)
         vbox.pack_start(treeview, True, True, 0)
 
-        #create column
+        # create column
         rendererText = Gtk.CellRendererText()
         column = Gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
         treeview.append_column(column)
@@ -397,37 +367,29 @@ non-anonymised) file to output archive'))
         if not click:  # Ok button
             dialog.destroy()
 
-    def mat_check(self, iterator):
+    def __mat_check(self, iterator):
         ''' Check elements in iterator are clean '''
         for line in iterator:  # for each file in selection
-            msg = _('Checking %s') % self.liststore[line][2].decode('utf-8', 'replace')
+            msg = _('Checking %s') % self.liststore[line][1].decode('utf-8', 'replace')
             logging.info(msg)
             self.statusbar.push(0, msg)
-
-            if self.force or self.liststore[line][6]:
-                if self.liststore[line][0].file.is_clean():
-                    self.liststore[line][4] = _('Clean')
-                    self.liststore[line][6] = 0
-                else:
-                    self.liststore[line][4] = _('Dirty')
-                    self.liststore[line][6] = 1
-                logging.info('%s is %s' % (self.liststore[line][1], self.liststore[line][4]))
-                yield True
+            if self.liststore[line][0].file.is_clean():
+                self.liststore[line][2] = _('Clean')
+            else:
+                self.liststore[line][2] = _('Dirty')
+            logging.info('%s is %s' % (self.liststore[line][1], self.liststore[line][2]))
+            yield True
         self.statusbar.push(0, _('Ready'))
         yield False
 
-    def mat_clean(self, iterator):
+    def __mat_clean(self, iterator):
         ''' Clean elements in iterator '''
         for line in iterator:  # for each file in selection
             msg = _('Cleaning %s') % self.liststore[line][2].decode('utf-8', 'replace')
             logging.info(msg)
             self.statusbar.push(0, msg)
-            if self.force or self.liststore[line][6]:
-                if self.liststore[line][0].file.remove_all():
-                    self.liststore[line][4] = _('Clean')
-                    self.liststore[line][6] = 0
-                    if self.backup:  # the backup copy state
-                        self.liststore[line][5] = os.path.basename(self.liststore[line][0].file.output)
+            if self.liststore[line][0].file.remove_all():
+                self.liststore[line][2] = _('Clean')
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False
@@ -437,7 +399,7 @@ if __name__ == '__main__':
 
     gui = GUI()
 
-    #Add files from command line
+    # Add files from command line
     infiles = [arg for arg in sys.argv[1:] if os.path.exists(arg)]
     if infiles:
         task = gui.populate(infiles)
