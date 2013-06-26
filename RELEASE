@@ -1,6 +1,5 @@
-update localisations
-    po/mat-gui.pot
-    po/*.po
+update localisations using
+    xgettext -k_ -kN_ --from-code utf-8 -o ./po/mat-gui.pot mat-gui.py ./data/mat.glade
 
 update changelog:
     git log -> CHANGELOG
