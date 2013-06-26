@@ -173,7 +173,7 @@ class GUI(object):
         w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_artists(['Marine Benoît', ])
         w.set_copyright('GNU Public License v2')
-        w.set_comments(_(''))
+        w.set_comments(_('Trash your meta, keep your data'))
         w.set_logo(GdkPixbuf.Pixbuf.new_from_file_at_size(self.logo, 400, 200))
         w.set_program_name('Metadata Anonymisation Toolkit')
         w.set_version(mat.__version__)
