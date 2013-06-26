@@ -153,36 +153,22 @@ class GUI(object):
             Popup that display on double-clic
             metadata from a file
         '''
-        label = _('<b>%s</b>\'s metadatas:\n') % self.liststore[row][1]
-        meta = ''
+        MetadataPopupListStore = self.builder.get_object('MetadataPopupListStore')
+        MetadataPopupListStore.clear()
         if self.liststore[row][0].file.is_clean():
-            meta = _('No metadata found')
+            MetadataPopupListStore.append([_('No metadata found'), ''])
             self.liststore[row][2] = _('Clean')
         else:
             self.liststore[row][2] = _('Dirty')
-            iterator = self.liststore[row][0].file.get_meta().iteritems()
-            for i, j in iterator:
-                name = '-<b>' + str(i) + '</b>: '
-                meta += (name + str(j) + '\n')
+            for i, j in self.liststore[row][0].file.get_meta().iteritems():
+                MetadataPopupListStore.append([i, j])
 
-        w = Gtk.MessageDialog(self.window,
-            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
-            Gtk.MessageType.INFO, Gtk.ButtonsType.CLOSE, label)
-        w.set_resizable(True)
-        w.set_size_request(400, 300)
-        scrolled_window = Gtk.ScrolledWindow()
-        scrolled_window.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
-        w.vbox.pack_start(scrolled_window, True, True, 0)
-        content = Gtk.Label(label=meta)
-        content.set_selectable(True)
-        content.set_alignment(0, 0)
-        content.set_use_markup(True)
-        scrolled_window.add_with_viewport(content)
-        w.set_markup(label)
-        w.show_all()
-        click = w.run()
-        if click:
-            w.destroy()
+        popup_metadata = self.builder.get_object('MetadataPopup')
+        popup_metadata.set_title(_("%s's metadata") % self.liststore[row][0].file.basename)
+        popup_metadata.show_all()
+        click = popup_metadata.run()
+        if not click:  # Close
+            popup_metadata.hide()
 
     def cb_about_popup(self, button):
         ''' About popup '''
