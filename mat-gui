@@ -102,13 +102,13 @@ class GUI(object):
         targets.add_uri_targets(80)
         self.treeview.drag_dest_set_target_list(targets)
 
-    def cb_update_supported_popup(self, w):
+    def cb_update_supported_popup(self, window):
         '''
             Fill GtkEntries of the supported_format_popups
             with corresponding data.
         '''
-        i = w.get_active_iter()
-        index, _ = w.get_model()[i]
+        i = window.get_active_iter()
+        index, _ = window.get_model()[i]
         support = self.builder.get_object('supported_support')
         support.set_text(self.supported_dict.list[index]['support'])
         metadata = self.builder.get_object('supported_metadata').get_buffer()
@@ -123,7 +123,7 @@ class GUI(object):
         Gtk.main_quit()
 
     def cb_add_files(self, button):
-        ''' Add the files chosen by the filechoser ("Add" button) '''
+        ''' Add the files chosen by the filechooser ("Add" button) '''
         chooser = Gtk.FileChooserDialog(title=_('Choose files'),
             parent=self.window, action=Gtk.FileChooserAction.OPEN,
             buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1))
@@ -141,9 +141,7 @@ class GUI(object):
         supported_filter.set_name(_('Supported files'))
         chooser.add_filter(supported_filter)
 
-        response = chooser.run()
-
-        if not response:  # Gtk.STOCK_OK
+        if not chooser.run():  # Gtk.STOCK_OK
             filenames = chooser.get_filenames()
             GObject.idle_add(self.populate(filenames).next)  # asynchrone processing
         chooser.destroy()
@@ -153,21 +151,20 @@ class GUI(object):
             Popup that display on double-clic
             metadata from a file
         '''
-        MetadataPopupListStore = self.builder.get_object('MetadataPopupListStore')
-        MetadataPopupListStore.clear()
+        metadataPopupListStore = self.builder.get_object('MetadataPopupListStore')
+        metadataPopupListStore.clear()
         if self.liststore[row][0].file.is_clean():
-            MetadataPopupListStore.append([_('No metadata found'), ''])
+            metadataPopupListStore.append([_('No metadata found'), ''])
             self.liststore[row][2] = _('Clean')
         else:
             self.liststore[row][2] = _('Dirty')
             for i, j in self.liststore[row][0].file.get_meta().iteritems():
-                MetadataPopupListStore.append([i, j])
+                metadataPopupListStore.append([i, j])
 
         popup_metadata = self.builder.get_object('MetadataPopup')
         popup_metadata.set_title(_("%s's metadata") % self.liststore[row][0].file.basename)
         popup_metadata.show_all()
-        click = popup_metadata.run()
-        if not click:  # Close
+        if not popup_metadata.run():  # Close
             popup_metadata.hide()
 
     def cb_about_popup(self, button):
@@ -176,7 +173,7 @@ class GUI(object):
         w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_artists(['Marine Benoît', ])
         w.set_copyright('GNU Public License v2')
-        w.set_comments(_('This software was coded during the GSoC 2011'))
+        w.set_comments(_(''))
         w.set_logo(GdkPixbuf.Pixbuf.new_from_file_at_size(self.logo, 400, 200))
         w.set_program_name('Metadata Anonymisation Toolkit')
         w.set_version(mat.__version__)
@@ -190,8 +187,7 @@ class GUI(object):
         ''' Show the "supported formats" popup'''
         dialog = self.builder.get_object('SupportedWindow')
         dialog.show_all()
-        click = dialog.run()
-        if not click:  # Close
+        if not dialog.run():
             dialog.hide()
 
     def cb_clear_list(self, _):
@@ -266,9 +262,9 @@ non-anonymised) file to output archive'))
             elif url.startswith('file:'):  # xffm
                 return url[5:]  # 5 is len('file:')
 
-        urls = selection.get_uris()
-        urls = map(clean_path, urls)
-        GObject.idle_add(self.populate(urls).next)  # asynchrone processing
+        dirties_urls = selection.get_uris()
+        cleaned_urls = map(clean_path, dirties_urls)
+        GObject.idle_add(self.populate(cleaned_urls).next)  # asynchrone processing
 
     def __add_file_to_treeview(self, filename):
         '''
@@ -334,9 +330,9 @@ non-anonymised) file to output archive'))
         for item in filelist:
             mime = mimetypes.guess_type(item)[0]
             if mime:
-                store.append([item, mime])
+                store.append([os.path.basename(item), mime])
             else:
-                store.append([item, _('unknown')])
+                store.append([os.path.basename(item), _('Unknown mimetype')])
 
         treeview = Gtk.TreeView(store)
         vbox.pack_start(treeview, True, True, 0)
@@ -349,8 +345,7 @@ non-anonymised) file to output archive'))
         treeview.append_column(column)
 
         dialog.show_all()
-        click = dialog.run()
-        if not click:  # Ok button
+        if not dialog.run():  # Ok button
             dialog.destroy()
 
     def __mat_check(self, iterator):
