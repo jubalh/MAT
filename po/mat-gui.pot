@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-28 15:00+0200\n"
+"POT-Creation-Date: 2013-06-26 21:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,177 +17,161 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mat-gui:72 mat-gui:416 mat-gui:432
+#: mat-gui.py:65 mat-gui.py:363 mat-gui.py:375
 msgid "Ready"
 msgstr ""
 
-#: mat-gui:134
+#: mat-gui.py:127
 msgid "Choose files"
 msgstr ""
 
-#: mat-gui:141
+#: mat-gui.py:134
 msgid "All files"
 msgstr ""
 
-#: mat-gui:148
+#: mat-gui.py:141
 msgid "Supported files"
 msgstr ""
 
-#: mat-gui:163
-#, python-format
-msgid "<b>%s</b>'s metadatas:\n"
-msgstr ""
-
-#: mat-gui:166
+#: mat-gui.py:157
 msgid "No metadata found"
 msgstr ""
 
-#: mat-gui:167 mat-gui:409 mat-gui:427 data/mat.ui:204
+#: mat-gui.py:158 mat-gui.py:358 mat-gui.py:373 data/mat.glade:198
 msgid "Clean"
 msgstr ""
 
-#: mat-gui:169 mat-gui:412
+#: mat-gui.py:160 mat-gui.py:360
 msgid "Dirty"
 msgstr ""
 
-#: mat-gui:201
-msgid "This software was coded during the GSoC 2011"
+#: mat-gui.py:165
+#, python-format
+msgid "%s's metadata"
 msgstr ""
 
-#: mat-gui:206
+#: mat-gui.py:176
+msgid "Trash your meta, keep your data"
+msgstr ""
+
+#: mat-gui.py:181
 msgid "Website"
 msgstr ""
 
-#: mat-gui:233 data/mat.ui:87
+#: mat-gui.py:207 data/mat.glade:79
 msgid "Preferences"
 msgstr ""
 
-#: mat-gui:247
-msgid "Force Clean"
-msgstr ""
-
-#: mat-gui:250
-msgid "Do not check if already clean before cleaning"
-msgstr ""
-
-#: mat-gui:253
-msgid "Backup"
-msgstr ""
-
-#: mat-gui:256
-msgid "Keep a backup copy"
-msgstr ""
-
-#: mat-gui:259
+#: mat-gui.py:221
 msgid "Reduce PDF quality"
 msgstr ""
 
-#: mat-gui:262
+#: mat-gui.py:224
 msgid "Reduce the produced PDF size and quality"
 msgstr ""
 
-#: mat-gui:265
+#: mat-gui.py:227
 msgid "Add unsupported file to archives"
 msgstr ""
 
-#: mat-gui:269
+#: mat-gui.py:231
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr ""
 
-#: mat-gui:316
-msgid "unknow"
+#: mat-gui.py:276
+msgid "Unknown"
 msgstr ""
 
-#: mat-gui:371
+#: mat-gui.py:323
 msgid "Not-supported"
 msgstr ""
 
-#: mat-gui:383
-msgid "unknown"
+#: mat-gui.py:335
+msgid "Unknown mimetype"
 msgstr ""
 
-#: mat-gui:390 data/mat.ui:299
+#: mat-gui.py:342 data/mat.glade:265
 msgid "Filename"
 msgstr ""
 
-#: mat-gui:392 data/mat.ui:316
+#: mat-gui.py:344
 msgid "Mimetype"
 msgstr ""
 
-#: mat-gui:403
+#: mat-gui.py:354
 #, python-format
 msgid "Checking %s"
 msgstr ""
 
-#: mat-gui:422
+#: mat-gui.py:369
 #, python-format
 msgid "Cleaning %s"
 msgstr ""
 
-#: data/mat.ui:43
+#: data/mat.glade:35
 msgid "_File"
 msgstr ""
 
-#: data/mat.ui:79
+#: data/mat.glade:71
 msgid "_Edit"
 msgstr ""
 
-#: data/mat.ui:98 data/mat.ui:230
+#: data/mat.glade:90 data/mat.glade:224
 msgid "Clear"
 msgstr ""
 
-#: data/mat.ui:113
+#: data/mat.glade:105
 msgid "_Process"
 msgstr ""
 
-#: data/mat.ui:147
+#: data/mat.glade:139
 msgid "_Help"
 msgstr ""
 
-#: data/mat.ui:191
+#: data/mat.glade:185
 msgid "Add"
 msgstr ""
 
-#: data/mat.ui:217
+#: data/mat.glade:211
 msgid "Check"
 msgstr ""
 
-#: data/mat.ui:243
-msgid "Quit"
-msgstr ""
-
-#: data/mat.ui:282
-msgid "Path"
-msgstr ""
-
-#: data/mat.ui:333
+#: data/mat.glade:282
 msgid "State"
 msgstr ""
 
-#: data/mat.ui:350
-msgid "Cleaned copy"
+#: data/mat.glade:329
+msgid "Metadatas"
 msgstr ""
 
-#: data/mat.ui:388
+#: data/mat.glade:385
+msgid "Name"
+msgstr ""
+
+#: data/mat.glade:399
+msgid "Content"
+msgstr ""
+
+#: data/mat.glade:425
 msgid "Supported formats"
 msgstr ""
 
-#: data/mat.ui:431
+#: data/mat.glade:468
 msgid "Support"
 msgstr ""
 
-#: data/mat.ui:444
+#: data/mat.glade:481
 msgid "Metadata"
 msgstr ""
 
-#: data/mat.ui:457
+#: data/mat.glade:494
 msgid "Method"
 msgstr ""
 
-#: data/mat.ui:470
+#: data/mat.glade:507
 msgid "Remaining"
 msgstr ""
 
-#: data/mat.ui:507
+#: data/mat.glade:544
 msgid "Fileformat"
 msgstr ""
