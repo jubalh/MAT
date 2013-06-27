@@ -322,8 +322,13 @@ non-anonymised) file to output archive'))
         '''
         dialog = Gtk.Dialog(title=_('Not-supported'), parent=self.window,
                 flags=0, buttons=(Gtk.STOCK_OK, 0))
+        dialog.set_size_request(220, 180)
         vbox = Gtk.VBox(spacing=5)
-        dialog.get_content_area().pack_start(vbox, True, True, 0)
+        sc = Gtk.ScrolledWindow()
+        sc.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        sc.add_with_viewport(vbox)
+
+        dialog.get_content_area().pack_start(sc, True, True, 0)
         store = Gtk.ListStore(str, str)
 
         # append filename - mimetype to the store
