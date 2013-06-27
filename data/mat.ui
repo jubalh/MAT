@@ -92,6 +92,7 @@
                         <property name="can_focus">False</property>
                         <property name="image">image1</property>
                         <property name="use_stock">False</property>
+                        <signal name="activate" handler="cb_clear_list" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -435,15 +436,10 @@
       <object class="GtkBox" id="supported_vbox">
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">10</property>
         <child>
           <object class="GtkGrid" id="supported_grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="halign">center</property>
-            <property name="valign">center</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
             <property name="row_spacing">5</property>
             <property name="column_spacing">5</property>
             <child>
@@ -517,7 +513,6 @@
               <object class="GtkComboBoxText" id="supported_cbox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="hexpand">True</property>
                 <property name="border_width">5</property>
                 <property name="has_entry">True</property>
                 <property name="entry_text_column">1</property>
