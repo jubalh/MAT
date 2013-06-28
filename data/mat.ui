@@ -438,10 +438,8 @@
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkGrid" id="supported_grid">
-            <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="row_spacing">5</property>
-            <property name="column_spacing">5</property>
             <child>
               <object class="GtkEntry" id="supported_support">
                 <property name="visible">True</property>
@@ -596,6 +594,7 @@
         <child internal-child="action_area">
           <object class="GtkButtonBox" id="supported_action_area">
             <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="supported_OK">
                 <property name="label">gtk-ok</property>
