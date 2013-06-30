@@ -102,6 +102,13 @@ class GUI(object):
         targets.add_uri_targets(80)
         self.treeview.drag_dest_set_target_list(targets)
 
+    def cb_hide_widget(self, widget, _):
+        ''' This function is a little hack to hide instead
+        of close re-usable popups, like supported-fileformats,
+        popup-metadata, ...'''
+        widget.hide()
+        return False
+
     def cb_update_supported_popup(self, window):
         '''
             Fill GtkEntries of the supported_format_popups
@@ -206,6 +213,7 @@ class GUI(object):
         ''' Preferences popup '''
         dialog = Gtk.Dialog(_('Preferences'), self.window, 0,
                 (Gtk.STOCK_OK, 0))
+        dialog.connect('delete-event', self.cb_hide_widget)
         dialog.set_resizable(False)
         dialog.set_deletable(False)
         hbox = Gtk.HBox()
@@ -322,6 +330,7 @@ non-anonymised) file to output archive'))
         '''
         dialog = Gtk.Dialog(title=_('Not-supported'), parent=self.window,
                 flags=0, buttons=(Gtk.STOCK_OK, 0))
+        dialog.set_modal(True)
         dialog.set_size_request(220, 180)
         vbox = Gtk.VBox(spacing=5)
         sc = Gtk.ScrolledWindow()
@@ -350,8 +359,8 @@ non-anonymised) file to output archive'))
         treeview.append_column(column)
 
         dialog.show_all()
-        if not dialog.run():  # Ok button
-            dialog.destroy()
+        dialog.run()
+        dialog.destroy()
 
     def __mat_check(self, iterator):
         ''' Check elements in iterator are clean '''
