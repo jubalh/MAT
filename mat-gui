@@ -171,8 +171,8 @@ class GUI(object):
         popup_metadata = self.builder.get_object('MetadataPopup')
         popup_metadata.set_title(_("%s's metadata") % self.liststore[row][0].file.basename)
         popup_metadata.show_all()
-        if not popup_metadata.run():  # Close
-            popup_metadata.hide()
+        popup_metadata.run()
+        popup_metadata.hide()
 
     def cb_about_popup(self, button):
         ''' About popup '''
@@ -194,8 +194,8 @@ class GUI(object):
         ''' Show the "supported formats" popup'''
         dialog = self.builder.get_object('SupportedWindow')
         dialog.show_all()
-        if not dialog.run():
-            dialog.hide()
+        dialog.run()
+        dialog.hide()
 
     def cb_clear_list(self, _):
         ''' Clear the file list '''
@@ -215,7 +215,6 @@ class GUI(object):
                 (Gtk.STOCK_OK, 0))
         dialog.connect('delete-event', self.cb_hide_widget)
         dialog.set_resizable(False)
-        dialog.set_deletable(False)
         hbox = Gtk.HBox()
         dialog.get_content_area().pack_start(hbox, False, False, 0)
 
@@ -246,7 +245,7 @@ non-anonymised) file to output archive'))
                 file[0].file.add2archive = self.add2archive
                 if file[0].file.mime.startswith('pdf'):
                     file[0].file.pdf_quality = self.pdf_quality
-            dialog.destroy()
+            dialog.hide()
 
     def cb_drag_data_received(self, widget, context,
             x, y, selection, target_type, timestamp):
@@ -291,7 +290,7 @@ non-anonymised) file to output archive'))
         '''
         iterator = self.treeview.get_selection().get_selected_rows()[1]
         if not iterator:  # if nothing is selected : select everything
-            iterator = xrange(len(self.liststore))
+            iterator = range(len(self.liststore))
         task = func(iterator)  # launch func() in an asynchrone way
         GObject.idle_add(task.next)
 
@@ -329,8 +328,7 @@ non-anonymised) file to output archive'))
             that he want to process
         '''
         dialog = Gtk.Dialog(title=_('Not-supported'), parent=self.window,
-                flags=0, buttons=(Gtk.STOCK_OK, 0))
-        dialog.set_modal(True)
+                flags=Gtk.DialogFlags.MODAL, buttons=(Gtk.STOCK_OK, 0))
         dialog.set_size_request(220, 180)
         vbox = Gtk.VBox(spacing=5)
         sc = Gtk.ScrolledWindow()
