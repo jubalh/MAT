@@ -52,14 +52,14 @@ class GUI(object):
 
         self.window = self.builder.get_object('MainWindow')
         self.window.set_icon(icon)
-        self.liststore = self.builder.get_object('Liststore')
+        self.liststore = self.builder.get_object('MainWindowListstore')
         ''' The Liststore contains:
                 0: The CFile instance that represents the file
                 1: The file's name
                 2: The file's state (Localised string)
         '''
 
-        self.treeview = self.builder.get_object('Treeview')
+        self.treeview = self.builder.get_object('MainWindowTreeview')
 
         self.statusbar = self.builder.get_object('Statusbar')
         self.statusbar.push(1, _('Ready'))
