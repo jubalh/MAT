@@ -1,3 +1,13 @@
+0.4 - ?
+    * Support of mp3/flac/ogg
+    * Port from Gtk2 to Gtk3
+    * Port to Glade
+    * Simplification/Improvement of the GUI
+    * Add a lot of translations
+    * Multiples files can now be dropped in the GUI
+    * A new MOTO ;)
+    * Bugfixes
+    
 0.3.4 - 8jan2013
     * Bump dates
     * Update localizations
