@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-26 21:14+0200\n"
+"POT-Creation-Date: 2013-07-01 19:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,161 +17,157 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: mat-gui.py:65 mat-gui.py:363 mat-gui.py:375
+#: mat-gui.py:65 mat-gui.py:375 mat-gui.py:387
 msgid "Ready"
 msgstr ""
 
-#: mat-gui.py:127
+#: mat-gui.py:134
 msgid "Choose files"
 msgstr ""
 
-#: mat-gui.py:134
+#: mat-gui.py:141
 msgid "All files"
 msgstr ""
 
-#: mat-gui.py:141
+#: mat-gui.py:148
 msgid "Supported files"
 msgstr ""
 
-#: mat-gui.py:157
+#: mat-gui.py:164
 msgid "No metadata found"
 msgstr ""
 
-#: mat-gui.py:158 mat-gui.py:358 mat-gui.py:373 data/mat.glade:198
+#: mat-gui.py:165 mat-gui.py:370 mat-gui.py:385 data/mat.glade:227
 msgid "Clean"
 msgstr ""
 
-#: mat-gui.py:160 mat-gui.py:360
+#: mat-gui.py:167 mat-gui.py:372
 msgid "Dirty"
 msgstr ""
 
-#: mat-gui.py:165
+#: mat-gui.py:172
 #, python-format
 msgid "%s's metadata"
 msgstr ""
 
-#: mat-gui.py:176
+#: mat-gui.py:183
 msgid "Trash your meta, keep your data"
 msgstr ""
 
-#: mat-gui.py:181
+#: mat-gui.py:188
 msgid "Website"
 msgstr ""
 
-#: mat-gui.py:207 data/mat.glade:79
+#: mat-gui.py:214 data/mat.glade:107
 msgid "Preferences"
 msgstr ""
 
-#: mat-gui.py:221
+#: mat-gui.py:228
 msgid "Reduce PDF quality"
 msgstr ""
 
-#: mat-gui.py:224
+#: mat-gui.py:231
 msgid "Reduce the produced PDF size and quality"
 msgstr ""
 
-#: mat-gui.py:227
+#: mat-gui.py:234
 msgid "Add unsupported file to archives"
 msgstr ""
 
-#: mat-gui.py:231
+#: mat-gui.py:238
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr ""
 
-#: mat-gui.py:276
+#: mat-gui.py:283
 msgid "Unknown"
 msgstr ""
 
-#: mat-gui.py:323
+#: mat-gui.py:330
 msgid "Not-supported"
 msgstr ""
 
-#: mat-gui.py:335
+#: mat-gui.py:347
 msgid "Unknown mimetype"
 msgstr ""
 
-#: mat-gui.py:342 data/mat.glade:265
+#: mat-gui.py:354 data/mat.glade:291
 msgid "Filename"
 msgstr ""
 
-#: mat-gui.py:344
+#: mat-gui.py:356
 msgid "Mimetype"
 msgstr ""
 
-#: mat-gui.py:354
+#: mat-gui.py:366
 #, python-format
 msgid "Checking %s"
 msgstr ""
 
-#: mat-gui.py:369
+#: mat-gui.py:381
 #, python-format
 msgid "Cleaning %s"
 msgstr ""
 
-#: data/mat.glade:35
+#: data/mat.glade:63
 msgid "_File"
 msgstr ""
 
-#: data/mat.glade:71
+#: data/mat.glade:99
 msgid "_Edit"
 msgstr ""
 
-#: data/mat.glade:90 data/mat.glade:224
+#: data/mat.glade:118 data/mat.glade:253
 msgid "Clear"
 msgstr ""
 
-#: data/mat.glade:105
+#: data/mat.glade:134
 msgid "_Process"
 msgstr ""
 
-#: data/mat.glade:139
+#: data/mat.glade:168
 msgid "_Help"
 msgstr ""
 
-#: data/mat.glade:185
+#: data/mat.glade:214
 msgid "Add"
 msgstr ""
 
-#: data/mat.glade:211
+#: data/mat.glade:240
 msgid "Check"
 msgstr ""
 
-#: data/mat.glade:282
+#: data/mat.glade:308
 msgid "State"
 msgstr ""
 
-#: data/mat.glade:329
-msgid "Metadatas"
-msgstr ""
-
-#: data/mat.glade:385
-msgid "Name"
-msgstr ""
-
-#: data/mat.glade:399
-msgid "Content"
-msgstr ""
-
-#: data/mat.glade:425
-msgid "Supported formats"
-msgstr ""
-
-#: data/mat.glade:468
-msgid "Support"
-msgstr ""
-
-#: data/mat.glade:481
+#: data/mat.glade:346 data/mat.glade:495
 msgid "Metadata"
 msgstr ""
 
-#: data/mat.glade:494
+#: data/mat.glade:400
+msgid "Name"
+msgstr ""
+
+#: data/mat.glade:414
+msgid "Content"
+msgstr ""
+
+#: data/mat.glade:448
+msgid "Supported formats"
+msgstr ""
+
+#: data/mat.glade:482
+msgid "Support"
+msgstr ""
+
+#: data/mat.glade:508
 msgid "Method"
 msgstr ""
 
-#: data/mat.glade:507
+#: data/mat.glade:521
 msgid "Remaining"
 msgstr ""
 
-#: data/mat.glade:544
+#: data/mat.glade:556
 msgid "Fileformat"
 msgstr ""
