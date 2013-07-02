@@ -23,9 +23,10 @@ WARNING :
 
 
 DEPENDENCIES:
-    python2.6 (at least)
+    python2.7 (at least)
     python-hachoir-core and python-hachoir-parser
-    python-pdfrw, python-cairo and python-poppler for full PDF support
+    python-pdfrw for full PDF support
+    python-gi, python-gi-cairo, python-gobject for the GUI
     shred (should be already installed)
 
 
@@ -186,4 +187,3 @@ THANKS:
 
 KNOWN BUGS:
     Zipfiles are not totally cleaned, I know.
-    I am working on a patch for zipfile.py
