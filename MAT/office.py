@@ -68,14 +68,14 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             # contain the list of all files present in the archive
                 zipin.extract(item, self.tempdir)
                 for line in fileinput.input(name, inplace=1):
-                    #remove the line which contains "meta.xml"
+                    # remove the line which contains "meta.xml"
                     line = line.strip()
                     if not 'meta.xml' in line:
                         print line
                 zipout.write(name, item)
 
             elif ext in parser.NOMETA or item == 'mimetype':
-                #keep NOMETA files, and the "manifest" file
+                # keep NOMETA files, and the "manifest" file
                 if item != 'meta.xml':  # contains the metadata
                     zipin.extract(item, self.tempdir)
                     zipout.write(name, item)
@@ -126,7 +126,11 @@ class PdfStripper(parser.GenericParser):
         super(PdfStripper, self).__init__(filename, parser, mime, backup, **kwargs)
         uri = 'file://' + os.path.abspath(self.filename)
         self.password = None
-        self.pdf_quality = kwargs['low_pdf_quality']
+        try:
+            self.pdf_quality = kwargs['low_pdf_quality']
+        except KeyError:
+            self.pdf_quality = False
+
         self.document = Poppler.Document.new_from_file(uri, self.password)
         self.meta_list = frozenset(['title', 'author', 'subject', 'keywords', 'creator',
             'producer', 'metadata'])
@@ -146,7 +150,6 @@ class PdfStripper(parser.GenericParser):
             on a cairo pdfsurface for each pages.
 
             http://cairographics.org/documentation/pycairo/2/
-            python-poppler is not documented at all : have fun ;)
 
             The use of an intermediate tempfile is necessary because
             python-cairo segfaults on unicode.
@@ -219,7 +222,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
             if item.startswith('docProps/'):  # metadatas
                 pass
             elif ext in parser.NOMETA or item == '.rels':
-                #keep parser.NOMETA files, and the file named ".rels"
+                # keep parser.NOMETA files, and the file named ".rels"
                 zipin.extract(item, self.tempdir)
                 zipout.write(name, item)
             else:
