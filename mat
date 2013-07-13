@@ -102,21 +102,13 @@ def list_supported():
     '''
         Print all supported fileformat, and exit
     '''
-    handler = mat.XMLParser()
-    parser = xml.sax.make_parser()
-    parser.setContentHandler(handler)
-    path = os.path.join(mat.get_datadir(), 'FORMATS')
-    with open(path, 'r') as xmlfile:
-        parser.parse(xmlfile)
-
-    for item in handler.list:
-        if strippers.STRIPPERS.has_key(item['mimetype'].split(',')[0]):
-            print('%s (%s)' % (item['name'], item['extension']))
-            print('\tsupport : ' + item['support'])
-            print('\tmetadata : ' + item['metadata'])
-            print('\tmethod : ' + item['method'])
-            print('\tremaining : ' + item['remaining'])
-            print('\n')
+    for item in mat.list_supported_formats():
+        print('%s (%s)' % (item['name'], item['extension']))
+        print('\tsupport : ' + item['support'])
+        print('\tmetadata : ' + item['metadata'])
+        print('\tmethod : ' + item['method'])
+        print('\tremaining : ' + item['remaining'])
+        print('\n')
     sys.exit(0)
 
 

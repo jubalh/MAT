@@ -13,7 +13,6 @@ import xml.sax
 import hachoir_core.cmd_line
 import hachoir_parser
 
-
 __version__ = '0.4'
 __author__ = 'jvoisin'
 
@@ -46,6 +45,24 @@ def get_datadir():
         return '/usr/share/mat/'
     elif os.path.isdir('/usr/local/share/mat/'):
         return '/usr/local/share/mat/'
+
+def list_supported_formats():
+    '''
+        Return a list of all localy supported fileformat
+    '''
+    handler = XMLParser()
+    parser = xml.sax.make_parser()
+    parser.setContentHandler(handler)
+    path = os.path.join(get_datadir(), 'FORMATS')
+    with open(path, 'r') as xmlfile:
+        parser.parse(xmlfile)
+
+    localy_supported = []
+    for item in handler.list:
+        if strippers.STRIPPERS.has_key(item['mimetype'].split(',')[0]):
+            localy_supported.append(item)
+
+    return localy_supported
 
 class XMLParser(xml.sax.handler.ContentHandler):
     '''
