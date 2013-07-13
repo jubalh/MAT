@@ -41,7 +41,8 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
 
         item = Nautilus.MenuItem(name="Nautilus::clean_metadata",
                                  label=_("Clean metadata"),
-                                 tip=_("Clean file's metadata with MAT"))
+                                 tip=_("Clean file's metadata with MAT"),
+                                 icon="gtk-clear")
         item.connect('activate', self.menu_activate_cb, file)
         return item,
 
