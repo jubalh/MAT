@@ -5,8 +5,6 @@ import os
 from distutils.core import setup
 from DistUtilsExtra.command import *
 
-from MAT import mat
-
 #Remove MANIFEST file, since distutils
 #doesn't properly update it when
 #the contents of directories changes.
@@ -15,10 +13,10 @@ if os.path.exists('MANIFEST'):
 
 setup(
     name              = 'MAT',
-    version           = mat.__version__,
+    version           = '0.4',
     description       = 'Metadata Anonymisation Toolkit',
     long_description  = 'A Metadata Anonymisation Toolkit in Python, using python-hachoir',
-    author            = mat.__author__,
+    author            = 'jvoisin',
     author_email      = 'julien.voisin@dustri.org',
     platforms         = 'linux',
     license           = 'GPLv2',
