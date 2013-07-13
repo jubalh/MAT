@@ -1,21 +1,13 @@
 FORMATS:
     NEW:
         - microsoft office < 2007 (ugly and insane)
-        - fix zip (fix python's ziplib) !!!
+        - fix (g)zip
         - videos format ?
     ARCHIVES:
         - correctly handle mtime/atime for files inside archives
 
-GUI:
-    - Add a popup to warn the user about non-supported format because of missing dependencies
-    - Correctly handle the case of the user tick "backup", clean, and then untick "backup":
-        -- remove the backup copy ?
-        -- refresh the state of files maked 'clean'
-
 MISC:
-    - a nautilus extension (right-clic -> clean with MAT)
     - support non-utf8 filenames
-
-TESTSUITE
-    - add a ctime/mtime related test
+    - procude a .bak instead of a .cleaned.
+    - create a release.sh script
 
