@@ -13,6 +13,8 @@ import xml.sax
 import hachoir_core.cmd_line
 import hachoir_parser
 
+import MAT.exceptions
+
 __version__ = '0.4'
 __author__ = 'jvoisin'
 
@@ -107,18 +109,20 @@ def secure_remove(filename):
     '''
         securely remove the file
     '''
-    removed = False
     try:
-        subprocess.call(['shred', '--remove', filename])
-        removed = True
+        if subprocess.call(['shred', '--remove', filename]) == 0:
+            return True
+        else:
+            raise OSError
     except OSError:
         logging.error('Unable to securely remove %s' % filename)
 
-    if not removed:
-        try:
-            os.remove(filename)
-        except OSError:
-            logging.error('Unable to remove %s' % filename)
+    try:
+        os.remove(filename)
+        return True
+    except OSError:
+        logging.error('Unable to remove %s' % filename)
+        raise MAT.exceptions.UnableToRemoveFile
 
 
 def create_class_file(name, backup, **kwargs):
