@@ -128,7 +128,13 @@ def main():
     else:  # clean the file
         func = clean_meta
 
-    for filename in filenames:
+    while filenames:
+        filename = filenames.pop()
+        if os.path.isdir(filename):
+            for root, sub, files in os.walk(filename):
+                for file in files:
+                    filenames.append(os.path.join(root, file))
+
         class_file = mat.create_class_file(filename, args.backup,
             add2archive=args.add2archive, low_pdf_quality=args.low_pdf_quality)
         if class_file:
