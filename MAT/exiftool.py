@@ -4,6 +4,7 @@
 
 import subprocess
 import parser
+import shutil
 
 
 class ExiftoolStripper(parser.GenericParser):
@@ -31,17 +32,12 @@ class ExiftoolStripper(parser.GenericParser):
         '''
         try:
             if self.backup:
-                # Note: '-All=' must be followed by a known exiftool option.
-                process = subprocess.Popen(['exiftool', '-m', '-All=',
-                    '-out', self.output, self.filename],
-                    stdout=open('/dev/null'))
-                process.wait()
-            else:
-                # Note: '-All=' must be followed by a known exiftool option.
-                process = subprocess.Popen(
-                    [ 'exiftool', '-m', '-All=', '-overwrite_original', self.filename ],
-                    stdout=open('/dev/null'))
-                process.wait()
+                shutil.copy2(self.filename, self.filename + '.bak')
+            # Note: '-All=' must be followed by a known exiftool option.
+            process = subprocess.Popen( ['exiftool', '-m', '-all=',
+                '-adobe=', '-overwrite_original', self.filename ],
+                stdout=open('/dev/null'))
+            process.wait()
             return True
         except:
             return False
@@ -94,4 +90,5 @@ class PngStripper(ExiftoolStripper):
     def _set_allowed(self):
         self.allowed.extend(['Bit Depth', 'Color Type', 'Compression',
             'Filter', 'Interlace', 'Pixels Per Unit X', 'Pixels Per Unit Y',
-            'Pixel Units'])
+            'Pixel Units', 'Significant Bits' ,'Background Color',
+            'SRGB Rendering',])
