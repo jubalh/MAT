@@ -277,6 +277,7 @@
                 <property name="rules_hint">True</property>
                 <property name="search_column">1</property>
                 <property name="fixed_height_mode">True</property>
+                <property name="rubber_banding">True</property>
                 <signal name="drag-data-received" handler="cb_drag_data_received" swapped="no"/>
                 <signal name="row-activated" handler="cb_popup_metadata" swapped="no"/>
                 <child internal-child="selection">
@@ -339,6 +340,14 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="MetadataPopupListStore">
+    <columns>
+      <!-- column-name Name -->
+      <column type="gchararray"/>
+      <!-- column-name Content -->
+      <column type="gchararray"/>
+    </columns>
   </object>
   <object class="GtkDialog" id="MetadataPopup">
     <property name="can_focus">False</property>
@@ -434,14 +443,6 @@
     <action-widgets>
       <action-widget response="0">MetadataPopupOKButton</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkListStore" id="MetadataPopupListStore">
-    <columns>
-      <!-- column-name Name -->
-      <column type="gchararray"/>
-      <!-- column-name Content -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkDialog" id="SupportedWindow">
     <property name="can_focus">False</property>
