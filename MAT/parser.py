@@ -33,7 +33,7 @@ class GenericParser(object):
             self.filename = hachoir_core.cmd_line.unicodeFilename(filename)
         except TypeError:  # get rid of "decoding Unicode is not supported"
             self.filename = filename
-        # basename, ext = os.path.splitext(filename)
+        self.basename = os.path.basename(filename)
         self.output = filename + '.tmp'
 
     def is_clean(self):
