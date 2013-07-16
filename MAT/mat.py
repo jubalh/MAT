@@ -43,10 +43,10 @@ def get_logo():
 def get_datadir():
     if os.path.isdir('./data/'):
         return './data/'
-    elif os.path.isdir('/usr/share/mat/'):
-        return '/usr/share/mat/'
     elif os.path.isdir('/usr/local/share/mat/'):
         return '/usr/local/share/mat/'
+    elif os.path.isdir('/usr/share/mat/'):
+        return '/usr/share/mat/'
 
 def list_supported_formats():
     '''
