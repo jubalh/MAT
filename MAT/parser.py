@@ -13,7 +13,7 @@ NOMETA = ('.bmp',  # image
           '.rdf',  # text
           '.txt',  # plain text
           '.xml',  # formated text (XML)
-          '.rels', # openXML formated text
+          '.rels',  # openXML formated text
           )
 
 FIELD = object()
@@ -29,14 +29,12 @@ class GenericParser(object):
         self.mime = mime
         self.backup = backup
         self.editor = hachoir_editor.createEditor(parser)
-        self.realname = filename
         try:
             self.filename = hachoir_core.cmd_line.unicodeFilename(filename)
         except TypeError:  # get rid of "decoding Unicode is not supported"
             self.filename = filename
-        basename, ext = os.path.splitext(filename)
-        self.output = basename + '.cleaned' + ext
-        self.basename = os.path.basename(filename)  # only filename
+        # basename, ext = os.path.splitext(filename)
+        self.output = filename + '.tmp'
 
     def is_clean(self):
         '''
@@ -118,9 +116,13 @@ class GenericParser(object):
 
     def do_backup(self):
         '''
-            Do a backup of the file if asked,
-            and change his creation/access date
+            Keep a backup of the file if asked.
+
+            The process of double-renaming is not very elegant,
+            but it greatly simplify new strippers implementation.
         '''
-        if not self.backup:
+        if self.backup:
+            os.rename(self.filename, self.filename + '.bak')
+        else:
             mat.secure_remove(self.filename)
-            os.rename(self.output, self.filename)
+        os.rename(self.output, self.filename)
