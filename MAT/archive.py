@@ -10,7 +10,6 @@ import tempfile
 
 import parser
 import mat
-#from tarfile import tarfile
 import tarfile
 
 
@@ -67,8 +66,8 @@ class ZipStripper(GenericArchiveStripper):
             logging.debug('%s has a comment' % self.filename)
             return False
         for item in zipin.infolist():
-            #I have not found a way to remove the crap added by zipfile :/
-            #if not self.is_file_clean(item):
+            # I have not found a way to remove the crap added by zipfile :/
+            # if not self.is_file_clean(item):
             #    logging.debug('%s from %s has compromizing zipinfo' %
             #        (item.filename, self.filename))
             #    return False
@@ -81,7 +80,7 @@ class ZipStripper(GenericArchiveStripper):
                     if not cfile.is_clean():
                         return False
                 except:
-                    #best solution I have found
+                    # best solution I have found
                     logging.info('%s\'s fileformat is not supported, or is a \
 harmless format' % item.filename)
                     _, ext = os.path.splitext(name)
@@ -166,7 +165,7 @@ class TarStripper(GenericArchiveStripper):
             tarin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.name)
             if item.type == '0':  # is item a regular file ?
-                #no backup file
+                # no backup file
                 try:
                     cfile = mat.create_class_file(name, False,
                             add2archive=self.add2archive)
