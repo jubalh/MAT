@@ -24,7 +24,7 @@ hachoir_core.config.quiet = True
 fname = ''
 
 #Verbose
-LOGGING_LEVEL = logging.DEBUG
+#LOGGING_LEVEL = logging.DEBUG
 #hachoir_core.config.quiet = False
 #logname = 'report.log'
 
