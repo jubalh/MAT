@@ -118,7 +118,7 @@ def main():
     '''
     args, filenames = parse()
 
-    #func receive the function correponding to the options given as parameters
+    #func receive the function corresponding to the options given as parameters
     if args.display:  # only print metadatas
         func = list_meta
     elif args.check:  # only check if the file is clean

@@ -68,7 +68,7 @@ class ZipStripper(GenericArchiveStripper):
         for item in zipin.infolist():
             # I have not found a way to remove the crap added by zipfile :/
             # if not self.is_file_clean(item):
-            #    logging.debug('%s from %s has compromizing zipinfo' %
+            #    logging.debug('%s from %s has compromising zipinfo' %
             #        (item.filename, self.filename))
             #    return False
             zipin.extract(item, self.tempdir)
@@ -114,7 +114,7 @@ harmless format' % item.filename)
             So far, the zipfile module does not allow to write a ZipInfo
             object into a zipfile (and it's a shame !) : so data added
             by zipfile itself could not be removed. It's a big concern.
-            Is shiping a patched version of zipfile.py a good idea ?
+            Is shipping a patched version of zipfile.py a good idea ?
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         zipout = zipfile.ZipFile(self.output, 'w', allowZip64=True)
@@ -218,7 +218,7 @@ class TarStripper(GenericArchiveStripper):
                         tarin.close()
                         return False
                 except:
-                    logging.error('%s\'s foramt is not supported or harmless' %
+                    logging.error('%s\'s format is not supported or harmless' %
                         item.filename)
                     _, ext = os.path.splitext(name)
                     if ext not in parser.NOMETA:

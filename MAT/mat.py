@@ -50,7 +50,7 @@ def get_datadir():
 
 def list_supported_formats():
     '''
-        Return a list of all localy supported fileformat
+        Return a list of all locally supported fileformat
     '''
     handler = XMLParser()
     parser = xml.sax.make_parser()
@@ -79,7 +79,7 @@ class XMLParser(xml.sax.handler.ContentHandler):
 
     def startElement(self, name, attrs):
         '''
-            Called when entering into xml balise
+            Called when entering into xml tag
         '''
         self.between = True
         self.key = name
@@ -87,7 +87,7 @@ class XMLParser(xml.sax.handler.ContentHandler):
 
     def endElement(self, name):
         '''
-            Called when exiting a xml balise
+            Called when exiting a xml tag
         '''
         if name == 'format':  # exiting a fileformat section
             self.list.append(self.dict.copy())
@@ -99,7 +99,7 @@ class XMLParser(xml.sax.handler.ContentHandler):
 
     def characters(self, characters):
         '''
-            Concatenate the content between opening and closing balises
+            Concatenate the content between opening and closing tags
         '''
         if self.between:
             self.content += characters
@@ -142,7 +142,7 @@ def create_class_file(name, backup, **kwargs):
 
     if not os.access(name, os.W_OK):
         #check write permission
-        logging.error('%s is not writtable' % name)
+        logging.error('%s is not writable' % name)
         return None
 
     if not os.path.getsize(name):

@@ -11,7 +11,7 @@ class JpegStripper(parser.GenericParser):
     '''
     def _should_remove(self, field):
         '''
-            return True if the field is compromizing
+            return True if the field is compromising
         '''
         field_list = frozenset(['start_image', 'app0', 'start_frame',
                 'start_scan', 'data', 'end_image'])
@@ -31,7 +31,7 @@ class PngStripper(parser.GenericParser):
     '''
     def _should_remove(self, field):
         '''
-            return True if the field is compromizing
+            return True if the field is compromising
         '''
         field_list = frozenset(['id', 'header', 'physical', 'end'])
         if field.name in field_list:
