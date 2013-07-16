@@ -8,17 +8,14 @@ class MutagenStripper(parser.GenericParser):
         self._create_mfile()
 
     def _create_mfile(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def is_clean(self):
         return not self.mfile.tags
 
     def remove_all(self):
         if self.backup:
-            shutil.copy2(self.filename, self.output)
-            self.mfile.filename = self.output
-        else:
-            self.mfile.filename = self.filename
+            shutil.copy2(self.filename, self.filename + '.bak')
 
         self.mfile.delete()
         self.mfile.save()
