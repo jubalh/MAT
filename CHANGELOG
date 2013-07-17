@@ -1,13 +1,16 @@
-0.4 - ?
+0.4rc - 17jul2013
     * Support of mp3/flac/ogg
     * Port from Gtk2 to Gtk3
     * Port to Glade
     * Simplification/Improvement of the GUI
+    * Naming scheme of produced filenames change
     * Add a lot of translations
     * Multiples files can now be dropped in the GUI
+    * Removal of adobe metadata with exiftool
     * A new MOTO ;)
+    * Documentation
     * Bugfixes
-    
+
 0.3.4 - 8jan2013
     * Bump dates
     * Update localizations
