@@ -1,189 +1,100 @@
-METADATA:
-    Metadata consist of information that characterizes data.
-    Metadata are used to provide documentation for data products.
-    In essence, metadata answer who, what, when, where, why, and how about
-    every facet of the data that are being documented.
+METADATA
+========
+Metadata consist of information that characterizes data.
+Metadata are used to provide documentation for data products.
+In essence, metadata answer who, what, when, where, why, and how about
+every facet of the data that are being documented.
+
+METADATA AND PRIVACY
+====================
+Metadata within a file can tell a lot about you.
+Cameras record data about when a picture was taken and what
+camera was used. Office documents like PDF or Office automatically adds
+author and company information to documents and spreadsheets.
+Maybe you don't want to disclose those information on the web.
+
+WARNINGS
+========
+See README.security
+
+DEPENDENCIES
+============
+ * python2.7 (at least)
+ * python-hachoir-core and python-hachoir-parser
+ * python-pdfrw, python-gi-cairo for full PDF support
+ * python-gi, python-gobject for the GUI
+ * shred (should be already installed)
+
+OPTIONALS DEPENDENCIES
+======================
+ * python-mutagen : for massive audio format support
+ * exiftool : for _massive_ image format support
+
+USAGE
+=====
+    mat --help
+or
+
+    mat-gui
+
+SUPPORTED FORMAT
+================
+See FORMATS
+
+HOW TO IMPLEMENT NEW FORMATS
+============================
+1. Add the format's mimetype to the STRIPPER list in mat.py
+2. Inherit the GenericParser class (parser.py)
+3. Read the parser.py module
+4. Implement at least these three methods:
+    - is_clean(self)
+    - remove_all(self)
+    - get_meta(self)
+5. Don't forget to call the do_backup() method when necessary
+
+HOW TO LAUNCH THE TESTSUITE
+===========================
+    cd ./test
+    python test.py
+
+LINKS
+=====
+* Official website: https://mat.boum.org
+* Bugtracker : https://labs.riseup.net/code/projects/mat
+* Git repo: https://gitweb.torproject.org/user/jvoisin/mat.git
+
+CONTACT
+=======
+If you have question, patches, bug reports, or simply want to talk about this project,
+please use the mailing list (https://mailman.boum.org/listinfo/mat-dev).
+You can also contact contact jvoisin
+on irc.oftc.net or at julien.voisin@dustri.org.
+
+LICENSE
+=======
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License version 2 as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301, USA.
+
+Copyright 2011-2013 Julien Voisin <julien.voisin@dustri.org>
 
 
-METADATA AND PRIVACY:
-    Metadata within a file can tell a lot about you.
-    Cameras record data about when a picture was taken and what
-    camera was used. Office documents like PDF or Office automatically adds
-    author and company information to documents and spreadsheets.
-    Maybe you don't want to disclose those information on the web.
+THANKS
+======
+Mat would not exist without :
 
+ * the Google Summer of Code,
+ * the hachoir library,
+ * people on #tails@oftc
 
-WARNING :
-    Mat only removes metadata from your files, it does not anonymise their
-    content, nor can it handle watermarking, steganography, or any too custom
-    metadata field/system.
-
-    If you really want to be anonym, use format that does not contain any
-    metadata, or better : use plain-text.
-
-
-DEPENDENCIES:
-    python2.7 (at least)
-    python-hachoir-core and python-hachoir-parser
-    python-pdfrw for full PDF support
-    python-gi, python-gi-cairo, python-gobject for the GUI
-    shred (should be already installed)
-
-
-OPTIONALS DEPENDENCIES:
-    python-mutagen : for massive audio format support
-    exiftool : for _massive_ image format support
-
-
-USAGE:
-        mat --help
-    or
-        mat-gui
-
-
-SUPPORTED FORMAT:
-    Portable Network Graphics (.png)
-        support : full
-        metadata : textual metadata + date
-        method : removal of harmful fields is done with hachoir
-
-
-    Jpeg (.jpeg, .jpg)
-        support : full
-        metadata : comment + exif/photoshop/adobe
-        method : removal of harmful fields is done with hachoir
-
-
-    Open Document (.odt, .odx, .ods, ...)
-        support : full
-        metadata : a meta.xml file
-        method : removal of the meta.xml file
-
-
-    Office Openxml (.docx, .pptx, .xlsx, ...)
-        support : full
-        metadata : a docProps folder containings xml metadata files
-        method : removal of the docProps folder
-
-
-    Portable Document Fileformat (.pdf)
-        support : full
-        metadata : a lot
-        method : rendering of the PDF file on a cairo surface with the help of
-                poppler in order to remove all the internal metadata.
-                For now, cairo create some metadata.
-                They can be remove if you install either exiftool, or python-pdfrw.
-                The next version of python-cairo will support PDF metadata.
-
-
-    Tape ARchive (.tar, .tar.bz2, .tar.gz)
-        support : full
-        metadata : metadata from the file itself, metadata from the file contained
-                into the archive, and metadata added by tar to the file at then
-                creation of the archive
-        method : extraction of each file, treatement of the file, add treated file
-            to a new archive, right before the add, remove the metadata added by tar
-            itself. When the new archive is complete, remove all his metadata.
-
-
-    Zip (.zip)
-        support : .partial
-        metadata : metadata from the file itself, metadata from the file contained
-                into the archive, and metadata added by zip to the file when added to
-                the archive.
-
-        method : extraction of each file, treatement of the file, add treated file
-            to a new archive. When the new archive is complete, remove all his metadata
-
-
-    MPEG Audio (.mp3, .mp2, .mp1)
-        support : full
-        metadata : id3
-        method : removal of harmful fields is done with hachoir
-
-
-    Ogg Vorbis (.ogg)
-        support : full
-        metadata : Vorbis
-        method : removal of harmful fields is done with mutagen
-
-
-    Free Lossless Audio Codec (.flac)
-        support : full
-        metadata : Flac, Vorbis
-        method : removal of harmful fields is done with mutagen
-
-    Torrent (.torrent)
-        support : full
-        metadata : torrent
-        method : using the nice bencode lib by Petru Paler,
-            heavily tuned/rewritten.
-
-
-HOW TO IMPLEMENT NEW FORMATS:
-    1. add the format's mimetype to the STRIPPER list in mat.py
-    2. inherit the GenericParser class (parser.py)
-    3. read the parser.py module
-    4. implement at least these three methods:
-        - is_clean(self)
-        - remove_all(self)
-        - get_meta(self)
-    5. don't forget to call the do_backup() method when necessary
-
-
-HOW TO LAUNCH THE TESTSUITE:
-    1. cd ./test
-    2. python test.py    : launch all testsuites
-    3. python clitest.py : launch the testsuite for the CLI
-    4. python libtest.py : launch the testsuite for the mat internal library
-
-
-ALTERNATIVES AND COMPLEMENTS:
-for images:
-    exiftool (perl) : metadata manipulation
-    exiv2 (C++) : metadata manipulation
-    graphicsmagick (a fork from imagemagick) : cli image manipulation
-
-for PDF:
-    pdfminer (python) : PDF manipulation
-
-other tools:
-    an hexadecimal editor
-
-
-NOTES:
-    Formats that are not in the test suite are not well-tested,
-    please don't trust the MAT about them !
-
-
-LICENSE:
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License version 2 as
-    published by the Free Software Foundation.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-    MA 02110-1301, USA.
-
-    Copyright © 2011-2013 Julien Voisin <julien.voisin@dustri.org>
-
-
-THANKS:
-    Mat would not exist without :
-    - the Google Summer of Code,
-    - the Python language
-    - the amazing (and messy) hachoir library,
-    - poppler and cairo's python bindings,
-    - and the mutagen library
-    - people on #tails@freenode
-    many thanks to them !
-
-
-KNOWN BUGS:
-    Zipfiles are not totally cleaned, I know.
+Many thanks to them !
