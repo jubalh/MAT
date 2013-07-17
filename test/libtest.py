@@ -41,8 +41,7 @@ class TestListlib(test.MATTest):
         '''check if get_meta returns all the expected meta'''
         for _, dirty in self.file_list:
             current_file = MAT.mat.create_class_file(dirty, False, add2archive=True, low_pdf_quality=True)
-            #FIXME assertisNotNone() : python 2.7
-            self.assertTrue(current_file.get_meta())
+            self.assertIsNotNone(current_file.get_meta())
 
     def testlist_list_empty(self):
         '''check that a listing of a clean file return an empty dict'''
