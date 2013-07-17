@@ -15,8 +15,7 @@ class MutagenStripper(parser.GenericParser):
 
     def remove_all(self):
         if self.backup:
-            shutil.copy2(self.filename, self.filename + '.bak')
-
+            self.create_backup_copy()
         self.mfile.delete()
         self.mfile.save()
         return True

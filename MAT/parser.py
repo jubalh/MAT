@@ -7,6 +7,7 @@ import hachoir_editor
 
 import os
 import tempfile
+import shutil
 
 import mat
 
@@ -37,6 +38,12 @@ class GenericParser(object):
         self.basename = os.path.basename(filename)
         _, output = tempfile.mkstemp()
         self.output = hachoir_core.cmd_line.unicodeFilename(output)
+
+    def __del__(self):
+        ''' Remove tempfile if it was not used
+        '''
+        if os.path.exists(self.output):
+            mat.secure_remove(self.output)
 
     def is_clean(self):
         '''
@@ -115,6 +122,11 @@ class GenericParser(object):
             abstract method
         '''
         raise NotImplementedError
+
+    def create_backup_copy(self):
+        ''' Create a backup copy
+        '''
+        shutil.copy2(self.filename, self.filename + '.bak')
 
     def do_backup(self):
         '''

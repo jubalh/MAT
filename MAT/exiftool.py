@@ -32,7 +32,7 @@ class ExiftoolStripper(parser.GenericParser):
         '''
         try:
             if self.backup:
-                shutil.copy2(self.filename, self.filename + '.bak')
+                self.create_backup_copy()
             # Note: '-All=' must be followed by a known exiftool option.
             process = subprocess.Popen( ['exiftool', '-m', '-all=',
                 '-adobe=', '-overwrite_original', self.filename ],
