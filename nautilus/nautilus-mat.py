@@ -7,7 +7,7 @@ try:
     import gettext
     gettext.install("mat")
 except:
-    logging.warning("Failed to initialize gettext")
+    logging.warning("Failed to initialise gettext")
     _ = lambda x: x
 
 import xml.sax
@@ -19,9 +19,9 @@ import MAT.strippers
 
 class MatExtension(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
-        logging.debug("nautilus-mat: initializing")
+        logging.debug("nautilus-mat: initialising")
         pass
-    
+
     def get_file_items(self, window, files):
         if len(files) != 1:
             return
@@ -59,7 +59,7 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
     def menu_activate_cb(self, menu, file):
         if file.is_gone():
             return
-        
+
         file_path = urllib.unquote(file.get_uri()[7:])
 
         class_file = MAT.mat.create_class_file(file_path,
