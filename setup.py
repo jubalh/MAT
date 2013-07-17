@@ -5,7 +5,7 @@ import os
 from distutils.core import setup
 from DistUtilsExtra.command import *
 
-__version__ = '0.4'
+__version__ = '0.4-rc'
 
 #Remove MANIFEST file, since distutils
 #doesn't properly update it when
