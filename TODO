@@ -5,9 +5,11 @@ FORMATS:
         - videos format ?
     ARCHIVES:
         - correctly handle mtime/atime for files inside archives
-
 MISC:
     - support non-utf8 filenames
-    - procude a .bak instead of a .cleaned.
-    - create a release.sh script
 
+NAUTILUS:
+    - support multiple selection
+
+TESTS:
+    - investigate why the testsuite leaves files

@@ -1,4 +1,4 @@
-include README LICENSE mat mat-gui
+include README README.security LICENSE mat mat-gui
 include TODO mat.desktop
 include mat.1 mat-gui.1
 recursive-include data *
