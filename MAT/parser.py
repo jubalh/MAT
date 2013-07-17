@@ -6,6 +6,7 @@ import hachoir_core
 import hachoir_editor
 
 import os
+import tempfile
 
 import mat
 
@@ -34,7 +35,8 @@ class GenericParser(object):
         except TypeError:  # get rid of "decoding Unicode is not supported"
             self.filename = filename
         self.basename = os.path.basename(filename)
-        self.output = filename + '.tmp'
+        _, output = tempfile.mkstemp()
+        self.output = hachoir_core.cmd_line.unicodeFilename(output)
 
     def is_clean(self):
         '''
