@@ -57,10 +57,11 @@ class MATTest(unittest.TestCase):
         self.tmpdir = tempfile.mkdtemp()
 
         for clean, dirty in FILE_LIST:
-            shutil.copy2(clean, self.tmpdir + os.sep + clean)
-            shutil.copy2(dirty, self.tmpdir + os.sep + dirty)
-            self.file_list.append((self.tmpdir + os.sep + clean,
-                self.tmpdir + os.sep + dirty))
+            clean_dir = os.path.join(self.tmpdir, clean)
+            dirty_dir = os.path.join(self.tmpdir, dirty)
+            shutil.copy2(clean, clean_dir)
+            shutil.copy2(dirty, dirty_dir)
+            self.file_list.append((clean_dir, dirty_dir))
 
     def tearDown(self):
         '''
