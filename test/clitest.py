@@ -52,7 +52,8 @@ class TestListcli(test.MATTest):
             proc = subprocess.Popen(['../mat', '-d', dirty],
                 stdout=subprocess.PIPE)
             stdout, _ = proc.communicate()
-            self.assertNotEqual(str(stdout), "[+] File %s" % dirty)
+            self.assertNotEqual(str(stdout), "[+] File %s :\n No\
+harmul metadata found" % dirty)
 
 
 class TestisCleancli(test.MATTest):
