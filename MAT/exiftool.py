@@ -14,10 +14,10 @@ class ExiftoolStripper(parser.GenericParser):
 
     def __init__(self, filename, parser, mime, backup, **kwargs):
         super(ExiftoolStripper, self).__init__(filename, parser, mime, backup, **kwargs)
-        self.allowed = ['ExifTool Version Number', 'File Name', 'Directory',
+        self.allowed = set(['ExifTool Version Number', 'File Name', 'Directory',
                 'File Size', 'File Modification Date/Time', 'File Access Date/Time', 'File Permissions',
                 'File Type', 'MIME Type', 'Image Width', 'Image Height',
-                'Image Size']
+                'Image Size', 'File Inode Change Date/Time'])
         self._set_allowed()
 
     def _set_allowed(self):
@@ -34,10 +34,9 @@ class ExiftoolStripper(parser.GenericParser):
             if self.backup:
                 self.create_backup_copy()
             # Note: '-All=' must be followed by a known exiftool option.
-            process = subprocess.Popen( ['exiftool', '-m', '-all=',
-                '-adobe=', '-overwrite_original', self.filename ],
+            subprocess.call(['exiftool', '-m', '-all=',
+                '-adobe=', '-overwrite_original', self.filename],
                 stdout=open('/dev/null'))
-            process.wait()
             return True
         except:
             return False
@@ -46,13 +45,7 @@ class ExiftoolStripper(parser.GenericParser):
         '''
             Check if the file is clean with help of exiftool
         '''
-        out = subprocess.Popen(['exiftool', self.filename],
-                stdout=subprocess.PIPE).communicate()[0]
-        out = out.split('\n')
-        for i in out[:-1]:
-            if i.split(':')[0].strip() not in self.allowed:
-                return False
-        return True
+        return self.get_meta() == {}
 
     def get_meta(self):
         '''
@@ -61,11 +54,10 @@ class ExiftoolStripper(parser.GenericParser):
             field name : value
             field name : value
         '''
-        out = subprocess.Popen(['exiftool', self.filename],
+        output = subprocess.Popen(['exiftool', self.filename],
                 stdout=subprocess.PIPE).communicate()[0]
-        out = out.split('\n')
         meta = {}
-        for i in out[:-1]:
+        for i in output.split('\n')[:-1]:
             key = i.split(':')[0].strip()
             if key not in self.allowed:
                 meta[key] = i.split(':')[1].strip()  # add the field name to the metadata set
@@ -78,9 +70,10 @@ class JpegStripper(ExiftoolStripper):
         of exiftool
     '''
     def _set_allowed(self):
-        self.allowed.extend(['JFIF Version', 'Resolution Unit',
-        'X Resolution', 'Y Resolution', 'Encoding Process', 'Bits Per Sample',
-        'Color Components', 'Y Cb Cr Sub Sampling'])
+        self.allowed.update(['JFIF Version', 'Resolution Unit',
+        'X Resolution', 'Y Resolution', 'Encoding Process',
+        'Bits Per Sample', 'Color Components', 'Y Cb Cr Sub Sampling'])
+
 
 class PngStripper(ExiftoolStripper):
     '''
@@ -88,7 +81,7 @@ class PngStripper(ExiftoolStripper):
         of exiftool
     '''
     def _set_allowed(self):
-        self.allowed.extend(['Bit Depth', 'Color Type', 'Compression',
-            'Filter', 'Interlace', 'Pixels Per Unit X', 'Pixels Per Unit Y',
-            'Pixel Units', 'Significant Bits' ,'Background Color',
-            'SRGB Rendering',])
+        self.allowed.update(['Bit Depth', 'Color Type',
+            'Compression', 'Filter', 'Interlace', 'Pixels Per Unit X',
+            'Pixels Per Unit Y', 'Pixel Units', 'Significant Bits',
+            'Background Color', 'SRGB Rendering'])
