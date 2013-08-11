@@ -11,12 +11,12 @@ import shutil
 
 import mat
 
-NOMETA = ('.bmp',  # image
+NOMETA = frozenset(('.bmp',  # image
           '.rdf',  # text
           '.txt',  # plain text
           '.xml',  # formated text (XML)
           '.rels',  # openXML formated text
-          )
+          ))
 
 FIELD = object()
 
