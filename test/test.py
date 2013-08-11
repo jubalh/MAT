@@ -39,12 +39,6 @@ except ImportError:
     FILE_LIST.remove(('clean é.mp3', 'dirty é.mp3'))
     FILE_LIST.remove(('clean é.flac', 'dirty é.flac'))
 
-try:  # file format exclusively managed by exiftool
-    subprocess.Popen('exiftool', stdout=open('/dev/null'))
-except OSError:
-    pass  # None for now
-
-
 class MATTest(unittest.TestCase):
     '''
         Parent class of all test-functions
