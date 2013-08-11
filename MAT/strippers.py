@@ -60,7 +60,7 @@ except ImportError:
 
 # exiftool
 try:
-    subprocess.Popen('exiftool', stdout=open('/dev/null'))
+    subprocess.call('exiftool', stdout=open('/dev/null'))
     import exiftool
     STRIPPERS['image/jpeg'] = exiftool.JpegStripper
     STRIPPERS['image/png'] = exiftool.PngStripper
