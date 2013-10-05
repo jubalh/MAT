@@ -12,8 +12,8 @@ class ExiftoolStripper(parser.GenericParser):
         A generic stripper class using exiftool as backend
     '''
 
-    def __init__(self, filename, parser, mime, backup, **kwargs):
-        super(ExiftoolStripper, self).__init__(filename, parser, mime, backup, **kwargs)
+    def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
+        super(ExiftoolStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.allowed = set(['ExifTool Version Number', 'File Name', 'Directory',
                 'File Size', 'File Modification Date/Time', 'File Access Date/Time', 'File Permissions',
                 'File Type', 'MIME Type', 'Image Width', 'Image Height',

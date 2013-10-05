@@ -17,8 +17,8 @@ class GenericArchiveStripper(parser.GenericParser):
     '''
         Represent a generic archive
     '''
-    def __init__(self, filename, parser, mime, backup, **kwargs):
-        super(GenericArchiveStripper, self).__init__(filename, parser, mime, backup, **kwargs)
+    def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
+        super(GenericArchiveStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.compression = ''
         self.add2archive = kwargs['add2archive']
         self.tempdir = tempfile.mkdtemp()
@@ -251,8 +251,8 @@ class GzipStripper(TarStripper):
     '''
         Represent a tar.gz archive
     '''
-    def __init__(self, filename, parser, mime, backup, **kwargs):
-        super(GzipStripper, self).__init__(filename, parser, mime, backup, **kwargs)
+    def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
+        super(GzipStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.compression = ':gz'
 
 
@@ -260,6 +260,6 @@ class Bzip2Stripper(TarStripper):
     '''
         Represents a tar.bz2 archive
     '''
-    def __init__(self, filename, parser, mime, backup, **kwargs):
-        super(Bzip2Stripper, self).__init__(filename, parser, mime, backup, **kwargs)
+    def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
+        super(Bzip2Stripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.compression = ':bz2'

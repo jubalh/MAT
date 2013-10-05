@@ -279,7 +279,9 @@ non-anonymised) file to output archive'))
         '''
         cf = CFile(filename, add2archive=self.add2archive,
                 low_pdf_quality=self.pdf_quality)
-        if cf.file:  # if the file is supported by the mat
+        # if the file is supported by the mat,
+        # and is writable (for usability's sake).
+        if cf.file and cf.file.is_writable:
             self.liststore.append([cf, cf.file.basename, _('Unknown')])
             return False
         return True

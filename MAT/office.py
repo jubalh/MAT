@@ -111,7 +111,7 @@ class OpenDocumentStripper(archive.GenericArchiveStripper):
             zipin.getinfo('meta.xml')
         except KeyError:  # no meta.xml in the file
             czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', False, add2archive=self.add2archive)
+                'application/zip', False, True, add2archive=self.add2archive)
             if czf.is_clean():
                 zipin.close()
                 return True
@@ -123,8 +123,8 @@ class PdfStripper(parser.GenericParser):
     '''
         Represent a PDF file
     '''
-    def __init__(self, filename, parser, mime, backup, **kwargs):
-        super(PdfStripper, self).__init__(filename, parser, mime, backup, **kwargs)
+    def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
+        super(PdfStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         uri = 'file://' + os.path.abspath(self.filename)
         self.password = None
         try:
@@ -257,7 +257,7 @@ class OpenXmlStripper(archive.GenericArchiveStripper):
                 return False
         zipin.close()
         czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', False, add2archive=self.add2archive)
+                'application/zip', False, True, add2archive=self.add2archive)
         return czf.is_clean()
 
     def get_meta(self):

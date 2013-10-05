@@ -25,11 +25,12 @@ class GenericParser(object):
     '''
         Parent class of all parsers
     '''
-    def __init__(self, filename, parser, mime, backup, **kwargs):
+    def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         self.filename = ''
         self.parser = parser
         self.mime = mime
         self.backup = backup
+        self.is_writable = is_writable
         self.editor = hachoir_editor.createEditor(parser)
         try:
             self.filename = hachoir_core.cmd_line.unicodeFilename(filename)

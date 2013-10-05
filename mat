@@ -88,6 +88,9 @@ def clean_meta(class_file, filename, force):
     '''
         Clean the file 'filename'
     '''
+    if not class_file.is_writable:
+        print('[-] %s is not writable' % filename)
+        return
     print('[+] Cleaning %s' % filename)
     if not force and class_file.is_clean():
         print('%s is already clean' % filename)

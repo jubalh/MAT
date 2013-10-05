@@ -140,10 +140,7 @@ def create_class_file(name, backup, **kwargs):
         logging.error('%s is is not readable' % name)
         return None
 
-    if not os.access(name, os.W_OK):
-        #check write permission
-        logging.error('%s is not writable' % name)
-        return None
+    is_writable = os.access(name, os.W_OK)
 
     if not os.path.getsize(name):
         #check if the file is not empty (hachoir crash on empty files)
@@ -178,4 +175,4 @@ def create_class_file(name, backup, **kwargs):
         logging.info('Don\'t have stripper for %s format' % mime)
         return None
 
-    return stripper_class(filename, parser, mime, backup, **kwargs)
+    return stripper_class(filename, parser, mime, backup, is_writable, **kwargs)
