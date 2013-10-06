@@ -5,7 +5,7 @@
     Metadata anonymisation toolkit - GUI edition
 '''
 
-from gi.repository import GObject, Gtk
+from gi.repository import GObject, Gtk, GLib
 from gi.repository import Gdk, GdkPixbuf
 
 import gettext
@@ -150,7 +150,7 @@ class GUI(object):
 
         if not chooser.run():  # Gtk.STOCK_OK
             filenames = chooser.get_filenames()
-            GObject.idle_add(self.populate(filenames).next)  # asynchronous processing
+            GLib.idle_add(self.populate(filenames).next)  # asynchronous processing
         chooser.destroy()
 
     def cb_popup_metadata(self, widget, row, col):
@@ -271,7 +271,7 @@ non-anonymised) file to output archive'))
 
         dirty_urls = selection.get_uris()
         cleaned_urls = map(clean_path, dirty_urls)
-        GObject.idle_add(self.populate(cleaned_urls).next)  # asynchronous processing
+        GLib.idle_add(self.populate(cleaned_urls).next)  # asynchronous processing
 
     def __add_file_to_treeview(self, filename):
         '''
@@ -294,7 +294,7 @@ non-anonymised) file to output archive'))
         if not iterator:  # if nothing is selected : select everything
             iterator = range(len(self.liststore))
         task = func(iterator)  # launch func() in an asynchronous way
-        GObject.idle_add(task.next)
+        GLib.idle_add(task.next)
 
     def __invert(self, button, name):
         ''' Invert a preference state '''
@@ -398,6 +398,6 @@ if __name__ == '__main__':
     infiles = [arg for arg in sys.argv[1:] if os.path.exists(arg)]
     if infiles:
         task = gui.populate(infiles)
-        GObject.idle_add(task.next)
+        Glib.idle_add(task.next)
 
     Gtk.main()
