@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# mbouzada <mbouzada@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: The Tor Project\n"
+"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
+"POT-Creation-Date: 2013-01-05 20:03+0100\n"
+"PO-Revision-Date: 2013-06-24 22:52+0000\n"
+"Last-Translator: mbouzada <mbouzada@gmail.com>\n"
+"Language-Team: Galician (http://www.transifex.com/projects/p/torproject/language/gl/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: gl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: mat-gui:95 mat-gui:563 mat-gui:579
+msgid "Ready"
+msgstr "Preparado"
+
+#: mat-gui:107
+msgid "Add"
+msgstr "Engadir"
+
+#: mat-gui:109 mat-gui:183
+msgid "Add files"
+msgstr "Engadir ficheiros"
+
+#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
+#: mat-gui:573 mat-gui:575
+msgid "Clean"
+msgstr "Limpar"
+
+#: mat-gui:115
+msgid "Clean selected files"
+msgstr "Limpar os ficheiros seleccionados"
+
+#: mat-gui:119 mat-gui:214
+msgid "Check"
+msgstr "Comprobar"
+
+#: mat-gui:121
+msgid "Check selected files for harmful meta"
+msgstr "Comprobar os ficheiros para a metaanálise de danos"
+
+#: mat-gui:125 mat-gui:185
+msgid "Quit"
+msgstr "Saír"
+
+#: mat-gui:137
+msgid "Path"
+msgstr "Ruta"
+
+#: mat-gui:137 mat-gui:363
+msgid "Filename"
+msgstr "Nome do ficheiro"
+
+#: mat-gui:137 mat-gui:365
+msgid "Mimetype"
+msgstr "Tipo MIME"
+
+#: mat-gui:137
+msgid "State"
+msgstr "Estado"
+
+#: mat-gui:138
+msgid "Cleaned file"
+msgstr "Ficheiro limpado"
+
+#: mat-gui:182
+msgid "Files"
+msgstr "Ficheiros"
+
+#: mat-gui:188
+msgid "Edit"
+msgstr "Editar"
+
+#: mat-gui:189
+msgid "Clear the filelist"
+msgstr "Limpar a lista de ficheiros"
+
+#: mat-gui:192 mat-gui:447
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: mat-gui:195
+msgid "Process"
+msgstr "Proceso"
+
+#: mat-gui:218
+msgid "Help"
+msgstr "Axuda"
+
+#: mat-gui:219 mat-gui:395
+msgid "Supported formats"
+msgstr "Formatos admitidos"
+
+#: mat-gui:220
+msgid "About"
+msgstr "Sobre"
+
+#: mat-gui:241
+msgid "Choose files"
+msgstr "Escoller ficheiros"
+
+#: mat-gui:248
+msgid "All files"
+msgstr "Todos os ficheiros"
+
+#: mat-gui:255
+msgid "Supported files"
+msgstr "Ficheiros admitidos"
+
+#: mat-gui:297
+msgid "unknow"
+msgstr "descoñecido"
+
+#: mat-gui:313 mat-gui:559
+msgid "Dirty"
+msgstr "Sucio"
+
+#: mat-gui:343
+msgid "Not-supported"
+msgstr "Non admitido"
+
+#: mat-gui:381
+msgid "This software was coded during the GSoC 2011"
+msgstr "Este software foi codificado durante o GSoC 2011"
+
+#: mat-gui:386
+msgid "Website"
+msgstr "Sitio web"
+
+#: mat-gui:461
+msgid "Force Clean"
+msgstr "Forzar a limpeza"
+
+#: mat-gui:464
+msgid "Do not check if already clean before cleaning"
+msgstr "Non comprobar se xa está limpo antes de limpar"
+
+#: mat-gui:468
+msgid "Backup"
+msgstr "Copia de seguranza"
+
+#: mat-gui:471
+msgid "Keep a backup copy"
+msgstr "Manter unha copia de seguranza"
+
+#: mat-gui:474
+msgid "Reduce PDF quality"
+msgstr "Reducir a calidade do PDF"
+
+#: mat-gui:477
+msgid "Reduce the produced PDF size and quality"
+msgstr "Reducir o tamaño e a calidade do PDF xerado"
+
+#: mat-gui:480
+msgid "Add unsupported file to archives"
+msgstr "Engadir os ficheiros non admitidos aos arquivos"
+
+#: mat-gui:484
+msgid "Add non-supported (and so non-anonymised) file to output archive"
+msgstr "Engadir os ficheiros non admitidos  (e os non anónimos) ao arquivo de saída"
+
+#: mat-gui:554
+#, python-format
+msgid "Checking %s..."
+msgstr "Comprobando %s..."
+
+#: mat-gui:572
+#, python-format
+msgid "Cleaning %s..."
+msgstr "Limpando %s..."

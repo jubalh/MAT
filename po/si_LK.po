@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# ganeshwaki <ganeshwaki@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: The Tor Project\n"
+"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
+"POT-Creation-Date: 2013-01-05 20:03+0100\n"
+"PO-Revision-Date: 2013-06-24 22:52+0000\n"
+"Last-Translator: ganeshwaki <ganeshwaki@gmail.com>\n"
+"Language-Team: Sinhala (Sri Lanka) (http://www.transifex.com/projects/p/torproject/language/si_LK/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: si_LK\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: mat-gui:95 mat-gui:563 mat-gui:579
+msgid "Ready"
+msgstr "සුදානම්"
+
+#: mat-gui:107
+msgid "Add"
+msgstr "එකතු කරන්න"
+
+#: mat-gui:109 mat-gui:183
+msgid "Add files"
+msgstr "ගොනු එකතු කරන්න"
+
+#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
+#: mat-gui:573 mat-gui:575
+msgid "Clean"
+msgstr "අයින් කරන්න"
+
+#: mat-gui:115
+msgid "Clean selected files"
+msgstr "තෝරාගත් ගොනු අයින් කරන්න"
+
+#: mat-gui:119 mat-gui:214
+msgid "Check"
+msgstr "පරීක්ෂා කරන්න"
+
+#: mat-gui:121
+msgid "Check selected files for harmful meta"
+msgstr "අහිතකර මෙටා සදහා තෝරාගත් ගොනු පරීක්ෂා කරන්න"
+
+#: mat-gui:125 mat-gui:185
+msgid "Quit"
+msgstr "ඉවත් වෙන්න"
+
+#: mat-gui:137
+msgid "Path"
+msgstr "මාර්ගය"
+
+#: mat-gui:137 mat-gui:363
+msgid "Filename"
+msgstr "ගොනු නම"
+
+#: mat-gui:137 mat-gui:365
+msgid "Mimetype"
+msgstr "අනුකාර වර්ගය"
+
+#: mat-gui:137
+msgid "State"
+msgstr "තත්ත්වය"
+
+#: mat-gui:138
+msgid "Cleaned file"
+msgstr "ඉවත්කරන ලද ගොනු"
+
+#: mat-gui:182
+msgid "Files"
+msgstr "ගොනු"
+
+#: mat-gui:188
+msgid "Edit"
+msgstr "සංස්කරණය කරන්න"
+
+#: mat-gui:189
+msgid "Clear the filelist"
+msgstr "ගොනු ලැයිස්තුව අයින් කරන්න "
+
+#: mat-gui:192 mat-gui:447
+msgid "Preferences"
+msgstr "මනාපය"
+
+#: mat-gui:195
+msgid "Process"
+msgstr "ක්‍රියාවලිය"
+
+#: mat-gui:218
+msgid "Help"
+msgstr "උදව්"
+
+#: mat-gui:219 mat-gui:395
+msgid "Supported formats"
+msgstr "ආධාරක ආකෘති"
+
+#: mat-gui:220
+msgid "About"
+msgstr "පිළිබද"
+
+#: mat-gui:241
+msgid "Choose files"
+msgstr "තෝරාගත් ගොනු"
+
+#: mat-gui:248
+msgid "All files"
+msgstr "සියලුම ගොනු"
+
+#: mat-gui:255
+msgid "Supported files"
+msgstr "ආධාරක ගොනු"
+
+#: mat-gui:297
+msgid "unknow"
+msgstr "නොදත්"
+
+#: mat-gui:313 mat-gui:559
+msgid "Dirty"
+msgstr "අපිරිසිදු "
+
+#: mat-gui:343
+msgid "Not-supported"
+msgstr "ආධාරක නොවෙන"
+
+#: mat-gui:381
+msgid "This software was coded during the GSoC 2011"
+msgstr "මෙම මෘදුකාංගය GSoC 2011 කාලසීමාවේ කේතනය කරන ලදී"
+
+#: mat-gui:386
+msgid "Website"
+msgstr "වෙබ්අඩවිය "
+
+#: mat-gui:461
+msgid "Force Clean"
+msgstr "බලෙන් අයින් කරන්න"
+
+#: mat-gui:464
+msgid "Do not check if already clean before cleaning"
+msgstr "අයින් කිරීමට පෙර දැනටමත් අයින් කර ඇත්දැයි පරීක්ෂා නොකරන්න "
+
+#: mat-gui:468
+msgid "Backup"
+msgstr "උපස්ථය"
+
+#: mat-gui:471
+msgid "Keep a backup copy"
+msgstr "උපස්ථ පිටපතක් තබා ගන්න "
+
+#: mat-gui:474
+msgid "Reduce PDF quality"
+msgstr "PDF ගුණාත්මක භාවය අඩු කරන්න "
+
+#: mat-gui:477
+msgid "Reduce the produced PDF size and quality"
+msgstr "සාදන ලද PDF හි විශාලත්වය සහ ගුණාත්මක භාවය අඩු කරන්න"
+
+#: mat-gui:480
+msgid "Add unsupported file to archives"
+msgstr "ආධාරක නොවෙන ගොනු අධිලේඛිත ගොනු වශයෙන් එකතු කරන්න "
+
+#: mat-gui:484
+msgid "Add non-supported (and so non-anonymised) file to output archive"
+msgstr "ආධාරක නොවෙන(සහ නිර්ණාමික නොවන) ගොනු අධිලේඛිත නිමවුමට එකතු කරන්න "
+
+#: mat-gui:554
+#, python-format
+msgid "Checking %s..."
+msgstr "පරීක්ෂා කරමින් %s..."
+
+#: mat-gui:572
+#, python-format
+msgid "Cleaning %s..."
+msgstr "අයින් කරමින්  %s... "

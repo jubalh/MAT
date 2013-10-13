@@ -3,171 +3,172 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# ajitam <matija@srebrni-galeb.si>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
 "POT-Creation-Date: 2013-07-01 19:26+0200\n"
-"PO-Revision-Date: 2013-07-18 09:35+0000\n"
-"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2013-09-19 11:30+0000\n"
+"Last-Translator: ajitam <matija@srebrni-galeb.si>\n"
+"Language-Team: Slovenian (http://www.transifex.com/projects/p/torproject/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
 #: mat-gui:65 mat-gui:375 mat-gui:387
 msgid "Ready"
-msgstr "Ready"
+msgstr "Pripravljen"
 
 #: mat-gui:134
 msgid "Choose files"
-msgstr "Choose files"
+msgstr "Izberi datoteko"
 
 #: mat-gui:141
 msgid "All files"
-msgstr "All files"
+msgstr "Vse datoteke"
 
 #: mat-gui:148
 msgid "Supported files"
-msgstr "Supported files"
+msgstr "Podprte datoteke"
 
 #: mat-gui:164
 msgid "No metadata found"
-msgstr "No metadata found"
+msgstr "Ni najdenih metapodatkov"
 
 #: mat-gui:165 mat-gui:370 mat-gui:385 data/mat.ui:227
 msgid "Clean"
-msgstr "Clean"
+msgstr "Počisti"
 
 #: mat-gui:167 mat-gui:372
 msgid "Dirty"
-msgstr "Dirty"
+msgstr "Umazano"
 
 #: mat-gui:172
 #, python-format
 msgid "%s's metadata"
-msgstr "%s's metadata"
+msgstr "metapodatki od %s"
 
 #: mat-gui:183
 msgid "Trash your meta, keep your data"
-msgstr "Trash your meta, keep your data"
+msgstr "Počisti vaše sledi, vaše ohrani podatke"
 
 #: mat-gui:188
 msgid "Website"
-msgstr "Website"
+msgstr "Spletna stran"
 
 #: mat-gui:214 data/mat.ui:107
 msgid "Preferences"
-msgstr "Preferences"
+msgstr "Možnosti"
 
 #: mat-gui:228
 msgid "Reduce PDF quality"
-msgstr "Reduce PDF quality"
+msgstr "Zmanjšaj PDF kakovost"
 
 #: mat-gui:231
 msgid "Reduce the produced PDF size and quality"
-msgstr "Reduce the produced PDF size and quality"
+msgstr "Zmanjšaj velikost in kakovost že izdelane PDF datoteke"
 
 #: mat-gui:234
 msgid "Add unsupported file to archives"
-msgstr "Add unsupported file to archives"
+msgstr "Dodaj nepodprto datoteko v arhiv"
 
 #: mat-gui:238
 msgid "Add non-supported (and so non-anonymised) file to output archive"
-msgstr "Add non-supported (and so non-anonymised) file to output archive"
+msgstr "Dodaj nepodprto (in zato neanonimizirano) datoteko v izhodni arhiv"
 
 #: mat-gui:283
 msgid "Unknown"
-msgstr "Unknown"
+msgstr "Neznan"
 
 #: mat-gui:330
 msgid "Not-supported"
-msgstr "Not-supported"
+msgstr "Nepodprta"
 
 #: mat-gui:347
 msgid "Unknown mimetype"
-msgstr "Unknown mimetype"
+msgstr "Neznana MIME vrsta"
 
 #: mat-gui:354 data/mat.ui:291
 msgid "Filename"
-msgstr "Filename"
+msgstr "Ime datoteke"
 
 #: mat-gui:356
 msgid "Mimetype"
-msgstr "Mimetype"
+msgstr "MIME vrsta"
 
 #: mat-gui:366
 #, python-format
 msgid "Checking %s"
-msgstr "Checking %s"
+msgstr "Preverjanje %s"
 
 #: mat-gui:381
 #, python-format
 msgid "Cleaning %s"
-msgstr "Cleaning %s"
+msgstr "Čiščenje %s"
 
 #: data/mat.ui:63
 msgid "_File"
-msgstr "_File"
+msgstr "_Datoteka"
 
 #: data/mat.ui:99
 msgid "_Edit"
-msgstr "_Edit"
+msgstr "_Uredi"
 
 #: data/mat.ui:118 data/mat.ui:253
 msgid "Clear"
-msgstr "Clear"
+msgstr "Počisti"
 
 #: data/mat.ui:134
 msgid "_Process"
-msgstr "_Process"
+msgstr "_Proces"
 
 #: data/mat.ui:168
 msgid "_Help"
-msgstr "_Help"
+msgstr "_Pomoč"
 
 #: data/mat.ui:214
 msgid "Add"
-msgstr "Add"
+msgstr "Dodaj"
 
 #: data/mat.ui:240
 msgid "Check"
-msgstr "Check"
+msgstr "Preveri"
 
 #: data/mat.ui:308
 msgid "State"
-msgstr "State"
+msgstr "Stanje"
 
 #: data/mat.ui:346 data/mat.ui:495
 msgid "Metadata"
-msgstr "Metadata"
+msgstr "Metapodatki"
 
 #: data/mat.ui:400
 msgid "Name"
-msgstr "Name"
+msgstr "Ime"
 
 #: data/mat.ui:414
 msgid "Content"
-msgstr "Content"
+msgstr "Vsebina"
 
 #: data/mat.ui:448
 msgid "Supported formats"
-msgstr "Supported formats"
+msgstr "Podprti vrste datotek"
 
 #: data/mat.ui:482
 msgid "Support"
-msgstr "Support"
+msgstr "Podpora"
 
 #: data/mat.ui:508
 msgid "Method"
-msgstr "Method"
+msgstr "Metoda"
 
 #: data/mat.ui:521
 msgid "Remaining"
-msgstr "Remaining"
+msgstr "Preostalo"
 
 #: data/mat.ui:556
 msgid "Fileformat"
-msgstr "Fileformat"
+msgstr "Vrsta datoteke"

@@ -1,0 +1,178 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Arioko <arikushi777@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: The Tor Project\n"
+"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
+"POT-Creation-Date: 2013-01-05 20:03+0100\n"
+"PO-Revision-Date: 2013-06-24 22:52+0000\n"
+"Last-Translator: Arioko <arikushi777@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/torproject/language/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: mat-gui:95 mat-gui:563 mat-gui:579
+msgid "Ready"
+msgstr "Готов"
+
+#: mat-gui:107
+msgid "Add"
+msgstr "Добавить"
+
+#: mat-gui:109 mat-gui:183
+msgid "Add files"
+msgstr "Добавить файлы"
+
+#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
+#: mat-gui:573 mat-gui:575
+msgid "Clean"
+msgstr "Очистить"
+
+#: mat-gui:115
+msgid "Clean selected files"
+msgstr "Очистить выбранные файлы"
+
+#: mat-gui:119 mat-gui:214
+msgid "Check"
+msgstr "Проверить"
+
+#: mat-gui:121
+msgid "Check selected files for harmful meta"
+msgstr "Проверить выбранные файлы на наличие вредных мета"
+
+#: mat-gui:125 mat-gui:185
+msgid "Quit"
+msgstr "Выйти"
+
+#: mat-gui:137
+msgid "Path"
+msgstr "Путь"
+
+#: mat-gui:137 mat-gui:363
+msgid "Filename"
+msgstr "Имя файла"
+
+#: mat-gui:137 mat-gui:365
+msgid "Mimetype"
+msgstr "Mime тип"
+
+#: mat-gui:137
+msgid "State"
+msgstr "Состояние"
+
+#: mat-gui:138
+msgid "Cleaned file"
+msgstr "Очищенный файл"
+
+#: mat-gui:182
+msgid "Files"
+msgstr "Файлы"
+
+#: mat-gui:188
+msgid "Edit"
+msgstr "Редактировать"
+
+#: mat-gui:189
+msgid "Clear the filelist"
+msgstr "Очистить список файлов"
+
+#: mat-gui:192 mat-gui:447
+msgid "Preferences"
+msgstr "Настройки"
+
+#: mat-gui:195
+msgid "Process"
+msgstr "Процесс"
+
+#: mat-gui:218
+msgid "Help"
+msgstr "Помощ"
+
+#: mat-gui:219 mat-gui:395
+msgid "Supported formats"
+msgstr "Поддерживаемые форматы"
+
+#: mat-gui:220
+msgid "About"
+msgstr "О.."
+
+#: mat-gui:241
+msgid "Choose files"
+msgstr "Выбрать файлы"
+
+#: mat-gui:248
+msgid "All files"
+msgstr "Все файлы"
+
+#: mat-gui:255
+msgid "Supported files"
+msgstr "Поддерживаемые файлы"
+
+#: mat-gui:297
+msgid "unknow"
+msgstr "неизвестно"
+
+#: mat-gui:313 mat-gui:559
+msgid "Dirty"
+msgstr "Грязный"
+
+#: mat-gui:343
+msgid "Not-supported"
+msgstr "Не поддерживаемый"
+
+#: mat-gui:381
+msgid "This software was coded during the GSoC 2011"
+msgstr "Эта программа была закодирована в Google Summer of Code 2011"
+
+#: mat-gui:386
+msgid "Website"
+msgstr "Вебсайт"
+
+#: mat-gui:461
+msgid "Force Clean"
+msgstr "Форсированная очистка"
+
+#: mat-gui:464
+msgid "Do not check if already clean before cleaning"
+msgstr "Не проверять, если уже чистый перед очисткой"
+
+#: mat-gui:468
+msgid "Backup"
+msgstr "Резервное копирование"
+
+#: mat-gui:471
+msgid "Keep a backup copy"
+msgstr "Хранить резервную копию"
+
+#: mat-gui:474
+msgid "Reduce PDF quality"
+msgstr "Уменьшить PDF качество"
+
+#: mat-gui:477
+msgid "Reduce the produced PDF size and quality"
+msgstr "Сокращение размера и качества сделанного PDF"
+
+#: mat-gui:480
+msgid "Add unsupported file to archives"
+msgstr "Добавить не поддерживаемый файл в архив"
+
+#: mat-gui:484
+msgid "Add non-supported (and so non-anonymised) file to output archive"
+msgstr "Добавить не поддерживаемый (и поэтому не-анонимный) файл в выходной архив"
+
+#: mat-gui:554
+#, python-format
+msgid "Checking %s..."
+msgstr "Проверка %s..."
+
+#: mat-gui:572
+#, python-format
+msgid "Cleaning %s..."
+msgstr "Очистка %s..."
