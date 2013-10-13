@@ -1,3 +1,9 @@
+0.4 - 13oct2013
+    * Minor refactoring of the testsuite
+    * Translations
+    * Enhance MAT's behaviour on read-only files
+    * Fix an Exiftool-related misbehavior
+
 0.4rc - 17jul2013
     * Support of mp3/flac/ogg
     * Port from Gtk2 to Gtk3
