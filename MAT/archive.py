@@ -1,21 +1,19 @@
-'''
-    Take care of archives formats
+''' Take care of archives formats
 '''
 
-import zipfile
-import shutil
-import os
 import logging
+import os
+import shutil
 import tempfile
+import zipfile
 
-import parser
 import mat
+import parser
 import tarfile
 
 
 class GenericArchiveStripper(parser.GenericParser):
-    '''
-        Represent a generic archive
+    ''' Represent a generic archive
     '''
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         super(GenericArchiveStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
@@ -24,8 +22,7 @@ class GenericArchiveStripper(parser.GenericParser):
         self.tempdir = tempfile.mkdtemp()
 
     def __del__(self):
-        '''
-            Remove the files inside the temp dir,
+        ''' Remove the files inside the temp dir,
             then remove the temp dir
         '''
         for root, dirs, files in os.walk(self.tempdir):
@@ -35,16 +32,16 @@ class GenericArchiveStripper(parser.GenericParser):
         shutil.rmtree(self.tempdir)
 
     def remove_all(self):
+        ''' Virtual method to remove all metadata
+        '''
         raise NotImplementedError
 
 
 class ZipStripper(GenericArchiveStripper):
-    '''
-        Represent a zip file
+    ''' Represent a zip file
     '''
     def is_file_clean(self, fileinfo):
-        '''
-            Check if a ZipInfo object is clean of metadatas added
+        ''' Check if a ZipInfo object is clean of metadatas added
             by zip itself, independently of the corresponding file metadatas
         '''
         if fileinfo.comment:

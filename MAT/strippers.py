@@ -1,16 +1,15 @@
-'''
-    Manage which fileformat can be processed
+''' Manage which fileformat can be processed
 '''
 
-import images
+import archive
 import audio
 import gi
-import office
-import archive
+import images
+import logging
 import mat
 import misc
+import office
 import subprocess
-import logging
 
 STRIPPERS = {
     'application/x-tar': archive.TarStripper,

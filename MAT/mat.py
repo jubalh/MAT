@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-'''
-    Metadata anonymisation toolkit library
+''' Metadata anonymisation toolkit library
 '''
 
-import os
-import subprocess
 import logging
 import mimetypes
+import os
+import subprocess
 import xml.sax
 
 import hachoir_core.cmd_line
@@ -33,6 +32,8 @@ logging.basicConfig(filename=fname, level=LOGGING_LEVEL)
 import strippers  # this is loaded here because we need LOGGING_LEVEL
 
 def get_logo():
+    ''' Return the path to the logo
+    '''
     if os.path.isfile('./data/mat.png'):
         return './data/mat.png'
     elif os.path.isfile('/usr/share/pixmaps/mat.png'):
@@ -41,6 +42,8 @@ def get_logo():
         return '/usr/local/share/pixmaps/mat.png'
 
 def get_datadir():
+    ''' Return the path to the data directory
+    '''
     if os.path.isdir('./data/'):
         return './data/'
     elif os.path.isdir('/usr/local/share/mat/'):
@@ -49,8 +52,9 @@ def get_datadir():
         return '/usr/share/mat/'
 
 def list_supported_formats():
-    '''
-        Return a list of all locally supported fileformat
+    ''' Return a list of all locally supported fileformat.
+        It parses that FORMATS file, and removes locally
+        non-supported formats.
     '''
     handler = XMLParser()
     parser = xml.sax.make_parser()
@@ -67,8 +71,7 @@ def list_supported_formats():
     return localy_supported
 
 class XMLParser(xml.sax.handler.ContentHandler):
-    '''
-        Parse the supported format xml, and return a corresponding
+    ''' Parse the supported format xml, and return a corresponding
         list of dict
     '''
     def __init__(self):
@@ -78,18 +81,16 @@ class XMLParser(xml.sax.handler.ContentHandler):
         self.between = False
 
     def startElement(self, name, attrs):
-        '''
-            Called when entering into xml tag
+        ''' Called when entering into xml tag
         '''
         self.between = True
         self.key = name
         self.content = ''
 
     def endElement(self, name):
+        ''' Called when exiting a xml tag
         '''
-            Called when exiting a xml tag
-        '''
-        if name == 'format':  # exiting a fileformat section
+        if name == 'format':  # leaving a fileformat section
             self.list.append(self.dict.copy())
             self.dict.clear()
         else:
@@ -98,19 +99,17 @@ class XMLParser(xml.sax.handler.ContentHandler):
             self.between = False
 
     def characters(self, characters):
-        '''
-            Concatenate the content between opening and closing tags
+        ''' Concatenate the content between opening and closing tags
         '''
         if self.between:
             self.content += characters
 
 
 def secure_remove(filename):
-    '''
-        securely remove the file
+    ''' Securely remove the file
     '''
     try:
-        if subprocess.call(['shred', '--remove', filename]) == 0:
+        if not subprocess.call(['shred', '--remove', filename]):
             return True
         else:
             raise OSError
@@ -126,21 +125,16 @@ def secure_remove(filename):
 
 
 def create_class_file(name, backup, **kwargs):
-    '''
-        return a $FILETYPEStripper() class,
+    ''' Return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
     '''
-    if not os.path.isfile(name):
-        # check if the file exists
+    if not os.path.isfile(name):  # check if the file exists
         logging.error('%s is not a valid file' % name)
         return None
 
-    if not os.access(name, os.R_OK):
-        #check read permissions
+    if not os.access(name, os.R_OK):  #check read permissions
         logging.error('%s is is not readable' % name)
         return None
-
-    is_writable = os.access(name, os.W_OK)
 
     if not os.path.getsize(name):
         #check if the file is not empty (hachoir crash on empty files)
@@ -161,13 +155,15 @@ def create_class_file(name, backup, **kwargs):
     mime = parser.mime_type
 
     if mime == 'application/zip':  # some formats are zipped stuff
-        if mimetypes.guess_type(name)[0] is not None:
+        if mimetypes.guess_type(name)[0]:
             mime =  mimetypes.guess_type(name)[0]
 
     if mime.startswith('application/vnd.oasis.opendocument'):
         mime = 'application/opendocument'  # opendocument fileformat
     elif mime.startswith('application/vnd.openxmlformats-officedocument'):
         mime = 'application/officeopenxml'  # office openxml
+
+    is_writable = os.access(name, os.W_OK)
 
     try:
         stripper_class = strippers.STRIPPERS[mime]

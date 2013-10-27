@@ -1,5 +1,7 @@
+''' Take care of mutagen-supported formats (audio)
+'''
+
 import parser
-import shutil
 
 
 class MutagenStripper(parser.GenericParser):

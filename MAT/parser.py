@@ -1,22 +1,22 @@
+''' Parent class of all parser
 '''
-    Parent class of all parser
-'''
+
+import os
+import shutil
+import tempfile
 
 import hachoir_core
 import hachoir_editor
 
-import os
-import tempfile
-import shutil
-
 import mat
 
-NOMETA = frozenset(('.bmp',  # image
-          '.rdf',  # text
-          '.txt',  # plain text
-          '.xml',  # formated text (XML)
-          '.rels',  # openXML formated text
-          ))
+NOMETA = frozenset((
+    '.bmp',  # "raw" image
+    '.rdf',  # text
+    '.txt',  # plain text
+    '.xml',  # formated text (XML)
+    '.rels', # openXML formated text
+))
 
 FIELD = object()
 
@@ -92,8 +92,7 @@ class GenericParser(object):
         del fieldset[field]
 
     def get_meta(self):
-        '''
-            Return a dict with all the meta of the file
+        ''' Return a dict with all the meta of the file
         '''
         metadata = {}
         self._get_meta(self.editor, metadata)
@@ -113,8 +112,7 @@ class GenericParser(object):
                 self._get_meta(field, None)
 
     def _should_remove(self, key):
-        '''
-            Return True if the field is compromising
+        ''' Return True if the field is compromising
             abstract method
         '''
         raise NotImplementedError
@@ -125,8 +123,7 @@ class GenericParser(object):
         shutil.copy2(self.filename, self.filename + '.bak')
 
     def do_backup(self):
-        '''
-            Keep a backup of the file if asked.
+        ''' Keep a backup of the file if asked.
 
             The process of double-renaming is not very elegant,
             but it greatly simplify new strippers implementation.
