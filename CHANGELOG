@@ -1,3 +1,9 @@
+0.4.1 - 27oct2013
+    * Fix the fact that the MAT sometimes delete PDF
+    * Improves internal and external documentation
+    * Torrents support has been greatly enhanced
+    * Add a translation
+
 0.4 - 13oct2013
     * Minor refactoring of the testsuite
     * Translations
