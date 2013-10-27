@@ -29,9 +29,10 @@ class ExiftoolStripper(parser.GenericParser):
             if self.backup:
                 self.create_backup_copy()
             # Note: '-All=' must be followed by a known exiftool option.
-            return subprocess.call(['exiftool', '-m', '-all=',
+            subprocess.call(['exiftool', '-m', '-all=',
                 '-adobe=', '-overwrite_original', self.filename],
                 stdout=open('/dev/null'))
+            return True
         except:
             return False
 
