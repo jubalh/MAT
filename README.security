@@ -1,14 +1,17 @@
 Warning
 =======
-Mat only removes metadata from your files, it does not anonymise their
-content, nor can it handle watermarking, steganography, or any too custom
-metadata field/system.
+Mat only removes standard metadata from your files, it does _not_:
+  - anonymise their content
+  - handle watermarking
+  - handle steganography
+  - handle any non-standard metadata field/system
 
 If you really want to be anonymous format that does not contain any
 metadata, or better : use plain-text.
 
+
 Implementation notes
-======================
+====================
 Symlink attacks
 ---------------
 MAT output predictable filenames (like yourfile.jpg.bak).
@@ -19,6 +22,7 @@ Test suite
 ----------
 Formats that are not in the test suite are not well-tested,
 please do not trust the MAT about them!
+
 
 Threat Model
 ============
@@ -86,5 +90,5 @@ Requirements
     anonymise files: every added items of metadata decreases
     anonymity.
 
-    - The MAT *must* handle unknown/hidden metadata fields,
+    - The MAT *should* handle unknown/hidden metadata fields,
     like proprietary extensions of open formats.
