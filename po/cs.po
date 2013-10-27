@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# adamse <adamslovacek@gmail.com>, 2013
+# Radog <bensch.radek@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: The Tor Project\n"
+"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
+"POT-Creation-Date: 2013-07-01 19:26+0200\n"
+"PO-Revision-Date: 2013-10-26 10:30+0000\n"
+"Last-Translator: Radog <bensch.radek@gmail.com>\n"
+"Language-Team: Czech (http://www.transifex.com/projects/p/torproject/language/cs/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: mat-gui:65 mat-gui:375 mat-gui:387
+msgid "Ready"
+msgstr "Připraveno"
+
+#: mat-gui:134
+msgid "Choose files"
+msgstr "Vybrat soubory"
+
+#: mat-gui:141
+msgid "All files"
+msgstr "Všechny soubory"
+
+#: mat-gui:148
+msgid "Supported files"
+msgstr "Podporované soubory"
+
+#: mat-gui:164
+msgid "No metadata found"
+msgstr "Nenalezena žádná metadata"
+
+#: mat-gui:165 mat-gui:370 mat-gui:385 data/mat.ui:227
+msgid "Clean"
+msgstr "Vyčistit"
+
+#: mat-gui:167 mat-gui:372
+msgid "Dirty"
+msgstr "Infikovaný"
+
+#: mat-gui:172
+#, python-format
+msgid "%s's metadata"
+msgstr "%s's metadata"
+
+#: mat-gui:183
+msgid "Trash your meta, keep your data"
+msgstr "Smazat meta, ponechat data"
+
+#: mat-gui:188
+msgid "Website"
+msgstr "Internetová stránka"
+
+#: mat-gui:214 data/mat.ui:107
+msgid "Preferences"
+msgstr "Nastavení"
+
+#: mat-gui:228
+msgid "Reduce PDF quality"
+msgstr "Snížit kvalitu PDF"
+
+#: mat-gui:231
+msgid "Reduce the produced PDF size and quality"
+msgstr "Snížit velikost PDF a jeho kvalitu"
+
+#: mat-gui:234
+msgid "Add unsupported file to archives"
+msgstr "Přidat podporovaný soubor do archivů"
+
+#: mat-gui:238
+msgid "Add non-supported (and so non-anonymised) file to output archive"
+msgstr "Přidat nepodporovaný (a také neanonymizující) soubor do výstupního archivu."
+
+#: mat-gui:283
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: mat-gui:330
+msgid "Not-supported"
+msgstr "Nnepodporováno"
+
+#: mat-gui:347
+msgid "Unknown mimetype"
+msgstr "Neznámý mime typ souboru"
+
+#: mat-gui:354 data/mat.ui:291
+msgid "Filename"
+msgstr "Název souboru"
+
+#: mat-gui:356
+msgid "Mimetype"
+msgstr "Typ internetového média"
+
+#: mat-gui:366
+#, python-format
+msgid "Checking %s"
+msgstr "Kontroluji %s"
+
+#: mat-gui:381
+#, python-format
+msgid "Cleaning %s"
+msgstr "Čištění %s"
+
+#: data/mat.ui:63
+msgid "_File"
+msgstr "_Soubor"
+
+#: data/mat.ui:99
+msgid "_Edit"
+msgstr "_Úpravy"
+
+#: data/mat.ui:118 data/mat.ui:253
+msgid "Clear"
+msgstr "Vycistit"
+
+#: data/mat.ui:134
+msgid "_Process"
+msgstr "_Proces"
+
+#: data/mat.ui:168
+msgid "_Help"
+msgstr "_Nápověda"
+
+#: data/mat.ui:214
+msgid "Add"
+msgstr "Přidat"
+
+#: data/mat.ui:240
+msgid "Check"
+msgstr "Ověřit"
+
+#: data/mat.ui:308
+msgid "State"
+msgstr "Stav"
+
+#: data/mat.ui:346 data/mat.ui:495
+msgid "Metadata"
+msgstr "Meta data"
+
+#: data/mat.ui:400
+msgid "Name"
+msgstr "Jméno"
+
+#: data/mat.ui:414
+msgid "Content"
+msgstr "Obsah"
+
+#: data/mat.ui:448
+msgid "Supported formats"
+msgstr "Podporované formáty"
+
+#: data/mat.ui:482
+msgid "Support"
+msgstr "Podpora"
+
+#: data/mat.ui:508
+msgid "Method"
+msgstr "Metoda"
+
+#: data/mat.ui:521
+msgid "Remaining"
+msgstr "Zbývá"
+
+#: data/mat.ui:556
+msgid "Fileformat"
+msgstr "Formát souboru"
