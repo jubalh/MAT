@@ -21,8 +21,8 @@ DEPENDENCIES
 ============
  * python2.7 (at least)
  * python-hachoir-core and python-hachoir-parser
- * python-pdfrw, python-gi-cairo for full PDF support
- * python-gi, python-gobject for the GUI
+ * python-pdfrw, gir-poppler and python-gi-cairo for full PDF support
+ * python-gi for the GUI
  * shred (should be already installed)
 
 OPTIONALS DEPENDENCIES
