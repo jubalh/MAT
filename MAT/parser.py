@@ -22,8 +22,7 @@ FIELD = object()
 
 
 class GenericParser(object):
-    '''
-        Parent class of all parsers
+    ''' Parent class of all parsers
     '''
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         self.filename = ''
@@ -66,8 +65,7 @@ class GenericParser(object):
         return True
 
     def remove_all(self):
-        '''
-            Remove all compromising fields
+        ''' Remove all compromising fields
         '''
         state = self._remove_all(self.editor)
         hachoir_core.field.writeIntoFile(self.editor, self.output)
@@ -75,8 +73,7 @@ class GenericParser(object):
         return state
 
     def _remove_all(self, fieldset):
-        '''
-            Recursive way to handle tree metadatas
+        ''' Recursive way to handle tree metadatas
         '''
         try:
             for field in fieldset:
@@ -90,8 +87,7 @@ class GenericParser(object):
             return False
 
     def _remove(self, fieldset, field):
-        '''
-            Delete the given field
+        ''' Delete the given field
         '''
         del fieldset[field]
 
@@ -104,8 +100,7 @@ class GenericParser(object):
         return metadata
 
     def _get_meta(self, fieldset, metadata):
-        '''
-            Recursive way to handle tree metadatas
+        ''' Recursive way to handle tree metadatas
         '''
         for field in fieldset:
             remove = self._should_remove(field)
@@ -119,7 +114,7 @@ class GenericParser(object):
 
     def _should_remove(self, key):
         '''
-            return True if the field is compromising
+            Return True if the field is compromising
             abstract method
         '''
         raise NotImplementedError
@@ -137,7 +132,7 @@ class GenericParser(object):
             but it greatly simplify new strippers implementation.
         '''
         if self.backup:
-            os.rename(self.filename, self.filename + '.bak')
+            shutil.move(self.filename, self.filename + '.bak')
         else:
             mat.secure_remove(self.filename)
         os.rename(self.output, self.filename)

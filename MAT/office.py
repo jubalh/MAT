@@ -156,23 +156,27 @@ class PdfStripper(parser.GenericParser):
             python-cairo segfaults on unicode.
             See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=699457
         '''
-        output = tempfile.mkstemp()[1]
-        page = self.document.get_page(0)
-        # assume that every pages are the same size
-        page_width, page_height = page.get_size()
-        surface = cairo.PDFSurface(output, page_width, page_height)
-        context = cairo.Context(surface)  # context draws on the surface
-        logging.debug('PDF rendering of %s' % self.filename)
-        for pagenum in range(self.document.get_n_pages()):
-            page = self.document.get_page(pagenum)
-            context.translate(0, 0)
-            if self.pdf_quality:
-                page.render(context)  # render the page on context
-            else:
-                page.render_for_printing(context)  # render the page on context
-            context.show_page()  # draw context on surface
-        surface.finish()
-        shutil.move(output, self.output)
+        try:
+            output = tempfile.mkstemp()[1]
+            page = self.document.get_page(0)
+            # assume that every pages are the same size
+            page_width, page_height = page.get_size()
+            surface = cairo.PDFSurface(output, page_width, page_height)
+            context = cairo.Context(surface)  # context draws on the surface
+            logging.debug('PDF rendering of %s' % self.filename)
+            for pagenum in range(self.document.get_n_pages()):
+                page = self.document.get_page(pagenum)
+                context.translate(0, 0)
+                if self.pdf_quality:
+                    page.render(context)  # render the page on context
+                else:
+                    page.render_for_printing(context)  # render the page on context
+                context.show_page()  # draw context on surface
+            surface.finish()
+            shutil.move(output, self.output)
+        except:
+            logging.error('Something went wrong when cleaning %s. File not cleaned' % self.filename)
+            return False
 
         try:
             import pdfrw  # For now, poppler cannot write meta, so we must use pdfrw
