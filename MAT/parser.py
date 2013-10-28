@@ -132,4 +132,4 @@ class GenericParser(object):
             shutil.move(self.filename, self.filename + '.bak')
         else:
             mat.secure_remove(self.filename)
-        os.rename(self.output, self.filename)
+        shutil.move(self.output, self.filename)
