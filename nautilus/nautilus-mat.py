@@ -1,8 +1,13 @@
 #! /usr/bin/python
 
+''' This file is an extension for the Nautilus
+	file manager, to provide a contextual menu to
+	clean metadata
+'''
+
+import logging
 import os
 import urllib
-import logging
 try:
     import gettext
     gettext.install("mat")
@@ -23,10 +28,10 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
         pass
 
     def get_file_items(self, window, files):
-        if len(files) != 1:
+        if len(files) != 1:  # no multi-files support
             return
 
-        file = files[0]
+        file = files.pop()
 
         # We're only going to put ourselves on supported mimetypes' context menus
         if not (file.get_mime_type()
@@ -37,6 +42,11 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
         # MAT can only handle local file:
         if file.get_uri_scheme() != 'file':
             logging.debug("%s files not supported by MAT" % file.get_uri_scheme())
+            return
+
+		# MAT can not clean non-writable files
+        if not file.can_write():
+            logging.debug("%s is not writable by MAT" % file.get_uri_scheme())
             return
 
         item = Nautilus.MenuItem(name="Nautilus::clean_metadata",
@@ -73,5 +83,3 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
                     self.show_message(_("Unable to clean %s") % file_path, Gtk.MessageType.ERROR)
         else:
             self.show_message(_("Unable to process %s") % file_path, Gtk.MessageType.ERROR)
-
-
