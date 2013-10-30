@@ -26,9 +26,6 @@
 '''
 
 
-import types
-
-
 class BTFailure(Exception):
     '''Custom Exception'''
     pass
@@ -46,23 +43,21 @@ def decode_int(x, f):
     '''decode an int'''
     f += 1
     newf = x.index('e', f)
-    n = int(x[f:newf])
-    if x[f] == '-':
-        if x[f + 1] == '0':
-            raise ValueError
+    if x[f:f+1] == '-0':
+        raise ValueError
     elif x[f] == '0' and newf != f + 1:
         raise ValueError
-    return (n, newf + 1)
+    return int(x[f:newf]), newf + 1
 
 
 def decode_string(x, f):
     '''decode a string'''
     colon = x.index(':', f)
-    n = int(x[f:colon])
     if x[f] == '0' and colon != f + 1:
         raise ValueError
+    n = int(x[f:colon])
     colon += 1
-    return (x[colon:colon + n], colon + n)
+    return x[colon:colon + n], colon + n
 
 
 def decode_list(x, f):
@@ -72,7 +67,7 @@ def decode_list(x, f):
     while x[f] != 'e':
         v, f = DECODE_FUNC[x[f]](x, f)
         result.append(v)
-    return (result, f + 1)
+    return result, f + 1
 
 
 def decode_dict(x, f):
@@ -82,15 +77,12 @@ def decode_dict(x, f):
     while x[f] != 'e':
         k, f = decode_string(x, f)
         result[k], f = DECODE_FUNC[x[f]](x, f)
-    return (result, f + 1)
+    return result, f + 1
 
 
 def encode_bool(x, r):
     '''bencode a boolean'''
-    if x:
-        encode_int(1, r)
-    else:
-        encode_int(0, r)
+    encode_int(1 if r else 0, r)
 
 
 def encode_int(x, r):
@@ -108,7 +100,7 @@ def encode_list(x, r):
 def encode_dict(x, result):
     '''bencode a dict'''
     result.append('d')
-    ilist = x.items()
+    ilist = list(x.items())
     ilist.sort()
     for k, v in ilist:
         result.extend((str(len(k)), ':', k))
@@ -116,8 +108,7 @@ def encode_dict(x, result):
     result.append('e')
 
 
-DECODE_FUNC = {}
-DECODE_FUNC.update(dict([(str(x), decode_string) for x in xrange(9)]))
+DECODE_FUNC = {str(x):decode_string for x in range(9)}
 DECODE_FUNC['l'] = decode_list
 DECODE_FUNC['d'] = decode_dict
 DECODE_FUNC['i'] = decode_int
@@ -125,13 +116,13 @@ DECODE_FUNC['i'] = decode_int
 
 ENCODE_FUNC = {}
 ENCODE_FUNC[Bencached] = lambda x, r: r.append(x.bencoded)
-ENCODE_FUNC[types.IntType] = encode_int
-ENCODE_FUNC[types.LongType] = encode_int
-ENCODE_FUNC[types.StringType] = lambda x, r: r.extend((str(len(x)), ':', x))
-ENCODE_FUNC[types.ListType] = encode_list
-ENCODE_FUNC[types.TupleType] = encode_list
-ENCODE_FUNC[types.DictType] = encode_dict
-ENCODE_FUNC[types.BooleanType] = encode_bool
+ENCODE_FUNC[int] = encode_int
+ENCODE_FUNC[int] = encode_int
+ENCODE_FUNC[bytes] = lambda x, r: r.extend((str(len(x)), ':', x))
+ENCODE_FUNC[list] = encode_list
+ENCODE_FUNC[tuple] = encode_list
+ENCODE_FUNC[dict] = encode_dict
+ENCODE_FUNC[bool] = encode_bool
 
 
 def bencode(string):
