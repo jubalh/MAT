@@ -11,11 +11,11 @@ import hachoir_editor
 import mat
 
 NOMETA = frozenset((
-    '.bmp',  # "raw" image
-    '.rdf',  # text
-    '.txt',  # plain text
-    '.xml',  # formated text (XML)
-    '.rels', # openXML formated text
+    '.bmp',   # "raw" image
+    '.rdf',   # text
+    '.txt',   # plain text
+    '.xml',   # formated text (XML)
+    '.rels',  # openXML formated text
 ))
 
 FIELD = object()

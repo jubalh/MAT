@@ -1,12 +1,11 @@
 #! /usr/bin/python
 
 ''' This file is an extension for the Nautilus
-	file manager, to provide a contextual menu to
-	clean metadata
+    file manager, to provide a contextual menu to
+    clean metadata
 '''
 
 import logging
-import os
 import urllib
 try:
     import gettext
@@ -15,12 +14,11 @@ except:
     logging.warning("Failed to initialise gettext")
     _ = lambda x: x
 
-import xml.sax
-
 from gi.repository import Nautilus, GObject, Gtk
 
 import MAT.mat
 import MAT.strippers
+
 
 class MatExtension(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
@@ -44,7 +42,7 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
             logging.debug("%s files not supported by MAT" % file.get_uri_scheme())
             return
 
-		# MAT can not clean non-writable files
+        # MAT can not clean non-writable files
         if not file.can_write():
             logging.debug("%s is not writable by MAT" % file.get_uri_scheme())
             return
@@ -56,7 +54,7 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
         item.connect('activate', self.menu_activate_cb, file)
         return item,
 
-    def show_message(self, message, type = Gtk.MessageType.INFO):
+    def show_message(self, message, type=Gtk.MessageType.INFO):
         dialog = Gtk.MessageDialog(parent=None,
                                    flags=Gtk.DialogFlags.MODAL,
                                    type=type,

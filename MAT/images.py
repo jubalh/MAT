@@ -42,9 +42,9 @@ class PngStripper(parser.GenericParser):
         '''
         field_list = frozenset([
             'id',
-            'header',   # PNG header
-            'physical', # the intended pixel size or aspect ratio
-            'end'])     # end of the image
+            'header',    # PNG header
+            'physical',  # the intended pixel size or aspect ratio
+            'end'])      # end of the image
         if field.name in field_list:
             return False
         if field.name.startswith('data['):  # data

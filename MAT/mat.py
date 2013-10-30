@@ -31,6 +31,7 @@ logging.basicConfig(filename=fname, level=LOGGING_LEVEL)
 
 import strippers  # this is loaded here because we need LOGGING_LEVEL
 
+
 def get_logo():
     ''' Return the path to the logo
     '''
@@ -41,6 +42,7 @@ def get_logo():
     elif os.path.isfile('/usr/local/share/pixmaps/mat.png'):
         return '/usr/local/share/pixmaps/mat.png'
 
+
 def get_datadir():
     ''' Return the path to the data directory
     '''
@@ -50,6 +52,7 @@ def get_datadir():
         return '/usr/local/share/mat/'
     elif os.path.isdir('/usr/share/mat/'):
         return '/usr/share/mat/'
+
 
 def list_supported_formats():
     ''' Return a list of all locally supported fileformat.
@@ -69,6 +72,7 @@ def list_supported_formats():
             localy_supported.append(item)
 
     return localy_supported
+
 
 class XMLParser(xml.sax.handler.ContentHandler):
     ''' Parse the supported format xml, and return a corresponding
@@ -132,7 +136,7 @@ def create_class_file(name, backup, **kwargs):
         logging.error('%s is not a valid file' % name)
         return None
 
-    if not os.access(name, os.R_OK):  #check read permissions
+    if not os.access(name, os.R_OK):  # check read permissions
         logging.error('%s is is not readable' % name)
         return None
 
@@ -156,7 +160,7 @@ def create_class_file(name, backup, **kwargs):
 
     if mime == 'application/zip':  # some formats are zipped stuff
         if mimetypes.guess_type(name)[0]:
-            mime =  mimetypes.guess_type(name)[0]
+            mime = mimetypes.guess_type(name)[0]
 
     if mime.startswith('application/vnd.oasis.opendocument'):
         mime = 'application/opendocument'  # opendocument fileformat

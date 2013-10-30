@@ -8,12 +8,12 @@
     - remove the copy on end
 '''
 
+
 import shutil
 import os
 import glob
 import tempfile
 import unittest
-import subprocess
 
 VERBOSITY = 15
 
@@ -38,6 +38,7 @@ except ImportError:
     FILE_LIST.remove(('clean é.ogg', 'dirty é.ogg'))
     FILE_LIST.remove(('clean é.mp3', 'dirty é.mp3'))
     FILE_LIST.remove(('clean é.flac', 'dirty é.flac'))
+
 
 class MATTest(unittest.TestCase):
     '''

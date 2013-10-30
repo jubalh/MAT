@@ -84,6 +84,7 @@ class TestFileAttributes(unittest.TestCase):
         ''' test MAT's behaviour on empty file'''
         self.assertFalse(MAT.mat.create_class_file('empty_file', False, add2archive=True))
 
+
 class TestSecureRemove(unittest.TestCase):
     ''' Test the secure_remove function
     '''
