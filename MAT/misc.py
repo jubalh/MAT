@@ -19,7 +19,7 @@ class TorrentStripper(parser.GenericParser):
         ''' Get recursively all keys from a dict and
             its subdicts
         '''
-        for (i,j) in dictionary.items():
+        for (i,j) in list(dictionary.items()):
             if isinstance(j, dict):
                 return set([i]).union(self.__get_key_recursively(j))
             return set([i])
@@ -35,11 +35,11 @@ class TorrentStripper(parser.GenericParser):
         ''' Get recursively all harmful metadata
         '''
         d = dict()
-        for(i,j) in dictionary.items():
+        for(i,j) in list(dictionary.items()):
             if i not in self.fields:
                 d[i] = j
             elif isinstance(j, dict):
-                d = dict(d.items() + self.__get_meta_recursively(j).items())
+                d = dict(d.items() + list(self.__get_meta_recursively(j).items()))
         return d
 
     def get_meta(self):
@@ -53,9 +53,9 @@ class TorrentStripper(parser.GenericParser):
         ''' Remove recursively all compromizing fields
         '''
         d = dict()
-        for(i,j) in filter(lambda i: i in self.fields, dictionary.items()):
+        for (i,j) in [i for i in list(dictionary.items()) if i in self.fields]:
             if isinstance(j, dict):
-                d = dict(d.items() + self.__get_meta_recursively(j).items())
+                d = dict(list(d.items()) + list(self.__get_meta_recursively(j).items()))
             else:
                 d[i] = j
         return d
@@ -67,7 +67,7 @@ class TorrentStripper(parser.GenericParser):
         with open(self.filename, 'r') as f:
             decoded = bencode.bdecode(f.read())
 
-        cleaned = {i:j for i,j in decoded.items() if i in self.fields}
+        cleaned = {i:j for i,j in list(decoded.items()) if i in self.fields}
 
         with open(self.output, 'w') as f:  # encode the decoded torrent
             f.write(bencode.bencode(cleaned))  # and write it in self.output

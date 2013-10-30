@@ -65,7 +65,7 @@ def list_supported_formats():
 
     localy_supported = []
     for item in handler.list:
-        if strippers.STRIPPERS.has_key(item['mimetype'].split(',')[0]):
+        if item['mimetype'].split(',')[0] in strippers.STRIPPERS:
             localy_supported.append(item)
 
     return localy_supported
