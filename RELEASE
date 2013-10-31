@@ -17,10 +17,10 @@ push the tag
     git push --tags
 
 archive's creation :
-    git archive --format=tar.gz --prefix=mat-$VERSION/ $VERSION > mat-$VERSION.tar.gz
+    git archive --format=tar.xz --prefix=mat-$VERSION/ $VERSION > mat-$VERSION.tar.xz
 
 signing:
-    gpg --armor --detach-sign mat-$VERSION.tar.gz
+    gpg --armor --detach-sign mat-$VERSION.tar.xz
 
 upload:
     https://mat.boum.org/files
