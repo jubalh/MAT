@@ -14,7 +14,7 @@ import hachoir_parser
 
 import MAT.exceptions
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 __author__ = 'jvoisin'
 
 #Silence

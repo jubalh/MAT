@@ -1,3 +1,8 @@
+0.4.2 - 31oct2013
+    * Fix (for real this time) MAT eating PDF
+    * The mautilus plugin does not appear on read-only files
+    * Some minor refactorisations of the code
+
 0.4.1 - 27oct2013
     * Fix the fact that the MAT sometimes delete PDF
     * Improves internal and external documentation
