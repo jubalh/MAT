@@ -18,6 +18,7 @@ import urllib2
 
 from MAT import mat
 from MAT import strippers
+from MAT import parser
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
@@ -340,22 +341,23 @@ non-anonymised) file to output archive'))
         dialog.get_content_area().pack_start(sc, True, True, 0)
         store = Gtk.ListStore(str, str)
 
-        # append filename - mimetype to the store
+        # appends "filename - reason" to the ListStore
         for item in filelist:
-            mime = mimetypes.guess_type(item)[0]
-            if mime:
-                store.append([os.path.basename(item), mime])
+            ext = os.path.splitext(item)[1]
+            if ext in parser.NOMETA:
+                store.append([os.path.basename(item), _('Harmless fileformat')])
             else:
-                store.append([os.path.basename(item), _('Unknown mimetype')])
+                store.append([os.path.basename(item), _('Fileformat not supported')])
 
         treeview = Gtk.TreeView(store)
+        vbox.pack_start(Gtk.Label(_('These files can not be processed:')), False, False, 0)
         vbox.pack_start(treeview, True, True, 0)
 
-        # create column
+        # Create columns
         rendererText = Gtk.CellRendererText()
         column = Gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
         treeview.append_column(column)
-        column = Gtk.TreeViewColumn(_('Mimetype'), rendererText, text=1)
+        column = Gtk.TreeViewColumn(_('Reason'), rendererText, text=1)
         treeview.append_column(column)
 
         dialog.show_all()
