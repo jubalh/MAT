@@ -139,7 +139,7 @@
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="clean_menuitem">
-                        <property name="label">Clean</property>
+                        <property name="label">Scour</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="image">GtkClear</property>
@@ -224,7 +224,7 @@
               <object class="GtkToolButton" id="ToolbarClean">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Clean</property>
+                <property name="label" translatable="yes">Scour</property>
                 <property name="stock_id">gtk-clear</property>
                 <signal name="clicked" handler="cb_mat_clean" swapped="no"/>
               </object>

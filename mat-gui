@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-'''
-    Metadata anonymisation toolkit - GUI edition
-'''
+''' Metadata anonymisation toolkit - GUI edition '''
 
 from gi.repository import GObject, Gtk, GLib
 from gi.repository import Gdk, GdkPixbuf
@@ -24,8 +22,7 @@ logging.basicConfig(level=mat.LOGGING_LEVEL)
 
 
 class CFile(GObject.Object):
-    '''
-        Contain the "parser" class of the file "filename"
+    ''' Contain the "parser" class of the file "filename"
         This class exist just to be "around" my parser.Generic_parser class,
         since the Gtk.ListStore does not accept it because it does not
         extends Gobject.Object
@@ -35,9 +32,7 @@ class CFile(GObject.Object):
 
 
 class GUI(object):
-    '''
-        Main GUI class
-    '''
+    ''' Main GUI class '''
     def __init__(self):
         # Preferences
         self.add2archive = True
@@ -111,12 +106,11 @@ class GUI(object):
         return False
 
     def cb_update_supported_popup(self, window):
-        '''
-            Fill GtkEntries of the supported_format_popups
+        ''' Fill GtkEntries of the supported_format_popups
             with corresponding data.
         '''
         i = window.get_active_iter()
-        index, _ = window.get_model()[i]
+        index = window.get_model()[i][0]
         support = self.builder.get_object('supported_support')
         support.set_text(self.supported_dict.list[index]['support'])
         metadata = self.builder.get_object('supported_metadata').get_buffer()
@@ -155,8 +149,7 @@ class GUI(object):
         chooser.destroy()
 
     def cb_popup_metadata(self, widget, row, col):
-        '''
-            Popup that display on double-clic
+        ''' Popup that display on double-clic
             metadata from a file
         '''
         metadataPopupListStore = self.builder.get_object('MetadataPopupListStore')
@@ -250,15 +243,13 @@ non-anonymised) file to output archive'))
 
     def cb_drag_data_received(self, widget, context,
             x, y, selection, target_type, timestamp):
-        '''
-            This function is called when something is
+        ''' This function is called when something is
             drag'n'droped into mat.
             It basically add files.
         '''
 
         def clean_path(url):
-            '''
-                Since the dragged urls are ugly,
+            ''' Since the dragged urls are ugly,
                 we need to process them
             '''
             url = urllib2.unquote(url)  # unquote url
@@ -275,9 +266,7 @@ non-anonymised) file to output archive'))
         GLib.idle_add(self.populate(cleaned_urls).next)  # asynchronous processing
 
     def __add_file_to_treeview(self, filename):
-        '''
-            Add a file to the list if its format is supported
-        '''
+        ''' Add a file to the list if its format is supported '''
         cf = CFile(filename, add2archive=self.add2archive,
                 low_pdf_quality=self.pdf_quality)
         # if the file is supported by the mat,
@@ -288,9 +277,7 @@ non-anonymised) file to output archive'))
         return True
 
     def __process_files(self, func):
-        '''
-            Launch the function "func" in a asynchronous way
-        '''
+        ''' Launch the function "func" in a asynchronous way '''
         iterator = self.treeview.get_selection().get_selected_rows()[1]
         if not iterator:  # if nothing is selected : select everything
             iterator = range(len(self.liststore))
@@ -305,9 +292,7 @@ non-anonymised) file to output archive'))
             self.add2archive = not self.add2archive
 
     def populate(self, filenames):
-        '''
-            Append selected files by add_file to the self.liststore
-        '''
+        ''' Append selected files by add_file to the self.liststore '''
         not_supported = []
         for filename in filenames:  # filenames : all selected files/folders
             if os.path.isdir(filename):  # if "filename" is a directory
@@ -326,8 +311,7 @@ non-anonymised) file to output archive'))
         yield False
 
     def __popup_non_supported(self, filelist):
-        '''
-            Popup that warn the user about the unsupported files
+        ''' Popup that warn the user about the unsupported files
             that he want to process
         '''
         dialog = Gtk.Dialog(title=_('Not-supported'), parent=self.window,
