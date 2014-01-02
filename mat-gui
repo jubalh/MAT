@@ -17,6 +17,7 @@ import urllib2
 from MAT import mat
 from MAT import strippers
 from MAT import parser
+from MAT import archive
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 
@@ -35,7 +36,7 @@ class GUI(object):
     ''' Main GUI class '''
     def __init__(self):
         # Preferences
-        self.add2archive = True
+        self.add2archive = False
         self.pdf_quality = False
 
         # Main window
@@ -348,6 +349,39 @@ non-anonymised) file to output archive'))
         dialog.run()
         dialog.destroy()
 
+    def __popup_archive(self, file_list):
+        ''' Popup that shows the user what files
+            are not going to be include into to outputed
+            archive
+        '''
+        dialog = Gtk.Dialog(title=_('Non-supported files in archive'), parent=self.window,
+                flags=Gtk.DialogFlags.MODAL, buttons=(Gtk.STOCK_OK, 0))
+        dialog.set_size_request(220, 180)
+        vbox = Gtk.VBox(spacing=5)
+        sc = Gtk.ScrolledWindow()
+        sc.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        sc.add_with_viewport(vbox)
+
+        dialog.get_content_area().pack_start(sc, True, True, 0)
+        store = Gtk.ListStore(str)
+        for i in file_list:  # store.extend is not supported, wtf?!
+            store.append((i,))
+
+        # Create columns
+        rendererText = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
+        treeview = Gtk.TreeView(store)
+        treeview.append_column(column)
+
+        vbox.pack_start(treeview, True, True, 0)
+        vbox.pack_start(Gtk.Label(_('Thoses files are not recognized by MAT, and'
+            'may contain metadata.')), False, False, 0)
+        vbox.pack_start(Gtk.Label(_('MAT will not clean your archive.')), False, False, 0)
+
+        dialog.show_all()
+        dialog.run()
+        dialog.destroy()
+
     def __mat_check(self, iterator):
         ''' Check elements in iterator are clean '''
         for line in iterator:  # for each file in selection
@@ -369,7 +403,12 @@ non-anonymised) file to output archive'))
             msg = _('Cleaning %s') % self.liststore[line][2].decode('utf-8', 'replace')
             logging.info(msg)
             self.statusbar.push(0, msg)
-            if self.liststore[line][0].file.remove_all():
+            if isinstance(self.liststore[line][0].file, archive.GenericArchiveStripper):
+                unsupported_list = self.liststore[line][0].file.list_unsupported()
+                if unsupported_list:
+                    self.__popup_archive(unsupported_list)
+                    yield True
+            elif self.liststore[line][0].file.remove_all():
                 self.liststore[line][2] = _('Clean')
             yield True
         self.statusbar.push(0, _('Ready'))
