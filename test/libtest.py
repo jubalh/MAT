@@ -134,7 +134,3 @@ def get_tests():
     suite.addTest(unittest.makeSuite(TestSecureRemove))
     suite.addTest(unittest.makeSuite(TestArchiveProcessing))
     return suite
-
-
-if __name__ == '__main__':
-    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(get_tests())

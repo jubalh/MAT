@@ -110,7 +110,3 @@ def get_tests():
     suite.addTest(unittest.makeSuite(TestListcli))
     suite.addTest(unittest.makeSuite(TestisCleancli))
     return suite
-
-
-if __name__ == '__main__':
-    unittest.TextTestRunner(verbosity=test.VERBOSITY).run(get_tests())
