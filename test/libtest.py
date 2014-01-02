@@ -5,11 +5,12 @@
     Unit test for the library
 '''
 
-import unittest
-import test
+import os
 import sys
-import tempfile
 import tarfile
+import tempfile
+import test
+import unittest
 
 sys.path.append('..')
 import MAT
@@ -105,23 +106,25 @@ class TestArchiveProcessing(test.MATTest):
     ''' Test archives cleaning
     '''
     def test_remove_bz2(self):
-        tar = tarfile.open("test.tar.bz2", "w:bz2")
+        tarpath = os.path.join(self.tmpdir, "test.tar.bz2")
+        tar = tarfile.open(tarpath, "w:bz2")
         for _,dirty in self.file_list:
             tar.add(dirty)
         tar.close()
-        current_file = MAT.mat.create_class_file("test.tar.bz2", False, add2archive=False)
+        current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
         current_file.remove_all()
-        current_file = MAT.mat.create_class_file("test.tar.bz2", False, add2archive=False)
+        current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
         self.assertTrue(current_file.is_clean())
 
     def test_remove_tar(self):
-        tar = tarfile.open("test.tar", "w")
+        tarpath = os.path.join(self.tmpdir, "test.tar")
+        tar = tarfile.open(tarpath, "w")
         for _,dirty in self.file_list:
             tar.add(dirty)
         tar.close()
-        current_file = MAT.mat.create_class_file("test.tar", False, add2archive=False)
+        current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
         current_file.remove_all()
-        current_file = MAT.mat.create_class_file("test.tar", False, add2archive=False)
+        current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
         self.assertTrue(current_file.is_clean())
 
 def get_tests():
