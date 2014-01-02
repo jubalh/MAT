@@ -9,6 +9,8 @@ import unittest
 import test
 import sys
 import tempfile
+import tarfile
+
 sys.path.append('..')
 import MAT
 
@@ -99,6 +101,28 @@ class TestSecureRemove(unittest.TestCase):
         '''
         self.assertRaises(MAT.exceptions.UnableToRemoveFile, MAT.mat.secure_remove, '/NOTREMOVABLE')
 
+class TestArchiveProcessing(test.MATTest):
+    ''' Test archives cleaning
+    '''
+    def test_remove_bz2(self):
+        tar = tarfile.open("test.tar.bz2", "w:bz2")
+        for _,dirty in self.file_list:
+            tar.add(dirty)
+        tar.close()
+        current_file = MAT.mat.create_class_file("test.tar.bz2", False, add2archive=False)
+        current_file.remove_all()
+        current_file = MAT.mat.create_class_file("test.tar.bz2", False, add2archive=False)
+        self.assertTrue(current_file.is_clean())
+
+    def test_remove_tar(self):
+        tar = tarfile.open("test.tar", "w")
+        for _,dirty in self.file_list:
+            tar.add(dirty)
+        tar.close()
+        current_file = MAT.mat.create_class_file("test.tar", False, add2archive=False)
+        current_file.remove_all()
+        current_file = MAT.mat.create_class_file("test.tar", False, add2archive=False)
+        self.assertTrue(current_file.is_clean())
 
 def get_tests():
     ''' Returns every libtests'''
@@ -108,6 +132,7 @@ def get_tests():
     suite.addTest(unittest.makeSuite(TestisCleanlib))
     suite.addTest(unittest.makeSuite(TestFileAttributes))
     suite.addTest(unittest.makeSuite(TestSecureRemove))
+    suite.addTest(unittest.makeSuite(TestArchiveProcessing))
     return suite
 
 
