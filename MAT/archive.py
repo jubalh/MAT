@@ -246,7 +246,7 @@ class TarStripper(GenericArchiveStripper):
                 if class_file is not None:
                     meta = class_file.get_meta()
                     if meta:
-                        current_meta['file'] = meta
+                        current_meta['file'] = str(meta)
                 else:
                     logging.error('%s\'s format is not supported or harmless' % item.name)
 
@@ -256,7 +256,7 @@ class TarStripper(GenericArchiveStripper):
                     current_meta['gid'] = item.gid
                     current_meta['uname'] = item.uname
                     current_meta['gname'] = item.gname
-                    metadata[item.name] = current_meta
+                    metadata[item.name] = str(current_meta)
         tarin.close()
         return metadata
 
