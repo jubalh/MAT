@@ -17,8 +17,7 @@ import MAT
 
 
 class TestRemovelib(test.MATTest):
-    '''
-        test the remove_all() method
+    ''' test the remove_all() method
     '''
     def test_remove(self):
         '''make sure that the lib remove all compromizing meta'''
@@ -38,8 +37,7 @@ class TestRemovelib(test.MATTest):
 
 
 class TestListlib(test.MATTest):
-    '''
-        test the get_meta() method
+    ''' test the get_meta() method
     '''
     def test_list(self):
         '''check if get_meta returns metadata'''
@@ -55,8 +53,7 @@ class TestListlib(test.MATTest):
 
 
 class TestisCleanlib(test.MATTest):
-    '''
-        test the is_clean() method
+    ''' Test the is_clean() method
     '''
     def test_dirty(self):
         '''test is_clean on dirty files'''
@@ -106,6 +103,8 @@ class TestArchiveProcessing(test.MATTest):
     ''' Test archives processing
     '''
     def test_remove_bz2(self):
+        ''' Test MAT's ability to process .tar.bz2
+        '''
         tarpath = os.path.join(self.tmpdir, "test.tar.bz2")
         tar = tarfile.open(tarpath, "w:bz2")
         for clean,dirty in self.file_list:
@@ -118,6 +117,8 @@ class TestArchiveProcessing(test.MATTest):
         self.assertTrue(current_file.is_clean())
 
     def test_remove_tar(self):
+        ''' Test MAT on tar files
+        '''
         tarpath = os.path.join(self.tmpdir, "test.tar")
         tar = tarfile.open(tarpath, "w")
         for clean,dirty in self.file_list:
@@ -130,10 +131,10 @@ class TestArchiveProcessing(test.MATTest):
         self.assertTrue(current_file.is_clean())
 
     def test_get_unsupported(self):
+        ''' Test the get_unsupported feature, used by the GUI
+        '''
         tarpath = os.path.join(self.tmpdir, "test.tar.bz2")
         tar = tarfile.open(tarpath, "w")
-        for clean,_ in self.file_list[:4]:  # we don't test thoses
-            tar.add(clean)
         for f in ('../mat.desktop', '../README.security', '../setup.py'):
             tar.add(f, f[3:])  # trim '../'
         tar.close()
