@@ -210,14 +210,14 @@ class TarStripper(GenericArchiveStripper):
             ret_list = []
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for item in tarin.getmembers():
-            if not self.is_file_clean(item):
+            if not self.is_file_clean(item) and not list_unsupported:
                 return False
             tarin.extract(item, self.tempdir)
             complete_name = os.path.join(self.tempdir, item.name)
             if item.isfile():
                 class_file = mat.create_class_file(complete_name, False, add2archive=self.add2archive)
                 if class_file:
-                    if not class_file.is_clean():
+                    if not class_file.is_clean() and not list_unsupported:
                         return False
                 else:
                     logging.error('%s\'s format is not supported or harmless' % item.name)
