@@ -380,6 +380,9 @@ non-anonymised) file to output archive'))
         cellrenderer_toggle = Gtk.CellRendererToggle()
         column_toggle.pack_start(cellrenderer_toggle, True)
         column_toggle.add_attribute(cellrenderer_toggle, "active", 0)
+        def cell_toggled(widget, path, model):
+            model[path][0] = not model[path][0]
+        cellrenderer_toggle.connect("toggled", cell_toggled, store)
 
         vbox.pack_start(treeview, True, True, 0)
         vbox.pack_start(Gtk.Label(_('Thoses files are not recognized by MAT, and'
