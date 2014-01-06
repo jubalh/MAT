@@ -224,7 +224,8 @@ class TarStripper(GenericArchiveStripper):
                     basename, ext = os.path.splitext(complete_name)
                     if ext not in parser.NOMETA:
                         if list_unsupported:
-                            ret_list.append(complete_name)
+                            tmp_len = len(self.tempdir) + 1  # trim the tempfile path
+                            ret_list.append(complete_name[tmp_len:])
                         else:
                             return False
         tarin.close()
