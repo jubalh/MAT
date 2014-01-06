@@ -142,10 +142,10 @@ class ZipStripper(GenericArchiveStripper):
                     if self.add2archive or ext in parser.NOMETA:
                         zipout.write(name, item.filename)
         zipin.close()
-        for zipfile in zipout.infolist():
-            zipfile.orig_filename = zipfile.filename
-            zipfile.date_time = (1980, 1, 1, 0, 0, 0)
-            zipfile.create_system = 3  # 3 is UNIX
+        for zipFile in zipout.infolist():
+            zipFile.orig_filename = zipFile.filename
+            zipFile.date_time = (1980, 1, 1, 0, 0, 0)
+            zipFile.create_system = 3  # 3 is UNIX
         zipout.comment = ''
         zipout.close()
 
