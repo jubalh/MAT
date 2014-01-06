@@ -177,12 +177,13 @@ class TarStripper(GenericArchiveStripper):
                 cfile = mat.create_class_file(complete_name, False, add2archive=self.add2archive)
                 if cfile:
                     cfile.remove_all()
-                    tarout.add(complete_name, item.name, filter=self._remove)
+                elif self.add2archive or os.path.splitext(item.name)[1] in parser.NOMETA:
+                    logging.info('%s\' format is either not supported or harmless' % item.name)
+                elif item.name in exclude_list:
+                    logging.debug('%s is not supported, but MAt was told to add it anyway.' % item.name)
                 else:
-                    logging.info('%s\' format is not supported or harmless' % item.name)
-                    basename, ext = os.path.splitext(item.name)
-                    if self.add2archive or ext in parser.NOMETA:
-                        tarout.add(complete_name, item.name, filter=self._remove)
+                    continue
+                tarout.add(complete_name, item.name, filter=self._remove)
         tarin.close()
         tarout.close()
         self.do_backup()

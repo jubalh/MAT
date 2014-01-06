@@ -206,8 +206,7 @@ class GUI(object):
 
     def cb_preferences_popup(self, button):
         ''' Preferences popup '''
-        dialog = Gtk.Dialog(_('Preferences'), self.window, 0,
-                (Gtk.STOCK_OK, 0))
+        dialog = Gtk.Dialog(_('Preferences'), self.window, 0, (Gtk.STOCK_OK, 0))
         dialog.connect('delete-event', self.cb_hide_widget)
         dialog.set_resizable(False)
         hbox = Gtk.HBox()
@@ -226,8 +225,7 @@ class GUI(object):
         pdf_quality.set_tooltip_text(_('Reduce the produced PDF size and quality'))
         table.attach(pdf_quality, 0, 1, 0, 1)
 
-        add2archive = Gtk.CheckButton(_('Add unsupported file to archives'),
-            False)
+        add2archive = Gtk.CheckButton(_('Add unsupported file to archives'), False)
         add2archive.set_active(self.add2archive)
         add2archive.connect('toggled', self.__invert, 'add2archive')
         add2archive.set_tooltip_text(_('Add non-supported (and so \
@@ -270,8 +268,7 @@ non-anonymised) file to output archive'))
         ''' Add a file to the list if its format is supported '''
         cf = CFile(filename, add2archive=self.add2archive,
                 low_pdf_quality=self.pdf_quality)
-        # if the file is supported by the mat,
-        # and is writable (for usability's sake).
+        # if the file is supported by the mat, and is writable (for usability's sake).
         if cf.file and cf.file.is_writable:
             self.liststore.append([cf, cf.file.basename, _('Unknown')])
             return False
@@ -392,6 +389,7 @@ non-anonymised) file to output archive'))
         dialog.show_all()
         dialog.run()
         dialog.destroy()
+        return [i[1] for i in store if i[0]]
 
     def __mat_check(self, iterator):
         ''' Check elements in iterator are clean '''
@@ -417,8 +415,9 @@ non-anonymised) file to output archive'))
             if isinstance(self.liststore[line][0].file, archive.GenericArchiveStripper):
                 unsupported_list = self.liststore[line][0].file.list_unsupported()
                 if unsupported_list:
-                    self.__popup_archive(unsupported_list)
-                    yield True
+                    list_to_add = self.__popup_archive(unsupported_list)
+                    if self.liststore[line][0].file.remove_all(list_to_add):
+                        self.liststore[line][2] = _('Clean')
             elif self.liststore[line][0].file.remove_all():
                 self.liststore[line][2] = _('Clean')
             yield True
