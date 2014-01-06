@@ -363,15 +363,23 @@ non-anonymised) file to output archive'))
         sc.add_with_viewport(vbox)
 
         dialog.get_content_area().pack_start(sc, True, True, 0)
-        store = Gtk.ListStore(str)
+        store = Gtk.ListStore(bool, str)
         for i in file_list:  # store.extend is not supported, wtf?!
-            store.append((i,))
+            store.append([0,os.path.basename(i)])
 
-        # Create columns
-        rendererText = Gtk.CellRendererText()
-        column = Gtk.TreeViewColumn(_('Filename'), rendererText, text=0)
         treeview = Gtk.TreeView(store)
-        treeview.append_column(column)
+        column_toggle = Gtk.TreeViewColumn(_('Include'))
+        column_text = Gtk.TreeViewColumn(_('Filename'))
+        treeview.append_column(column_toggle)
+        treeview.append_column(column_text)
+
+        cellrenderer_text = Gtk.CellRendererText()
+        column_text.pack_start(cellrenderer_text, False)
+        column_text.add_attribute(cellrenderer_text, "text", 1)
+
+        cellrenderer_toggle = Gtk.CellRendererToggle()
+        column_toggle.pack_start(cellrenderer_toggle, True)
+        column_toggle.add_attribute(cellrenderer_toggle, "active", 0)
 
         vbox.pack_start(treeview, True, True, 0)
         vbox.pack_start(Gtk.Label(_('Thoses files are not recognized by MAT, and'
