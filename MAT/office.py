@@ -21,7 +21,7 @@ import parser
 import archive
 
 
-class OpenDocumentStripper(archive.GenericArchiveStripper):
+class OpenDocumentStripper(archive.ZipStripper):
     ''' An open document file is a zip, with xml file into.
         The one that interest us is meta.xml
     '''

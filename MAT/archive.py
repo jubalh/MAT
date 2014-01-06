@@ -172,8 +172,8 @@ class TarStripper(GenericArchiveStripper):
         tarout = tarfile.open(self.output, 'w' + self.compression, encoding='utf-8')
         for item in tarin.getmembers():
             tarin.extract(item, self.tempdir)
-            complete_name = os.path.join(self.tempdir, item.name)
             if item.isfile():
+                complete_name = os.path.join(self.tempdir, item.name)
                 cfile = mat.create_class_file(complete_name, False, add2archive=self.add2archive)
                 if cfile:
                     cfile.remove_all()
@@ -209,7 +209,7 @@ class TarStripper(GenericArchiveStripper):
         '''
         if list_unsupported:
             ret_list = []
-        tmp_len = len(self.tempdir) + 1  # trim the tempfile path
+        tempdir_len = len(self.tempdir) + 1  # trim the tempfile path
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for item in tarin.getmembers():
             if not self.is_file_clean(item) and not list_unsupported:
@@ -219,21 +219,18 @@ class TarStripper(GenericArchiveStripper):
             if item.isfile():
                 class_file = mat.create_class_file(complete_name, False, add2archive=self.add2archive)
                 if class_file:
+                    # We don't support nested archives
                     if not class_file.is_clean():
-                        # We don't support nested archives
-                        if list_unsupported:
-                                if isinstance(class_file, GenericArchiveStripper):
-                                    ret_list.append(complete_name[tmp_len:])
-                        else:
+                        if not list_unsupported:
                             return False
+                        elif isinstance(class_file, GenericArchiveStripper):
+                            ret_list.append(complete_name[tempdir_len:])
                 else:
                     logging.error('%s\'s format is not supported or harmless' % item.name)
-                    basename, ext = os.path.splitext(complete_name)
-                    if ext not in parser.NOMETA:
-                        if list_unsupported:
-                            ret_list.append(complete_name[tmp_len:])
-                        else:
+                    if os.path.splitext(complete_name)[1] not in parser.NOMETA:
+                        if not list_unsupported:
                             return False
+                        ret_list.append(complete_name[tempdir_len:])
         tarin.close()
         if list_unsupported:
             return ret_list

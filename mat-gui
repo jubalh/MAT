@@ -10,7 +10,6 @@ import gettext
 import logging
 import os
 import sys
-import mimetypes
 import xml.sax
 import urllib2
 
@@ -69,11 +68,11 @@ class GUI(object):
     def __init_supported_popup(self):
         ''' Initialise the "supported formats" popup '''
         self.supported_dict = mat.XMLParser()
-        parser = xml.sax.make_parser()
-        parser.setContentHandler(self.supported_dict)
+        xml_parser = xml.sax.make_parser()
+        xml_parser.setContentHandler(self.supported_dict)
         path = os.path.join(mat.get_datadir(), 'FORMATS')
         with open(path, 'r') as xmlfile:
-            parser.parse(xmlfile)
+            xml_parser.parse(xmlfile)
 
         supported_cbox = self.builder.get_object('supported_cbox')
         store = Gtk.ListStore(int, str)
@@ -110,8 +109,7 @@ class GUI(object):
         ''' Fill GtkEntries of the supported_format_popups
             with corresponding data.
         '''
-        i = window.get_active_iter()
-        index = window.get_model()[i][0]
+        index = window.get_model()[window.get_active_iter()][0]
         support = self.builder.get_object('supported_support')
         support.set_text(self.supported_dict.list[index]['support'])
         metadata = self.builder.get_object('supported_metadata').get_buffer()
@@ -234,14 +232,13 @@ non-anonymised) file to output archive'))
 
         hbox.show_all()
         if not dialog.run():  # Gtk.STOCK_OK
-            for file in self.liststore:  # update preferences
-                file[0].file.add2archive = self.add2archive
-                if file[0].file.mime.startswith('pdf'):
-                    file[0].file.pdf_quality = self.pdf_quality
+            for f in self.liststore:  # update preferences
+                f[0].file.add2archive = self.add2archive
+                if f[0].file.mime.startswith('pdf'):
+                    f[0].file.pdf_quality = self.pdf_quality
             dialog.hide()
 
-    def cb_drag_data_received(self, widget, context,
-            x, y, selection, target_type, timestamp):
+    def cb_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
         ''' This function is called when something is
             drag'n'droped into mat.
             It basically add files.
@@ -266,9 +263,7 @@ non-anonymised) file to output archive'))
 
     def __add_file_to_treeview(self, filename):
         ''' Add a file to the list if its format is supported '''
-        cf = CFile(filename, add2archive=self.add2archive,
-                low_pdf_quality=self.pdf_quality)
-        # if the file is supported by the mat, and is writable (for usability's sake).
+        cf = CFile(filename, add2archive=self.add2archive, low_pdf_quality=self.pdf_quality)
         if cf.file and cf.file.is_writable:
             self.liststore.append([cf, cf.file.basename, _('Unknown')])
             return False
@@ -325,8 +320,7 @@ non-anonymised) file to output archive'))
 
         # appends "filename - reason" to the ListStore
         for item in filelist:
-            ext = os.path.splitext(item)[1]
-            if ext in parser.NOMETA:
+            if os.path.splitext(item)[1] in parser.NOMETA:
                 store.append([os.path.basename(item), _('Harmless fileformat')])
             else:
                 store.append([os.path.basename(item), _('Fileformat not supported')])
@@ -372,14 +366,14 @@ non-anonymised) file to output archive'))
 
         cellrenderer_text = Gtk.CellRendererText()
         column_text.pack_start(cellrenderer_text, False)
-        column_text.add_attribute(cellrenderer_text, "text", 1)
+        column_text.add_attribute(cellrenderer_text, 'text', 1)
 
         cellrenderer_toggle = Gtk.CellRendererToggle()
         column_toggle.pack_start(cellrenderer_toggle, True)
-        column_toggle.add_attribute(cellrenderer_toggle, "active", 0)
+        column_toggle.add_attribute(cellrenderer_toggle, 'active', 0)
         def cell_toggled(widget, path, model):
             model[path][0] = not model[path][0]
-        cellrenderer_toggle.connect("toggled", cell_toggled, store)
+        cellrenderer_toggle.connect('toggled', cell_toggled, store)
 
         vbox.pack_start(treeview, True, True, 0)
         vbox.pack_start(Gtk.Label(_('Thoses files are not recognized by MAT, and'
@@ -433,6 +427,6 @@ if __name__ == '__main__':
     infiles = [arg for arg in sys.argv[1:] if os.path.exists(arg)]
     if infiles:
         task = gui.populate(infiles)
-        Glib.idle_add(task.next)
+        GLib.idle_add(task.next)
 
     Gtk.main()
