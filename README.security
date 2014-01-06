@@ -23,6 +23,11 @@ Test suite
 Formats that are not in the test suite are not well-tested,
 please do not trust the MAT about them!
 
+Archives handling
+-----------------
+MAT's GUI does not handle (for now?) nested archives;
+it will treat them like unsupported format.
+
 
 Threat Model
 ============

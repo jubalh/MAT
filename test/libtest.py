@@ -132,8 +132,7 @@ class TestArchiveProcessing(test.MATTest):
     def test_get_unsupported(self):
         tarpath = os.path.join(self.tmpdir, "test.tar.bz2")
         tar = tarfile.open(tarpath, "w")
-        for clean,dirty in self.file_list[:4]:  # we don't test thoses
-            tar.add(dirty)
+        for clean,_ in self.file_list[:4]:  # we don't test thoses
             tar.add(clean)
         for f in ('../mat.desktop', '../README.security', '../setup.py'):
             tar.add(f, f[3:])  # trim '../'
