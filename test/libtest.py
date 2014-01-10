@@ -130,6 +130,20 @@ class TestArchiveProcessing(test.MATTest):
         current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
         self.assertTrue(current_file.is_clean())
 
+    def test_remove_gz(self):
+        ''' Test MAT on tar.gz files
+        '''
+        tarpath = os.path.join(self.tmpdir, "test.tar.gz")
+        tar = tarfile.open(tarpath, "w")
+        for clean,dirty in self.file_list:
+            tar.add(dirty)
+            tar.add(clean)
+        tar.close()
+        current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
+        current_file.remove_all()
+        current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
+        self.assertTrue(current_file.is_clean())
+
     def test_get_unsupported(self):
         ''' Test the get_unsupported feature, used by the GUI
         '''
