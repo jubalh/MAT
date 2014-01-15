@@ -1,6 +1,7 @@
 ''' Take care of archives formats
 '''
 
+import datetime
 import logging
 import os
 import shutil
@@ -11,12 +12,17 @@ import zipfile
 import mat
 import parser
 
+ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
+ZIP_EPOCH_SECONDS = (datetime.datetime(1980, 1, 1, 0, 0, 0)
+        - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
+
 
 class GenericArchiveStripper(parser.GenericParser):
     ''' Represent a generic archive
     '''
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
-        super(GenericArchiveStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
+        super(GenericArchiveStripper, self).__init__(filename,
+                parser, mime, backup, is_writable, **kwargs)
         self.compression = ''
         self.add2archive = kwargs['add2archive']
         self.tempdir = tempfile.mkdtemp()
@@ -48,13 +54,13 @@ class GenericArchiveStripper(parser.GenericParser):
 class ZipStripper(GenericArchiveStripper):
     ''' Represent a zip file
     '''
-    def is_file_clean(self, fileinfo):
+    def __is_zipfile_clean(self, fileinfo):
         ''' Check if a ZipInfo object is clean of metadatas added
             by zip itself, independently of the corresponding file metadatas
         '''
         if fileinfo.comment != '':
             return False
-        elif fileinfo.date_time != (1980, 1, 1, 0, 0, 0):
+        elif fileinfo.date_time != ZIP_EPOCH:
             return False
         elif fileinfo.create_system != 3:  # 3 is UNIX
             return False
@@ -70,83 +76,100 @@ class ZipStripper(GenericArchiveStripper):
             logging.debug('%s has a comment' % self.filename)
             return False
         for item in zipin.infolist():
-            # I have not found a way to remove the crap added by zipfile :/
-            # if not self.is_file_clean(item):
-            #    logging.debug('%s from %s has compromising zipinfo' %
-            #        (item.filename, self.filename))
-            #    return False
             zipin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.filename)
+            if not self.__is_zipfile_clean(item) and not list_unsupported:
+                logging.debug('%s from %s has compromising zipinfo' %
+                        (item.filename, self.filename))
+                return False
             if os.path.isfile(name):
                 cfile = mat.create_class_file(name, False, add2archive=self.add2archive)
                 if cfile:
                     if not cfile.is_clean():
-                        return False
+                        logging.debug('%s from %s has compromising zipinfo' %
+                                (item.filename, self.filename))
+                        if not list_unsupported:
+                            return False
+                        ret_list.append(item.filename)
                 else:
-                    logging.info('%s\'s fileformat is not supported, or is harmless' % item.filename)
+                    logging.info('%s\'s fileformat is not supported or harmless.'
+                            % item.filename)
                     basename, ext = os.path.splitext(name)
-                    bname = os.path.basename(item.filename)
-                    if ext not in parser.NOMETA:
-                        if bname != 'mimetype' and bname != '.rels':
-                            if list_unsupported:
-                                ret_list.append(bname)
-                            else:
+                    if os.path.basename(item.filename) not in ('mimetype', '.rels'):
+                        if ext not in parser.NOMETA:
+                            if not list_unsupported:
                                 return False
+                            ret_list.append(item.filename)
         zipin.close()
         if list_unsupported:
             return ret_list
         return True
 
     def get_meta(self):
-        ''' Return all the metadata of a ZipFile (don't return metadatas
-            of contained files : should it ?)
-        '''
+        ''' Return all the metadata of a zip archive'''
         zipin = zipfile.ZipFile(self.filename, 'r')
         metadata = {}
-        for field in zipin.infolist():
-            zipmeta = {}
-            if field.comment != '':
-                zipmeta['comment'] = field.comment
-            if field.date_time != (1980, 1, 1, 0, 0, 0):
-                zipmeta['modified'] = field.date_time
-            if field.create_system != 3:  # 3 is UNIX
-                zipmeta['system'] = "windows" if field.create_system == 2 else "unknown"
         if zipin.comment != '':
-            metadata["%s comment" % self.filename] = zipin.comment
+            metadata['comment'] = zipin.comment
+        for item in zipin.infolist():
+            zipinfo_meta = self.__get_zipinfo_meta(item)
+            if zipinfo_meta != {}:  # zipinfo metadata
+                metadata[item.filename + "'s zipinfo"] = str(zipinfo_meta)
+            zipin.extract(item, self.tempdir)
+            name = os.path.join(self.tempdir, item.filename)
+            if os.path.isfile(name):
+                cfile = mat.create_class_file(name, False, add2archive=self.add2archive)
+                if cfile:
+                    cfile_meta = cfile.get_meta()
+                    if cfile_meta != {}:
+                        metadata[item.filename] = str(cfile_meta)
+                else:
+                    logging.info('%s\'s fileformat is not supported or harmless'
+                            % item.filename)
         zipin.close()
         return metadata
 
-    def remove_all(self):
-        ''' So far, the zipfile module does not allow to write a ZipInfo
-            object into a zipfile (and it's a shame !) : so data added
-            by zipfile itself could not be removed. It's a big concern.
-            Is shipping a patched version of zipfile.py a good idea ?
+    def __get_zipinfo_meta(self, zipinfo):
+        ''' Return all the metadata of a ZipInfo
+        '''
+        metadata = {}
+        if zipinfo.comment != '':
+            metadata['comment'] = zipinfo.comment
+        if zipinfo.date_time != ZIP_EPOCH:
+            metadata['modified'] = zipinfo.date_time
+        if zipinfo.create_system != 3:  # 3 is UNIX
+            metadata['system'] = "windows" if zipinfo.create_system == 2 else "unknown"
+        return metadata
+
+    def remove_all(self, whitelist=[], beginning_blacklist=[], ending_blacklist=[]):
+        ''' Remove all metadata from a zip archive, even thoses
+            added by Python's zipfile itself. It will not add
+            files starting with "begining_blacklist", or ending with
+            "ending_blacklist". This method also add files present in
+            whitelist to the archive.
         '''
         zipin = zipfile.ZipFile(self.filename, 'r')
         zipout = zipfile.ZipFile(self.output, 'w', allowZip64=True)
         for item in zipin.infolist():
             zipin.extract(item, self.tempdir)
             name = os.path.join(self.tempdir, item.filename)
-            if os.path.isfile(name):
-                try:
-                    cfile = mat.create_class_file(name, False,
-                        add2archive=self.add2archive)
+
+            beginning = any((True for f in beginning_blacklist if item.filename.startswith(f)))
+            ending = any((True for f in ending_blacklist if item.filename.endswith(f)))
+
+            if os.path.isfile(name) and not beginning and not ending:
+                cfile = mat.create_class_file(name, False, add2archive=self.add2archive)
+                if cfile is not None:
                     cfile.remove_all()
-                    logging.debug('Processing %s from %s' % (item.filename,
-                        self.filename))
-                    zipout.write(name, item.filename)
-                except:
-                    logging.info('%s\'s format is not supported or harmless' %
-                        item.filename)
-                    _, ext = os.path.splitext(name)
-                    if self.add2archive or ext in parser.NOMETA:
-                        zipout.write(name, item.filename)
+                    logging.debug('Processing %s from %s' % (item.filename, self.filename))
+                elif item.filename not in whitelist:
+                    logging.info('%s\'s format is not supported or harmless' % item.filename)
+                    basename, ext = os.path.splitext(name)
+                    if not (self.add2archive or ext in parser.NOMETA):
+                        continue
+                os.utime(name, (ZIP_EPOCH_SECONDS, ZIP_EPOCH_SECONDS))
+                zipout.write(name, item.filename)
         zipin.close()
-        for zipFile in zipout.infolist():
-            zipFile.orig_filename = zipFile.filename
-            zipFile.date_time = (1980, 1, 1, 0, 0, 0)
-            zipFile.create_system = 3  # 3 is UNIX
-        zipout.comment = ''
         zipout.close()
 
         logging.info('%s processed' % self.filename)
@@ -167,7 +190,7 @@ class TarStripper(GenericArchiveStripper):
         current_file.gname = ''
         return current_file
 
-    def remove_all(self, exclude_list=[]):
+    def remove_all(self, whitelist=[]):
         tarin = tarfile.open(self.filename, 'r' + self.compression, encoding='utf-8')
         tarout = tarfile.open(self.output, 'w' + self.compression, encoding='utf-8')
         for item in tarin.getmembers():
@@ -179,8 +202,9 @@ class TarStripper(GenericArchiveStripper):
                     cfile.remove_all()
                 elif self.add2archive or os.path.splitext(item.name)[1] in parser.NOMETA:
                     logging.info('%s\' format is either not supported or harmless' % item.name)
-                elif item.name in exclude_list:
-                    logging.debug('%s is not supported, but MAt was told to add it anyway.' % item.name)
+                elif item.name in whitelist:
+                    logging.debug('%s is not supported, but MAT was told to add it anyway.'
+                            % item.name)
                 else:
                     continue
                 tarout.add(complete_name, item.name, filter=self._remove)
@@ -209,7 +233,6 @@ class TarStripper(GenericArchiveStripper):
         '''
         if list_unsupported:
             ret_list = []
-        tempdir_len = len(self.tempdir) + 1  # trim the tempfile path
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for item in tarin.getmembers():
             if not self.is_file_clean(item) and not list_unsupported:
@@ -217,20 +240,21 @@ class TarStripper(GenericArchiveStripper):
             tarin.extract(item, self.tempdir)
             complete_name = os.path.join(self.tempdir, item.name)
             if item.isfile():
-                class_file = mat.create_class_file(complete_name, False, add2archive=self.add2archive)
+                class_file = mat.create_class_file(complete_name,
+                        False, add2archive=self.add2archive)
                 if class_file:
                     # We don't support nested archives
                     if not class_file.is_clean():
                         if not list_unsupported:
                             return False
                         elif isinstance(class_file, GenericArchiveStripper):
-                            ret_list.append(complete_name[tempdir_len:])
+                            ret_list.append(item.name)
                 else:
                     logging.error('%s\'s format is not supported or harmless' % item.name)
                     if os.path.splitext(complete_name)[1] not in parser.NOMETA:
                         if not list_unsupported:
                             return False
-                        ret_list.append(complete_name[tempdir_len:])
+                        ret_list.append(item.name)
         tarin.close()
         if list_unsupported:
             return ret_list

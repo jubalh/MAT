@@ -99,6 +99,7 @@ class TestSecureRemove(unittest.TestCase):
         '''
         self.assertRaises(MAT.exceptions.UnableToRemoveFile, MAT.mat.secure_remove, '/NOTREMOVABLE')
 
+
 class TestArchiveProcessing(test.MATTest):
     ''' Test archives processing
     '''
@@ -107,7 +108,7 @@ class TestArchiveProcessing(test.MATTest):
         '''
         tarpath = os.path.join(self.tmpdir, "test.tar.bz2")
         tar = tarfile.open(tarpath, "w:bz2")
-        for clean,dirty in self.file_list:
+        for clean, dirty in self.file_list:
             tar.add(dirty)
             tar.add(clean)
         tar.close()
@@ -121,7 +122,7 @@ class TestArchiveProcessing(test.MATTest):
         '''
         tarpath = os.path.join(self.tmpdir, "test.tar")
         tar = tarfile.open(tarpath, "w")
-        for clean,dirty in self.file_list:
+        for clean, dirty in self.file_list:
             tar.add(dirty)
             tar.add(clean)
         tar.close()
@@ -135,7 +136,7 @@ class TestArchiveProcessing(test.MATTest):
         '''
         tarpath = os.path.join(self.tmpdir, "test.tar.gz")
         tar = tarfile.open(tarpath, "w")
-        for clean,dirty in self.file_list:
+        for clean, dirty in self.file_list:
             tar.add(dirty)
             tar.add(clean)
         tar.close()
@@ -155,6 +156,7 @@ class TestArchiveProcessing(test.MATTest):
         current_file = MAT.mat.create_class_file(tarpath, False, add2archive=False)
         unsupported_files = set(current_file.is_clean(list_unsupported=True))
         self.assertEqual(unsupported_files, set(('mat.desktop', 'README.security', 'setup.py')))
+
 
 def get_tests():
     ''' Returns every libtests'''

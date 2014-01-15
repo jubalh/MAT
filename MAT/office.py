@@ -1,13 +1,12 @@
 ''' Care about office's formats
 '''
 
-import os
 import logging
-import zipfile
-import fileinput
-import tempfile
+import os
 import shutil
+import tempfile
 import xml.dom.minidom as minidom
+import zipfile
 
 try:
     import cairo
@@ -16,7 +15,6 @@ except ImportError:
     logging.info('office.py loaded without PDF support')
     pass
 
-import mat
 import parser
 import archive
 
@@ -30,89 +28,83 @@ class OpenDocumentStripper(archive.ZipStripper):
         ''' Return a dict with all the meta of the file by
             trying to read the meta.xml file.
         '''
+        metadata = super(OpenDocumentStripper, self).get_meta()
         zipin = zipfile.ZipFile(self.filename, 'r')
-        metadata = {}
         try:
             content = zipin.read('meta.xml')
             dom1 = minidom.parseString(content)
             elements = dom1.getElementsByTagName('office:meta')
             for i in elements[0].childNodes:
                 if i.tagName != 'meta:document-statistic':
-                    nodename = ''.join([k for k in i.nodeName.split(':')[1:]])
+                    nodename = ''.join(i.nodeName.split(':')[1:])
                     metadata[nodename] = ''.join([j.data for j in i.childNodes])
                 else:
                     # thank you w3c for not providing a nice
                     # method to get all attributes of a node
                     pass
-            zipin.close()
         except KeyError:  # no meta.xml file found
             logging.debug('%s has no opendocument metadata' % self.filename)
+        zipin.close()
         return metadata
 
     def remove_all(self):
+        ''' Removes metadata
         '''
-            FIXME ?
-            There is a patch implementing the Zipfile.remove()
-            method here : http://bugs.python.org/issue6818
-        '''
-        zipin = zipfile.ZipFile(self.filename, 'r')
-        zipout = zipfile.ZipFile(self.output, 'w', allowZip64=True)
-
-        for item in zipin.namelist():
-            name = os.path.join(self.tempdir, item)
-            _, ext = os.path.splitext(name)
-
-            if item.endswith('manifest.xml'):
-            # contain the list of all files present in the archive
-                zipin.extract(item, self.tempdir)
-                for line in fileinput.input(name, inplace=1):
-                    # remove the line which contains "meta.xml"
-                    line = line.strip()
-                    if not 'meta.xml' in line:
-                        print line
-                zipout.write(name, item)
-
-            elif ext in parser.NOMETA or item == 'mimetype':
-                # keep NOMETA files, and the "manifest" file
-                if item != 'meta.xml':  # contains the metadata
-                    zipin.extract(item, self.tempdir)
-                    zipout.write(name, item)
-
-            else:
-                zipin.extract(item, self.tempdir)
-                if os.path.isfile(name):
-                    try:
-                        cfile = mat.create_class_file(name, False,
-                            add2archive=self.add2archive)
-                        cfile.remove_all()
-                        logging.debug('Processing %s from %s' % (item,
-                            self.filename))
-                        zipout.write(name, item)
-                    except:
-                        logging.info('%s\'s fileformat is not supported' % item)
-                        if self.add2archive:
-                            zipout.write(name, item)
-        zipout.comment = ''
-        logging.info('%s processed' % self.filename)
-        zipin.close()
-        zipout.close()
-        self.do_backup()
-        return True
+        return super(OpenDocumentStripper, self).remove_all(ending_blacklist=['meta.xml'])
 
     def is_clean(self):
         ''' Check if the file is clean from harmful metadatas
         '''
+        clean_super = super(OpenDocumentStripper, self).is_clean()
+        if clean_super is False:
+            return False
+
         zipin = zipfile.ZipFile(self.filename, 'r')
         try:
             zipin.getinfo('meta.xml')
         except KeyError:  # no meta.xml in the file
-            czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', False, True, add2archive=self.add2archive)
-            if czf.is_clean():
-                zipin.close()
-                return True
+            return True
         zipin.close()
         return False
+
+
+class OpenXmlStripper(archive.ZipStripper):
+    ''' Represent an office openxml document, which is like
+        an opendocument format, with some tricky stuff added.
+        It contains mostly xml, but can have media blobs, crap, ...
+        (I don't like this format.)
+    '''
+    def remove_all(self):
+        return super(OpenXmlStripper, self).remove_all(
+                beginning_blacklist=('docProps/'), whitelist=('.rels'))
+
+    def is_clean(self):
+        ''' Check if the file is clean from harmful metadatas.
+            This implementation is faster than something like
+            "return this.get_meta() == {}".
+        '''
+        clean_super = super(OpenXmlStripper, self).is_clean()
+        if clean_super is False:
+            return False
+
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        for item in zipin.namelist():
+            if item.startswith('docProps/'):
+                return False
+        zipin.close()
+        return True
+
+    def get_meta(self):
+        ''' Return a dict with all the meta of the file
+        '''
+        metadata = super(OpenXmlStripper, self).get_meta()
+
+        zipin = zipfile.ZipFile(self.filename, 'r')
+        for item in zipin.namelist():
+            if item.startswith('docProps/'):
+                metadata[item] = 'harmful content'
+        zipin.close()
+        return metadata
 
 
 class PdfStripper(parser.GenericParser):
@@ -128,8 +120,8 @@ class PdfStripper(parser.GenericParser):
             self.pdf_quality = False
 
         self.document = Poppler.Document.new_from_file(uri, self.password)
-        self.meta_list = frozenset(['title', 'author', 'subject', 'keywords', 'creator',
-            'producer', 'metadata'])
+        self.meta_list = frozenset(['title', 'author', 'subject',
+            'keywords', 'creator', 'producer', 'metadata'])
 
     def is_clean(self):
         ''' Check if the file is clean from harmful metadatas
@@ -168,7 +160,7 @@ class PdfStripper(parser.GenericParser):
             surface.finish()
             shutil.move(output, self.output)
         except:
-            logging.error('Something went wrong when cleaning %s. File not cleaned' % self.filename)
+            logging.error('Something went wrong when cleaning %s.' % self.filename)
             return False
 
         try:
@@ -182,8 +174,7 @@ class PdfStripper(parser.GenericParser):
             writer.write(self.output)
             self.do_backup()
         except:
-            logging.error('Unable to remove all metadata from %s, please install\
-pdfrw' % self.output)
+            logging.error('Unable to remove all metadata from %s, please install pdfrw' % self.output)
             return False
         return True
 
@@ -194,74 +185,4 @@ pdfrw' % self.output)
         for key in self.meta_list:
             if self.document.get_property(key):
                 metadata[key] = self.document.get_property(key)
-        return metadata
-
-
-class OpenXmlStripper(archive.GenericArchiveStripper):
-    '''
-        Represent an office openxml document, which is like
-        an opendocument format, with some tricky stuff added.
-        It contains mostly xml, but can have media blobs, crap, ...
-        (I don't like this format.)
-    '''
-    def remove_all(self):
-        '''
-            FIXME ?
-            There is a patch implementing the Zipfile.remove()
-            method here : http://bugs.python.org/issue6818
-        '''
-        zipin = zipfile.ZipFile(self.filename, 'r')
-        zipout = zipfile.ZipFile(self.output, 'w',
-            allowZip64=True)
-        for item in zipin.namelist():
-            name = os.path.join(self.tempdir, item)
-            _, ext = os.path.splitext(name)
-            if item.startswith('docProps/'):  # metadatas
-                pass
-            elif ext in parser.NOMETA or item == '.rels':
-                # keep parser.NOMETA files, and the file named ".rels"
-                zipin.extract(item, self.tempdir)
-                zipout.write(name, item)
-            else:
-                zipin.extract(item, self.tempdir)
-                if os.path.isfile(name):  # don't care about folders
-                    try:
-                        cfile = mat.create_class_file(name, False,
-                            add2archive=self.add2archive)
-                        cfile.remove_all()
-                        logging.debug('Processing %s from %s' % (item,
-                            self.filename))
-                        zipout.write(name, item)
-                    except:
-                        logging.info('%s\'s fileformat is not supported' % item)
-                        if self.add2archive:
-                            zipout.write(name, item)
-        zipout.comment = ''
-        logging.info('%s processed' % self.filename)
-        zipin.close()
-        zipout.close()
-        self.do_backup()
-        return True
-
-    def is_clean(self):
-        ''' Check if the file is clean from harmful metadatas
-        '''
-        zipin = zipfile.ZipFile(self.filename, 'r')
-        for item in zipin.namelist():
-            if item.startswith('docProps/'):
-                return False
-        zipin.close()
-        czf = archive.ZipStripper(self.filename, self.parser,
-                'application/zip', False, True, add2archive=self.add2archive)
-        return czf.is_clean()
-
-    def get_meta(self):
-        ''' Return a dict with all the meta of the file
-        '''
-        zipin = zipfile.ZipFile(self.filename, 'r')
-        metadata = {}
-        for item in zipin.namelist():
-            if item.startswith('docProps/'):
-                metadata[item] = 'harmful content'
-        zipin.close()
         return metadata

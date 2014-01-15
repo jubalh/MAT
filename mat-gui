@@ -410,7 +410,7 @@ non-anonymised) file to output archive'))
                 unsupported_list = self.liststore[line][0].file.list_unsupported()
                 if unsupported_list:
                     list_to_add = self.__popup_archive(unsupported_list)
-                    if self.liststore[line][0].file.remove_all(list_to_add):
+                    if self.liststore[line][0].file.remove_all(whitelist=list_to_add):
                         self.liststore[line][2] = _('Clean')
             elif self.liststore[line][0].file.remove_all():
                 self.liststore[line][2] = _('Clean')
