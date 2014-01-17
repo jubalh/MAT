@@ -22,7 +22,7 @@ def parse():
 The default behaviour is to clean files given in argument')
     options = optparse.OptionGroup(parser, 'Options')
     options.add_option('--add2archive', '-a', action='store_true',
-        default=False, help='Add to output archive non-supported filetypes')
+        default=False, help='Add to output archive non-supported filetypes (Off by default)')
     options.add_option('--backup', '-b', action='store_true', default=False,
         help='Keep a backup copy')
     options.add_option('--force', '-f', action='store_true', default=False,
