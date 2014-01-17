@@ -340,7 +340,7 @@ non-anonymised) file to output archive'))
         dialog.run()
         dialog.destroy()
 
-    def __popup_archive(self, file_list):
+    def __popup_archive(self, file_name, files_list):
         ''' Popup that shows the user what files
             are not going to be include into to outputed
             archive
@@ -355,7 +355,7 @@ non-anonymised) file to output archive'))
 
         dialog.get_content_area().pack_start(sc, True, True, 0)
         store = Gtk.ListStore(bool, str)
-        for i in file_list:  # store.extend is not supported, wtf?!
+        for i in files_list:  # store.extend is not supported, wtf?!
             store.append([0,os.path.basename(i)])
 
         treeview = Gtk.TreeView(store)
@@ -375,10 +375,13 @@ non-anonymised) file to output archive'))
             model[path][0] = not model[path][0]
         cellrenderer_toggle.connect('toggled', cell_toggled, store)
 
+        vbox.pack_start(Gtk.Label(_('MAT is not able to clean the'
+            ' following files, found in the %s archive') % file_name), False, False, 0)
+        label = Gtk.Label()
+        label.set_markup('Select the files you want to <b>include</b>'
+            ' in the cleaned up archive anyway.')
+        vbox.pack_start(label, False, False, 0)
         vbox.pack_start(treeview, True, True, 0)
-        vbox.pack_start(Gtk.Label(_('Thoses files are not recognized by MAT, and'
-            'may contain metadata.')), False, False, 0)
-        vbox.pack_start(Gtk.Label(_('MAT will not clean your archive.')), False, False, 0)
 
         dialog.show_all()
         dialog.run()
@@ -409,7 +412,8 @@ non-anonymised) file to output archive'))
             if isinstance(self.liststore[line][0].file, archive.GenericArchiveStripper):
                 unsupported_list = self.liststore[line][0].file.list_unsupported()
                 if unsupported_list:
-                    list_to_add = self.__popup_archive(unsupported_list)
+                    filename = os.path.basename(self.liststore[line][0].file.filename)
+                    list_to_add = self.__popup_archive(filename, unsupported_list)
                     if self.liststore[line][0].file.remove_all(whitelist=list_to_add):
                         self.liststore[line][2] = _('Clean')
             elif self.liststore[line][0].file.remove_all():
