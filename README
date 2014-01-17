@@ -39,11 +39,11 @@ or
 
 SUPPORTED FORMAT
 ================
-See FORMATS
+See ./data/FORMATS
 
 HOW TO IMPLEMENT NEW FORMATS
 ============================
-1. Add the format's mimetype to the STRIPPER list in mat.py
+1. Add the format's mimetype to the STRIPPER list in strippers.py
 2. Inherit the GenericParser class (parser.py)
 3. Read the parser.py module
 4. Implement at least these three methods:
