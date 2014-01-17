@@ -148,7 +148,7 @@ class GUI(object):
         chooser.destroy()
 
     def cb_popup_metadata(self, widget, row, col):
-        ''' Popup that display on double-clic
+        ''' Popup that display on double-click
             metadata from a file
         '''
         metadataPopupListStore = self.builder.get_object('MetadataPopupListStore')
