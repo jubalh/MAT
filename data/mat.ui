@@ -310,7 +310,7 @@
                     <property name="expand">True</property>
                     <property name="clickable">True</property>
                     <property name="sort_indicator">True</property>
-                    <property name="sort_column_id">4</property>
+                    <property name="sort_column_id">2</property>
                     <child>
                       <object class="GtkCellRendererText" id="MainWindowTreeviewStateRenderer"/>
                       <attributes>
