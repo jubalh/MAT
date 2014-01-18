@@ -410,13 +410,13 @@ non-anonymised) file to output archive'))
             logging.info(msg)
             self.statusbar.push(0, msg)
             if isinstance(self.liststore[line][0].file, archive.GenericArchiveStripper):
+                list_to_add = []
                 unsupported_list = self.liststore[line][0].file.list_unsupported()
-                if unsupported_list:
+                if type(unsupported_list) == list and unsupported_list:
+                    logging.debug("Unsupported list: %s" % unsupported_list)
                     filename = os.path.basename(self.liststore[line][0].file.filename)
                     list_to_add = self.__popup_archive(filename, unsupported_list)
-                    if self.liststore[line][0].file.remove_all(whitelist=list_to_add):
-                        self.liststore[line][2] = _('Clean')
-            elif self.liststore[line][0].file.remove_all():
+            if self.liststore[line][0].file.remove_all(whitelist=list_to_add):
                 self.liststore[line][2] = _('Clean')
             yield True
         self.statusbar.push(0, _('Ready'))
