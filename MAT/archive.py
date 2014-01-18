@@ -72,7 +72,7 @@ class ZipStripper(GenericArchiveStripper):
         if list_unsupported:
             ret_list = []
         zipin = zipfile.ZipFile(self.filename, 'r')
-        if zipin.comment != '':
+        if zipin.comment != '' and not list_unsupported:
             logging.debug('%s has a comment' % self.filename)
             return False
         for item in zipin.infolist():
@@ -201,11 +201,12 @@ class TarStripper(GenericArchiveStripper):
                 if cfile:
                     cfile.remove_all()
                 elif self.add2archive or os.path.splitext(item.name)[1] in parser.NOMETA:
-                    logging.info('%s\' format is either not supported or harmless' % item.name)
+                    logging.debug('%s\' format is either not supported or harmless' % item.name)
                 elif item.name in whitelist:
                     logging.debug('%s is not supported, but MAT was told to add it anyway.'
                             % item.name)
-                else:
+                else:  # Don't add the file to the archive
+                    logging.debug('%s will not be added' % item.name)
                     continue
                 tarout.add(complete_name, item.name, filter=self._remove)
         tarin.close()
@@ -243,7 +244,7 @@ class TarStripper(GenericArchiveStripper):
                 class_file = mat.create_class_file(complete_name,
                         False, add2archive=self.add2archive)
                 if class_file:
-                    # We don't support nested archives
+                    # Nested archives are treated like unsupported ones
                     if not class_file.is_clean():
                         if not list_unsupported:
                             return False
