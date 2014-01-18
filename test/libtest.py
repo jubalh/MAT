@@ -7,6 +7,7 @@
 
 import os
 import sys
+import shutil
 import tarfile
 import tempfile
 import test
@@ -157,6 +158,13 @@ class TestArchiveProcessing(test.MATTest):
         unsupported_files = set(current_file.is_clean(list_unsupported=True))
         self.assertEqual(unsupported_files, set(('mat.desktop', 'README.security', 'setup.py')))
 
+    def test_archive_unwritable_content(self):
+        path = os.path.join(self.tmpdir, './unwritable_content.zip')
+        shutil.copy2('./unwritable_content.zip', self.tmpdir)
+        current_file = MAT.mat.create_class_file(path, False, add2archive=False)
+        current_file.remove_all()
+        current_file = MAT.mat.create_class_file(path, False, add2archive=False)
+        self.assertTrue(current_file.is_clean())
 
 def get_tests():
     ''' Returns every libtests'''

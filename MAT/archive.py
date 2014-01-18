@@ -5,6 +5,7 @@ import datetime
 import logging
 import os
 import shutil
+import stat
 import tarfile
 import tempfile
 import zipfile
@@ -160,7 +161,10 @@ class ZipStripper(GenericArchiveStripper):
             if os.path.isfile(name) and not beginning and not ending:
                 cfile = mat.create_class_file(name, False, add2archive=self.add2archive)
                 if cfile is not None:
+                    old_stat = os.stat(name).st_mode
+                    os.chmod(name, old_stat|stat.S_IWUSR)
                     cfile.remove_all()
+                    os.chmod(name, old_stat)
                     logging.debug('Processing %s from %s' % (item.filename, self.filename))
                 elif item.filename not in whitelist:
                     logging.info('%s\'s format is not supported or harmless' % item.filename)
@@ -244,10 +248,10 @@ class TarStripper(GenericArchiveStripper):
                 class_file = mat.create_class_file(complete_name,
                         False, add2archive=self.add2archive)
                 if class_file:
-                    # Nested archives are treated like unsupported ones
                     if not class_file.is_clean():
                         if not list_unsupported:
                             return False
+                        # Nested archives are treated like unsupported files
                         elif isinstance(class_file, GenericArchiveStripper):
                             ret_list.append(item.name)
                 else:
