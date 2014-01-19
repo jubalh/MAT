@@ -1,3 +1,11 @@
+0.5 - 19jan2014
+    * Support for zip archives
+    * Support for tar.gz archives
+    * Heavily refactoring of archives handling
+    * Handle read-only files inside archives
+    * Handle zip-specific metadata
+    * GUI allows to pick which unsupported files to add to the "clean" archive
+
 0.4.2 - 31oct2013
     * Fix (for real this time) MAT eating PDF
     * The mautilus plugin does not appear on read-only files
