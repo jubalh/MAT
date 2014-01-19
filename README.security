@@ -25,8 +25,12 @@ please do not trust the MAT about them!
 
 Archives handling
 -----------------
-MAT's GUI does not handle (for now?) nested archives;
-it will treat them like unsupported format.
+MAT's GUI handle nested archives like unsupported format:
+ - The user can select which unsupported files s·he wants to
+    include in the _first level archive_.
+ - The user can only select by the mean of the
+    "Add unsupported file to archives" option which unsupported
+    files s·he wants to include in _deeper levels archives_.
 
 
 Threat Model
