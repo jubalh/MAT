@@ -203,7 +203,10 @@ class TarStripper(GenericArchiveStripper):
                 complete_name = os.path.join(self.tempdir, item.name)
                 cfile = mat.create_class_file(complete_name, False, add2archive=self.add2archive)
                 if cfile:
+                    old_stat = os.stat(complete_name).st_mode
+                    os.chmod(complete_name, old_stat|stat.S_IWUSR)
                     cfile.remove_all()
+                    os.chmod(complete_name, old_stat)
                 elif self.add2archive or os.path.splitext(item.name)[1] in parser.NOMETA:
                     logging.debug('%s\' format is either not supported or harmless' % item.name)
                 elif item.name in whitelist:
