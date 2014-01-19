@@ -40,6 +40,8 @@ class GenericArchiveStripper(parser.GenericParser):
         shutil.rmtree(self.tempdir)
 
     def is_clean(self, list_unsupported):
+        ''' Virtual method to check for harmul metadata
+        '''
         raise NotImplementedError
 
     def list_unsupported(self):
@@ -57,8 +59,8 @@ class ZipStripper(GenericArchiveStripper):
     ''' Represent a zip file
     '''
     def __is_zipfile_clean(self, fileinfo):
-        ''' Check if a ZipInfo object is clean of metadatas added
-            by zip itself, independently of the corresponding file metadatas
+        ''' Check if a ZipInfo object is clean of metadata added
+            by zip itself, independently of the corresponding file metadata
         '''
         if fileinfo.comment != '':
             return False
@@ -70,6 +72,9 @@ class ZipStripper(GenericArchiveStripper):
 
     def is_clean(self, list_unsupported=False):
         ''' Check if the given file is clean from harmful metadata
+            When list_unsupported is True, the method returns a list
+            of all non-supported/archives files contained in the
+            archive.
         '''
         if list_unsupported:
             ret_list = []
@@ -186,7 +191,7 @@ class TarStripper(GenericArchiveStripper):
     ''' Represent a tarfile archive
     '''
     def _remove(self, current_file):
-        ''' Remove the meta added by tar itself to the file
+        ''' Remove the meta added by tarfile itself to the file
         '''
         current_file.mtime = 0
         current_file.uid = 0
@@ -196,6 +201,10 @@ class TarStripper(GenericArchiveStripper):
         return current_file
 
     def remove_all(self, whitelist=[]):
+        ''' Remove all harmful metadata from the tarfile.
+            The method will also add every files matching
+            whitelist in the produced archive.
+        '''
         tarin = tarfile.open(self.filename, 'r' + self.compression, encoding='utf-8')
         tarout = tarfile.open(self.output, 'w' + self.compression, encoding='utf-8')
         for item in tarin.getmembers():
@@ -224,7 +233,7 @@ class TarStripper(GenericArchiveStripper):
         return True
 
     def is_file_clean(self, current_file):
-        ''' Check metadatas added by tar
+        ''' Check metadatas added by tarfile
         '''
         if current_file.mtime != 0:
             return False
@@ -240,6 +249,9 @@ class TarStripper(GenericArchiveStripper):
 
     def is_clean(self, list_unsupported=False):
         ''' Check if the file is clean from harmful metadatas
+            When list_unsupported is True, the method returns a list
+            of all non-supported/archives files contained in the
+            archive.
         '''
         if list_unsupported:
             ret_list = []
@@ -274,7 +286,7 @@ class TarStripper(GenericArchiveStripper):
         return True
 
     def get_meta(self):
-        ''' Return a dict with all the meta of the file
+        ''' Return a dict with all the meta of the tarfile
         '''
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         metadata = {}
