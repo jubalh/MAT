@@ -76,8 +76,7 @@ class ZipStripper(GenericArchiveStripper):
             of all non-supported/archives files contained in the
             archive.
         '''
-        if list_unsupported:
-            ret_list = []
+        ret_list = []
         zipin = zipfile.ZipFile(self.filename, 'r')
         if zipin.comment != '' and not list_unsupported:
             logging.debug('%s has a comment' % self.filename)
@@ -253,8 +252,7 @@ class TarStripper(GenericArchiveStripper):
             of all non-supported/archives files contained in the
             archive.
         '''
-        if list_unsupported:
-            ret_list = []
+        ret_list = []
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for item in tarin.getmembers():
             if not self.is_file_clean(item) and not list_unsupported:
