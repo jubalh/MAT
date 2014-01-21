@@ -29,7 +29,7 @@ setup(
         ( 'share/applications', ['mat.desktop'] ),
         ( 'share/mat', ['data/FORMATS', 'data/mat.ui'] ),
         ( 'share/pixmaps', ['data/mat.png'] ),
-        ( 'share/doc/mat', ['README', 'TODO', 'README.security'] ),
+        ( 'share/doc/mat', ['README', 'README.security'] ),
         ( 'share/man/man1', ['mat.1', 'mat-gui.1'] ),
         ( 'share/nautilus-python/extensions', ['nautilus/nautilus-mat.py'])
     ],
