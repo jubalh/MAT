@@ -406,7 +406,7 @@ non-anonymised) file to output archive'))
     def __mat_clean(self, iterator):
         ''' Clean elements in iterator '''
         for line in iterator:  # for each file in selection
-            msg = _('Cleaning %s') % self.liststore[line][2].decode('utf-8', 'replace')
+            msg = _('Cleaning %s') % self.liststore[line][1].decode('utf-8', 'replace')
             logging.info(msg)
             self.statusbar.push(0, msg)
             if isinstance(self.liststore[line][0].file, archive.GenericArchiveStripper):
