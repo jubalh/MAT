@@ -62,6 +62,9 @@ class MATTest(unittest.TestCase):
         '''
             Remove the tmp folder
         '''
+        for root, dirs, files in os.walk(self.tmpdir):
+            for d in dirs + files:
+                os.chmod(os.path.join(root, d), 0o777)
         shutil.rmtree(self.tmpdir)
 
 

@@ -98,7 +98,7 @@ class TestSecureRemove(unittest.TestCase):
     def test_remove_fail(self):
         ''' test the secure removal of an non-removable file
         '''
-        self.assertRaises(MAT.exceptions.UnableToRemoveFile, MAT.mat.secure_remove, '/NOTREMOVABLE')
+        self.assertRaises(MAT.exceptions.UnableToWriteFile, MAT.mat.secure_remove, '/NOTREMOVABLE')
 
 
 class TestArchiveProcessing(test.MATTest):

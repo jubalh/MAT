@@ -112,6 +112,13 @@ class XMLParser(xml.sax.handler.ContentHandler):
 def secure_remove(filename):
     ''' Securely remove the file
     '''
+    # I want the file removed, even if it's ro
+    try:
+        os.chmod(filename, 0o777)
+    except OSError:
+        logging.error('Unable to add write rights to %s' % filename)
+        raise MAT.exceptions.UnableToWriteFile
+
     try:
         if not subprocess.call(['shred', '--remove', filename]):
             return True
@@ -122,10 +129,11 @@ def secure_remove(filename):
 
     try:
         os.remove(filename)
-        return True
     except OSError:
         logging.error('Unable to remove %s' % filename)
         raise MAT.exceptions.UnableToRemoveFile
+
+    return True
 
 
 def create_class_file(name, backup, **kwargs):
