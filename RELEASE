@@ -8,7 +8,7 @@ update localisations using
 update changelog:
     git log -> CHANGELOG
 
-update version number:
+update version number (Don't be affraid to use -rc or -beta)
     MAT/mat.py -> __version__ = $VERSION
 
 commit release changes
