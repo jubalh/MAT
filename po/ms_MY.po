@@ -3,174 +3,172 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Translators:
-# mikkoharhanen <gitti@mikkoharhanen.fi>, 2013
-# tonttula, 2013
+# shahril <mohd_shahril_96@yahoo.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
-"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
+"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-07-01 19:26+0200\n"
-"PO-Revision-Date: 2013-11-09 09:50+0000\n"
-"Last-Translator: tonttula\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/torproject/language/fi/)\n"
+"PO-Revision-Date: 2013-11-05 05:40+0000\n"
+"Last-Translator: shahril <mohd_shahril_96@yahoo.com>\n"
+"Language-Team: Malay (Malaysia) (http://www.transifex.com/projects/p/torproject/language/ms_MY/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ms_MY\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: mat-gui:65 mat-gui:375 mat-gui:387
 msgid "Ready"
-msgstr "Valmis"
+msgstr "Sedia"
 
 #: mat-gui:134
 msgid "Choose files"
-msgstr "Valitse tiedostot"
+msgstr "Pilih Fail"
 
 #: mat-gui:141
 msgid "All files"
-msgstr "Kaikki tiedostot"
+msgstr "Semua fail"
 
 #: mat-gui:148
 msgid "Supported files"
-msgstr "Tuetut tiedostot"
+msgstr "Fail yang disokong"
 
 #: mat-gui:164
 msgid "No metadata found"
-msgstr "Metatietoja ei löydetty"
+msgstr "Tiada metadata dijumpai"
 
 #: mat-gui:165 mat-gui:370 mat-gui:385 data/mat.ui:227
 msgid "Clean"
-msgstr "Puhdista"
+msgstr "Bersihkan"
 
 #: mat-gui:167 mat-gui:372
 msgid "Dirty"
-msgstr "Likainen"
+msgstr "Kotor"
 
 #: mat-gui:172
 #, python-format
 msgid "%s's metadata"
-msgstr "%s's metatiedot"
+msgstr "%s metadata"
 
 #: mat-gui:183
 msgid "Trash your meta, keep your data"
-msgstr "Tuhoa metatiedot, mutta pidä tiedostot"
+msgstr "Padam maklumat meta, kekalkan fail anda"
 
 #: mat-gui:188
 msgid "Website"
-msgstr "Verkkosivusto"
+msgstr "Laman sesawang"
 
 #: mat-gui:214 data/mat.ui:107
 msgid "Preferences"
-msgstr "Asetukset"
+msgstr "Tetapan"
 
 #: mat-gui:228
 msgid "Reduce PDF quality"
-msgstr "Vähennä PDF:n laatua"
+msgstr "Kurangkan kualiti PDF"
 
 #: mat-gui:231
 msgid "Reduce the produced PDF size and quality"
-msgstr "Pienennä PDF-tiedostoa ja heikennä sen laatua"
+msgstr "Kurangkan saiz dan kualiti PDF yang dijana"
 
 #: mat-gui:234
 msgid "Add unsupported file to archives"
-msgstr "Lisää tukematon tiedosto arkistoon"
+msgstr "Tambah fail yang tidak disokong ke dalam arkib"
 
 #: mat-gui:238
 msgid "Add non-supported (and so non-anonymised) file to output archive"
-msgstr "Lisää tiedosto, jota ei ole tuettu (eikä sen vuoksi puhdistettu), luotavaan arkistoon."
+msgstr "Tambah fail yang tidak disokong (dan yang non-anonymised) ke output arkib"
 
 #: mat-gui:283
 msgid "Unknown"
-msgstr "Tuntematon"
+msgstr "Tidak diketahui"
 
 #: mat-gui:330
 msgid "Not-supported"
-msgstr "Tukematon"
+msgstr "Tidak disokong"
 
 #: mat-gui:347
 msgid "Unknown mimetype"
-msgstr "Tuntematon mimetyyppi"
+msgstr "JenisMime tidak diketahui"
 
 #: mat-gui:354 data/mat.ui:291
 msgid "Filename"
-msgstr "Tiedostonimi"
+msgstr "Nama fail"
 
 #: mat-gui:356
 msgid "Mimetype"
-msgstr "Mediatyyppi"
+msgstr "JenisMime"
 
 #: mat-gui:366
 #, python-format
 msgid "Checking %s"
-msgstr "Tarkistetaan %s"
+msgstr "Menyemak %s"
 
 #: mat-gui:381
 #, python-format
 msgid "Cleaning %s"
-msgstr "Siivotaan %s"
+msgstr "Bersihkan %s"
 
 #: data/mat.ui:63
 msgid "_File"
-msgstr "_Tiedosto"
+msgstr "_Fail"
 
 #: data/mat.ui:99
 msgid "_Edit"
-msgstr "_Muokkaa"
+msgstr "_Sunting"
 
 #: data/mat.ui:118 data/mat.ui:253
 msgid "Clear"
-msgstr "Tyhjennä"
+msgstr "Padam"
 
 #: data/mat.ui:134
 msgid "_Process"
-msgstr "_Prosessi"
+msgstr "_Proses"
 
 #: data/mat.ui:168
 msgid "_Help"
-msgstr "_Apua"
+msgstr "_Bantuan"
 
 #: data/mat.ui:214
 msgid "Add"
-msgstr "Lisää"
+msgstr "Tambah"
 
 #: data/mat.ui:240
 msgid "Check"
-msgstr "Tarkista"
+msgstr "Semak"
 
 #: data/mat.ui:308
 msgid "State"
-msgstr "Tila"
+msgstr "Nyatakan"
 
 #: data/mat.ui:346 data/mat.ui:495
 msgid "Metadata"
-msgstr "Metatiedot"
+msgstr "Metadata"
 
 #: data/mat.ui:400
 msgid "Name"
-msgstr "Nimi"
+msgstr "Nama"
 
 #: data/mat.ui:414
 msgid "Content"
-msgstr "Sisältö"
+msgstr "Kandungan"
 
 #: data/mat.ui:448
 msgid "Supported formats"
-msgstr "Tuetut tiedostomuodot"
+msgstr "Format yang disokong"
 
 #: data/mat.ui:482
 msgid "Support"
-msgstr "Tuki"
+msgstr "Bantuan"
 
 #: data/mat.ui:508
 msgid "Method"
-msgstr "Menetelmä"
+msgstr "Kaedah"
 
 #: data/mat.ui:521
 msgid "Remaining"
-msgstr "Jäljellä"
+msgstr "Yang tinggal"
 
 #: data/mat.ui:556
 msgid "Fileformat"
-msgstr "Tiedostomuoto"
+msgstr "FormatFail"

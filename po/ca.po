@@ -3,200 +3,197 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# K.N., 2012
-# rike, 2014
-# Sacro <Scion@T-Online.de>, 2013
-# to_ba, 2014
+# agusti, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-01-19 14:48+0000\n"
-"PO-Revision-Date: 2014-01-21 13:40+0000\n"
-"Last-Translator: to_ba\n"
-"Language-Team: German (http://www.transifex.com/projects/p/torproject/language/de/)\n"
+"PO-Revision-Date: 2014-01-21 11:50+0000\n"
+"Last-Translator: agusti\n"
+"Language-Team: Catalan (http://www.transifex.com/projects/p/torproject/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
+"Language: ca\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: mat-gui:61 mat-gui:403 mat-gui:422
 msgid "Ready"
-msgstr "Fertig"
+msgstr "Llest"
 
 #: mat-gui:128
 msgid "Choose files"
-msgstr "Dateien auswählen"
+msgstr "Tria els arxius"
 
 #: mat-gui:135
 msgid "All files"
-msgstr "Alle Dateien"
+msgstr "Tots els arxius"
 
 #: mat-gui:142
 msgid "Supported files"
-msgstr "Unterstützte Dateien"
+msgstr "Arxius compatibles"
 
 #: mat-gui:157
 msgid "No metadata found"
-msgstr "Keine Metadaten gefunden"
+msgstr "No s'han trobat metadades"
 
 #: mat-gui:158 mat-gui:398 mat-gui:420
 msgid "Clean"
-msgstr "Säubern"
+msgstr "Neteja"
 
 #: mat-gui:160 mat-gui:400
 msgid "Dirty"
-msgstr "Verschmutzt"
+msgstr "Brut"
 
 #: mat-gui:165
 #, python-format
 msgid "%s's metadata"
-msgstr "Metadaten von %s"
+msgstr "%s's metadades"
 
 #: mat-gui:176
 msgid "Trash your meta, keep your data"
-msgstr "Ihre Meta löschen, Ihre Daten behalten"
+msgstr "Elimina les metes , mantenir les  teves dades"
 
 #: mat-gui:181
 msgid "Website"
-msgstr "Webseite"
+msgstr "Pàgina web"
 
 #: mat-gui:207 data/mat.ui:107
 msgid "Preferences"
-msgstr "Einstellungen"
+msgstr "Preferències"
 
 #: mat-gui:220
 msgid "Reduce PDF quality"
-msgstr "PDF-Qualität verringern"
+msgstr "Reduir qualitat del PDF"
 
 #: mat-gui:223
 msgid "Reduce the produced PDF size and quality"
-msgstr "Die Größe und Qualität des erstellten PDF verringern"
+msgstr "Reduir la mida i qualitat del PDF produït"
 
 #: mat-gui:226
 msgid "Add unsupported file to archives"
-msgstr "Nicht unterstützte Dateien im Archiv hinzufügen"
+msgstr "Afegir arxiu no compatible als arxius"
 
 #: mat-gui:229
 msgid "Add non-supported (and so non-anonymised) file to output archive"
-msgstr "Nicht unterstützte (und somit nicht gesäuberte) Dateien dem Ausgabearchiv hinzufügen"
+msgstr "Afegir arxiu no compatible (i no anonimitzat) a l'arxiu de sortida"
 
 #: mat-gui:268
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr "Desconegut"
 
 #: mat-gui:310
 msgid "Not-supported"
-msgstr "Nicht unterstützt"
+msgstr "No compatible"
 
 #: mat-gui:324
 msgid "Harmless fileformat"
-msgstr "Harmloses Dateiformat"
+msgstr "Format d'Arxiu Inofensiu"
 
 #: mat-gui:326
 msgid "Fileformat not supported"
-msgstr "Dateiformat wird nicht unterstützt"
+msgstr "Format d'arxiu no compatible"
 
 #: mat-gui:329
 msgid "These files can not be processed:"
-msgstr "Diese Dateien können nicht verarbeitet werden:"
+msgstr "Aquests arxius no es poden processar:"
 
 #: mat-gui:334 mat-gui:363 data/mat.ui:292
 msgid "Filename"
-msgstr "Dateiname"
+msgstr "Nom d'arxiu"
 
 #: mat-gui:336
 msgid "Reason"
-msgstr "Grund"
+msgstr "Raó"
 
 #: mat-gui:348
 msgid "Non-supported files in archive"
-msgstr "Nicht unterstützte Dateien im Archiv"
+msgstr "Arxius no compatibles en l'arxiu"
 
 #: mat-gui:349 data/mat.ui:227
 msgid "Scour"
-msgstr "Reinigen"
+msgstr "Neteja"
 
 #: mat-gui:362
 msgid "Include"
-msgstr "Enthalten"
+msgstr "Inclou"
 
 #: mat-gui:378
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
-msgstr "MAT kann folgende Dateien, die im %s Archiv gefunden wurden, nicht säubern"
+msgstr "MAT no pot netejar els següents arxiu, trobats a %s arxiu"
 
 #: mat-gui:394
 #, python-format
 msgid "Checking %s"
-msgstr "%s wird geprüft"
+msgstr "Examinant %s"
 
 #: mat-gui:409
 #, python-format
 msgid "Cleaning %s"
-msgstr "%s wird bereinigt"
+msgstr "Netejent %s"
 
 #: data/mat.ui:63
 msgid "_File"
-msgstr "_Datei"
+msgstr "_Arxiu"
 
 #: data/mat.ui:99
 msgid "_Edit"
-msgstr "_Bearbeiten"
+msgstr "_Edita"
 
 #: data/mat.ui:118 data/mat.ui:253
 msgid "Clear"
-msgstr "Säubern"
+msgstr "Neteja"
 
 #: data/mat.ui:134
 msgid "_Process"
-msgstr "_Abarbeiten"
+msgstr "_Procés"
 
 #: data/mat.ui:168
 msgid "_Help"
-msgstr "_Hilfe"
+msgstr "_Ajuda"
 
 #: data/mat.ui:214
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "Afegir"
 
 #: data/mat.ui:240
 msgid "Check"
-msgstr "Prüfen"
+msgstr "Prova"
 
 #: data/mat.ui:309
 msgid "State"
-msgstr "Status"
+msgstr "Estat"
 
 #: data/mat.ui:347 data/mat.ui:499
 msgid "Metadata"
-msgstr "Metadaten"
+msgstr "Metadades"
 
 #: data/mat.ui:376
 msgid "Name"
-msgstr "Name"
+msgstr "Nom"
 
 #: data/mat.ui:390
 msgid "Content"
-msgstr "Inhalt"
+msgstr "Contingut"
 
 #: data/mat.ui:452
 msgid "Supported formats"
-msgstr "Unterstützte Formate"
+msgstr "Formats compatibles"
 
 #: data/mat.ui:486
 msgid "Support"
-msgstr "Unterstützung"
+msgstr "Suport"
 
 #: data/mat.ui:512
 msgid "Method"
-msgstr "Methode"
+msgstr "Mètode"
 
 #: data/mat.ui:525
 msgid "Remaining"
-msgstr "Verbleibend"
+msgstr "Restant"
 
 #: data/mat.ui:560
 msgid "Fileformat"
-msgstr "Dateiformat"
+msgstr "Format d'arxiu"

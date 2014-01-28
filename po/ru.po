@@ -3,14 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Bergitte <alvina_alexandrova@mail.ru>, 2013
 # Arioko <arikushi777@gmail.com>, 2013
+# Dmitry <linuxsquirrel.dev@gmail.com>, 2013
+# mendov <mr.mendov@gmail.com>, 2013
+# oulgocke <beandonlybe@yandex.ru>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
-"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
-"POT-Creation-Date: 2013-01-05 20:03+0100\n"
-"PO-Revision-Date: 2013-06-24 22:52+0000\n"
-"Last-Translator: Arioko <arikushi777@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-19 14:48+0000\n"
+"PO-Revision-Date: 2014-01-22 06:50+0000\n"
+"Last-Translator: oulgocke <beandonlybe@yandex.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/torproject/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,161 +22,182 @@ msgstr ""
 "Language: ru\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: mat-gui:95 mat-gui:563 mat-gui:579
+#: mat-gui:61 mat-gui:403 mat-gui:422
 msgid "Ready"
 msgstr "Готов"
 
-#: mat-gui:107
-msgid "Add"
-msgstr "Добавить"
-
-#: mat-gui:109 mat-gui:183
-msgid "Add files"
-msgstr "Добавить файлы"
-
-#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
-#: mat-gui:573 mat-gui:575
-msgid "Clean"
-msgstr "Очистить"
-
-#: mat-gui:115
-msgid "Clean selected files"
-msgstr "Очистить выбранные файлы"
-
-#: mat-gui:119 mat-gui:214
-msgid "Check"
-msgstr "Проверить"
-
-#: mat-gui:121
-msgid "Check selected files for harmful meta"
-msgstr "Проверить выбранные файлы на наличие вредных мета"
-
-#: mat-gui:125 mat-gui:185
-msgid "Quit"
-msgstr "Выйти"
-
-#: mat-gui:137
-msgid "Path"
-msgstr "Путь"
-
-#: mat-gui:137 mat-gui:363
-msgid "Filename"
-msgstr "Имя файла"
-
-#: mat-gui:137 mat-gui:365
-msgid "Mimetype"
-msgstr "Mime тип"
-
-#: mat-gui:137
-msgid "State"
-msgstr "Состояние"
-
-#: mat-gui:138
-msgid "Cleaned file"
-msgstr "Очищенный файл"
-
-#: mat-gui:182
-msgid "Files"
-msgstr "Файлы"
-
-#: mat-gui:188
-msgid "Edit"
-msgstr "Редактировать"
-
-#: mat-gui:189
-msgid "Clear the filelist"
-msgstr "Очистить список файлов"
-
-#: mat-gui:192 mat-gui:447
-msgid "Preferences"
-msgstr "Настройки"
-
-#: mat-gui:195
-msgid "Process"
-msgstr "Процесс"
-
-#: mat-gui:218
-msgid "Help"
-msgstr "Помощ"
-
-#: mat-gui:219 mat-gui:395
-msgid "Supported formats"
-msgstr "Поддерживаемые форматы"
-
-#: mat-gui:220
-msgid "About"
-msgstr "О.."
-
-#: mat-gui:241
+#: mat-gui:128
 msgid "Choose files"
 msgstr "Выбрать файлы"
 
-#: mat-gui:248
+#: mat-gui:135
 msgid "All files"
 msgstr "Все файлы"
 
-#: mat-gui:255
+#: mat-gui:142
 msgid "Supported files"
 msgstr "Поддерживаемые файлы"
 
-#: mat-gui:297
-msgid "unknow"
-msgstr "неизвестно"
+#: mat-gui:157
+msgid "No metadata found"
+msgstr "Метаданные не найдены"
 
-#: mat-gui:313 mat-gui:559
+#: mat-gui:158 mat-gui:398 mat-gui:420
+msgid "Clean"
+msgstr "Очистить"
+
+#: mat-gui:160 mat-gui:400
 msgid "Dirty"
 msgstr "Грязный"
 
-#: mat-gui:343
-msgid "Not-supported"
-msgstr "Не поддерживаемый"
+#: mat-gui:165
+#, python-format
+msgid "%s's metadata"
+msgstr "%s's метаданные"
 
-#: mat-gui:381
-msgid "This software was coded during the GSoC 2011"
-msgstr "Эта программа была закодирована в Google Summer of Code 2011"
+#: mat-gui:176
+msgid "Trash your meta, keep your data"
+msgstr "Очистить метаданные"
 
-#: mat-gui:386
+#: mat-gui:181
 msgid "Website"
 msgstr "Вебсайт"
 
-#: mat-gui:461
-msgid "Force Clean"
-msgstr "Форсированная очистка"
+#: mat-gui:207 data/mat.ui:107
+msgid "Preferences"
+msgstr "Настройки"
 
-#: mat-gui:464
-msgid "Do not check if already clean before cleaning"
-msgstr "Не проверять, если уже чистый перед очисткой"
-
-#: mat-gui:468
-msgid "Backup"
-msgstr "Резервное копирование"
-
-#: mat-gui:471
-msgid "Keep a backup copy"
-msgstr "Хранить резервную копию"
-
-#: mat-gui:474
+#: mat-gui:220
 msgid "Reduce PDF quality"
 msgstr "Уменьшить PDF качество"
 
-#: mat-gui:477
+#: mat-gui:223
 msgid "Reduce the produced PDF size and quality"
 msgstr "Сокращение размера и качества сделанного PDF"
 
-#: mat-gui:480
+#: mat-gui:226
 msgid "Add unsupported file to archives"
 msgstr "Добавить не поддерживаемый файл в архив"
 
-#: mat-gui:484
+#: mat-gui:229
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Добавить не поддерживаемый (и поэтому не-анонимный) файл в выходной архив"
 
-#: mat-gui:554
-#, python-format
-msgid "Checking %s..."
-msgstr "Проверка %s..."
+#: mat-gui:268
+msgid "Unknown"
+msgstr "Неизвестно"
 
-#: mat-gui:572
+#: mat-gui:310
+msgid "Not-supported"
+msgstr "Не поддерживаемый"
+
+#: mat-gui:324
+msgid "Harmless fileformat"
+msgstr "Безопасный формат файла"
+
+#: mat-gui:326
+msgid "Fileformat not supported"
+msgstr "Формат файла не поддерживается"
+
+#: mat-gui:329
+msgid "These files can not be processed:"
+msgstr "Эти файлы невозможно обработать:"
+
+#: mat-gui:334 mat-gui:363 data/mat.ui:292
+msgid "Filename"
+msgstr "Имя файла"
+
+#: mat-gui:336
+msgid "Reason"
+msgstr "Причина"
+
+#: mat-gui:348
+msgid "Non-supported files in archive"
+msgstr "Неподдерживаемые файлы в архиве"
+
+#: mat-gui:349 data/mat.ui:227
+msgid "Scour"
+msgstr "Вычистить"
+
+#: mat-gui:362
+msgid "Include"
+msgstr "Включить"
+
+#: mat-gui:378
 #, python-format
-msgid "Cleaning %s..."
-msgstr "Очистка %s..."
+msgid "MAT is not able to clean the following files, found in the %s archive"
+msgstr "MAT не в состоянии вычистить следующие файлы, найденные в архиве %s"
+
+#: mat-gui:394
+#, python-format
+msgid "Checking %s"
+msgstr "Проверка %s"
+
+#: mat-gui:409
+#, python-format
+msgid "Cleaning %s"
+msgstr "Очистка %s"
+
+#: data/mat.ui:63
+msgid "_File"
+msgstr "_Файл"
+
+#: data/mat.ui:99
+msgid "_Edit"
+msgstr "_Правка"
+
+#: data/mat.ui:118 data/mat.ui:253
+msgid "Clear"
+msgstr "Очистить"
+
+#: data/mat.ui:134
+msgid "_Process"
+msgstr "_Процесс"
+
+#: data/mat.ui:168
+msgid "_Help"
+msgstr "_Справка"
+
+#: data/mat.ui:214
+msgid "Add"
+msgstr "Добавить"
+
+#: data/mat.ui:240
+msgid "Check"
+msgstr "Проверить"
+
+#: data/mat.ui:309
+msgid "State"
+msgstr "Состояние"
+
+#: data/mat.ui:347 data/mat.ui:499
+msgid "Metadata"
+msgstr "Метаданные"
+
+#: data/mat.ui:376
+msgid "Name"
+msgstr "Имя"
+
+#: data/mat.ui:390
+msgid "Content"
+msgstr "Содержание"
+
+#: data/mat.ui:452
+msgid "Supported formats"
+msgstr "Поддерживаемые форматы"
+
+#: data/mat.ui:486
+msgid "Support"
+msgstr "Поддержка"
+
+#: data/mat.ui:512
+msgid "Method"
+msgstr "Метод"
+
+#: data/mat.ui:525
+msgid "Remaining"
+msgstr "Осталось"
+
+#: data/mat.ui:560
+msgid "Fileformat"
+msgstr "Формат файла"
