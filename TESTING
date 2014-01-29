@@ -1,0 +1,14 @@
+# Automatic testing
+MAT comes with a comprehensive testsuite, that can be called with test.py.
+Currently, it only tests the CLI, and the library, and runs in something
+like 2 minutes on a Core i7/SSD.
+
+# Manual testing
+Since the GUI can not be automatically tested for yet, it has to be carefully
+tested manually. Here are some importants points:
+
+- Is the status bar message the right one for every actions?
+- Are nested archives correctly handled ? Even when they contains unknown-to-MAT formats?
+- When started from a terminal, does it ouputs text/warnings?
+- Does the GUI clean files?
+- Is it correctly translated?
