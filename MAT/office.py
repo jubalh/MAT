@@ -1,4 +1,5 @@
 ''' Care about office's formats
+
 '''
 
 import logging
@@ -19,7 +20,7 @@ import parser
 import archive
 
 
-class OpenDocumentStripper(archive.ZipStripper):
+class OpenDocumentStripper(archive.TerminalZipStripper):
     ''' An open document file is a zip, with xml file into.
         The one that interest us is meta.xml
     '''
@@ -68,7 +69,7 @@ class OpenDocumentStripper(archive.ZipStripper):
         return False
 
 
-class OpenXmlStripper(archive.ZipStripper):
+class OpenXmlStripper(archive.TerminalZipStripper):
     ''' Represent an office openxml document, which is like
         an opendocument format, with some tricky stuff added.
         It contains mostly xml, but can have media blobs, crap, ...

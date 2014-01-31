@@ -39,7 +39,7 @@ class GenericArchiveStripper(parser.GenericParser):
                 mat.secure_remove(path_file)
         shutil.rmtree(self.tempdir)
 
-    def is_clean(self, list_unsupported):
+    def is_clean(self, list_unsupported=False):
         ''' Virtual method to check for harmul metadata
         '''
         raise NotImplementedError
@@ -310,6 +310,14 @@ class TarStripper(GenericArchiveStripper):
                     metadata[item.name] = str(current_meta)
         tarin.close()
         return metadata
+
+
+class TerminalZipStripper(ZipStripper):
+    ''' Represent a terminal level archive.
+        This type of archive can not contain nested archives.
+        It is used for formats like docx, which are basically
+        ziped xml.
+    '''
 
 
 class GzipStripper(TarStripper):
