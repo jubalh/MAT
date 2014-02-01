@@ -114,7 +114,7 @@ def secure_remove(filename):
     '''
     # I want the file removed, even if it's ro
     try:
-        os.chmod(filename, 0o777)
+        os.chmod(filename, 220)
     except OSError:
         logging.error('Unable to add write rights to %s' % filename)
         raise MAT.exceptions.UnableToWriteFile
