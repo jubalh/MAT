@@ -12,6 +12,7 @@ import hachoir_core
 
 from MAT import mat
 from MAT import strippers
+from MAT import archive
 
 
 def parse():
@@ -59,7 +60,7 @@ def display_version(*_):
     sys.exit(0)
 
 
-def list_meta(class_file, filename, force):
+def list_meta(class_file, filename, force, add2archive):
     '''
         Print all the metadata of 'filename' on stdout
     '''
@@ -74,7 +75,7 @@ def list_meta(class_file, filename, force):
                 print('\t' + key + ' : ' + str(value))
 
 
-def is_clean(class_file, filename, force):
+def is_clean(class_file, filename, force, add2archive):
     '''
         Say if 'filename' is clean or not
     '''
@@ -84,21 +85,30 @@ def is_clean(class_file, filename, force):
         print('[+] %s is not clean' % filename)
 
 
-def clean_meta(class_file, filename, force):
+def clean_meta(class_file, filename, force, add2archive):
     '''
         Clean the file 'filename'
     '''
     if not class_file.is_writable:
         print('[-] %s is not writable' % filename)
         return
-    print('[+] Cleaning %s' % filename)
+    print('[*] Cleaning %s' % filename)
     if not force and class_file.is_clean():
-        print('%s is already clean' % filename)
+        print('[+] %s is already clean' % filename)
+    elif not add2archive:
+        is_archive = isinstance(class_file, archive.GenericArchiveStripper)
+        is_terminal = isinstance(class_file, archive.TerminalZipStripper)
+        if is_archive and not is_terminal:
+            unsupported_list = class_file.list_unsupported()
+            if type(unsupported_list) == list and unsupported_list:
+                print('[-] Can not clean: %s.'\
+                'It contains unsupported filetypes:' % filename)
+                for i in unsupported_list:
+                    print('- %s' % i)
+    elif class_file.remove_all():
+        print('[+] %s cleaned !' % filename)
     else:
-        if class_file.remove_all():
-            print('%s cleaned !' % filename)
-        else:
-            print('Unable to clean %s', filename)
+        print('[-] Unable to clean %s', filename)
 
 
 def list_supported():
@@ -142,7 +152,7 @@ def main():
         class_file = mat.create_class_file(filename, args.backup,
             add2archive=args.add2archive, low_pdf_quality=args.low_pdf_quality)
         if class_file:
-            func(class_file, filename, args.force)
+            func(class_file, filename, args.force, args.add2archive)
         else:
             print('Unable to process %s' % filename)
 
