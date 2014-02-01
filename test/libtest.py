@@ -73,17 +73,15 @@ class TestFileAttributes(unittest.TestCase):
     '''
         test various stuffs about files (readable, writable, exist, ...)
     '''
-    def test_not_writtable(self):
-        ''' test MAT's behaviour on non-writable file'''
-        self.assertFalse(MAT.mat.create_class_file('not_writtable', False, add2archive=True))
-
     def test_not_exist(self):
         ''' test MAT's behaviour on non-existent file'''
-        self.assertFalse(MAT.mat.create_class_file('ilikecookies', False, add2archive=True))
+        self.assertFalse(MAT.mat.create_class_file('non_existent_file', False, add2archive=True))
 
     def test_empty(self):
         ''' test MAT's behaviour on empty file'''
+        open('empty_file', 'a').close()
         self.assertFalse(MAT.mat.create_class_file('empty_file', False, add2archive=True))
+        os.remove('empty_file')
 
 
 class TestSecureRemove(unittest.TestCase):
