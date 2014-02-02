@@ -12,6 +12,7 @@
 import shutil
 import os
 import glob
+import sys
 import tempfile
 import unittest
 
@@ -76,4 +77,5 @@ if __name__ == '__main__':
     SUITE.addTests(clitest.get_tests())
     SUITE.addTests(libtest.get_tests())
 
-    unittest.TextTestRunner(verbosity=VERBOSITY).run(SUITE)
+    ret = unittest.TextTestRunner(verbosity=VERBOSITY).run(SUITE).wasSuccessful()
+    sys.exit(ret == False)
