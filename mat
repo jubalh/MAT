@@ -26,11 +26,8 @@ The default behaviour is to clean files given in argument')
         default=False, help='Add to output archive non-supported filetypes (Off by default)')
     options.add_option('--backup', '-b', action='store_true', default=False,
         help='Keep a backup copy')
-    options.add_option('--force', '-f', action='store_true', default=False,
-        help='Don\'t check if files are clean before cleaning')
     options.add_option('--low-pdf-quality', '-L', action='store_true', default=False,
         help='Produces a lighter, but lower quality PDF')
-
     info = optparse.OptionGroup(parser, 'Informations')
     info.add_option('--check', '-c',  action='store_true', default=False,
         help='Check if a file is free of harmful metadatas')
@@ -60,12 +57,12 @@ def display_version(*_):
     sys.exit(0)
 
 
-def list_meta(class_file, filename, force, add2archive):
+def list_meta(class_file, filename, add2archive):
     '''
         Print all the metadata of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
-    if not force and class_file.is_clean():
+    if class_file.is_clean():
         print('No harmful metadata found')
     else:
         meta = class_file.get_meta()
@@ -76,7 +73,7 @@ def list_meta(class_file, filename, force, add2archive):
     return 0
 
 
-def is_clean(class_file, filename, force, add2archive):
+def is_clean(class_file, filename, add2archive):
     '''
         Say if 'filename' is clean or not
     '''
@@ -87,7 +84,7 @@ def is_clean(class_file, filename, force, add2archive):
     return 0
 
 
-def clean_meta(class_file, filename, force, add2archive):
+def clean_meta(class_file, filename, add2archive):
     '''
         Clean the file 'filename'
     '''
@@ -95,9 +92,7 @@ def clean_meta(class_file, filename, force, add2archive):
         print('[-] %s is not writable' % filename)
         return 1
     print('[*] Cleaning %s' % filename)
-    if not force and class_file.is_clean():
-        print('[+] %s is already clean' % filename)
-    elif not add2archive:
+    if not add2archive:
         is_archive = isinstance(class_file, archive.GenericArchiveStripper)
         is_terminal = isinstance(class_file, archive.TerminalZipStripper)
         if is_archive and not is_terminal:
@@ -158,7 +153,7 @@ def main():
         class_file = mat.create_class_file(filename, args.backup,
             add2archive=args.add2archive, low_pdf_quality=args.low_pdf_quality)
         if class_file:
-            ret += func(class_file, filename, args.force, args.add2archive)
+            ret += func(class_file, filename, args.add2archive)
         else:
             ret = 1
             print('[-] Unable to process %s' % filename)
