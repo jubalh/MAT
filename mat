@@ -16,8 +16,7 @@ from MAT import archive
 
 
 def parse():
-    '''
-        Get, and parse options passed to the program
+    ''' Get, and parse options passed to the program
     '''
     parser = optparse.OptionParser(usage='%prog [options] files\n\
 The default behaviour is to clean files given in argument')
@@ -49,33 +48,30 @@ The default behaviour is to clean files given in argument')
 
 
 def display_version(*_):
+    ''' Display the program's version, and exit
     '''
-        Display the program's version, and exit
-    '''
-    print('Metadata Anonymisation Toolkit version %s') % mat.__version__
-    print('Hachoir version %s') % hachoir_core.__version__
+    print('Metadata Anonymisation Toolkit %s' % mat.__version__)
+    print('Hachoir %s' % hachoir_core.__version__)
     sys.exit(0)
 
 
 def list_meta(class_file, filename, add2archive):
-    '''
-        Print all the metadata of 'filename' on stdout
+    ''' Print all the metadata of 'filename' on stdout
     '''
     print('[+] File %s :' % filename)
     if class_file.is_clean():
         print('No harmful metadata found')
     else:
-        meta = class_file.get_meta()
         print ('Harmful metadata found:')
+        meta = class_file.get_meta()
         if meta:
             for key, value in class_file.get_meta().iteritems():
-                print('\t' + key + ' : ' + str(value))
+                print('\t%s: %s' % (key, value))
     return 0
 
 
 def is_clean(class_file, filename, add2archive):
-    '''
-        Say if 'filename' is clean or not
+    ''' Tell if 'filename' is clean or not
     '''
     if class_file.is_clean():
         print('[+] %s is clean' % filename)
@@ -85,8 +81,7 @@ def is_clean(class_file, filename, add2archive):
 
 
 def clean_meta(class_file, filename, add2archive):
-    '''
-        Clean the file 'filename'
+    ''' Clean the file 'filename'
     '''
     if not class_file.is_writable:
         print('[-] %s is not writable' % filename)
@@ -112,8 +107,7 @@ def clean_meta(class_file, filename, add2archive):
 
 
 def list_supported():
-    '''
-        Print all supported fileformat, and exit
+    ''' Print all supported fileformat, and exit
     '''
     for item in mat.list_supported_formats():
         print('%s (%s)' % (item['name'], item['extension']))
@@ -126,12 +120,11 @@ def list_supported():
 
 
 def main():
-    '''
-        main function : get args, and launch the appropriate function
+    ''' Main function : get args and launch the appropriate function
     '''
     args, filenames = parse()
 
-    #func receive the function corresponding to the options given as parameters
+    #func receives the function corresponding to the options given as parameters
     if args.display:  # only print metadatas
         func = list_meta
     elif args.check:  # only check if the file is clean
