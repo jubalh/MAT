@@ -40,7 +40,7 @@ class GUI(object):
 
         # Main window
         self.builder = Gtk.Builder()
-        self.builder.add_from_file(os.path.join(mat.get_datadir(), 'mat.ui'))
+        self.builder.add_from_file(os.path.join(mat.get_datadir(), 'mat.glade'))
         self.builder.connect_signals(self)
 
         self.logo = mat.get_logo()
