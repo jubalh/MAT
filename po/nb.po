@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# lateralus, 2013
+# Translators:
+# lateralus, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
-"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
-"POT-Creation-Date: 2013-01-05 20:03+0100\n"
-"PO-Revision-Date: 2013-06-24 22:52+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-19 14:48+0000\n"
+"PO-Revision-Date: 2014-02-08 13:40+0000\n"
 "Last-Translator: lateralus\n"
 "Language-Team: Norwegian Bokmål (http://www.transifex.com/projects/p/torproject/language/nb/)\n"
 "MIME-Version: 1.0\n"
@@ -18,161 +19,182 @@ msgstr ""
 "Language: nb\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mat-gui:95 mat-gui:563 mat-gui:579
+#: mat-gui:61 mat-gui:403 mat-gui:422
 msgid "Ready"
 msgstr "Klar"
 
-#: mat-gui:107
-msgid "Add"
-msgstr "Legg til"
-
-#: mat-gui:109 mat-gui:183
-msgid "Add files"
-msgstr "Legg til filer"
-
-#: mat-gui:113 mat-gui:203 mat-gui:308 mat-gui:311 mat-gui:555 mat-gui:557
-#: mat-gui:573 mat-gui:575
-msgid "Clean"
-msgstr "Rens"
-
-#: mat-gui:115
-msgid "Clean selected files"
-msgstr "Rens valgte filer"
-
-#: mat-gui:119 mat-gui:214
-msgid "Check"
-msgstr "Sjekk"
-
-#: mat-gui:121
-msgid "Check selected files for harmful meta"
-msgstr "Sjekk valgte filer for skadelig meta"
-
-#: mat-gui:125 mat-gui:185
-msgid "Quit"
-msgstr "Avslutt"
-
-#: mat-gui:137
-msgid "Path"
-msgstr "Rute"
-
-#: mat-gui:137 mat-gui:363
-msgid "Filename"
-msgstr "Filnavn"
-
-#: mat-gui:137 mat-gui:365
-msgid "Mimetype"
-msgstr "Mimetype"
-
-#: mat-gui:137
-msgid "State"
-msgstr "Tilstand"
-
-#: mat-gui:138
-msgid "Cleaned file"
-msgstr "Renset fil"
-
-#: mat-gui:182
-msgid "Files"
-msgstr "Filer"
-
-#: mat-gui:188
-msgid "Edit"
-msgstr "Endre"
-
-#: mat-gui:189
-msgid "Clear the filelist"
-msgstr "Nullstill fillisten"
-
-#: mat-gui:192 mat-gui:447
-msgid "Preferences"
-msgstr "Innstillinger"
-
-#: mat-gui:195
-msgid "Process"
-msgstr "Prosess"
-
-#: mat-gui:218
-msgid "Help"
-msgstr "Hjelp"
-
-#: mat-gui:219 mat-gui:395
-msgid "Supported formats"
-msgstr "Støttede format"
-
-#: mat-gui:220
-msgid "About"
-msgstr "Om"
-
-#: mat-gui:241
+#: mat-gui:128
 msgid "Choose files"
 msgstr "Velg filer"
 
-#: mat-gui:248
+#: mat-gui:135
 msgid "All files"
 msgstr "Alle filer"
 
-#: mat-gui:255
+#: mat-gui:142
 msgid "Supported files"
 msgstr "Støttede filer"
 
-#: mat-gui:297
-msgid "unknow"
-msgstr "glem"
+#: mat-gui:157
+msgid "No metadata found"
+msgstr "Ingen metadata funnet"
 
-#: mat-gui:313 mat-gui:559
+#: mat-gui:158 mat-gui:398 mat-gui:420
+msgid "Clean"
+msgstr "Rens"
+
+#: mat-gui:160 mat-gui:400
 msgid "Dirty"
 msgstr "Ikke ren"
 
-#: mat-gui:343
-msgid "Not-supported"
-msgstr "Ikke-støttet"
+#: mat-gui:165
+#, python-format
+msgid "%s's metadata"
+msgstr "%ss metadata"
 
-#: mat-gui:381
-msgid "This software was coded during the GSoC 2011"
-msgstr "Dette programmet ble kodet i løpet av GSoC 2011"
+#: mat-gui:176
+msgid "Trash your meta, keep your data"
+msgstr "Makuler din meta, behold din data"
 
-#: mat-gui:386
+#: mat-gui:181
 msgid "Website"
 msgstr "Nettside"
 
-#: mat-gui:461
-msgid "Force Clean"
-msgstr "Tvungen Rens"
+#: mat-gui:207 data/mat.ui:107
+msgid "Preferences"
+msgstr "Innstillinger"
 
-#: mat-gui:464
-msgid "Do not check if already clean before cleaning"
-msgstr "Ikke sjekk hvis den allerede er ren før rens"
-
-#: mat-gui:468
-msgid "Backup"
-msgstr "Sikkerhetskopi"
-
-#: mat-gui:471
-msgid "Keep a backup copy"
-msgstr "Behold en sikkerhetskopi"
-
-#: mat-gui:474
+#: mat-gui:220
 msgid "Reduce PDF quality"
 msgstr "Reduser PDF kvalitet"
 
-#: mat-gui:477
+#: mat-gui:223
 msgid "Reduce the produced PDF size and quality"
 msgstr "Reduser den produserte PDFens størrelse og kvalitet"
 
-#: mat-gui:480
+#: mat-gui:226
 msgid "Add unsupported file to archives"
 msgstr "Legg til ikke-støttet fil til arkivene"
 
-#: mat-gui:484
+#: mat-gui:229
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Legg til ikke-støttet (og derfor ikke anonymisert) fil til outputarkiv"
 
-#: mat-gui:554
-#, python-format
-msgid "Checking %s..."
-msgstr "Sjekker %s..."
+#: mat-gui:268
+msgid "Unknown"
+msgstr "Ukjent"
 
-#: mat-gui:572
+#: mat-gui:310
+msgid "Not-supported"
+msgstr "Ikke-støttet"
+
+#: mat-gui:324
+msgid "Harmless fileformat"
+msgstr "Harmløst filformat"
+
+#: mat-gui:326
+msgid "Fileformat not supported"
+msgstr "Filformatet støttes ikke"
+
+#: mat-gui:329
+msgid "These files can not be processed:"
+msgstr "Disse filene kan ikke behandles:"
+
+#: mat-gui:334 mat-gui:363 data/mat.ui:292
+msgid "Filename"
+msgstr "Filnavn"
+
+#: mat-gui:336
+msgid "Reason"
+msgstr "Årsak"
+
+#: mat-gui:348
+msgid "Non-supported files in archive"
+msgstr "Ikke-støttede filer i arkivet"
+
+#: mat-gui:349 data/mat.ui:227
+msgid "Scour"
+msgstr "Skure"
+
+#: mat-gui:362
+msgid "Include"
+msgstr "Inkluder"
+
+#: mat-gui:378
 #, python-format
-msgid "Cleaning %s..."
-msgstr "Renser %s..."
+msgid "MAT is not able to clean the following files, found in the %s archive"
+msgstr "MAT kunne ikke rengjøre følgende filer fra arkivet %s"
+
+#: mat-gui:394
+#, python-format
+msgid "Checking %s"
+msgstr "Sjekker %s"
+
+#: mat-gui:409
+#, python-format
+msgid "Cleaning %s"
+msgstr "Rengjør %s"
+
+#: data/mat.ui:63
+msgid "_File"
+msgstr "_Arkiv"
+
+#: data/mat.ui:99
+msgid "_Edit"
+msgstr "_Rediger"
+
+#: data/mat.ui:118 data/mat.ui:253
+msgid "Clear"
+msgstr "Tøm"
+
+#: data/mat.ui:134
+msgid "_Process"
+msgstr "_Behandle"
+
+#: data/mat.ui:168
+msgid "_Help"
+msgstr "_Hjelp"
+
+#: data/mat.ui:214
+msgid "Add"
+msgstr "Legg til"
+
+#: data/mat.ui:240
+msgid "Check"
+msgstr "Sjekk"
+
+#: data/mat.ui:309
+msgid "State"
+msgstr "Tilstand"
+
+#: data/mat.ui:347 data/mat.ui:499
+msgid "Metadata"
+msgstr "Metadata"
+
+#: data/mat.ui:376
+msgid "Name"
+msgstr "Navn"
+
+#: data/mat.ui:390
+msgid "Content"
+msgstr "Innhold"
+
+#: data/mat.ui:452
+msgid "Supported formats"
+msgstr "Støttede format"
+
+#: data/mat.ui:486
+msgid "Support"
+msgstr "Støtte"
+
+#: data/mat.ui:512
+msgid "Method"
+msgstr "Metode"
+
+#: data/mat.ui:525
+msgid "Remaining"
+msgstr "Gjenstår"
+
+#: data/mat.ui:560
+msgid "Fileformat"
+msgstr "Filformat"

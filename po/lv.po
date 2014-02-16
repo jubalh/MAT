@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ojars Balcers <ojars.balcers@gmail.com>, 2013
+# Translators:
+# Ojars Balcers <ojars.balcers@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
-"Report-Msgid-Bugs-To: https://trac.torproject.org/projects/tor\n"
-"POT-Creation-Date: 2013-07-01 19:26+0200\n"
-"PO-Revision-Date: 2013-07-27 13:20+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-19 14:48+0000\n"
+"PO-Revision-Date: 2014-02-03 20:10+0000\n"
 "Last-Translator: Ojars Balcers <ojars.balcers@gmail.com>\n"
 "Language-Team: Latvian (http://www.transifex.com/projects/p/torproject/language/lv/)\n"
 "MIME-Version: 1.0\n"
@@ -18,93 +19,118 @@ msgstr ""
 "Language: lv\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
-#: mat-gui:65 mat-gui:375 mat-gui:387
+#: mat-gui:61 mat-gui:403 mat-gui:422
 msgid "Ready"
 msgstr "Gatavs"
 
-#: mat-gui:134
+#: mat-gui:128
 msgid "Choose files"
 msgstr "Izvēlēties datnes"
 
-#: mat-gui:141
+#: mat-gui:135
 msgid "All files"
 msgstr "Visas datnes"
 
-#: mat-gui:148
+#: mat-gui:142
 msgid "Supported files"
 msgstr "Atbalstītās datnes"
 
-#: mat-gui:164
+#: mat-gui:157
 msgid "No metadata found"
 msgstr "Metadati netika atrasti"
 
-#: mat-gui:165 mat-gui:370 mat-gui:385 data/mat.ui:227
+#: mat-gui:158 mat-gui:398 mat-gui:420
 msgid "Clean"
 msgstr "Tīrīt"
 
-#: mat-gui:167 mat-gui:372
+#: mat-gui:160 mat-gui:400
 msgid "Dirty"
 msgstr "Novecojis"
 
-#: mat-gui:172
+#: mat-gui:165
 #, python-format
 msgid "%s's metadata"
 msgstr "%s's metadati"
 
-#: mat-gui:183
+#: mat-gui:176
 msgid "Trash your meta, keep your data"
 msgstr "Atbrīvoties no meta, saglabāt Jūsu datus"
 
-#: mat-gui:188
+#: mat-gui:181
 msgid "Website"
 msgstr "Tīmekļa vietne"
 
-#: mat-gui:214 data/mat.ui:107
+#: mat-gui:207 data/mat.ui:107
 msgid "Preferences"
 msgstr "Preferences"
 
-#: mat-gui:228
+#: mat-gui:220
 msgid "Reduce PDF quality"
 msgstr "Samazināt PDF kvalitāti"
 
-#: mat-gui:231
+#: mat-gui:223
 msgid "Reduce the produced PDF size and quality"
 msgstr "Samazināt veidotā PDF lielumu un kvalitāti"
 
-#: mat-gui:234
+#: mat-gui:226
 msgid "Add unsupported file to archives"
 msgstr "Pievienot arhīviem neatbalstītu datni"
 
-#: mat-gui:238
+#: mat-gui:229
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Pievienot izvades arhīvam neatbalstītu (un, tādējādi, neanonimizētu) datni"
 
-#: mat-gui:283
+#: mat-gui:268
 msgid "Unknown"
 msgstr "Nezināms"
 
-#: mat-gui:330
+#: mat-gui:310
 msgid "Not-supported"
 msgstr "Netiek atbalstīts"
 
-#: mat-gui:347
-msgid "Unknown mimetype"
-msgstr "Nezināms MIME veids"
+#: mat-gui:324
+msgid "Harmless fileformat"
+msgstr "Nekaitīgs datu formāts"
 
-#: mat-gui:354 data/mat.ui:291
+#: mat-gui:326
+msgid "Fileformat not supported"
+msgstr "Neatbalstīts datu formāts"
+
+#: mat-gui:329
+msgid "These files can not be processed:"
+msgstr "Šīs datnes nevar apstrādāt:"
+
+#: mat-gui:334 mat-gui:363 data/mat.ui:292
 msgid "Filename"
 msgstr "Datnes vārds"
 
-#: mat-gui:356
-msgid "Mimetype"
-msgstr "MIME veids"
+#: mat-gui:336
+msgid "Reason"
+msgstr "Iemesls"
 
-#: mat-gui:366
+#: mat-gui:348
+msgid "Non-supported files in archive"
+msgstr "Arhīvā atrodošās neatbalstītās datnes"
+
+#: mat-gui:349 data/mat.ui:227
+msgid "Scour"
+msgstr "Scour"
+
+#: mat-gui:362
+msgid "Include"
+msgstr "Iekļaut"
+
+#: mat-gui:378
+#, python-format
+msgid "MAT is not able to clean the following files, found in the %s archive"
+msgstr "MAT nespēj iztīrīt šīs datnes, kas atrastas arhīvā %syhhh"
+
+#: mat-gui:394
 #, python-format
 msgid "Checking %s"
 msgstr "Pārbauda %s"
 
-#: mat-gui:381
+#: mat-gui:409
 #, python-format
 msgid "Cleaning %s"
 msgstr "Tīra %s"
@@ -137,38 +163,38 @@ msgstr "Pievienot"
 msgid "Check"
 msgstr "Pārbaudīt"
 
-#: data/mat.ui:308
+#: data/mat.ui:309
 msgid "State"
 msgstr "Stāvoklis"
 
-#: data/mat.ui:346 data/mat.ui:495
+#: data/mat.ui:347 data/mat.ui:499
 msgid "Metadata"
 msgstr "Metadati"
 
-#: data/mat.ui:400
+#: data/mat.ui:376
 msgid "Name"
 msgstr "Nosaukums"
 
-#: data/mat.ui:414
+#: data/mat.ui:390
 msgid "Content"
 msgstr "Saturs"
 
-#: data/mat.ui:448
+#: data/mat.ui:452
 msgid "Supported formats"
 msgstr "Atbalstītie formāti"
 
-#: data/mat.ui:482
+#: data/mat.ui:486
 msgid "Support"
 msgstr "Atbalsts"
 
-#: data/mat.ui:508
+#: data/mat.ui:512
 msgid "Method"
 msgstr "Metode"
 
-#: data/mat.ui:521
+#: data/mat.ui:525
 msgid "Remaining"
 msgstr "Atlicis"
 
-#: data/mat.ui:556
+#: data/mat.ui:560
 msgid "Fileformat"
 msgstr "Datnes formāts"
