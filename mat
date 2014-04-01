@@ -71,8 +71,7 @@ def list_meta(class_file, filename, add2archive):
 
 
 def is_clean(class_file, filename, add2archive):
-    ''' Tell if 'filename' is clean or not
-    '''
+    ''' Tell if 'filename' is clean or not '''
     if class_file.is_clean():
         print('[+] %s is clean' % filename)
     else:
@@ -81,8 +80,7 @@ def is_clean(class_file, filename, add2archive):
 
 
 def clean_meta(class_file, filename, add2archive):
-    ''' Clean the file 'filename'
-    '''
+    ''' Clean the file 'filename' '''
     if not class_file.is_writable:
         print('[-] %s is not writable' % filename)
         return 1
@@ -99,7 +97,7 @@ def clean_meta(class_file, filename, add2archive):
                     print('- %s' % i)
                 return 1
     if class_file.remove_all():
-        print('[+] %s cleaned !' % filename)
+        print('[+] %s cleaned!' % filename)
     else:
         print('[-] Unable to clean %s', filename)
         return 1
@@ -107,21 +105,19 @@ def clean_meta(class_file, filename, add2archive):
 
 
 def list_supported():
-    ''' Print all supported fileformat, and exit
-    '''
+    ''' Print all supported fileformat, and exit '''
     for item in mat.list_supported_formats():
         print('%s (%s)' % (item['name'], item['extension']))
-        print('\tsupport : ' + item['support'])
-        print('\tmetadata : ' + item['metadata'])
-        print('\tmethod : ' + item['method'])
-        print('\tremaining : ' + item['remaining'])
+        print('\tsupport : %s' % item['support'])
+        print('\tmetadata : %s' % item['metadata'])
+        print('\tmethod : %s' % item['method'])
+        print('\tremaining : %s' % item['remaining'])
         print('\n')
     sys.exit(0)
 
 
 def main():
-    ''' Main function : get args and launch the appropriate function
-    '''
+    ''' Main function : get args and launch the appropriate function '''
     args, filenames = parse()
 
     #func receives the function corresponding to the options given as parameters
