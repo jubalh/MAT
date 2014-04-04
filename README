@@ -27,8 +27,8 @@ DEPENDENCIES
 
 OPTIONALS DEPENDENCIES
 ======================
- * python-mutagen : for massive audio format support
- * exiftool : for _massive_ image format support
+ * python-mutagen: for massive audio format support
+ * exiftool: for _massive_ image format support
 
 USAGE
 =====
@@ -60,7 +60,7 @@ HOW TO LAUNCH THE TESTSUITE
 LINKS
 =====
 * Official website: https://mat.boum.org
-* Bugtracker : https://labs.riseup.net/code/projects/mat
+* Bugtracker: https://labs.riseup.net/code/projects/mat
 * Git repo: https://gitweb.torproject.org/user/jvoisin/mat.git
 
 CONTACT

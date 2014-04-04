@@ -33,7 +33,7 @@ The default behaviour is to clean files given in argument')
     info.add_option('--display', '-d', action='store_true', default=False,
         help='List all the harmful metadata of a file without removing them')
     info.add_option('--list', '-l', action='store_true', default=False,
-        help='List all supported fileformat')
+        help='List all supported fileformats')
     info.add_option('--version', '-v', action='callback',
         callback=display_version, help='Display version and exit')
     parser.add_option_group(options)
@@ -108,16 +108,16 @@ def list_supported():
     ''' Print all supported fileformat, and exit '''
     for item in mat.list_supported_formats():
         print('%s (%s)' % (item['name'], item['extension']))
-        print('\tsupport : %s' % item['support'])
-        print('\tmetadata : %s' % item['metadata'])
-        print('\tmethod : %s' % item['method'])
-        print('\tremaining : %s' % item['remaining'])
+        print('\tsupport: %s' % item['support'])
+        print('\tmetadata: %s' % item['metadata'])
+        print('\tmethod: %s' % item['method'])
+        print('\tremaining: %s' % item['remaining'])
         print('\n')
     sys.exit(0)
 
 
 def main():
-    ''' Main function : get args and launch the appropriate function '''
+    ''' Main function: get args and launch the appropriate function '''
     args, filenames = parse()
 
     #func receives the function corresponding to the options given as parameters
