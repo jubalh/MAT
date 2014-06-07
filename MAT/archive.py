@@ -266,7 +266,7 @@ class TarStripper(GenericArchiveStripper):
                 if cfile is not None:
                     if not cfile.is_clean():
                         logging.debug('%s from %s has metadata' %
-                                (item.name, self.filename))
+                                (item.name.decode("utf8"), self.filename))
                         if not list_unsupported:
                             return False
                         # Nested archives are treated like unsupported files
