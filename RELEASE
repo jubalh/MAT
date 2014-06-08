@@ -9,10 +9,10 @@ update changelog:
     git log -> CHANGELOG
 
 update version number (Don't be affraid to use -rc or -beta)
-    MAT/mat.py -> __version__ = $VERSION
+    libmat/mat.py -> __version__ = $VERSION
 
 commit release changes
-    git commit CHANGELOG MAT/mat.py
+    git commit CHANGELOG libmat/mat.py
 
 create a tag
     git tag -s $VERSION

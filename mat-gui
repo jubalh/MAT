@@ -13,10 +13,10 @@ import sys
 import xml.sax
 import urllib2
 
-from MAT import mat
-from MAT import strippers
-from MAT import parser
-from MAT import archive
+from libmat import mat
+from libmat import strippers
+from libmat import parser
+from libmat import archive
 
 logging.basicConfig(level=mat.LOGGING_LEVEL)
 

@@ -10,9 +10,9 @@ import os
 
 import hachoir_core
 
-from MAT import mat
-from MAT import strippers
-from MAT import archive
+from libmat import mat
+from libmat import strippers
+from libmat import archive
 
 
 def parse():

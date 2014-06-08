@@ -16,8 +16,8 @@ except:
 
 from gi.repository import Nautilus, GObject, Gtk
 
-import MAT.mat
-import MAT.strippers
+import libmat.mat
+import libmat.strippers
 
 
 class MatExtension(GObject.GObject, Nautilus.MenuProvider):
@@ -33,7 +33,7 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
 
         # We're only going to put ourselves on supported mimetypes' context menus
         if not (file.get_mime_type()
-                in [i["mimetype"] for i in MAT.mat.list_supported_formats()]):
+                in [i["mimetype"] for i in libmat.mat.list_supported_formats()]):
             logging.debug("%s is not supported by MAT" % file.get_mime_type())
             return
 
@@ -70,7 +70,7 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
 
         file_path = urllib.unquote(file.get_uri()[7:])
 
-        class_file = MAT.mat.create_class_file(file_path,
+        class_file = libmat.mat.create_class_file(file_path,
                                            backup=True,
                                            add2archive=False)
         if class_file:

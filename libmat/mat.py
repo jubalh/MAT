@@ -12,7 +12,7 @@ import xml.sax
 import hachoir_core.cmd_line
 import hachoir_parser
 
-import MAT.exceptions
+import libmat.exceptions
 
 __version__ = '0.5.2'
 __author__ = 'jvoisin'
@@ -117,7 +117,7 @@ def secure_remove(filename):
         os.chmod(filename, 220)
     except OSError:
         logging.error('Unable to add write rights to %s' % filename)
-        raise MAT.exceptions.UnableToWriteFile
+        raise libmat.exceptions.UnableToWriteFile
 
     try:
         if not subprocess.call(['shred', '--remove', filename]):
@@ -131,7 +131,7 @@ def secure_remove(filename):
         os.remove(filename)
     except OSError:
         logging.error('Unable to remove %s' % filename)
-        raise MAT.exceptions.UnableToRemoveFile
+        raise libmat.exceptions.UnableToRemoveFile
 
     return True
 

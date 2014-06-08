@@ -23,7 +23,7 @@ setup(
     platforms         = 'linux',
     license           = 'GPLv2',
     url               = 'https://mat.boum.org',
-    packages          = ['MAT', 'MAT.hachoir_editor', 'MAT.bencode'],
+    packages          = ['libmat', 'libmat.hachoir_editor', 'libmat.bencode'],
     scripts           = ['mat', 'mat-gui'],
     data_files        = [
         ( 'share/applications', ['mat.desktop'] ),

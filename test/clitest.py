@@ -12,7 +12,7 @@ import sys
 import tarfile
 
 sys.path.append('..')
-from MAT import mat
+from libmat import mat
 import test
 
 
