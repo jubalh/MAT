@@ -10,6 +10,7 @@ update changelog:
 
 update version number (Don't be affraid to use -rc or -beta)
     libmat/mat.py -> __version__ = $VERSION
+	setup.py -> __version__ = $VERSION
 
 commit release changes
     git commit CHANGELOG libmat/mat.py
