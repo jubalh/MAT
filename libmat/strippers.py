@@ -18,6 +18,7 @@ STRIPPERS = {
     'application/zip': archive.ZipStripper,
     'audio/mpeg': audio.MpegAudioStripper,
     'application/x-bittorrent': misc.TorrentStripper,
+    'application/torrent': misc.TorrentStripper,
     'application/opendocument': office.OpenDocumentStripper,
     'application/officeopenxml': office.OpenXmlStripper,
 }
