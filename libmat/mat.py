@@ -6,6 +6,7 @@
 import logging
 import mimetypes
 import os
+import platform
 import subprocess
 import xml.sax
 
@@ -120,7 +121,10 @@ def secure_remove(filename):
         raise libmat.exceptions.UnableToWriteFile
 
     try:
-        if not subprocess.call(['shred', '--remove', filename]):
+        shred = 'shred'
+        if platform.system() == 'MacOS':
+            shred = 'gshred'
+        if not subprocess.call([shred, '--remove', filename]):
             return True
         else:
             raise OSError
