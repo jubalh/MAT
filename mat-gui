@@ -132,15 +132,17 @@ class GUI(object):
         chooser.set_default_response(0)
         chooser.set_select_multiple(True)
 
-        all_filter = Gtk.FileFilter()  # filter that shows all files
+        # filter that shows all files
+        all_filter = Gtk.FileFilter()
         all_filter.set_name(_('All files'))
         all_filter.add_pattern('*')
         chooser.add_filter(all_filter)
 
         # filter that shows only supported formats
         supported_filter = Gtk.FileFilter()
-        [supported_filter.add_mime_type(i) for i in strippers.STRIPPERS.keys()]
         supported_filter.set_name(_('Supported files'))
+        for i in strippers.STRIPPERS.keys():
+            supported_filter.add_mime_type(i)
         chooser.add_filter(supported_filter)
 
         if not chooser.run():  # Gtk.STOCK_OK
@@ -155,8 +157,8 @@ class GUI(object):
         metadataPopupListStore = self.builder.get_object('MetadataPopupListStore')
         metadataPopupListStore.clear()
         if self.liststore[row][0].file.is_clean():
-            metadataPopupListStore.append([_('No metadata found'), ''])
             self.liststore[row][2] = _('Clean')
+            metadataPopupListStore.append([_('No metadata found'), ''])
         else:
             self.liststore[row][2] = _('Dirty')
             for i, j in self.liststore[row][0].file.get_meta().iteritems():
@@ -300,6 +302,7 @@ non-anonymised) file to output archive'))
                 if self.__add_file_to_treeview(filename):
                     not_supported.append(filename)
                 yield True
+        self.cb_mat_check(None)
         if not_supported:
             self.__popup_non_supported(not_supported)
         yield False
