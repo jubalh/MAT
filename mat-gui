@@ -350,7 +350,7 @@ non-anonymised) file to output archive'))
             archive
         '''
         dialog = Gtk.Dialog(title=_('Non-supported files in archive'), parent=self.window,
-                flags=Gtk.DialogFlags.MODAL, buttons=(_('Scour'), 0))
+                flags=Gtk.DialogFlags.MODAL, buttons=(_('Clean'), 0))
         dialog.set_size_request(220, 180)
         vbox = Gtk.VBox(spacing=5)
         sc = Gtk.ScrolledWindow()
