@@ -1,11 +1,13 @@
 ''' Care about images with help of the amazing (perl) library Exiftool.
 '''
 
-import parser
 import subprocess
 
+import parser
+import pillow
 
-class ExiftoolStripper(parser.GenericParser):
+
+class ExiftoolStripper(parser.GenericParser, pillow.PillowStripper):
     ''' A generic stripper class using exiftool as backend
     '''
 
@@ -25,6 +27,7 @@ class ExiftoolStripper(parser.GenericParser):
     def remove_all(self):
         ''' Remove all metadata with help of exiftool
         '''
+        self.open_and_save()
         try:
             if self.backup:
                 self.create_backup_copy()
