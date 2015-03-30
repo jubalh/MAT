@@ -41,7 +41,7 @@ class GUI(object):
         # Main window
         self.builder = Gtk.Builder()
         self.builder.set_translation_domain('MAT')
-        self.builder.add_from_file(os.path.join(mat.get_datadir(), 'mat.glade'))
+        self.builder.add_from_file(mat.get_datafile_path('mat.glade'))
         self.builder.connect_signals(self)
 
         self.logo = mat.get_logo()
@@ -71,7 +71,7 @@ class GUI(object):
         self.supported_dict = mat.XMLParser()
         xml_parser = xml.sax.make_parser()
         xml_parser.setContentHandler(self.supported_dict)
-        path = os.path.join(mat.get_datadir(), 'FORMATS')
+        path = mat.get_datafile_path('FORMATS')
         with open(path, 'r') as xmlfile:
             xml_parser.parse(xmlfile)
 

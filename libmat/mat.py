@@ -36,23 +36,23 @@ import strippers  # this is loaded here because we need LOGGING_LEVEL
 def get_logo():
     ''' Return the path to the logo
     '''
-    if os.path.isfile('./data/mat.png'):
-        return './data/mat.png'
+    if os.path.isfile(os.path.join(os.path.curdir, 'data/mat.png')):
+        return os.path.join(os.path.curdir,'data/mat.png')
     elif os.path.isfile('/usr/share/pixmaps/mat.png'):
         return '/usr/share/pixmaps/mat.png'
     elif os.path.isfile('/usr/local/share/pixmaps/mat.png'):
         return '/usr/local/share/pixmaps/mat.png'
 
 
-def get_datadir():
-    ''' Return the path to the data directory
+def get_datafile_path(filename):
+    ''' Return the path to the given ressource
     '''
-    if os.path.isdir('./data/'):
-        return './data/'
-    elif os.path.isdir('/usr/local/share/mat/'):
-        return '/usr/local/share/mat/'
-    elif os.path.isdir('/usr/share/mat/'):
-        return '/usr/share/mat/'
+    if os.path.isfile(os.path.join(os.path.curdir, 'data', filename)):
+        return os.path.join(os.path.curdir, 'data', filename)
+    elif os.path.isfile(os.path.join('/usr/local/share/mat/', filename)):
+        return os.path.join('/usr/local/share/mat/', filename)
+    elif os.path.isfile(os.path.join('/usr/share/mat/', filename)):
+        return os.path.join('/usr/share/mat/', filename)
 
 
 def list_supported_formats():
@@ -63,7 +63,7 @@ def list_supported_formats():
     handler = XMLParser()
     parser = xml.sax.make_parser()
     parser.setContentHandler(handler)
-    path = os.path.join(get_datadir(), 'FORMATS')
+    path = get_datafile_path('FORMATS')
     with open(path, 'r') as xmlfile:
         parser.parse(xmlfile)
 
