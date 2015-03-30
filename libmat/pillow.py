@@ -22,6 +22,6 @@ class PillowStripper(object):
             logging.error('Unable to import PIL, image support degraded. Be careful.')
 
         try:
-            Image.open(self.filename).save(self.filename)
+            Image.open(self.filename).save(self.filename, exif='')
         except IOError:
             logging.error('Can not save %s.' % self.filename)
