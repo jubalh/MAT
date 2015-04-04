@@ -127,10 +127,7 @@ class PdfStripper(parser.GenericParser):
         ''' Check if the file is clean from harmful metadatas
         '''
         document = Poppler.Document.new_from_file(self.uri, self.password)
-        for key in self.meta_list:
-            if document.get_property(key):
-                return False
-        return True
+        return not any(document.get_property(key) for key in self.meta_list)
 
     def remove_all(self):
         ''' Opening the PDF with poppler, then doing a render
