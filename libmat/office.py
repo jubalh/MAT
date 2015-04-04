@@ -145,19 +145,24 @@ class PdfStripper(parser.GenericParser):
         document = Poppler.Document.new_from_file(self.uri, self.password)
         try:
             output = tempfile.mkstemp()[1]
-            page = document.get_page(0)
-            # assume that every pages are the same size
-            page_width, page_height = page.get_size()
-            surface = cairo.PDFSurface(output, page_width, page_height)
+
+            # Size doesn't matter (pun intended),
+            # since the surface will be resized before
+            # being rendered
+            surface = cairo.PDFSurface(output, 10, 10)
             context = cairo.Context(surface)  # context draws on the surface
+
             logging.debug('PDF rendering of %s' % self.filename)
             for pagenum in range(document.get_n_pages()):
                 page = document.get_page(pagenum)
-                context.translate(0, 0)
-                if self.pdf_quality:
-                    page.render(context)  # render the page on context
+                page_width, page_height = page.get_size()
+                surface.set_size(page_width, page_height)
+                context.save()
+                if self.pdf_quality:  # this may reduce the produced PDF size
+                    page.render(context)
                 else:
-                    page.render_for_printing(context)  # render the page on context
+                    page.render_for_printing(context)
+                context.restore()
                 context.show_page()  # draw context on surface
             surface.finish()
             shutil.move(output, self.output)
