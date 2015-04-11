@@ -3,7 +3,8 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Agusti B.R., 2014
+# ilbe123 <a3057016@drdrb.net>, 2014
+# Dr.what <javrick6@naver.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
@@ -11,174 +12,174 @@ msgstr ""
 "POT-Creation-Date: 2014-12-31 04:53+0100\n"
 "PO-Revision-Date: 2015-02-23 08:18+0000\n"
 "Last-Translator: runasand <runa.sandvik@gmail.com>\n"
-"Language-Team: Catalan (http://www.transifex.com/projects/p/torproject/language/ca/)\n"
+"Language-Team: Korean (http://www.transifex.com/projects/p/torproject/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ca\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
-msgstr "Llest"
+msgstr "준비"
 
 #: mat-gui:129
 msgid "Choose files"
-msgstr "Tria els arxius"
+msgstr "파일 선택"
 
 #: mat-gui:137
 msgid "All files"
-msgstr "Tots els arxius"
+msgstr "모든 파일"
 
 #: mat-gui:143
 msgid "Supported files"
-msgstr "Arxius compatibles"
+msgstr "지원되는 파일"
 
 #: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
 #: data/mat.glade:172
 msgid "Clean"
-msgstr "Neteja"
+msgstr "초기화"
 
 #: mat-gui:161
 msgid "No metadata found"
-msgstr "No s'han trobat metadades"
+msgstr "메타 데이터를 찾을 수 없습니다"
 
 #: mat-gui:163 mat-gui:404
 msgid "Dirty"
-msgstr "Brut"
+msgstr "오염"
 
 #: mat-gui:168
 #, python-format
 msgid "%s's metadata"
-msgstr "%s's metadades"
+msgstr "%s의 메타 데이터"
 
 #: mat-gui:179
 msgid "Trash your meta, keep your data"
-msgstr "Elimina les metes , mantenir les  teves dades"
+msgstr "메타를 버리고 데이터를 유지"
 
 #: mat-gui:184
 msgid "Website"
-msgstr "Pàgina web"
+msgstr "웹사이트"
 
 #: mat-gui:210
 msgid "Preferences"
-msgstr "Preferències"
+msgstr "환경 설정"
 
 #: mat-gui:223
 msgid "Reduce PDF quality"
-msgstr "Reduir qualitat del PDF"
+msgstr "PDF의 품질을 감소"
 
 #: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
-msgstr "Reduir la mida i qualitat del PDF produït"
+msgstr "작성된 PDF 크기 및 화질을 절감"
 
 #: mat-gui:229
 msgid "Add unsupported file to archives"
-msgstr "Afegir arxiu no compatible als arxius"
+msgstr "지원되지 않는 파일을 아카이브에 추가"
 
 #: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
-msgstr "Afegir arxiu no compatible (i no anonimitzat) a l'arxiu de sortida"
+msgstr "비 지원 (또한 비 익명) 파일을 추가하고 아카이브에 출력"
 
 #: mat-gui:271
 msgid "Unknown"
-msgstr "Desconegut"
+msgstr "알 수 없음"
 
 #: mat-gui:314
 msgid "Not-supported"
-msgstr "No compatible"
+msgstr "비 지원"
 
 #: mat-gui:328
 msgid "Harmless fileformat"
-msgstr "Format d'Arxiu Inofensiu"
+msgstr "무해한 파일 형식"
 
 #: mat-gui:330
 msgid "Fileformat not supported"
-msgstr "Format d'arxiu no compatible"
+msgstr "지원되지 않는 파일 형식"
 
 #: mat-gui:333
 msgid "These files can not be processed:"
-msgstr "Aquests arxius no es poden processar:"
+msgstr "이러한 파일은 처리 할 수 없습니다:"
 
 #: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
-msgstr "Nom d'arxiu"
+msgstr "파일명"
 
 #: mat-gui:340
 msgid "Reason"
-msgstr "Raó"
+msgstr "이유"
 
 #: mat-gui:352
 msgid "Non-supported files in archive"
-msgstr "Arxius no compatibles en l'arxiu"
+msgstr "아카이브에 지원되지 않는 파일"
 
 #: mat-gui:366
 msgid "Include"
-msgstr "Inclou"
+msgstr "포함하기"
 
 #: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
-msgstr "MAT no pot netejar els següents arxiu, trobats a %s arxiu"
+msgstr "MAT %s 아카이브에서 발견 된 다음 파일을 청소할 수 없습니다."
 
 #: mat-gui:398
 #, python-format
 msgid "Checking %s"
-msgstr "Examinant %s"
+msgstr "%s 확인 중"
 
 #: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
-msgstr "Netejent %s"
+msgstr "%s 청소 중"
 
 #: data/mat.glade:33
 msgid "_File"
-msgstr "_Arxiu"
+msgstr "_File"
 
 #: data/mat.glade:82
 msgid "_Edit"
-msgstr "_Edita"
+msgstr "_Edit"
 
 #: data/mat.glade:115
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr "_Help"
 
 #: data/mat.glade:159
 msgid "Add"
-msgstr "Afegir"
+msgstr "추가"
 
 #: data/mat.glade:228
 msgid "State"
-msgstr "Estat"
+msgstr "상태"
 
 #: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
-msgstr "Metadades"
+msgstr "메타 데이터"
 
 #: data/mat.glade:306
 msgid "Name"
-msgstr "Nom"
+msgstr "이름"
 
 #: data/mat.glade:320
 msgid "Content"
-msgstr "Contingut"
+msgstr "내용"
 
 #: data/mat.glade:374
 msgid "Supported formats"
-msgstr "Formats compatibles"
+msgstr "지원되는 포맷"
 
 #: data/mat.glade:406
 msgid "Support"
-msgstr "Suport"
+msgstr "지원"
 
 #: data/mat.glade:428
 msgid "Method"
-msgstr "Mètode"
+msgstr "방식"
 
 #: data/mat.glade:439
 msgid "Remaining"
-msgstr "Restant"
+msgstr "이름 바꾸기"
 
 #: data/mat.glade:468
 msgid "Fileformat"
-msgstr "Format d'arxiu"
+msgstr "파일 형식"

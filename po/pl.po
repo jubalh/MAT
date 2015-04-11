@@ -3,19 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Translators:
-# yodaa <aron.plotnikowski@cryptolab.net>, 2014
-# yodaa <aron.plotnikowski@cryptolab.net>, 2013
+# Aron <aron.plotnikowski@cryptolab.net>, 2014
+# Aron <aron.plotnikowski@cryptolab.net>, 2013
 # bogdrozd <bog.d@gazeta.pl>, 2013
-# hoek <hoek@hoek.pl>, 2014
-# sebx, 2013-2014
+# Dawid <hoek@hoek.pl>, 2014
+# seb, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-19 14:48+0000\n"
-"PO-Revision-Date: 2014-03-16 11:10+0000\n"
-"Last-Translator: yodaa <aron.plotnikowski@cryptolab.net>\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 08:18+0000\n"
+"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/torproject/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,182 +22,167 @@ msgstr ""
 "Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:422
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "Gotowy"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "Wybierz pliki"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "Wszystkie pliki"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "Obsługiwane pliki"
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "Brak metadanych"
-
-#: mat-gui:158 mat-gui:398 mat-gui:420
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "Wyczyść"
 
-#: mat-gui:160 mat-gui:400
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "Brak metadanych"
+
+#: mat-gui:163 mat-gui:404
 msgid "Dirty"
 msgstr "Nieoczyszczony"
 
-#: mat-gui:165
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
 msgstr "%s's metadane"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
 msgstr "Usuń dane o danych, utrzymując dane"
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
 msgstr "Strona domowa"
 
-#: mat-gui:207 data/mat.ui:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "Preferencje"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "Zmniejsz jakość PDF"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "Zmniejsz rozmiar i jakość wyprodukowanego pliku PDF"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "Dodaj nieobsługiwane pliki do archiwów"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Dodaj nieobsługiwany (a więc niezanonimizowany) plik do archiwum wyjściowego"
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "Nieobsługiwany"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
 msgstr "Nieszkodliwy format pliku"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
 msgstr "Format plików nie jest obsługiwany"
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "Te pliki nie mogą być przetwarzane:"
 
-#: mat-gui:334 mat-gui:363 data/mat.ui:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "Nazwa pliku"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
 msgstr "Powód"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
 msgstr "Nieobsługiwane pliki w archiwum"
 
-#: mat-gui:349 data/mat.ui:227
-msgid "Scour"
-msgstr "Przeszukać"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "Zawiera"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
 msgstr "MAT nie jest w stanie oczyścić następujących plików, znajdujących się w archiwum %s"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "Sprawdzanie %s"
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "Czyszczenie %s"
 
-#: data/mat.ui:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "_Plik"
 
-#: data/mat.ui:99
+#: data/mat.glade:82
 msgid "_Edit"
 msgstr "_Edytuj"
 
-#: data/mat.ui:118 data/mat.ui:253
-msgid "Clear"
-msgstr "Wyczyść"
-
-#: data/mat.ui:134
-msgid "_Process"
-msgstr "_Proces"
-
-#: data/mat.ui:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "_Pomoc"
 
-#: data/mat.ui:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "Dodaj"
 
-#: data/mat.ui:240
-msgid "Check"
-msgstr "Sprawdź"
-
-#: data/mat.ui:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "Stan"
 
-#: data/mat.ui:347 data/mat.ui:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
 msgstr "Metadane"
 
-#: data/mat.ui:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "Nazwa"
 
-#: data/mat.ui:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "Zawartość"
 
-#: data/mat.ui:452
+#: data/mat.glade:374
 msgid "Supported formats"
 msgstr "Obsługiwane formaty"
 
-#: data/mat.ui:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "Wsparcie"
 
-#: data/mat.ui:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "Metoda"
 
-#: data/mat.ui:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "Pozostało"
 
-#: data/mat.ui:560
+#: data/mat.glade:468
 msgid "Fileformat"
 msgstr "Format pliku"

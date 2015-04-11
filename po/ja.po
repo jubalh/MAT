@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# plazmism <gomidori@live.jp>, 2013-2014
+# タカハシ <gomidori@live.jp>, 2013-2014
+# 藤前　甲 <m1440809437@hiru-dea.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-19 14:48+0000\n"
-"PO-Revision-Date: 2014-01-21 11:20+0000\n"
-"Last-Translator: plazmism <gomidori@live.jp>\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 08:18+0000\n"
+"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/torproject/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,182 +19,167 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:422
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "準備完了"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "ファイルを選択"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "すべてのファイル"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "サポートされているファイル"
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "メタデータが見つかりません"
-
-#: mat-gui:158 mat-gui:398 mat-gui:420
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "クリーン"
 
-#: mat-gui:160 mat-gui:400
-msgid "Dirty"
-msgstr "汚染"
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "メタデータが見つかりません"
 
-#: mat-gui:165
+#: mat-gui:163 mat-gui:404
+msgid "Dirty"
+msgstr "汚れている"
+
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
 msgstr "%sのメタデータ"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
 msgstr "メタを捨てて、データを維持する"
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
 msgstr "ウェブサイト"
 
-#: mat-gui:207 data/mat.ui:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "設定"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "PDFのクォリティを削減"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "作成されたPDFのサイズとクォリティを削減"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "サポートされていないファイルをアーカイブに追加"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "非サポート(また、非匿名化)ファイルを追加し、アーカイブに出力"
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "不明"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "非サポート"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
 msgstr "無害なファイルフォーマット"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
 msgstr "サポートされていないファイルフォーマット"
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "これらのファイルは処理できません:"
 
-#: mat-gui:334 mat-gui:363 data/mat.ui:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "ファイル名"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
 msgstr "理由"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
 msgstr "アーカイブ内にサポートされていないファイル"
 
-#: mat-gui:349 data/mat.ui:227
-msgid "Scour"
-msgstr "クリーンする"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "含める"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
 msgstr "MAT は %s アーカイブ内で発見された以下のファイルをクリーンできません。"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "%sを確認中"
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "%sをクリーニング中"
 
-#: data/mat.ui:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "_File"
 
-#: data/mat.ui:99
+#: data/mat.glade:82
 msgid "_Edit"
 msgstr "_Edit"
 
-#: data/mat.ui:118 data/mat.ui:253
-msgid "Clear"
-msgstr "クリア"
-
-#: data/mat.ui:134
-msgid "_Process"
-msgstr "_Process"
-
-#: data/mat.ui:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "_Help"
 
-#: data/mat.ui:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "追加"
 
-#: data/mat.ui:240
-msgid "Check"
-msgstr "確認"
-
-#: data/mat.ui:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "状態"
 
-#: data/mat.ui:347 data/mat.ui:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
 msgstr "メタデータ"
 
-#: data/mat.ui:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "名前"
 
-#: data/mat.ui:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "内容"
 
-#: data/mat.ui:452
+#: data/mat.glade:374
 msgid "Supported formats"
 msgstr "サポートされているフォーマット"
 
-#: data/mat.ui:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "サポート"
 
-#: data/mat.ui:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "メソッド"
 
-#: data/mat.ui:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "リネーム"
 
-#: data/mat.ui:560
+#: data/mat.glade:468
 msgid "Fileformat"
 msgstr "ファイルフォーマット"

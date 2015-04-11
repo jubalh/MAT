@@ -3,17 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Translators:
-# desmati <desmati@gmail.com>, 2014
-# zendegi <hamahangi@posteo.eu>, 2013
+# Mohammad Hossein <desmati@gmail.com>, 2014
+# zendegi <inactive+zendegi@transifex.com>, 2013
 # sina <sinaeftekhari@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-19 14:48+0000\n"
-"PO-Revision-Date: 2014-02-24 13:00+0000\n"
-"Last-Translator: desmati <desmati@gmail.com>\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 08:18+0000\n"
+"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/projects/p/torproject/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,182 +20,167 @@ msgstr ""
 "Language: fa\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:422
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "آماده"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "فايل‌ها انتخاب کنید"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "ِهمهٔ فایل‌ها"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "فایل های قابل پشتیبانی."
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "هیچ «ابر داده ای» یافت نشد"
-
-#: mat-gui:158 mat-gui:398 mat-gui:420
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "پاک‌کردن"
 
-#: mat-gui:160 mat-gui:400
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "هیچ «ابر داده ای» یافت نشد"
+
+#: mat-gui:163 mat-gui:404
 msgid "Dirty"
 msgstr "کثیف"
 
-#: mat-gui:165
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
 msgstr "ابر داده های %s"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
 msgstr "ابر داده ها را دور بریز، داده ها را نگه دار"
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
 msgstr "پایگاه اینترنتی"
 
-#: mat-gui:207 data/mat.ui:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "تنظیمات"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "کم کردن کیفیت PDF"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "کاهش حجم و کیفیت فایل PDF تولید شده"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "فایل هایی که فرمت و نوع آن ها قابل پشتیبانی نیست، به آرشیو ها اضافه شود"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "فایل هایی که فرمت و نوع آن ها قابل پشتیبانی نیست(و یا قابلیت ناشناخته ماندن ندارند)، به آرشیو خروجی اضافه شود"
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "ناشناخته"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "غیر قابل قبول"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
 msgstr "فرمت فایل های بی خطر"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
 msgstr "فرمت فایل قابل پشتیبانی نمی باشد."
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "امکان پردازش این فایل ها نبود:"
 
-#: mat-gui:334 mat-gui:363 data/mat.ui:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "اسم فايل"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
 msgstr "دلیل"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
 msgstr "در این آرشیو فایل هایی هست که پشتیبانی نمی شوند"
 
-#: mat-gui:349 data/mat.ui:227
-msgid "Scour"
-msgstr "جلا دادن"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "شامل"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
 msgstr "مت قادر به پاک کردن فایل های ذیل که در آرشیو %s یافت شدند، نیست"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "در حال بررسی %s"
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "پاکسازی %s"
 
-#: data/mat.ui:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "_فایل"
 
-#: data/mat.ui:99
+#: data/mat.glade:82
 msgid "_Edit"
 msgstr "_ویرایش"
 
-#: data/mat.ui:118 data/mat.ui:253
-msgid "Clear"
-msgstr "پاک کن"
-
-#: data/mat.ui:134
-msgid "_Process"
-msgstr "_پردازش"
-
-#: data/mat.ui:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "_راهنما"
 
-#: data/mat.ui:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "افزودن"
 
-#: data/mat.ui:240
-msgid "Check"
-msgstr "بررسی"
-
-#: data/mat.ui:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "حال"
 
-#: data/mat.ui:347 data/mat.ui:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
 msgstr "ابرداده"
 
-#: data/mat.ui:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "نام"
 
-#: data/mat.ui:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "محتوا"
 
-#: data/mat.ui:452
+#: data/mat.glade:374
 msgid "Supported formats"
 msgstr "قوالب قابل قبول"
 
-#: data/mat.ui:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "پشتیبانی"
 
-#: data/mat.ui:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "روش"
 
-#: data/mat.ui:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "باقی مانده"
 
-#: data/mat.ui:560
+#: data/mat.glade:468
 msgid "Fileformat"
 msgstr "فرمت فایل"

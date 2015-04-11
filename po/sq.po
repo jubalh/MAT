@@ -3,182 +3,182 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Agusti B.R., 2014
+# Bujar Tafili, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-12-31 04:53+0100\n"
-"PO-Revision-Date: 2015-02-23 08:18+0000\n"
-"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
-"Language-Team: Catalan (http://www.transifex.com/projects/p/torproject/language/ca/)\n"
+"PO-Revision-Date: 2015-02-25 08:06+0000\n"
+"Last-Translator: Bujar Tafili\n"
+"Language-Team: Albanian (http://www.transifex.com/projects/p/torproject/language/sq/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ca\n"
+"Language: sq\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
-msgstr "Llest"
+msgstr "Gati"
 
 #: mat-gui:129
 msgid "Choose files"
-msgstr "Tria els arxius"
+msgstr "Përzgjidhni skedarët"
 
 #: mat-gui:137
 msgid "All files"
-msgstr "Tots els arxius"
+msgstr "Të gjithë skedarët"
 
 #: mat-gui:143
 msgid "Supported files"
-msgstr "Arxius compatibles"
+msgstr "Skedarët e pranuar"
 
 #: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
 #: data/mat.glade:172
 msgid "Clean"
-msgstr "Neteja"
+msgstr "I pastër"
 
 #: mat-gui:161
 msgid "No metadata found"
-msgstr "No s'han trobat metadades"
+msgstr "S'u gjetën metadata"
 
 #: mat-gui:163 mat-gui:404
 msgid "Dirty"
-msgstr "Brut"
+msgstr "Pis"
 
 #: mat-gui:168
 #, python-format
 msgid "%s's metadata"
-msgstr "%s's metadades"
+msgstr "metadatat e %s "
 
 #: mat-gui:179
 msgid "Trash your meta, keep your data"
-msgstr "Elimina les metes , mantenir les  teves dades"
+msgstr "Hidhni në plehra meta-t, mbani të dhënat tuaja"
 
 #: mat-gui:184
 msgid "Website"
-msgstr "Pàgina web"
+msgstr "Webfaqe"
 
 #: mat-gui:210
 msgid "Preferences"
-msgstr "Preferències"
+msgstr "Parapëlqime"
 
 #: mat-gui:223
 msgid "Reduce PDF quality"
-msgstr "Reduir qualitat del PDF"
+msgstr "Mpakeni cilësinë e PDF-së"
 
 #: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
-msgstr "Reduir la mida i qualitat del PDF produït"
+msgstr "Mpakeni madhësinë dhe cilësinë e PDF-së së prodhuar"
 
 #: mat-gui:229
 msgid "Add unsupported file to archives"
-msgstr "Afegir arxiu no compatible als arxius"
+msgstr "Shtojeni skedarin e papranuar, tek arkivat"
 
 #: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
-msgstr "Afegir arxiu no compatible (i no anonimitzat) a l'arxiu de sortida"
+msgstr "Shtojeni skedarin e papërputhshëm (kësisoj edhe të jo anonim) tek arkiva dalëse"
 
 #: mat-gui:271
 msgid "Unknown"
-msgstr "Desconegut"
+msgstr "I panjohur"
 
 #: mat-gui:314
 msgid "Not-supported"
-msgstr "No compatible"
+msgstr "I papërputhshëm"
 
 #: mat-gui:328
 msgid "Harmless fileformat"
-msgstr "Format d'Arxiu Inofensiu"
+msgstr "Format skedari i padëmshëm"
 
 #: mat-gui:330
 msgid "Fileformat not supported"
-msgstr "Format d'arxiu no compatible"
+msgstr "Formati i skedarit i papërputhshëm"
 
 #: mat-gui:333
 msgid "These files can not be processed:"
-msgstr "Aquests arxius no es poden processar:"
+msgstr "Këta skedarë s'mund të procedohen:"
 
 #: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
-msgstr "Nom d'arxiu"
+msgstr "Emër skedari"
 
 #: mat-gui:340
 msgid "Reason"
-msgstr "Raó"
+msgstr "Arsye"
 
 #: mat-gui:352
 msgid "Non-supported files in archive"
-msgstr "Arxius no compatibles en l'arxiu"
+msgstr "Skedarë të pambështetur në arkiv"
 
 #: mat-gui:366
 msgid "Include"
-msgstr "Inclou"
+msgstr "Përfshini"
 
 #: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
-msgstr "MAT no pot netejar els següents arxiu, trobats a %s arxiu"
+msgstr "MAT s'është në gjendje që t'i fshijë skedarët në vazhdim, të cilët u gjetën në arkivin %s"
 
 #: mat-gui:398
 #, python-format
 msgid "Checking %s"
-msgstr "Examinant %s"
+msgstr "Kontrollimi i %s"
 
 #: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
-msgstr "Netejent %s"
+msgstr "Pastrimi i %s"
 
 #: data/mat.glade:33
 msgid "_File"
-msgstr "_Arxiu"
+msgstr "_Skedar"
 
 #: data/mat.glade:82
 msgid "_Edit"
-msgstr "_Edita"
+msgstr "_Redaktoni"
 
 #: data/mat.glade:115
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr "_Ndihmë"
 
 #: data/mat.glade:159
 msgid "Add"
-msgstr "Afegir"
+msgstr "Shtoni"
 
 #: data/mat.glade:228
 msgid "State"
-msgstr "Estat"
+msgstr "Gjendje"
 
 #: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
-msgstr "Metadades"
+msgstr "Metadata"
 
 #: data/mat.glade:306
 msgid "Name"
-msgstr "Nom"
+msgstr "Emri"
 
 #: data/mat.glade:320
 msgid "Content"
-msgstr "Contingut"
+msgstr "Përmbajtje"
 
 #: data/mat.glade:374
 msgid "Supported formats"
-msgstr "Formats compatibles"
+msgstr "Formate e pranuar"
 
 #: data/mat.glade:406
 msgid "Support"
-msgstr "Suport"
+msgstr "Mbështetje"
 
 #: data/mat.glade:428
 msgid "Method"
-msgstr "Mètode"
+msgstr "Metodë"
 
 #: data/mat.glade:439
 msgid "Remaining"
-msgstr "Restant"
+msgstr "Të mbetur"
 
 #: data/mat.glade:468
 msgid "Fileformat"
-msgstr "Format d'arxiu"
+msgstr "Format skedari"

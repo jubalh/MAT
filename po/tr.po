@@ -3,15 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# guvenalbayrak52 <guvenalbayrak52@gmail.com>, 2014
-# yozel <iletisim@yasinozel.com.tr>, 2013
+# Güven ALBAYRAK <guvenalbayrak52@gmail.com>, 2014
+# Volkan Gezer <volkangezer@gmail.com>, 2015
+# Yasin Özel <iletisim@yasinozel.com.tr>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 01:04+0000\n"
-"PO-Revision-Date: 2014-02-13 11:00+0000\n"
-"Last-Translator: guvenalbayrak52 <guvenalbayrak52@gmail.com>\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 10:51+0000\n"
+"Last-Translator: Volkan Gezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/torproject/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,182 +20,167 @@ msgstr ""
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:426
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "Hazır"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "Dosya seç"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "Tüm dosyalar"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "Desteklenen dosyalar"
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "Metadata bulunamadı"
-
-#: mat-gui:158 mat-gui:398 mat-gui:422 mat-gui:424
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "Temizle"
 
-#: mat-gui:160 mat-gui:400
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "Üst veri bulunamadı"
+
+#: mat-gui:163 mat-gui:404
 msgid "Dirty"
 msgstr "Kirli"
 
-#: mat-gui:165
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
-msgstr "%s'in metadatası"
+msgstr "%s üst verisi"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
-msgstr "Metayı çöpe at, bilgileri sakla"
+msgstr "Üst veriyi çöpe at, verileri sakla"
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
-msgstr "Websitesi"
+msgstr "Web sitesi"
 
-#: mat-gui:207 data/mat.glade:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "Seçenekler"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "PDF kalitesini düşür"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "Üretilen PDF dosyasının boyutunu ve kalitesini düşür"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "Desteklenmeyen dosyaları arşive ekle"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
-msgstr "Desteklenmeyen (ve anonimleştirilmeiş) dosyaları çıkış arşivine ekle"
+msgstr "Desteklenmeyen (ve anonimleştirilmemiş) dosyaları çıkış arşivine ekle"
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "Desteklenmiyor"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
-msgstr "Zararsız dosya formatı"
+msgstr "Zararsız dosya biçimi"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
-msgstr "Dosya Biçimi desteklenmiyor"
+msgstr "Dosya biçimi desteklenmiyor"
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "Bu dosyalar işlenemez:"
 
-#: mat-gui:334 mat-gui:363 data/mat.glade:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "Dosya Adı"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
-msgstr "Sebeb"
+msgstr "Sebep"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
-msgstr "Arşivdeki dosyalar desteklenmiyor"
+msgstr "Arşivde desteklenmeyen dosyalar"
 
-#: mat-gui:349 data/mat.glade:227
-msgid "Scour"
-msgstr "Yürütmek"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "Dahil"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
-msgstr "MAT %s arşivinde bulunan aşağıdaki dosyaları, temizlemek mümkün değil"
+msgstr "MAT %s arşivinde bulunan aşağıdaki dosyaları temizlemek mümkün değil"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "%s kontrol ediliyor"
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "%s temizleniyor"
 
-#: data/mat.glade:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "_Dosya"
 
-#: data/mat.glade:99
+#: data/mat.glade:82
 msgid "_Edit"
-msgstr "_Düzenle"
+msgstr "Dü_zenle"
 
-#: data/mat.glade:118 data/mat.glade:253
-msgid "Clear"
-msgstr "Temizle"
-
-#: data/mat.glade:134
-msgid "_Process"
-msgstr "_İşlem"
-
-#: data/mat.glade:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "_Yardım"
 
-#: data/mat.glade:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "Ekle"
 
-#: data/mat.glade:240
-msgid "Check"
-msgstr "Kontrol Et"
-
-#: data/mat.glade:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "Durum"
 
-#: data/mat.glade:347 data/mat.glade:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
-msgstr "Metadata"
+msgstr "Üst veri"
 
-#: data/mat.glade:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "İsim"
 
-#: data/mat.glade:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "İçerik"
 
-#: data/mat.glade:452
+#: data/mat.glade:374
 msgid "Supported formats"
-msgstr "Desteklenen formatlar"
+msgstr "Desteklenen biçimler"
 
-#: data/mat.glade:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "Destek"
 
-#: data/mat.glade:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "Yöntem"
 
-#: data/mat.glade:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "Kalan"
 
-#: data/mat.glade:560
+#: data/mat.glade:468
 msgid "Fileformat"
-msgstr "Dosya formatı"
+msgstr "Dosya biçimi"

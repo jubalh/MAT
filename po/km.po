@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# soksophea <sksophea@gmail.com>, 2014
+# Sok Sophea <sksophea@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-19 14:48+0000\n"
-"PO-Revision-Date: 2014-01-27 07:30+0000\n"
-"Last-Translator: soksophea <sksophea@gmail.com>\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 08:18+0000\n"
+"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
 "Language-Team: Khmer (http://www.transifex.com/projects/p/torproject/language/km/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,182 +18,167 @@ msgstr ""
 "Language: km\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:422
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "រួចរាល់"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "ជ្រើស​ឯកសារ"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "ឯកសារ​ទាំងអស់"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "ឯកសារ​ដែល​គាំទ្រ"
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "រក​មិន​ឃើញ​ទិន្នន័យ​មេតា"
-
-#: mat-gui:158 mat-gui:398 mat-gui:420
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "សម្អាត"
 
-#: mat-gui:160 mat-gui:400
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "រក​មិន​ឃើញ​ទិន្នន័យ​មេតា"
+
+#: mat-gui:163 mat-gui:404
 msgid "Dirty"
 msgstr "មិន​ល្អ"
 
-#: mat-gui:165
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
 msgstr "ទិន្នន័យ​មេតា​របស់ %s"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
 msgstr "លុប​មេតា រក្សា​ទិន្នន័យ​របស់​អ្នក"
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
 msgstr "តំបន់បណ្ដាញ"
 
-#: mat-gui:207 data/mat.ui:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "ចំណូលចិត្ត"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "បន្ថយ​គុណភាព PDF"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "បន្ថយ​គុណភាព និង​ទំហំ PDF ដែល​បាន​បង្កើត"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "បន្ថែម​ឯកសារ​ដែល​មិន​គាំទ្រ​ទៅកាន់​ប័ណ្ណសារ"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "បន្ថែម​ឯកសារ​ដែល​មិន​គាំទ្រ (និង​មិនមែន​អនាមិក) ទៅកាន់​ប័ណ្ណសារ​លទ្ធផល"
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "មិន​ស្គាល់"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "មិន​គាំទ្រ"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
 msgstr "ទ្រង់ទ្រាយ​ឯកសារ​ដែល​មិន​គ្រោះថ្នាក់"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
 msgstr "ទ្រង់ទ្រាយ​ឯកសារ​មិន​គាំទ្រ"
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "មិន​អាច​ដំណើរការ​ឯកសារ​ទាំងនេះ៖"
 
-#: mat-gui:334 mat-gui:363 data/mat.ui:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "ឈ្មោះ​ឯកសារ"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
 msgstr "មូលហេតុ"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
 msgstr "ឯកសារ​ដែល​មិន​គាំទ្រ​ក្នុង​ប័ណ្ណសារ"
 
-#: mat-gui:349 data/mat.ui:227
-msgid "Scour"
-msgstr "ល្អ"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "រួមបញ្ចូល"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
 msgstr "MAT មិន​អាច​សម្អាត​ឯកសារ​ដូច​ខាងក្រោម ដែល​បាន​រក​ឃើញ​នៅ​ក្នុង​ប័ណ្ណសារ %s"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "កំពុង​ពិនិត្យ %s"
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "កំពុង​សម្អាត %s"
 
-#: data/mat.ui:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "ឯកសារ"
 
-#: data/mat.ui:99
+#: data/mat.glade:82
 msgid "_Edit"
 msgstr "កែសម្រួល"
 
-#: data/mat.ui:118 data/mat.ui:253
-msgid "Clear"
-msgstr "សម្អាត"
-
-#: data/mat.ui:134
-msgid "_Process"
-msgstr "ដំណើរការ"
-
-#: data/mat.ui:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "ជំនួយ"
 
-#: data/mat.ui:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "បន្ថែម"
 
-#: data/mat.ui:240
-msgid "Check"
-msgstr "ពិនិត្យ"
-
-#: data/mat.ui:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "សភាព"
 
-#: data/mat.ui:347 data/mat.ui:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
 msgstr "ទិន្នន័យ​មេតា"
 
-#: data/mat.ui:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "ឈ្មោះ"
 
-#: data/mat.ui:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "មាតិកា"
 
-#: data/mat.ui:452
+#: data/mat.glade:374
 msgid "Supported formats"
 msgstr "ទ្រង់ទ្រាយ​ដែល​គាំទ្រ"
 
-#: data/mat.ui:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "គាំទ្រ"
 
-#: data/mat.ui:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "វិធីសាស្ត្រ"
 
-#: data/mat.ui:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "នៅសល់"
 
-#: data/mat.ui:560
+#: data/mat.glade:468
 msgid "Fileformat"
 msgstr "ទ្រង់ទ្រាយ​ឯកសារ"

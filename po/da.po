@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# andersd <andersd@riseup.net>, 2013
+# Anders Damsgaard <andersd@riseup.net>, 2013
 # bna1605 <bna1605@gmail.com>, 2014
-# klovnecaspar, 2013
+# Caspar Christensen, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-19 14:48+0000\n"
-"PO-Revision-Date: 2014-01-26 18:10+0000\n"
-"Last-Translator: bna1605 <bna1605@gmail.com>\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 08:18+0000\n"
+"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/torproject/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,182 +20,167 @@ msgstr ""
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:422
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "Klar"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "Vælg filer"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "Alle filer"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "Understøttede filer"
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "Ingen metadata fundet"
-
-#: mat-gui:158 mat-gui:398 mat-gui:420
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "Ren"
 
-#: mat-gui:160 mat-gui:400
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "Ingen metadata fundet"
+
+#: mat-gui:163 mat-gui:404
 msgid "Dirty"
 msgstr "Ikke ren"
 
-#: mat-gui:165
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
 msgstr "%s's metadata"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
 msgstr "Fjern dine metadata, behold de rigtige data"
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
 msgstr "Hjemmeside"
 
-#: mat-gui:207 data/mat.ui:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "Indstillinger"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "Reducer PDF kvalitet"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "Reducer den producerede PDF størrelse og kvalitet"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "Tilføj ikke understøttede filer til arkiver"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Tilføj ikke understøttet (og derfor ikke anonymiseret) fil til output arkiv "
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "Ukendt"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "Ikke understøttet"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
 msgstr "Harmløst filformat"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
 msgstr "Filformat ikke støttet"
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "Disse filer kan ikke blive bearbejdet:"
 
-#: mat-gui:334 mat-gui:363 data/mat.ui:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "Filnavn"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
 msgstr "Årsag"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
 msgstr "Ikke-støttede filer i arkivet"
 
-#: mat-gui:349 data/mat.ui:227
-msgid "Scour"
-msgstr "Scour"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "Inkluder"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
 msgstr "MAT kan ikke rense fælgende filer som er fundet i %s arkivet"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "Kontrollerer %s"
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "Renser %s"
 
-#: data/mat.ui:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "_Fil"
 
-#: data/mat.ui:99
+#: data/mat.glade:82
 msgid "_Edit"
 msgstr "_Rediger"
 
-#: data/mat.ui:118 data/mat.ui:253
-msgid "Clear"
-msgstr "Ryd"
-
-#: data/mat.ui:134
-msgid "_Process"
-msgstr "_Process"
-
-#: data/mat.ui:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "_Hjælp"
 
-#: data/mat.ui:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "Tilføj"
 
-#: data/mat.ui:240
-msgid "Check"
-msgstr "Tjek"
-
-#: data/mat.ui:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "Tilstand"
 
-#: data/mat.ui:347 data/mat.ui:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
 msgstr "Metadata"
 
-#: data/mat.ui:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "Navn"
 
-#: data/mat.ui:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "Indhold"
 
-#: data/mat.ui:452
+#: data/mat.glade:374
 msgid "Supported formats"
 msgstr "Understøttede formater"
 
-#: data/mat.ui:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "Understøttelse"
 
-#: data/mat.ui:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "Metode"
 
-#: data/mat.ui:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "Tilbage"
 
-#: data/mat.ui:560
+#: data/mat.glade:468
 msgid "Fileformat"
 msgstr "Filformat"

@@ -6,14 +6,14 @@
 # jonny_nut, 2014
 # LinuxChata, 2014
 # MrPersona <mrpersona@mail.ru>, 2014
-# Lomil_da <lomil97@gmail.com>, 2013
+# Pinro Lomil <lomil97@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-10 01:04+0000\n"
-"PO-Revision-Date: 2014-02-14 09:51+0000\n"
-"Last-Translator: LinuxChata\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 08:18+0000\n"
+"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/projects/p/torproject/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,182 +21,167 @@ msgstr ""
 "Language: uk\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:426
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "Готово"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "Пошук файлів"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "Усі файли"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "Підтримувані файли"
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "Метадані не знайдені"
-
-#: mat-gui:158 mat-gui:398 mat-gui:422 mat-gui:424
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "Очистити"
 
-#: mat-gui:160 mat-gui:400
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "Метадані не знайдені"
+
+#: mat-gui:163 mat-gui:404
 msgid "Dirty"
 msgstr "Змінено"
 
-#: mat-gui:165
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
 msgstr "%s's метадані"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
 msgstr "Видаляйте мета - зберігайте дані. "
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
 msgstr "Вебсайт"
 
-#: mat-gui:207 data/mat.glade:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "Настройки"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "Зменшити якість PDF-документу"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "Зменшити якість та розмір виробленного PDF-документу"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "Додати непідтримуваний файл до архіву"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Додати файл, що не підтримується (і тому не анонімний) до вихідного архіву"
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "Невідомо"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "Не підтримується"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
 msgstr "Безпечні формати файлів"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
 msgstr "Формат файлу не підтримується"
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "Ці файли не можуть бути оброблені: "
 
-#: mat-gui:334 mat-gui:363 data/mat.glade:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "Назва файлу"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
 msgstr "Причина"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
 msgstr "Непідтримувані файли в архіві "
 
-#: mat-gui:349 data/mat.glade:227
-msgid "Scour"
-msgstr "Очистити"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "Включити"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
 msgstr "MAT не може очистити наступні файли, що були знайдені у %s архіві"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "Перевірка %s"
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "Чищення %s"
 
-#: data/mat.glade:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "_Файл"
 
-#: data/mat.glade:99
+#: data/mat.glade:82
 msgid "_Edit"
 msgstr "_Правка"
 
-#: data/mat.glade:118 data/mat.glade:253
-msgid "Clear"
-msgstr "Очистити"
-
-#: data/mat.glade:134
-msgid "_Process"
-msgstr "_Процес"
-
-#: data/mat.glade:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "_Довідка"
 
-#: data/mat.glade:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "Додати"
 
-#: data/mat.glade:240
-msgid "Check"
-msgstr "Перевірка"
-
-#: data/mat.glade:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "Стан"
 
-#: data/mat.glade:347 data/mat.glade:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
 msgstr "Метадані"
 
-#: data/mat.glade:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "Ім’я"
 
-#: data/mat.glade:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "Вміст"
 
-#: data/mat.glade:452
+#: data/mat.glade:374
 msgid "Supported formats"
 msgstr "Підтримувані формати"
 
-#: data/mat.glade:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "Допомога"
 
-#: data/mat.glade:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "Метод"
 
-#: data/mat.glade:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "Залишилось"
 
-#: data/mat.glade:560
+#: data/mat.glade:468
 msgid "Fileformat"
 msgstr "Формат файлу"

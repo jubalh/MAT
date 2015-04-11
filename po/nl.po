@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Translators:
-# erwindelaat <erwin.de.laat@cleveridge.org>, 2014
+# Cleveridge <erwin.de.laat@cleveridge.org>, 2014
+# Nathan Follens, 2015
 # Shondoit Walker <shondoit@gmail.com>, 2013
-# Jesper Kollaard <syncsnap@gmail.com>, 2013
+# Sinkmurderer <syncsnap@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: The Tor Project\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-19 14:48+0000\n"
-"PO-Revision-Date: 2014-02-19 09:01+0000\n"
-"Last-Translator: erwindelaat <erwin.de.laat@cleveridge.org>\n"
+"POT-Creation-Date: 2014-12-31 04:53+0100\n"
+"PO-Revision-Date: 2015-02-23 08:18+0000\n"
+"Last-Translator: runasand <runa.sandvik@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/torproject/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,182 +21,167 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mat-gui:61 mat-gui:403 mat-gui:422
+#: mat-gui:62 mat-gui:407 mat-gui:430
 msgid "Ready"
 msgstr "Klaar"
 
-#: mat-gui:128
+#: mat-gui:129
 msgid "Choose files"
 msgstr "Kies bestanden"
 
-#: mat-gui:135
+#: mat-gui:137
 msgid "All files"
 msgstr "Alle bestanden"
 
-#: mat-gui:142
+#: mat-gui:143
 msgid "Supported files"
 msgstr "Ondersteunde bestanden"
 
-#: mat-gui:157
-msgid "No metadata found"
-msgstr "Geen metadata gevonden"
-
-#: mat-gui:158 mat-gui:398 mat-gui:420
+#: mat-gui:160 mat-gui:353 mat-gui:402 mat-gui:426 mat-gui:428
+#: data/mat.glade:172
 msgid "Clean"
 msgstr "Maak schoon"
 
-#: mat-gui:160 mat-gui:400
+#: mat-gui:161
+msgid "No metadata found"
+msgstr "Geen metadata gevonden"
+
+#: mat-gui:163 mat-gui:404
 msgid "Dirty"
 msgstr "Vuil"
 
-#: mat-gui:165
+#: mat-gui:168
 #, python-format
 msgid "%s's metadata"
-msgstr "%s's metadata"
+msgstr "Metadata van %s"
 
-#: mat-gui:176
+#: mat-gui:179
 msgid "Trash your meta, keep your data"
 msgstr "Gooi je meta weg, houd je data"
 
-#: mat-gui:181
+#: mat-gui:184
 msgid "Website"
 msgstr "Website"
 
-#: mat-gui:207 data/mat.ui:107
+#: mat-gui:210
 msgid "Preferences"
 msgstr "Voorkeuren"
 
-#: mat-gui:220
+#: mat-gui:223
 msgid "Reduce PDF quality"
 msgstr "Verminder PDF kwaliteit"
 
-#: mat-gui:223
+#: mat-gui:226
 msgid "Reduce the produced PDF size and quality"
 msgstr "Verminder de gemaakte PDF grootte en kwaliteit"
 
-#: mat-gui:226
+#: mat-gui:229
 msgid "Add unsupported file to archives"
 msgstr "Voeg niet-ondersteunde bestanden aan archieven toe"
 
-#: mat-gui:229
+#: mat-gui:232
 msgid "Add non-supported (and so non-anonymised) file to output archive"
 msgstr "Voeg niet-ondersteunde (en dus niet-geanonimiseerde) bestanden aan archief toe"
 
-#: mat-gui:268
+#: mat-gui:271
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: mat-gui:310
+#: mat-gui:314
 msgid "Not-supported"
 msgstr "Niet ondersteund"
 
-#: mat-gui:324
+#: mat-gui:328
 msgid "Harmless fileformat"
 msgstr "Onschadelijk bestandsformaat"
 
-#: mat-gui:326
+#: mat-gui:330
 msgid "Fileformat not supported"
 msgstr "Bestandsformaat niet ondersteund"
 
-#: mat-gui:329
+#: mat-gui:333
 msgid "These files can not be processed:"
 msgstr "Deze bestanden kunnen niet verwerkt worden:"
 
-#: mat-gui:334 mat-gui:363 data/mat.ui:292
+#: mat-gui:338 mat-gui:367 data/mat.glade:211
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: mat-gui:336
+#: mat-gui:340
 msgid "Reason"
 msgstr "Reden"
 
-#: mat-gui:348
+#: mat-gui:352
 msgid "Non-supported files in archive"
 msgstr "Niet-ondersteunde bestanden in archief"
 
-#: mat-gui:349 data/mat.ui:227
-msgid "Scour"
-msgstr "Zuiveren"
-
-#: mat-gui:362
+#: mat-gui:366
 msgid "Include"
 msgstr "bijvoegen"
 
-#: mat-gui:378
+#: mat-gui:382
 #, python-format
 msgid "MAT is not able to clean the following files, found in the %s archive"
 msgstr "MAT kan volgende bestanden, gevonden in het %s archief, niet zuiveren"
 
-#: mat-gui:394
+#: mat-gui:398
 #, python-format
 msgid "Checking %s"
 msgstr "Bezig met %s controleren..."
 
-#: mat-gui:409
+#: mat-gui:413
 #, python-format
 msgid "Cleaning %s"
 msgstr "Bezig met %s opschonen..."
 
-#: data/mat.ui:63
+#: data/mat.glade:33
 msgid "_File"
 msgstr "_Bestand"
 
-#: data/mat.ui:99
+#: data/mat.glade:82
 msgid "_Edit"
 msgstr "_Bewerken"
 
-#: data/mat.ui:118 data/mat.ui:253
-msgid "Clear"
-msgstr "Wissen"
-
-#: data/mat.ui:134
-msgid "_Process"
-msgstr "_Proces"
-
-#: data/mat.ui:168
+#: data/mat.glade:115
 msgid "_Help"
 msgstr "_Help"
 
-#: data/mat.ui:214
+#: data/mat.glade:159
 msgid "Add"
 msgstr "Voeg toe"
 
-#: data/mat.ui:240
-msgid "Check"
-msgstr "Controleer"
-
-#: data/mat.ui:309
+#: data/mat.glade:228
 msgid "State"
 msgstr "Staat"
 
-#: data/mat.ui:347 data/mat.ui:499
+#: data/mat.glade:274 data/mat.glade:417
 msgid "Metadata"
 msgstr "Metadata"
 
-#: data/mat.ui:376
+#: data/mat.glade:306
 msgid "Name"
 msgstr "Naam"
 
-#: data/mat.ui:390
+#: data/mat.glade:320
 msgid "Content"
 msgstr "Inhoud"
 
-#: data/mat.ui:452
+#: data/mat.glade:374
 msgid "Supported formats"
 msgstr "Ondersteunde formaten"
 
-#: data/mat.ui:486
+#: data/mat.glade:406
 msgid "Support"
 msgstr "Ondersteuning"
 
-#: data/mat.ui:512
+#: data/mat.glade:428
 msgid "Method"
 msgstr "Methode"
 
-#: data/mat.ui:525
+#: data/mat.glade:439
 msgid "Remaining"
 msgstr "Overgebleven"
 
-#: data/mat.ui:560
+#: data/mat.glade:468
 msgid "Fileformat"
 msgstr "Bestandsformaat"
