@@ -76,6 +76,7 @@ class PngStripper(ExiftoolStripper):
     '''
     def _set_allowed(self):
         self.allowed.update(['Bit Depth', 'Color Type',
-            'Compression', 'Filter', 'Interlace', 'Pixels Per Unit X',
+            'Compression', 'Filter', 'Interlace', 'Palette',
+            'Pixels Per Unit X',
             'Pixels Per Unit Y', 'Pixel Units', 'Significant Bits',
             'Background Color', 'SRGB Rendering'])
