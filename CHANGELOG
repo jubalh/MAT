@@ -1,3 +1,11 @@
+0.5.3 - 11apr2015
+	* Update translations
+	* Images are now re-rendered, like PDF (see 79ce29a)
+	* PDF with different page-size are now handled correctly
+	* MAT now doesn't care if you have a "data" folder in the current directory
+	* The GUI is (once again) simplified
+	* Minor typos and misc bugs
+
 0.5.2 - 1apr2014
     * Update translations
 
