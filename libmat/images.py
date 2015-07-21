@@ -7,21 +7,9 @@ References:
 '''
 
 import parser
-import pillow
 
 
-class ImageStripper(parser.GenericParser, pillow.PillowStripper):
-    ''' Common stripper for images.
-    Its purpose is to open then save
-    images with PIL, the goal being to remove
-    unknown metadata.
-    '''
-    def remove_all(self):
-        self.open_and_save()
-        super(ImageStripper, self).remove_all()
-
-
-class JpegStripper(ImageStripper):
+class JpegStripper(parser.GenericParser):
     ''' Represents a jpeg file.
         Custom Huffman and Quantization tables
         are stripped: they may leak
@@ -46,7 +34,7 @@ class JpegStripper(ImageStripper):
         return True
 
 
-class PngStripper(ImageStripper):
+class PngStripper(parser.GenericParser):
     ''' Represents a png file
     '''
     def _should_remove(self, field):

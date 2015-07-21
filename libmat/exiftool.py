@@ -4,10 +4,9 @@
 import subprocess
 
 import parser
-import pillow
 
 
-class ExiftoolStripper(parser.GenericParser, pillow.PillowStripper):
+class ExiftoolStripper(parser.GenericParser):
     ''' A generic stripper class using exiftool as backend
     '''
 
@@ -27,7 +26,6 @@ class ExiftoolStripper(parser.GenericParser, pillow.PillowStripper):
     def remove_all(self):
         ''' Remove all metadata with help of exiftool
         '''
-        self.open_and_save()
         try:
             if self.backup:
                 self.create_backup_copy()
