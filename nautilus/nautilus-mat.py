@@ -1,14 +1,16 @@
 #! /usr/bin/python
 
-''' This file is an extension for the Nautilus
+""" This file is an extension for the Nautilus
     file manager, to provide a contextual menu to
     clean metadata
-'''
+"""
 
 import logging
 import urllib
+
 try:
     import gettext
+
     gettext.install("mat")
 except:
     logging.warning("Failed to initialise gettext")
@@ -54,7 +56,8 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
         item.connect('activate', self.menu_activate_cb, file)
         return item,
 
-    def show_message(self, message, type=Gtk.MessageType.INFO):
+    @staticmethod
+    def show_message(message, type=Gtk.MessageType.INFO):
         dialog = Gtk.MessageDialog(parent=None,
                                    flags=Gtk.DialogFlags.MODAL,
                                    type=type,
@@ -71,8 +74,8 @@ class MatExtension(GObject.GObject, Nautilus.MenuProvider):
         file_path = urllib.unquote(file.get_uri()[7:])
 
         class_file = libmat.mat.create_class_file(file_path,
-                                           backup=True,
-                                           add2archive=False)
+                                                  backup=True,
+                                                  add2archive=False)
         if class_file:
             if class_file.is_clean():
                 self.show_message(_("%s is already clean") % file_path)

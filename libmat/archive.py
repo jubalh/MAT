@@ -1,5 +1,5 @@
-''' Take care of archives formats
-'''
+""" Take care of archives formats
+"""
 
 import datetime
 import logging
@@ -16,23 +16,24 @@ import parser
 # Zip files do not support dates older than 01/01/1980
 ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 ZIP_EPOCH_SECONDS = (datetime.datetime(1980, 1, 1, 0, 0, 0)
-        - datetime.datetime(1970, 1, 1, 1, 0, 0)).total_seconds()
+                     - datetime.datetime(1970, 1, 1, 1, 0, 0)).total_seconds()
 
 
 class GenericArchiveStripper(parser.GenericParser):
-    ''' Represent a generic archive
-    '''
+    """ Represent a generic archive
+    """
+
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         super(GenericArchiveStripper, self).__init__(filename,
-                parser, mime, backup, is_writable, **kwargs)
+                                                     parser, mime, backup, is_writable, **kwargs)
         self.compression = ''
         self.add2archive = kwargs['add2archive']
         self.tempdir = tempfile.mkdtemp()
 
     def __del__(self):
-        ''' Remove the files inside the temp dir,
+        """ Remove the files inside the temp dir,
             then remove the temp dir
-        '''
+        """
         for root, dirs, files in os.walk(self.tempdir):
             for item in files:
                 path_file = os.path.join(root, item)
@@ -40,28 +41,30 @@ class GenericArchiveStripper(parser.GenericParser):
         shutil.rmtree(self.tempdir)
 
     def is_clean(self, list_unsupported=False):
-        ''' Virtual method to check for harmul metadata
-        '''
+        """ Virtual method to check for harmul metadata
+        """
         raise NotImplementedError
 
     def list_unsupported(self):
-        ''' Get a list of every non-supported files present in the archive
-        '''
+        """ Get a list of every non-supported files present in the archive
+        """
         return self.is_clean(list_unsupported=True)
 
     def remove_all(self):
-        ''' Virtual method to remove all metadata
-        '''
+        """ Virtual method to remove all metadata
+        """
         raise NotImplementedError
 
 
 class ZipStripper(GenericArchiveStripper):
-    ''' Represent a zip file
-    '''
-    def __is_zipfile_clean(self, fileinfo):
-        ''' Check if a ZipInfo object is clean of metadata added
+    """ Represent a zip file
+    """
+
+    @staticmethod
+    def __is_zipfile_clean(fileinfo):
+        """ Check if a ZipInfo object is clean of metadata added
             by zip itself, independently of the corresponding file metadata
-        '''
+        """
         if fileinfo.comment != '':
             return False
         elif fileinfo.date_time != ZIP_EPOCH:
@@ -71,11 +74,11 @@ class ZipStripper(GenericArchiveStripper):
         return True
 
     def is_clean(self, list_unsupported=False):
-        ''' Check if the given file is clean from harmful metadata
+        """ Check if the given file is clean from harmful metadata
             When list_unsupported is True, the method returns a list
             of all non-supported/archives files contained in the
             archive.
-        '''
+        """
         ret_list = []
         zipin = zipfile.ZipFile(self.filename, 'r')
         if zipin.comment != '' and not list_unsupported:
@@ -86,7 +89,7 @@ class ZipStripper(GenericArchiveStripper):
             path = os.path.join(self.tempdir, item.filename)
             if not self.__is_zipfile_clean(item) and not list_unsupported:
                 logging.debug('%s from %s has compromising zipinfo' %
-                        (item.filename, self.filename))
+                              (item.filename, self.filename))
                 return False
             if os.path.isfile(path):
                 cfile = mat.create_class_file(path, False, add2archive=self.add2archive)
@@ -97,7 +100,7 @@ class ZipStripper(GenericArchiveStripper):
                             return False
                 else:
                     logging.info('%s\'s fileformat is not supported or harmless.'
-                            % item.filename)
+                                 % item.filename)
                     basename, ext = os.path.splitext(path)
                     if os.path.basename(item.filename) not in ('mimetype', '.rels'):
                         if ext not in parser.NOMETA:
@@ -110,7 +113,7 @@ class ZipStripper(GenericArchiveStripper):
         return True
 
     def get_meta(self):
-        ''' Return all the metadata of a zip archive'''
+        """ Return all the metadata of a zip archive"""
         zipin = zipfile.ZipFile(self.filename, 'r')
         metadata = {}
         if zipin.comment != '':
@@ -129,13 +132,14 @@ class ZipStripper(GenericArchiveStripper):
                         metadata[item.filename] = str(cfile_meta)
                 else:
                     logging.info('%s\'s fileformat is not supported or harmless'
-                            % item.filename)
+                                 % item.filename)
         zipin.close()
         return metadata
 
-    def __get_zipinfo_meta(self, zipinfo):
-        ''' Return all the metadata of a ZipInfo
-        '''
+    @staticmethod
+    def __get_zipinfo_meta(zipinfo):
+        """ Return all the metadata of a ZipInfo
+        """
         metadata = {}
         if zipinfo.comment != '':
             metadata['comment'] = zipinfo.comment
@@ -145,13 +149,19 @@ class ZipStripper(GenericArchiveStripper):
             metadata['system'] = "windows" if zipinfo.create_system == 2 else "unknown"
         return metadata
 
-    def remove_all(self, whitelist=[], beginning_blacklist=[], ending_blacklist=[]):
-        ''' Remove all metadata from a zip archive, even thoses
+    def remove_all(self, whitelist=None, beginning_blacklist=None, ending_blacklist=None):
+        """ Remove all metadata from a zip archive, even thoses
             added by Python's zipfile itself. It will not add
             files starting with "begining_blacklist", or ending with
             "ending_blacklist". This method also add files present in
             whitelist to the archive.
-        '''
+        """
+        if not ending_blacklist:
+            ending_blacklist = []
+        if not beginning_blacklist:
+            beginning_blacklist = []
+        if not whitelist:
+            whitelist = []
         zipin = zipfile.ZipFile(self.filename, 'r')
         zipout = zipfile.ZipFile(self.output, 'w', allowZip64=True)
         for item in zipin.infolist():
@@ -166,7 +176,7 @@ class ZipStripper(GenericArchiveStripper):
                 if cfile is not None:
                     # Handle read-only files inside archive
                     old_stat = os.stat(path).st_mode
-                    os.chmod(path, old_stat|stat.S_IWUSR)
+                    os.chmod(path, old_stat | stat.S_IWUSR)
                     cfile.remove_all()
                     os.chmod(path, old_stat)
                     logging.debug('Processing %s from %s' % (item.filename, self.filename))
@@ -186,11 +196,12 @@ class ZipStripper(GenericArchiveStripper):
 
 
 class TarStripper(GenericArchiveStripper):
-    ''' Represent a tarfile archive
-    '''
+    """ Represent a tarfile archive
+    """
+
     def _remove(self, current_file):
-        ''' Remove the meta added by tarfile itself to the file
-        '''
+        """ Remove the meta added by tarfile itself to the file
+        """
         current_file.mtime = 0
         current_file.uid = 0
         current_file.gid = 0
@@ -198,11 +209,13 @@ class TarStripper(GenericArchiveStripper):
         current_file.gname = ''
         return current_file
 
-    def remove_all(self, whitelist=[]):
-        ''' Remove all harmful metadata from the tarfile.
+    def remove_all(self, whitelist=None):
+        """ Remove all harmful metadata from the tarfile.
             The method will also add every files matching
             whitelist in the produced archive.
-        '''
+        """
+        if not whitelist:
+            whitelist = []
         tarin = tarfile.open(self.filename, 'r' + self.compression, encoding='utf-8')
         tarout = tarfile.open(self.output, 'w' + self.compression, encoding='utf-8')
         for item in tarin.getmembers():
@@ -213,14 +226,14 @@ class TarStripper(GenericArchiveStripper):
                 if cfile is not None:
                     # Handle read-only files inside archive
                     old_stat = os.stat(path).st_mode
-                    os.chmod(path, old_stat|stat.S_IWUSR)
+                    os.chmod(path, old_stat | stat.S_IWUSR)
                     cfile.remove_all()
                     os.chmod(path, old_stat)
                 elif self.add2archive or os.path.splitext(item.name)[1] in parser.NOMETA:
                     logging.debug('%s\' format is either not supported or harmless' % item.name)
                 elif item.name in whitelist:
                     logging.debug('%s is not supported, but MAT was told to add it anyway.'
-                            % item.name)
+                                  % item.name)
                 else:  # Don't add the file to the archive
                     logging.debug('%s will not be added' % item.name)
                     continue
@@ -230,9 +243,10 @@ class TarStripper(GenericArchiveStripper):
         self.do_backup()
         return True
 
-    def is_file_clean(self, current_file):
-        ''' Check metadatas added by tarfile
-        '''
+    @staticmethod
+    def is_file_clean(current_file):
+        """ Check metadatas added by tarfile
+        """
         if current_file.mtime != 0:
             return False
         elif current_file.uid != 0:
@@ -246,17 +260,17 @@ class TarStripper(GenericArchiveStripper):
         return True
 
     def is_clean(self, list_unsupported=False):
-        ''' Check if the file is clean from harmful metadatas
+        """ Check if the file is clean from harmful metadatas
             When list_unsupported is True, the method returns a list
             of all non-supported/archives files contained in the
             archive.
-        '''
+        """
         ret_list = []
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         for item in tarin.getmembers():
             if not self.is_file_clean(item) and not list_unsupported:
                 logging.debug('%s from %s has compromising tarinfo' %
-                        (item.name, self.filename))
+                              (item.name, self.filename))
                 return False
             tarin.extract(item, self.tempdir)
             path = os.path.join(self.tempdir, item.name)
@@ -265,7 +279,7 @@ class TarStripper(GenericArchiveStripper):
                 if cfile is not None:
                     if not cfile.is_clean():
                         logging.debug('%s from %s has metadata' %
-                                (item.name.decode("utf8"), self.filename))
+                                      (item.name.decode("utf8"), self.filename))
                         if not list_unsupported:
                             return False
                         # Nested archives are treated like unsupported files
@@ -283,8 +297,8 @@ class TarStripper(GenericArchiveStripper):
         return True
 
     def get_meta(self):
-        ''' Return a dict with all the meta of the tarfile
-        '''
+        """ Return a dict with all the meta of the tarfile
+        """
         tarin = tarfile.open(self.filename, 'r' + self.compression)
         metadata = {}
         for item in tarin.getmembers():
@@ -312,24 +326,26 @@ class TarStripper(GenericArchiveStripper):
 
 
 class TerminalZipStripper(ZipStripper):
-    ''' Represent a terminal level archive.
+    """ Represent a terminal level archive.
         This type of archive can not contain nested archives.
         It is used for formats like docx, which are basically
         ziped xml.
-    '''
+    """
 
 
 class GzipStripper(TarStripper):
-    ''' Represent a tar.gz archive
-    '''
+    """ Represent a tar.gz archive
+    """
+
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         super(GzipStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.compression = ':gz'
 
 
 class Bzip2Stripper(TarStripper):
-    ''' Represent a tar.bz2 archive
-    '''
+    """ Represent a tar.bz2 archive
+    """
+
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         super(Bzip2Stripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.compression = ':bz2'

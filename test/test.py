@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-'''
+"""
     Class for the testing suite :
     - get the list of all test files
     - create a copy of them on start
     - remove the copy on end
-'''
-
+"""
 
 import shutil
 import os
@@ -42,27 +41,28 @@ except ImportError:
 
 
 class MATTest(unittest.TestCase):
-    '''
+    """
         Parent class of all test-functions
-    '''
+    """
+
     def setUp(self):
-        '''
+        """
             Create working copy of the clean and the dirty file in the TMP dir
-        '''
+        """
         self.file_list = []
         self.tmpdir = tempfile.mkdtemp()
 
-        for clean, dirty in FILE_LIST:
-            clean_dir = os.path.join(self.tmpdir, clean)
-            dirty_dir = os.path.join(self.tmpdir, dirty)
-            shutil.copy2(clean, clean_dir)
-            shutil.copy2(dirty, dirty_dir)
+        for clean_file, dirty_file in FILE_LIST:
+            clean_dir = os.path.join(self.tmpdir, clean_file)
+            dirty_dir = os.path.join(self.tmpdir, dirty_file)
+            shutil.copy2(clean_file, clean_dir)
+            shutil.copy2(dirty_file, dirty_dir)
             self.file_list.append((clean_dir, dirty_dir))
 
     def tearDown(self):
-        '''
+        """
             Remove the tmp folder
-        '''
+        """
         for root, dirs, files in os.walk(self.tmpdir):
             for d in dirs + files:
                 os.chmod(os.path.join(root, d), 0o777)
@@ -78,4 +78,4 @@ if __name__ == '__main__':
     SUITE.addTests(libtest.get_tests())
 
     ret = unittest.TextTestRunner(verbosity=VERBOSITY).run(SUITE).wasSuccessful()
-    sys.exit(ret == False)
+    sys.exit(ret is False)

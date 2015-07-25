@@ -21,18 +21,18 @@
 # THE SOFTWARE.
 #
 
-'''
+"""
     A quick (and also nice) lib to bencode/bdecode torrent files
-'''
+"""
 
 
 class BTFailure(Exception):
-    '''Custom Exception'''
+    """Custom Exception"""
     pass
 
 
 class Bencached(object):
-    '''Custom type : cached string'''
+    """Custom type : cached string"""
     __slots__ = ['bencoded']
 
     def __init__(self, string):
@@ -40,10 +40,10 @@ class Bencached(object):
 
 
 def decode_int(x, f):
-    '''decode an int'''
+    """decode an int"""
     f += 1
     newf = x.index('e', f)
-    if x[f:f+1] == '-0':
+    if x[f:f + 1] == '-0':
         raise ValueError
     elif x[f] == '0' and newf != f + 1:
         raise ValueError
@@ -51,7 +51,7 @@ def decode_int(x, f):
 
 
 def decode_string(x, f):
-    '''decode a string'''
+    """decode a string"""
     colon = x.index(':', f)
     if x[f] == '0' and colon != f + 1:
         raise ValueError
@@ -61,7 +61,7 @@ def decode_string(x, f):
 
 
 def decode_list(x, f):
-    '''decode a list'''
+    """decode a list"""
     result = []
     f += 1
     while x[f] != 'e':
@@ -71,7 +71,7 @@ def decode_list(x, f):
 
 
 def decode_dict(x, f):
-    '''decode a dict'''
+    """decode a dict"""
     result = {}
     f += 1
     while x[f] != 'e':
@@ -81,24 +81,24 @@ def decode_dict(x, f):
 
 
 def encode_bool(x, r):
-    '''bencode a boolean'''
+    """bencode a boolean"""
     encode_int(1 if r else 0, r)
 
 
 def encode_int(x, r):
-    '''bencode an integer/float'''
+    """bencode an integer/float"""
     r.extend(('i', str(x), 'e'))
 
 
 def encode_list(x, r):
-    '''bencode a list/tuple'''
+    """bencode a list/tuple"""
     r.append('l')
     [ENCODE_FUNC[type(item)](item, r) for item in x]
     r.append('e')
 
 
 def encode_dict(x, result):
-    '''bencode a dict'''
+    """bencode a dict"""
     result.append('d')
     ilist = list(x.items())
     ilist.sort()
@@ -108,11 +108,10 @@ def encode_dict(x, result):
     result.append('e')
 
 
-DECODE_FUNC = {str(x):decode_string for x in range(9)}
+DECODE_FUNC = {str(x): decode_string for x in range(9)}
 DECODE_FUNC['l'] = decode_list
 DECODE_FUNC['d'] = decode_dict
 DECODE_FUNC['i'] = decode_int
-
 
 ENCODE_FUNC = {}
 ENCODE_FUNC[Bencached] = lambda x, r: r.append(x.bencoded)
@@ -126,14 +125,14 @@ ENCODE_FUNC[bool] = encode_bool
 
 
 def bencode(string):
-    '''bencode $string'''
+    """bencode $string"""
     table = []
     ENCODE_FUNC[type(string)](string, table)
     return ''.join(table)
 
 
 def bdecode(string):
-    '''decode $string'''
+    """decode $string"""
     try:
         result, lenght = DECODE_FUNC[string[0]](string, 0)
     except (IndexError, KeyError, ValueError):

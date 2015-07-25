@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
-''' Metadata anonymisation toolkit - GUI edition '''
+""" Metadata anonymisation toolkit - GUI edition """
 
 from gi.repository import GObject, Gtk, GLib
 from gi.repository import Gdk, GdkPixbuf
@@ -22,17 +22,19 @@ logging.basicConfig(level=mat.LOGGING_LEVEL)
 
 
 class CFile(GObject.Object):
-    ''' Contain the "parser" class of the file "filename"
+    """ Contain the "parser" class of the file "filename"
         This class exist just to be "around" my parser.Generic_parser class,
         since the Gtk.ListStore does not accept it because it does not
         extends Gobject.Object
-    '''
+    """
+
     def __init__(self, filename, **kwargs):
         self.file = mat.create_class_file(filename, 0, **kwargs)
 
 
 class GUI(object):
-    ''' Main GUI class '''
+    """ Main GUI class """
+
     def __init__(self):
         # Preferences
         self.add2archive = False
@@ -67,7 +69,7 @@ class GUI(object):
         self.window.show_all()
 
     def __init_supported_popup(self):
-        ''' Initialise the "supported formats" popup '''
+        """ Initialise the "supported formats" popup """
         self.supported_dict = mat.XMLParser()
         xml_parser = xml.sax.make_parser()
         xml_parser.setContentHandler(self.supported_dict)
@@ -89,7 +91,7 @@ class GUI(object):
         self.cb_update_supported_popup(supported_cbox)  # to initially fill the dialog
 
     def __set_drag_treeview(self):
-        ''' Setup the drag'n'drop handling by the treeview '''
+        """ Setup the drag'n'drop handling by the treeview """
         self.treeview.drag_dest_set(
             Gtk.DestDefaults.MOTION |
             Gtk.DestDefaults.HIGHLIGHT |
@@ -99,17 +101,18 @@ class GUI(object):
         targets.add_uri_targets(80)
         self.treeview.drag_dest_set_target_list(targets)
 
-    def cb_hide_widget(self, widget, _):
-        ''' This function is a little hack to hide instead
+    @staticmethod
+    def cb_hide_widget(widget, _):
+        """ This function is a little hack to hide instead
         of close re-usable popups, like supported-fileformats,
-        popup-metadata, ...'''
+        popup-metadata, ..."""
         widget.hide()
         return False
 
     def cb_update_supported_popup(self, window):
-        ''' Fill GtkEntries of the supported_format_popups
+        """ Fill GtkEntries of the supported_format_popups
             with corresponding data.
-        '''
+        """
         index = window.get_model()[window.get_active_iter()][0]
         support = self.builder.get_object('supported_support')
         support.set_text(self.supported_dict.list[index]['support'])
@@ -120,15 +123,16 @@ class GUI(object):
         remaining = self.builder.get_object('supported_remaining').get_buffer()
         remaining.set_text(self.supported_dict.list[index]['remaining'])
 
-    def cb_close_application(self, _):
-        ''' Close the application '''
+    @staticmethod
+    def cb_close_application(_):
+        """ Close the application """
         Gtk.main_quit()
 
     def cb_add_files(self, button):
-        ''' Add the files chosen by the filechooser ("Add" button) '''
+        """ Add the files chosen by the filechooser ("Add" button) """
         chooser = Gtk.FileChooserDialog(title=_('Choose files'),
-            parent=self.window, action=Gtk.FileChooserAction.OPEN,
-            buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1))
+                                        parent=self.window, action=Gtk.FileChooserAction.OPEN,
+                                        buttons=(Gtk.STOCK_OK, 0, Gtk.STOCK_CANCEL, 1))
         chooser.set_default_response(0)
         chooser.set_select_multiple(True)
 
@@ -151,9 +155,9 @@ class GUI(object):
         chooser.destroy()
 
     def cb_popup_metadata(self, widget, row, col):
-        ''' Popup that display on double-click
+        """ Popup that display on double-click
             metadata from a file
-        '''
+        """
         metadataPopupListStore = self.builder.get_object('MetadataPopupListStore')
         metadataPopupListStore.clear()
         if self.liststore[row][0].file.is_clean():
@@ -171,7 +175,7 @@ class GUI(object):
         popup_metadata.hide()
 
     def cb_about_popup(self, button):
-        ''' About popup '''
+        """ About popup """
         w = Gtk.AboutDialog()
         w.set_authors(['Julien (jvoisin) Voisin', ])
         w.set_artists(['Marine Benoît', ])
@@ -187,26 +191,26 @@ class GUI(object):
         w.destroy()
 
     def cb_supported_popup(self, w):
-        ''' Show the "supported formats" popup'''
+        """ Show the "supported formats" popup"""
         dialog = self.builder.get_object('SupportedWindow')
         dialog.show_all()
         dialog.run()
         dialog.hide()
 
     def cb_clear_list(self, _):
-        ''' Clear the file list '''
+        """ Clear the file list """
         self.liststore.clear()
 
     def cb_mat_check(self, button):
-        ''' Callback for checking files '''
+        """ Callback for checking files """
         self.__process_files(self.__mat_check)
 
     def cb_mat_clean(self, button):
-        ''' Callback for cleaning files '''
+        """ Callback for cleaning files """
         self.__process_files(self.__mat_clean)
 
     def cb_preferences_popup(self, button):
-        ''' Preferences popup '''
+        """ Preferences popup """
         dialog = Gtk.Dialog(_('Preferences'), self.window, 0, (Gtk.STOCK_OK, 0))
         dialog.connect('delete-event', self.cb_hide_widget)
         dialog.set_resizable(False)
@@ -242,15 +246,15 @@ non-anonymised) file to output archive'))
             dialog.hide()
 
     def cb_drag_data_received(self, widget, context, x, y, selection, target_type, timestamp):
-        ''' This function is called when something is
+        """ This function is called when something is
             drag'n'droped into mat.
             It basically add files.
-        '''
+        """
 
         def clean_path(url):
-            ''' Since the dragged urls are ugly,
+            """ Since the dragged urls are ugly,
                 we need to process them
-            '''
+            """
             url = urllib2.unquote(url)  # unquote url
             url = url.decode('utf-8')  # decode in utf-8
             if url.startswith('file:\\\\\\'):  # windows
@@ -265,7 +269,7 @@ non-anonymised) file to output archive'))
         GLib.idle_add(self.populate(cleaned_urls).next)  # asynchronous processing
 
     def __add_file_to_treeview(self, filename):
-        ''' Add a file to the list if its format is supported '''
+        """ Add a file to the list if its format is supported """
         cf = CFile(filename, add2archive=self.add2archive, low_pdf_quality=self.pdf_quality)
         if cf.file and cf.file.is_writable:
             self.liststore.append([cf, cf.file.basename, _('Unknown')])
@@ -273,7 +277,7 @@ non-anonymised) file to output archive'))
         return True
 
     def __process_files(self, func):
-        ''' Launch the function "func" in a asynchronous way '''
+        """ Launch the function "func" in a asynchronous way """
         iterator = self.treeview.get_selection().get_selected_rows()[1]
         if not iterator:  # if nothing is selected : select everything
             iterator = range(len(self.liststore))
@@ -281,14 +285,14 @@ non-anonymised) file to output archive'))
         GLib.idle_add(task.next)
 
     def __invert(self, button, name):
-        ''' Invert a preference state '''
+        """ Invert a preference state """
         if name == 'pdf_quality':
             self.pdf_quality = not self.pdf_quality
         elif name == 'add2archive':
             self.add2archive = not self.add2archive
 
     def populate(self, filenames):
-        ''' Append selected files by add_file to the self.liststore '''
+        """ Append selected files by add_file to the self.liststore """
         not_supported = []
         for filename in filenames:  # filenames : all selected files/folders
             if os.path.isdir(filename):  # if "filename" is a directory
@@ -308,11 +312,11 @@ non-anonymised) file to output archive'))
         yield False
 
     def __popup_non_supported(self, filelist):
-        ''' Popup that warn the user about the unsupported files
+        """ Popup that warn the user about the unsupported files
             that he want to process
-        '''
+        """
         dialog = Gtk.Dialog(title=_('Not-supported'), parent=self.window,
-                flags=Gtk.DialogFlags.MODAL, buttons=(Gtk.STOCK_OK, 0))
+                            flags=Gtk.DialogFlags.MODAL, buttons=(Gtk.STOCK_OK, 0))
         dialog.set_size_request(220, 180)
         vbox = Gtk.VBox(spacing=5)
         sc = Gtk.ScrolledWindow()
@@ -345,12 +349,12 @@ non-anonymised) file to output archive'))
         dialog.destroy()
 
     def __popup_archive(self, file_name, files_list):
-        ''' Popup that shows the user what files
+        """ Popup that shows the user what files
             are not going to be include into to outputed
             archive
-        '''
+        """
         dialog = Gtk.Dialog(title=_('Non-supported files in archive'), parent=self.window,
-                flags=Gtk.DialogFlags.MODAL, buttons=(_('Clean'), 0))
+                            flags=Gtk.DialogFlags.MODAL, buttons=(_('Clean'), 0))
         dialog.set_size_request(220, 180)
         vbox = Gtk.VBox(spacing=5)
         sc = Gtk.ScrolledWindow()
@@ -360,7 +364,7 @@ non-anonymised) file to output archive'))
         dialog.get_content_area().pack_start(sc, True, True, 0)
         store = Gtk.ListStore(bool, str)
         for i in files_list:  # store.extend is not supported, wtf?!
-            store.append([0,os.path.basename(i)])
+            store.append([0, os.path.basename(i)])
 
         treeview = Gtk.TreeView(store)
         column_toggle = Gtk.TreeViewColumn(_('Include'))
@@ -375,15 +379,17 @@ non-anonymised) file to output archive'))
         cellrenderer_toggle = Gtk.CellRendererToggle()
         column_toggle.pack_start(cellrenderer_toggle, True)
         column_toggle.add_attribute(cellrenderer_toggle, 'active', 0)
+
         def cell_toggled(widget, path, model):
             model[path][0] = not model[path][0]
+
         cellrenderer_toggle.connect('toggled', cell_toggled, store)
 
         vbox.pack_start(Gtk.Label(_('MAT is not able to clean the'
-            ' following files, found in the %s archive') % file_name), False, False, 0)
+                                    ' following files, found in the %s archive') % file_name), False, False, 0)
         label = Gtk.Label()
         label.set_markup('Select the files you want to <b>include</b>'
-            ' in the cleaned up archive anyway.')
+                         ' in the cleaned up archive anyway.')
         vbox.pack_start(label, False, False, 0)
         vbox.pack_start(treeview, True, True, 0)
 
@@ -393,7 +399,7 @@ non-anonymised) file to output archive'))
         return [i[1] for i in store if i[0]]
 
     def __mat_check(self, iterator):
-        ''' Check elements in iterator are clean '''
+        """ Check elements in iterator are clean """
         for line in iterator:  # for each file in selection
             msg = _('Checking %s') % self.liststore[line][1].decode('utf-8', 'replace')
             logging.info(msg)
@@ -408,7 +414,7 @@ non-anonymised) file to output archive'))
         yield False
 
     def __mat_clean(self, iterator):
-        ''' Clean elements in iterator '''
+        """ Clean elements in iterator """
         for line in iterator:  # for each file in selection
             msg = _('Cleaning %s') % self.liststore[line][1].decode('utf-8', 'replace')
             logging.info(msg)
@@ -429,6 +435,7 @@ non-anonymised) file to output archive'))
             yield True
         self.statusbar.push(0, _('Ready'))
         yield False
+
 
 if __name__ == '__main__':
     gettext.install('MAT', unicode=True)

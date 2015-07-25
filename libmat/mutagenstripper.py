@@ -1,5 +1,5 @@
-''' Take care of mutagen-supported formats (audio)
-'''
+""" Take care of mutagen-supported formats (audio)
+"""
 
 import parser
 
@@ -23,9 +23,9 @@ class MutagenStripper(parser.GenericParser):
         return True
 
     def get_meta(self):
-        '''
+        """
             Return the content of the metadata block is present
-        '''
+        """
         metadata = {}
         if self.mfile.tags:
             for key, value in self.mfile.tags:

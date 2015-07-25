@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-''' Metadata anonymisation toolkit library
-'''
+""" Metadata anonymisation toolkit library
+"""
 
 import logging
 import mimetypes
@@ -18,15 +18,15 @@ import libmat.exceptions
 __version__ = '0.5.3'
 __author__ = 'jvoisin'
 
-#Silence
+# Silence
 LOGGING_LEVEL = logging.CRITICAL
 hachoir_core.config.quiet = True
 fname = ''
 
-#Verbose
-#LOGGING_LEVEL = logging.DEBUG
-#hachoir_core.config.quiet = False
-#logname = 'report.log'
+# Verbose
+# LOGGING_LEVEL = logging.DEBUG
+# hachoir_core.config.quiet = False
+# logname = 'report.log'
 
 logging.basicConfig(filename=fname, level=LOGGING_LEVEL)
 
@@ -34,10 +34,10 @@ import strippers  # this is loaded here because we need LOGGING_LEVEL
 
 
 def get_logo():
-    ''' Return the path to the logo
-    '''
+    """ Return the path to the logo
+    """
     if os.path.isfile(os.path.join(os.path.curdir, 'data/mat.png')):
-        return os.path.join(os.path.curdir,'data/mat.png')
+        return os.path.join(os.path.curdir, 'data/mat.png')
     elif os.path.isfile('/usr/share/pixmaps/mat.png'):
         return '/usr/share/pixmaps/mat.png'
     elif os.path.isfile('/usr/local/share/pixmaps/mat.png'):
@@ -45,8 +45,8 @@ def get_logo():
 
 
 def get_datafile_path(filename):
-    ''' Return the path to the given ressource
-    '''
+    """ Return the path to the given ressource
+    """
     if os.path.isfile(os.path.join(os.path.curdir, 'data', filename)):
         return os.path.join(os.path.curdir, 'data', filename)
     elif os.path.isfile(os.path.join('/usr/local/share/mat/', filename)):
@@ -56,10 +56,10 @@ def get_datafile_path(filename):
 
 
 def list_supported_formats():
-    ''' Return a list of all locally supported fileformat.
+    """ Return a list of all locally supported fileformat.
         It parses that FORMATS file, and removes locally
         non-supported formats.
-    '''
+    """
     handler = XMLParser()
     parser = xml.sax.make_parser()
     parser.setContentHandler(handler)
@@ -76,9 +76,10 @@ def list_supported_formats():
 
 
 class XMLParser(xml.sax.handler.ContentHandler):
-    ''' Parse the supported format xml, and return a corresponding
+    """ Parse the supported format xml, and return a corresponding
         list of dict
-    '''
+    """
+
     def __init__(self):
         self.dict = {}
         self.list = []
@@ -86,15 +87,15 @@ class XMLParser(xml.sax.handler.ContentHandler):
         self.between = False
 
     def startElement(self, name, attrs):
-        ''' Called when entering into xml tag
-        '''
+        """ Called when entering into xml tag
+        """
         self.between = True
         self.key = name
         self.content = ''
 
     def endElement(self, name):
-        ''' Called when exiting a xml tag
-        '''
+        """ Called when exiting a xml tag
+        """
         if name == 'format':  # leaving a fileformat section
             self.list.append(self.dict.copy())
             self.dict.clear()
@@ -104,15 +105,15 @@ class XMLParser(xml.sax.handler.ContentHandler):
             self.between = False
 
     def characters(self, characters):
-        ''' Concatenate the content between opening and closing tags
-        '''
+        """ Concatenate the content between opening and closing tags
+        """
         if self.between:
             self.content += characters
 
 
 def secure_remove(filename):
-    ''' Securely remove the file
-    '''
+    """ Securely remove the file
+    """
     # I want the file removed, even if it's ro
     try:
         os.chmod(filename, 220)
@@ -141,9 +142,9 @@ def secure_remove(filename):
 
 
 def create_class_file(name, backup, **kwargs):
-    ''' Return a $FILETYPEStripper() class,
+    """ Return a $FILETYPEStripper() class,
         corresponding to the filetype of the given file
-    '''
+    """
     if not os.path.isfile(name):  # check if the file exists
         logging.error('%s is not a valid file' % name)
         return None
@@ -153,7 +154,7 @@ def create_class_file(name, backup, **kwargs):
         return None
 
     if not os.path.getsize(name):
-        #check if the file is not empty (hachoir crash on empty files)
+        # check if the file is not empty (hachoir crash on empty files)
         logging.error('%s is empty' % name)
         return None
 

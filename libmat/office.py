@@ -1,6 +1,6 @@
-''' Care about office's formats
+""" Care about office's formats
 
-'''
+"""
 
 import logging
 import os
@@ -21,14 +21,14 @@ import archive
 
 
 class OpenDocumentStripper(archive.TerminalZipStripper):
-    ''' An open document file is a zip, with xml file into.
+    """ An open document file is a zip, with xml file into.
         The one that interest us is meta.xml
-    '''
+    """
 
     def get_meta(self):
-        ''' Return a dict with all the meta of the file by
+        """ Return a dict with all the meta of the file by
             trying to read the meta.xml file.
-        '''
+        """
         metadata = super(OpenDocumentStripper, self).get_meta()
         zipin = zipfile.ZipFile(self.filename, 'r')
         try:
@@ -49,13 +49,13 @@ class OpenDocumentStripper(archive.TerminalZipStripper):
         return metadata
 
     def remove_all(self):
-        ''' Removes metadata
-        '''
+        """ Removes metadata
+        """
         return super(OpenDocumentStripper, self).remove_all(ending_blacklist=['meta.xml'])
 
     def is_clean(self):
-        ''' Check if the file is clean from harmful metadatas
-        '''
+        """ Check if the file is clean from harmful metadatas
+        """
         clean_super = super(OpenDocumentStripper, self).is_clean()
         if clean_super is False:
             return False
@@ -70,20 +70,21 @@ class OpenDocumentStripper(archive.TerminalZipStripper):
 
 
 class OpenXmlStripper(archive.TerminalZipStripper):
-    ''' Represent an office openxml document, which is like
+    """ Represent an office openxml document, which is like
         an opendocument format, with some tricky stuff added.
         It contains mostly xml, but can have media blobs, crap, ...
         (I don't like this format.)
-    '''
+    """
+
     def remove_all(self):
         return super(OpenXmlStripper, self).remove_all(
-                beginning_blacklist=('docProps/'), whitelist=('.rels'))
+            beginning_blacklist='docProps/', whitelist='.rels')
 
     def is_clean(self):
-        ''' Check if the file is clean from harmful metadatas.
+        """ Check if the file is clean from harmful metadatas.
             This implementation is faster than something like
             "return this.get_meta() == {}".
-        '''
+        """
         clean_super = super(OpenXmlStripper, self).is_clean()
         if clean_super is False:
             return False
@@ -96,8 +97,8 @@ class OpenXmlStripper(archive.TerminalZipStripper):
         return True
 
     def get_meta(self):
-        ''' Return a dict with all the meta of the file
-        '''
+        """ Return a dict with all the meta of the file
+        """
         metadata = super(OpenXmlStripper, self).get_meta()
 
         zipin = zipfile.ZipFile(self.filename, 'r')
@@ -109,8 +110,9 @@ class OpenXmlStripper(archive.TerminalZipStripper):
 
 
 class PdfStripper(parser.GenericParser):
-    ''' Represent a PDF file
-    '''
+    """ Represent a PDF file
+    """
+
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         super(PdfStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.uri = 'file://' + os.path.abspath(self.filename)
@@ -121,16 +123,16 @@ class PdfStripper(parser.GenericParser):
             self.pdf_quality = False
 
         self.meta_list = frozenset(['title', 'author', 'subject',
-            'keywords', 'creator', 'producer', 'metadata'])
+                                    'keywords', 'creator', 'producer', 'metadata'])
 
     def is_clean(self):
-        ''' Check if the file is clean from harmful metadatas
-        '''
+        """ Check if the file is clean from harmful metadatas
+        """
         document = Poppler.Document.new_from_file(self.uri, self.password)
         return not any(document.get_property(key) for key in self.meta_list)
 
     def remove_all(self):
-        ''' Opening the PDF with poppler, then doing a render
+        """ Opening the PDF with poppler, then doing a render
             on a cairo pdfsurface for each pages.
 
             http://cairographics.org/documentation/pycairo/2/
@@ -138,7 +140,7 @@ class PdfStripper(parser.GenericParser):
             The use of an intermediate tempfile is necessary because
             python-cairo segfaults on unicode.
             See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=699457
-        '''
+        """
         document = Poppler.Document.new_from_file(self.uri, self.password)
         try:
             output = tempfile.mkstemp()[1]
@@ -169,6 +171,7 @@ class PdfStripper(parser.GenericParser):
 
         try:
             import pdfrw  # For now, poppler cannot write meta, so we must use pdfrw
+
             logging.debug('Removing %s\'s superficial metadata' % self.filename)
             trailer = pdfrw.PdfReader(self.output)
             trailer.Info.Producer = None
@@ -183,8 +186,8 @@ class PdfStripper(parser.GenericParser):
         return True
 
     def get_meta(self):
-        ''' Return a dict with all the meta of the file
-        '''
+        """ Return a dict with all the meta of the file
+        """
         document = Poppler.Document.new_from_file(self.uri, self.password)
         metadata = {}
         for key in self.meta_list:

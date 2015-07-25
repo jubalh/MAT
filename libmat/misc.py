@@ -1,5 +1,5 @@
-''' Care about misc formats
-'''
+""" Care about misc formats
+"""
 
 import parser
 
@@ -7,33 +7,34 @@ from bencode import bencode
 
 
 class TorrentStripper(parser.GenericParser):
-    ''' Represent a torrent file with the help
+    """ Represent a torrent file with the help
         of the bencode lib from Petru Paler
-    '''
+    """
+
     def __init__(self, filename, parser, mime, backup, is_writable, **kwargs):
         super(TorrentStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.fields = frozenset(['announce', 'info', 'name', 'path', 'piece length', 'pieces',
-            'length', 'files', 'announce-list', 'nodes', 'httpseeds', 'private', 'root hash'])
+                                 'length', 'files', 'announce-list', 'nodes', 'httpseeds', 'private', 'root hash'])
 
     def __get_key_recursively(self, dictionary):
-        ''' Get recursively all keys from a dict and
+        """ Get recursively all keys from a dict and
             its subdicts
-        '''
+        """
         for i, j in list(dictionary.items()):
             if isinstance(j, dict):
-                return set([i]).union(self.__get_key_recursively(j))
-            return set([i])
+                return {i}.union(self.__get_key_recursively(j))
+            return {i}
 
     def is_clean(self):
-        ''' Check if the file is clean from harmful metadata
-        '''
+        """ Check if the file is clean from harmful metadata
+        """
         with open(self.filename, 'r') as f:
             decoded = bencode.bdecode(f.read())
         return self.fields.issuperset(self.__get_key_recursively(decoded))
 
     def __get_meta_recursively(self, dictionary):
-        ''' Get recursively all harmful metadata
-        '''
+        """ Get recursively all harmful metadata
+        """
         d = dict()
         for i, j in list(dictionary.items()):
             if i not in self.fields:
@@ -43,15 +44,15 @@ class TorrentStripper(parser.GenericParser):
         return d
 
     def get_meta(self):
-        ''' Return a dict with all the meta of the file
-        '''
+        """ Return a dict with all the meta of the file
+        """
         with open(self.filename, 'r') as f:
             decoded = bencode.bdecode(f.read())
         return self.__get_meta_recursively(decoded)
 
     def __remove_all_recursively(self, dictionary):
-        ''' Remove recursively all compromizing fields
-        '''
+        """ Remove recursively all compromizing fields
+        """
         d = dict()
         for i, j in [i for i in list(dictionary.items()) if i in self.fields]:
             if isinstance(j, dict):
@@ -61,8 +62,8 @@ class TorrentStripper(parser.GenericParser):
         return d
 
     def remove_all(self):
-        ''' Remove all comprimizing fields
-        '''
+        """ Remove all comprimizing fields
+        """
         decoded = ''
         with open(self.filename, 'r') as f:
             decoded = bencode.bdecode(f.read())

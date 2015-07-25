@@ -1,5 +1,5 @@
-''' Manage which fileformat can be processed
-'''
+""" Manage which fileformat can be processed
+"""
 
 import archive
 import audio

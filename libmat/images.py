@@ -1,23 +1,23 @@
-''' Takes care about pictures formats
+""" Takes care about pictures formats
 
 References:
     - JFIF: http://www.ecma-international.org/publications/techreports/E-TR-098.htm
     - PNG: http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/PNG.html
     - PNG: http://www.w3.org/TR/PNG-Chunks.html
-'''
+"""
 
 import parser
 
 
 class JpegStripper(parser.GenericParser):
-    ''' Represents a jpeg file.
+    """ Represents a jpeg file.
         Custom Huffman and Quantization tables
         are stripped: they may leak
         some info, and the quality loss is minor.
-    '''
+    """
     def _should_remove(self, field):
-        ''' Return True if the field is compromising
-        '''
+        """ Return True if the field is compromising
+        """
         field_list = frozenset([
             'start_image',  # start of the image
             'app0',         # JFIF data
@@ -35,11 +35,11 @@ class JpegStripper(parser.GenericParser):
 
 
 class PngStripper(parser.GenericParser):
-    ''' Represents a png file
-    '''
+    """ Represents a png file
+    """
     def _should_remove(self, field):
-        ''' Return True if the field is compromising
-        '''
+        """ Return True if the field is compromising
+        """
         field_list = frozenset([
             'id',
             'header',    # PNG header
