@@ -14,8 +14,8 @@ class ExiftoolStripper(parser.GenericParser):
         super(ExiftoolStripper, self).__init__(filename, parser, mime, backup, is_writable, **kwargs)
         self.allowed = set(['ExifTool Version Number', 'File Name', 'Directory',
                 'File Size', 'File Modification Date/Time', 'File Access Date/Time', 'File Permissions',
-                'File Type', 'MIME Type', 'Image Width', 'Image Height',
-                'Image Size', 'File Inode Change Date/Time'])
+                'File Type', 'File Type Extension', 'MIME Type', 'Image Width', 'Image Height',
+                'Image Size', 'File Inode Change Date/Time', 'Megapixels'])
         self._set_allowed()
 
     def _set_allowed(self):
