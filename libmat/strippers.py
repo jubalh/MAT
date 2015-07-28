@@ -54,7 +54,9 @@ if pdfSupport:
 try:
     import mutagen
     STRIPPERS['audio/x-flac'] = audio.FlacStripper
+    STRIPPERS['audio/flac'] = audio.FlacStripper
     STRIPPERS['audio/vorbis'] = audio.OggStripper
+    STRIPPERS['audio/ogg'] = audio.OggStripper
     STRIPPERS['audio/mpeg'] = audio.MpegAudioStripper
 except ImportError:
     logging.info('Unable to import python-mutagen: limited audio format support')

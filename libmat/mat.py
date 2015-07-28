@@ -9,6 +9,7 @@ import os
 import platform
 import subprocess
 import xml.sax
+import mimetypes
 
 import hachoir_core.cmd_line
 import hachoir_parser
@@ -166,10 +167,12 @@ def create_class_file(name, backup, **kwargs):
 
     parser = hachoir_parser.createParser(filename)
     if not parser:
-        logging.info('Unable to parse %s' % filename)
-        return None
+        logging.info('Unable to parse %s with hachoir' % filename)
 
-    mime = parser.mime_type
+    mime = mimetypes.guess_type(filename)[0]
+    if not mime:
+        logging.info('Unable to find mimetype of %s' % filename)
+        return None
 
     if mime == 'application/zip':  # some formats are zipped stuff
         if mimetypes.guess_type(name)[0]:
