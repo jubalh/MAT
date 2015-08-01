@@ -237,7 +237,9 @@ class TarStripper(GenericArchiveStripper):
                 else:  # Don't add the file to the archive
                     logging.debug('%s will not be added' % item.name)
                     continue
-                tarout.add(path, item.name, filter=self._remove)
+                tarout.add(unicode(path.decode('utf-8')),
+                           unicode(item.name.decode('utf-8')),
+                           filter=self._remove)
         tarin.close()
         tarout.close()
         self.do_backup()
