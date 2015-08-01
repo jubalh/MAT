@@ -16,7 +16,7 @@ import parser
 # Zip files do not support dates older than 01/01/1980
 ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 ZIP_EPOCH_SECONDS = (datetime.datetime(1980, 1, 1, 0, 0, 0)
-                     - datetime.datetime(1970, 1, 1, 1, 0, 0)).total_seconds()
+                     - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
 
 
 class GenericArchiveStripper(parser.GenericParser):
