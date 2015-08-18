@@ -14,9 +14,7 @@ import mat
 import parser
 
 # Zip files do not support dates older than 01/01/1980
-ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
-ZIP_EPOCH_SECONDS = (datetime.datetime(1980, 1, 1, 0, 0, 0)
-                     - datetime.datetime(1970, 1, 1, 0, 0, 0)).total_seconds()
+ZIP_EPOCH = (1980, 1, 1, 1, 0, 0)
 
 
 class GenericArchiveStripper(parser.GenericParser):
@@ -185,8 +183,14 @@ class ZipStripper(GenericArchiveStripper):
                     basename, ext = os.path.splitext(path)
                     if not (self.add2archive or ext in parser.NOMETA):
                         continue
-                os.utime(path, (ZIP_EPOCH_SECONDS, ZIP_EPOCH_SECONDS))
-                zipout.write(path, item.filename)
+                zinfo = zipfile.ZipInfo(item.filename, date_time=ZIP_EPOCH)
+                zinfo.compress_type = zipfile.ZIP_DEFLATED
+                zinfo.create_system = 3  # Linux
+                zinfo.comment = ''
+                with open(path, 'r') as f:
+                    zipout.writestr(zinfo, f.read())
+                # os.utime(path, (ZIP_EPOCH_SECONDS, ZIP_EPOCH_SECONDS))
+                # zipout.write(path, item.filename)
         zipin.close()
         zipout.close()
 
@@ -199,7 +203,8 @@ class TarStripper(GenericArchiveStripper):
     """ Represent a tarfile archive
     """
 
-    def _remove(self, current_file):
+    @staticmethod
+    def _remove_tar_added(current_file):
         """ Remove the meta added by tarfile itself to the file
         """
         current_file.mtime = 0
@@ -239,7 +244,7 @@ class TarStripper(GenericArchiveStripper):
                     continue
                 tarout.add(unicode(path.decode('utf-8')),
                            unicode(item.name.decode('utf-8')),
-                           filter=self._remove)
+                           filter=self._remove_tar_added)
         tarin.close()
         tarout.close()
         self.do_backup()
@@ -333,6 +338,7 @@ class TerminalZipStripper(ZipStripper):
         It is used for formats like docx, which are basically
         ziped xml.
     """
+    pass
 
 
 class GzipStripper(TarStripper):
