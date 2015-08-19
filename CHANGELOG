@@ -1,3 +1,11 @@
+0.5.4 - 19aug2015
+	* Distance a bit MAT from hachoir
+	* Fix zip-related issues
+	* Remove re-rendeging of image, since Pillow isn't production-ready yet
+	* Massive pep8 comformance, thanks to PyCharm
+	* Enhance a bit the GUI
+	* Usual cleanup/misc fixes
+
 0.5.3 - 11apr2015
 	* Update translations
 	* Images are now re-rendered, like PDF (see 79ce29a)
