@@ -1,7 +1,6 @@
 """ Take care of archives formats
 """
 
-import datetime
 import logging
 import os
 import shutil
@@ -14,7 +13,7 @@ import mat
 import parser
 
 # Zip files do not support dates older than 01/01/1980
-ZIP_EPOCH = (1980, 1, 1, 1, 0, 0)
+ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
 
 
 class GenericArchiveStripper(parser.GenericParser):
@@ -37,6 +36,11 @@ class GenericArchiveStripper(parser.GenericParser):
                 path_file = os.path.join(root, item)
                 mat.secure_remove(path_file)
         shutil.rmtree(self.tempdir)
+
+    def _should_remove(self, key):
+        """ This method is not used, but since it's defined in
+        parser.GenericParser, we must implement it."""
+        pass
 
     def is_clean(self, list_unsupported=False):
         """ Virtual method to check for harmul metadata
