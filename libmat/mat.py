@@ -115,7 +115,7 @@ class XMLParser(xml.sax.handler.ContentHandler):
 def secure_remove(filename):
     """ Securely remove the file
     """
-    # I want the file removed, even if it's ro
+    # I want the file removed, even if it's read-only
     try:
         os.chmod(filename, 220)
     except OSError:
@@ -159,7 +159,6 @@ def create_class_file(name, backup, **kwargs):
         logging.error('%s is empty' % name)
         return None
 
-    filename = ''
     try:
         filename = hachoir_core.cmd_line.unicodeFilename(name)
     except TypeError:  # get rid of "decoding Unicode is not supported"

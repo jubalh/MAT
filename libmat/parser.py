@@ -36,8 +36,7 @@ class GenericParser(object):
         except TypeError:  # get rid of "decoding Unicode is not supported"
             self.filename = filename
         self.basename = os.path.basename(filename)
-        _, output = tempfile.mkstemp()
-        self.output = hachoir_core.cmd_line.unicodeFilename(output)
+        self.output = hachoir_core.cmd_line.unicodeFilename(tempfile.mkstemp()[1])
 
     def __del__(self):
         """ Remove tempfile if it was not used
